@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-nebula-dev-104911-authRole",
+      "UnauthRoleArn": "arn:aws:iam::046598122767:role/amplify-nebula-dev-104911-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::046598122767:role/amplify-nebula-dev-104911-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-nebula-dev-104911-deployment",
+      "UnauthRoleName": "amplify-nebula-dev-104911-unauthRole",
+      "StackName": "amplify-nebula-dev-104911",
+      "StackId": "arn:aws:cloudformation:eu-west-1:046598122767:stack/amplify-nebula-dev-104911/14b10040-bd36-11eb-9f26-0a080ff14f3b",
+      "AmplifyAppId": "dw1bup2ugdnjl"
+    },
+    "categories": {
+      "auth": {
+        "auth": {}
+      }
+    }
+  }
+}

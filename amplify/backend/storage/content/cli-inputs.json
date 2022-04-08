@@ -1,0 +1,14 @@
+{
+  "resourceName": "content",
+  "policyUUID": "677477f9",
+  "bucketName": "nebula1f8beb8323a04345b9ed0473b17e95ee",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

@@ -1,0 +1,49 @@
+overwrite: true
+schema: graphql/schema.json
+documents:
+  # - output/operations.graphql
+  - graphql/queries.ts
+  - graphql/mutations.ts
+config:
+  # preResolveTypes: false
+  skipTypename: true
+  maybeValue: T | undefined
+  scalars:
+    AWSJSON: Record<string, any> | string
+  exposeFetcher: true
+  exposeQueryKeys: true  
+  # exposeMutationKeys: true  
+  # excludeOperations:
+    # - '*Relationship'
+    # - '*Node'  
+  # skipHooks:
+  #   - SaveNode
+  #   - ReadNode
+  #   - SaveRelationship
+  #   - ReadRelationship  
+generates:
+  generated/plugin.ts:
+    config:
+      skipHooks:
+        - SaveNode
+        - ReadNode
+        - SaveRelationship
+        - ReadRelationship  
+      fetcher:
+        endpoint: 'awsconfig.aws_appsync_graphqlEndpoint'
+        fetchParams:
+          headers:
+            "x-api-key": awsconfig.aws_appsync_apiKey
+    plugins:
+      - typescript
+      - typescript-operations    
+      # - typescript-react-query  
+      - dist/index.js
+      - add:
+          placement: prepend
+          content:
+            - "/* eslint-disable */"
+            # - "import awsconfig from '../src/aws-exports.js';"              
+hooks:
+  afterAllFileWrite:
+    - npx prettier --write

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 365,
+      "keyDescription": ""
+    },
+    "conflictResolution": {},
+    "apiName": "graphql",
+    "gqlSchemaPath": "/Users/zirkelc/Code/nebula/packages/api/amplify/backend/api/graphql/schema.graphql",
+    "additionalAuthTypes": [
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authauth"
+      },
+      {
+        "mode": "AWS_IAM"
+      }
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+# all queries with function resolvers must be in the same schema.graphql file
+# otherwise the queries will be created without resolver function
+type Query {
+  # Test method
+  echo(msg: String): String @function(name: "nebula-api-${env}-resolver")
+
+  # Search graph
+  searchGraph(input: SearchGraphInput!): SearchGraphResult
+    @function(name: "nebula-api-${env}-resolver")
+
+  # Get single node by identity
+  getNode(identity: ID!): NodeGraphRecord
+    @function(name: "nebula-api-${env}-resolver")
+
+  # Get single relationship by identity
+  getRelationship(identity: ID!): RelationshipGraphRecord
+    @function(name: "nebula-api-${env}-resolver")
+
+  # List all nodes by label
+  listNodes(label: String!): NodesGraphRecord
+    @function(name: "nebula-api-${env}-resolver")
+
+  # Connector Manifest
+  # TODO funktioniert nicht mit API gateway urls: https://github.com/aws-amplify/amplify-js/issues/9330
+  getConnectorManifest(service: ConnectorService!): ConnectorManifest
+    @http(url: "https://nebula-connector-shopify-dev-meta.s3.eu-west-1.amazonaws.com/manifest.json") # param :service will be replaced automatically
+
+  # Connector Credentials
+  getConnectorCredentials(id: ID!): ConnectorCredentials
+    @function(name: "nebula-api-${env}-resolver")
+}
+
+type Mutation {
+  runPerspective(input: RunPerspectiveInput!): RunPerspectiveResult
+    @function(name: "nebula-api-${env}-resolver")
+  runConnector(input: RunConnectorInput!): AWSJSON
+    @function(name: "nebula-api-${env}-resolver")
+  saveConnectorCredentials(input: SaveConnectorCredentialsInput!): Connector
+    @function(name: "nebula-api-${env}-resolver")
+
+  # Connector Credentials
+  createConnectorCredentials(input: CreateConnectorCredentialsInput!): ConnectorCredentials
+    @function(name: "nebula-api-${env}-resolver")
+  updateConnectorCredentials(input: UpdateConnectorCredentialsInput!): ConnectorCredentials
+    @function(name: "nebula-api-${env}-resolver")
+  deleteConnectorCredentials(input: DeleteConnectorCredentialsInput!): ConnectorCredentials
+    @function(name: "nebula-api-${env}-resolver")
+  # Node
+  createNode(input: CreateNodeInput!): NodeGraphRecord
+    @function(name: "nebula-api-${env}-resolver")
+  updateNode(input: UpdateNodeInput!): NodeGraphRecord
+    @function(name: "nebula-api-${env}-resolver")
+  deleteNode(input: DeleteNodeInput!): DeleteNodeRecord
+    @function(name: "nebula-api-${env}-resolver")
+  # Relationship
+  createRelationship(input: CreateRelationshipInput!): RelationshipGraphRecord
+    @function(name: "nebula-api-${env}-resolver")
+  updateRelationship(input: UpdateRelationshipInput!): RelationshipGraphRecord
+    @function(name: "nebula-api-${env}-resolver")
+  deleteRelationship(input: DeleteRelationshipInput!): DeleteRelationshipRecord
+    @function(name: "nebula-api-${env}-resolver")
+}
+# #TODO: separate resolver functions für mit neo4j und ohne

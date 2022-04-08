@@ -1,0 +1,22 @@
+{
+  "extends": "@tsconfig/node14/tsconfig.json", // https://github.com/tsconfig/bases#node-14-tsconfigjson
+  "compilerOptions": {
+    "lib": [
+      "es2020",
+      "esnext",
+      "dom"
+    ],
+    "removeComments": true,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules/**/*"
+  ],
+}

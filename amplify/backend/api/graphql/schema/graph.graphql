@@ -1,0 +1,87 @@
+type GraphNode @aws_cognito_user_pools @aws_api_key {
+  identity: ID!
+  labels: [String!]!
+  properties: AWSJSON!
+}
+
+type GraphRelationship @aws_cognito_user_pools @aws_api_key {
+  identity: ID!
+  type: String!
+  start: String!
+  end: String!
+  properties: AWSJSON!
+}
+
+type GraphNodeRelationship @aws_cognito_user_pools @aws_api_key {
+  node: GraphNode!
+  relationship: GraphRelationship!
+}
+
+type RelationshipGraphRecord @aws_cognito_user_pools @aws_api_key {
+  start: GraphNode!
+  end: GraphNode!
+  relationship: GraphRelationship!
+}
+
+type NodeGraphRecord @aws_cognito_user_pools @aws_api_key {
+  node: GraphNode!
+  relationships: [GraphNodeRelationship!]
+}
+
+type NodesGraphRecord @aws_cognito_user_pools @aws_api_key {
+  records: [NodeGraphRecord!]
+}
+
+type DeleteNodeRecord @aws_cognito_user_pools @aws_api_key {
+  nodes: [GraphNode!]
+  relationships: [GraphRelationship!]
+}
+
+type DeleteRelationshipRecord @aws_cognito_user_pools @aws_api_key {
+  relationships: [GraphRelationship!]
+}
+
+input CreateNodeInput {
+  labels: [String!]!
+  properties: AWSJSON!
+}
+
+input UpdateNodeInput {
+  identity: ID!
+  properties: AWSJSON!
+}
+
+input DeleteNodeInput {
+  identities: [ID!]!
+}
+
+input CreateRelationshipInput {
+  type: String!
+  start: String!
+  end: String!
+  properties: AWSJSON!
+}
+
+input UpdateRelationshipInput {
+  identity: ID!
+  properties: AWSJSON!
+}
+
+input DeleteRelationshipInput {
+  identities: [ID!]!
+}
+
+type SearchGraphResult @aws_cognito_user_pools @aws_api_key {
+  records: [SearchGraphRecord!]
+}
+
+type SearchGraphRecord @aws_cognito_user_pools @aws_api_key {
+  node: GraphNode!
+  score: String!
+}
+
+input SearchGraphInput {
+  term: String!
+  schemaID: ID!
+  labels: [String!]
+}

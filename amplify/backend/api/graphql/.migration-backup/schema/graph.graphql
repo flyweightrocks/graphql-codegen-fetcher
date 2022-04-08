@@ -1,0 +1,91 @@
+type GraphNode {
+	identity: ID!
+  labels: [String!]!
+  properties: AWSJSON!
+}
+
+type GraphRelationship {
+	identity: ID!
+	type: String!
+  start: String!
+  end: String!
+  properties: AWSJSON!
+}
+
+type RelationshipGraphRecord {
+  start: GraphNode!
+  end: GraphNode!
+  relationship: GraphRelationship!
+}
+
+type NodeGraphRecord {
+	node: GraphNode!
+  relationships: [GraphNodeRelationship!]
+}
+
+type NodesGraphRecord {
+	records: [NodeGraphRecord!]
+}
+
+type DeleteNodeRecord {
+  nodes: [GraphNode!]
+  nodeCount: Int!
+  relationships: [GraphRelationship!]
+  relationshipCount: Int!
+}
+
+type DeleteRelationshipRecord {
+  relationships: [GraphRelationship!]
+  relationshipCount: Int!
+}
+
+type GraphNodeRelationship {
+  node: GraphNode!
+  relationship: GraphRelationship!
+}
+
+input CreateNodeInput {
+  labels: [String!]!
+  properties: AWSJSON!
+}
+
+input UpdateNodeInput {
+  identity: ID!
+  properties: AWSJSON!
+}
+
+input DeleteNodeInput {
+  identities: [ID!]!
+}
+
+input CreateRelationshipInput {
+  type: String!
+  start: String!
+  end: String!
+  properties: AWSJSON!
+}
+
+input UpdateRelationshipInput {
+  identity: ID!
+  properties: AWSJSON!
+}
+
+input DeleteRelationshipInput {
+  identities: [ID!]!
+}
+
+# Search
+type SearchGraphResult {
+  records: [SearchGraphRecord!]
+}
+
+type SearchGraphRecord {
+  node: GraphNode!
+  score: String!
+}
+
+input SearchGraphInput {
+  term: String!
+  schemaID: ID!
+  labels: [String!]
+}

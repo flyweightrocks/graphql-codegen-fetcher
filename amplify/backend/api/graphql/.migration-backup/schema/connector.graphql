@@ -1,0 +1,138 @@
+# TODO: wechseln zu den neuen @model typen mit @hasOne, @hasMany, @belongsTo, weil dadurch weniger ModelConnections generiert werden
+# https://docs.amplify.aws/cli/graphql/data-modeling/#how-it-works
+type Connector @model(subscriptions: null)
+  @auth(rules: [{ allow: public }])
+  @key(name: "connectorBySource", fields: ["source"], queryField: "getConnectorBySource") # TODO:rename to bySource
+{
+  id: ID!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+	service: ConnectorService!
+  name: String!
+	topics: [String!]
+	status: ConnectorStatus!
+  secretCredentials: AWSJSON # result from secretsmanager; kann später auch ein anderes JSON sein
+  source: String
+  transformations: [Transformation] @connection(keyName: "byConnector", fields: ["id"])
+  #TODO: database name
+}
+
+type Transformation @model(subscriptions: null)
+  @auth(rules: [{ allow: public }])
+  @key(name: "byConnector", fields: ["connectorID"], queryField: "getTransformationsByConnector")
+{
+  id: ID!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  connectorID: ID!
+  topics: [String!]!
+	schemaEntity: String! # or Object?
+  graphEntityType: GraphEntityType!
+	status: TransformationStatus!
+  expression: String
+  connector: Connector @connection(fields: ["connectorID"])
+}
+
+enum ConnectorService {
+	AMAZON
+	SHOPIFY
+}
+
+enum ConnectorStatus {
+	ACTIVE
+	INACTIVE
+}
+
+enum TransformationStatus {
+  ENABLED
+  DISABLED
+}
+
+enum GraphEntityType {
+  NODE
+  RELATIONSHIP
+}
+
+# RunConnector
+input RunConnectorInput {
+  id: ID!
+  topic: String!
+  # source: [RunConnectorSourceInput!]
+  parameters: [RunConnectorParameterInput!]
+}
+
+# input RunConnectorSourceInput {
+#   key: String!
+#   value: String
+# }
+
+input RunConnectorParameterInput {
+  key: String!
+  value: String
+}
+
+# Connector Manifest
+type ConnectorManifest {
+  version: String
+  service: ConnectorService
+  credentials: [ConnectorCredentialsField!]
+  authorization: ConnectorAuthorization
+  topics: [String!]
+}
+
+type ConnectorCredentialsField {
+  field: String!
+  type: ConnectorCredentialsFieldType!
+  pattern: String
+}
+
+enum ConnectorCredentialsFieldType {
+  DOMAIN
+  ACCESS_TOKEN
+}
+
+type ConnectorAuthorization {
+  type: ConnectorAuthorizationType!
+  authUrl: String
+  authParams: [String!]
+  callbackParams: [String!]
+}
+
+enum ConnectorAuthorizationType {
+  OAUTH
+}
+
+# TODO pipelineResolver mit Crdentials automatich speichern und lesenm
+# die authorizatiuon muss dann später für Connector gemacht werden statt auf Credentials spearat
+type ConnectorCredentials {
+  id: ID!
+  plainCredentials: AWSJSON! # key-value-pairs
+}
+
+# SaveConnectorCredentials
+input SaveConnectorCredentialsInput {
+  id: ID!
+  plainCredentials: AWSJSON! # key-value-pairs
+}
+
+# CreateConnectorCredentials
+input CreateConnectorCredentialsInput {
+  id: ID!
+  plainCredentials: AWSJSON! # key-value-pairs
+}
+
+# CreateConnectorCredentials
+input UpdateConnectorCredentialsInput {
+  id: ID!
+  plainCredentials: AWSJSON! # key-value-pairs
+}
+
+# DeleteConnectorCredentials
+input DeleteConnectorCredentialsInput {
+ id: ID!
+}
+
+# # GetConnectorCredentials
+# input GetConnectorCredentialsInput {
+#   id: ID!
+# }

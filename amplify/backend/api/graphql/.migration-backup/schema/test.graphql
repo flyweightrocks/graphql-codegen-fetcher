@@ -1,0 +1,9 @@
+type Test @model(subscriptions: null)
+  @auth(rules: [{ allow: public }])
+{
+  id: ID!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  name: String!
+  credentials: String
+}

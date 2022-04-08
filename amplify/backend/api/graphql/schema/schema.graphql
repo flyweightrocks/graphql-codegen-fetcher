@@ -1,0 +1,62 @@
+# Die Nodes und Relationships als JSON innerhalb des Schema Models speichern anstatt als eigene Models mit Tabelle
+# Das Anlegen/Ändern/Löschen von Nodes/Rels wird dadurch einfacher, weil kein abgleich der neuen und alten Nodes/Rels
+# gemacht werden muss um das Delta zu ermitteln und dann Create/Update/Delete Mutations hintereinander auszuführen
+# Stattdessen kann das Schema einmal angelegt werden und msus danach nur noch geändert werden.
+type Schema @model(subscriptions: null, queries: { get: "getSchema", list: "listSchemas" }) # provide query name for getSchema and listSchemas to avoid pluralization of Schema to Schemata, because Codegen combines get and list operations into one read operation
+  @auth(rules: [
+    { allow: public },
+    { allow: owner },
+    { allow: groups, groupsField: "groups" }
+    { allow: private, provider: iam },
+  ]) {
+  id: ID!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  owner: String
+  groups: [String]
+  nodes: [SchemaNode!]
+  relationships: [SchemaRelationship!]
+}
+
+type SchemaNode {
+  id: ID!
+  # labels: [SchemaNodeLabel]!
+  # Label und Color voneinander trennen weil es später möglich sein muss
+  # eine Node zu definieren mit mehreren Labels und diesen dann eine Color zuzuweisen
+  # d.h. Node mit Label Marketplace hat Color=Rot, aber Node mit Marketplace+Amazon hat Color=Orange
+  label: String! #TODO: später auf labels wechseln, aber momentan zu komplex umzusetezn
+  properties: [SchemaProperty!]
+  idSelector: [String!]
+  descriptionSelector: [String!]
+  avatarSelector: String
+  avatarColor: String!
+}
+
+type SchemaRelationship {
+  id: ID!
+  # Die Verbindung von StartNode->Rel->EndNode muss erfasst werden
+  # weil es einen Rel-Type mehrmals geben kann, z.B. :CONTAINS
+  # Die genaue Auspärgung hängt dann von den verbundenen Nodes ab
+  startNodeID: ID!
+  endNodeID: ID!
+  type: String! #TODO: eigener Typ SchemaReltype mit description?
+  properties: [SchemaProperty!]
+  descriptionSelector: [String!]
+}
+
+type SchemaProperty {
+  key: String!
+  name: String!
+  type: SchemaPropertyType!
+}
+
+enum SchemaPropertyType {
+  STRING
+  NUMBER
+  DATE
+  DATETIME
+  TIME
+  BOOLEAN
+  CURRENCY
+  UNDEFINED
+}
