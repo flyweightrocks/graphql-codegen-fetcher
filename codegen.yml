@@ -29,11 +29,7 @@ generates:
         - ReadNode
         - SaveRelationship
         - ReadRelationship  
-      fetcher:
-        endpoint: 'awsconfig.aws_appsync_graphqlEndpoint'
-        fetchParams:
-          headers:
-            "x-api-key": awsconfig.aws_appsync_apiKey
+      fetcher: '../graphql/fetcher#fetchWithAmplify'
     plugins:
       - typescript
       - typescript-operations    

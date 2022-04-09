@@ -1,30 +1,11 @@
 /* eslint-disable */
 import {} from 'react-query';
+import { fetchWithAmplify } from '../graphql/fetcher';
 export type Maybe<T> = T | undefined;
 export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-
-function fetcher<TData, TVariables>(query: string, variables?: TVariables) {
-  return async (): Promise<TData> => {
-    const res = await fetch(awsconfig.aws_appsync_graphqlEndpoint as string, {
-      method: 'POST',
-      ...{ headers: { 'x-api-key': 'awsconfig.aws_appsync_apiKey' } },
-      body: JSON.stringify({ query, variables }),
-    });
-
-    const json = await res.json();
-
-    if (json.errors) {
-      const { message } = json.errors[0];
-
-      throw new Error(message);
-    }
-
-    return json.data;
-  };
-}
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -2644,8 +2625,21 @@ export const RunConnectorDocument = `
 
 export const RunConnectorMutationKeys = () => ['RunConnector'];
 
-export const RunConnectorMutationInput = (input: Partial<RunConnectorInput>) => input;
+/**
+ * Input transformer function for RunConnectorMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input RunConnectorInput - input
+ * @returns
+ */
+export const RunConnectorMutationInput = (variables: RunConnectorMutationVariables) => variables;
 
+/**
+ * Output transformer function for RunConnectorMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data RunConnectorMutation - The data returned from the GraphQL server
+ * @returns AWSJSON - The transformed data
+ */
+export const RunConnectorMutationOutput = ({ runConnector }: RunConnectorMutation) => runConnector;
 export const CreateConnectorCredentialsDocument = `
     mutation CreateConnectorCredentials($input: CreateConnectorCredentialsInput!) {
   createConnectorCredentials(input: $input) {
@@ -2657,13 +2651,38 @@ export const CreateConnectorCredentialsDocument = `
 
 export const CreateConnectorCredentialsMutationKeys = () => ['CreateConnectorCredentials'];
 
-export const CreateConnectorCredentialsMutationInput = (input: Partial<CreateConnectorCredentialsInput>) => ({
-  ...input,
-  plainCredentials:
-    input.plainCredentials &&
-    (JSON.stringify(input.plainCredentials as unknown as Record<string, any>) as unknown as Record<string, any>),
+/**
+ * Input transformer function for CreateConnectorCredentialsMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input CreateConnectorCredentialsInput - input
+ * @returns
+ */
+export const CreateConnectorCredentialsMutationInput = (variables: CreateConnectorCredentialsMutationVariables) => ({
+  ...variables,
+  input: {
+    plainCredentials:
+      variables.input.plainCredentials &&
+      (JSON.stringify(variables.input.plainCredentials as unknown as Record<string, any>) as unknown as Stringified<
+        Scalars['AWSJSON']
+      >),
+  },
 });
 
+/**
+ * Output transformer function for CreateConnectorCredentialsMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateConnectorCredentialsMutation - The data returned from the GraphQL server
+ * @returns ConnectorCredentials - The transformed data
+ */
+export const CreateConnectorCredentialsMutationOutput = ({
+  createConnectorCredentials,
+}: CreateConnectorCredentialsMutation) =>
+  createConnectorCredentials && {
+    ...createConnectorCredentials,
+    plainCredentials:
+      createConnectorCredentials.plainCredentials &&
+      (JSON.parse(createConnectorCredentials.plainCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
+  };
 export const UpdateConnectorCredentialsDocument = `
     mutation UpdateConnectorCredentials($input: UpdateConnectorCredentialsInput!) {
   updateConnectorCredentials(input: $input) {
@@ -2675,13 +2694,38 @@ export const UpdateConnectorCredentialsDocument = `
 
 export const UpdateConnectorCredentialsMutationKeys = () => ['UpdateConnectorCredentials'];
 
-export const UpdateConnectorCredentialsMutationInput = (input: Partial<UpdateConnectorCredentialsInput>) => ({
-  ...input,
-  plainCredentials:
-    input.plainCredentials &&
-    (JSON.stringify(input.plainCredentials as unknown as Record<string, any>) as unknown as Record<string, any>),
+/**
+ * Input transformer function for UpdateConnectorCredentialsMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input UpdateConnectorCredentialsInput - input
+ * @returns
+ */
+export const UpdateConnectorCredentialsMutationInput = (variables: UpdateConnectorCredentialsMutationVariables) => ({
+  ...variables,
+  input: {
+    plainCredentials:
+      variables.input.plainCredentials &&
+      (JSON.stringify(variables.input.plainCredentials as unknown as Record<string, any>) as unknown as Stringified<
+        Scalars['AWSJSON']
+      >),
+  },
 });
 
+/**
+ * Output transformer function for UpdateConnectorCredentialsMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdateConnectorCredentialsMutation - The data returned from the GraphQL server
+ * @returns ConnectorCredentials - The transformed data
+ */
+export const UpdateConnectorCredentialsMutationOutput = ({
+  updateConnectorCredentials,
+}: UpdateConnectorCredentialsMutation) =>
+  updateConnectorCredentials && {
+    ...updateConnectorCredentials,
+    plainCredentials:
+      updateConnectorCredentials.plainCredentials &&
+      (JSON.parse(updateConnectorCredentials.plainCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
+  };
 export const DeleteConnectorCredentialsDocument = `
     mutation DeleteConnectorCredentials($input: DeleteConnectorCredentialsInput!) {
   deleteConnectorCredentials(input: $input) {
@@ -2693,8 +2737,30 @@ export const DeleteConnectorCredentialsDocument = `
 
 export const DeleteConnectorCredentialsMutationKeys = () => ['DeleteConnectorCredentials'];
 
-export const DeleteConnectorCredentialsMutationInput = (input: Partial<DeleteConnectorCredentialsInput>) => input;
+/**
+ * Input transformer function for DeleteConnectorCredentialsMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input DeleteConnectorCredentialsInput - input
+ * @returns
+ */
+export const DeleteConnectorCredentialsMutationInput = (variables: DeleteConnectorCredentialsMutationVariables) =>
+  variables;
 
+/**
+ * Output transformer function for DeleteConnectorCredentialsMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data DeleteConnectorCredentialsMutation - The data returned from the GraphQL server
+ * @returns ConnectorCredentials - The transformed data
+ */
+export const DeleteConnectorCredentialsMutationOutput = ({
+  deleteConnectorCredentials,
+}: DeleteConnectorCredentialsMutation) =>
+  deleteConnectorCredentials && {
+    ...deleteConnectorCredentials,
+    plainCredentials:
+      deleteConnectorCredentials.plainCredentials &&
+      (JSON.parse(deleteConnectorCredentials.plainCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
+  };
 export const CreateNodeDocument = `
     mutation CreateNode($input: CreateNodeInput!) {
   createNode(input: $input) {
@@ -2723,13 +2789,54 @@ export const CreateNodeDocument = `
 
 export const CreateNodeMutationKeys = () => ['CreateNode'];
 
-export const CreateNodeMutationInput = (input: Partial<CreateNodeInput>) => ({
-  ...input,
-  properties:
-    input.properties &&
-    (JSON.stringify(input.properties as unknown as Record<string, any>) as unknown as Record<string, any>),
+/**
+ * Input transformer function for CreateNodeMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input CreateNodeInput - input
+ * @returns
+ */
+export const CreateNodeMutationInput = (variables: CreateNodeMutationVariables) => ({
+  ...variables,
+  input: {
+    properties:
+      variables.input.properties &&
+      (JSON.stringify(variables.input.properties as unknown as Record<string, any>) as unknown as Stringified<
+        Scalars['AWSJSON']
+      >),
+  },
 });
 
+/**
+ * Output transformer function for CreateNodeMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateNodeMutation - The data returned from the GraphQL server
+ * @returns NodeGraphRecord - The transformed data
+ */
+export const CreateNodeMutationOutput = ({ createNode }: CreateNodeMutation) =>
+  createNode && {
+    ...createNode,
+    node: {
+      ...createNode.node,
+      properties:
+        createNode.node?.properties &&
+        (JSON.parse(createNode.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    },
+    relationships: createNode.relationships?.map((relationship) => ({
+      ...relationship,
+      node: {
+        ...relationship?.node,
+        properties:
+          relationship?.node?.properties &&
+          (JSON.parse(relationship?.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+      },
+      relationship: {
+        ...relationship?.relationship,
+        properties:
+          relationship?.relationship?.properties &&
+          (JSON.parse(relationship?.relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+      },
+    })),
+  };
 export const UpdateNodeDocument = `
     mutation UpdateNode($input: UpdateNodeInput!) {
   updateNode(input: $input) {
@@ -2758,13 +2865,54 @@ export const UpdateNodeDocument = `
 
 export const UpdateNodeMutationKeys = () => ['UpdateNode'];
 
-export const UpdateNodeMutationInput = (input: Partial<UpdateNodeInput>) => ({
-  ...input,
-  properties:
-    input.properties &&
-    (JSON.stringify(input.properties as unknown as Record<string, any>) as unknown as Record<string, any>),
+/**
+ * Input transformer function for UpdateNodeMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input UpdateNodeInput - input
+ * @returns
+ */
+export const UpdateNodeMutationInput = (variables: UpdateNodeMutationVariables) => ({
+  ...variables,
+  input: {
+    properties:
+      variables.input.properties &&
+      (JSON.stringify(variables.input.properties as unknown as Record<string, any>) as unknown as Stringified<
+        Scalars['AWSJSON']
+      >),
+  },
 });
 
+/**
+ * Output transformer function for UpdateNodeMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdateNodeMutation - The data returned from the GraphQL server
+ * @returns NodeGraphRecord - The transformed data
+ */
+export const UpdateNodeMutationOutput = ({ updateNode }: UpdateNodeMutation) =>
+  updateNode && {
+    ...updateNode,
+    node: {
+      ...updateNode.node,
+      properties:
+        updateNode.node?.properties &&
+        (JSON.parse(updateNode.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    },
+    relationships: updateNode.relationships?.map((relationship) => ({
+      ...relationship,
+      node: {
+        ...relationship?.node,
+        properties:
+          relationship?.node?.properties &&
+          (JSON.parse(relationship?.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+      },
+      relationship: {
+        ...relationship?.relationship,
+        properties:
+          relationship?.relationship?.properties &&
+          (JSON.parse(relationship?.relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+      },
+    })),
+  };
 export const DeleteNodeDocument = `
     mutation DeleteNode($input: DeleteNodeInput!) {
   deleteNode(input: $input) {
@@ -2786,8 +2934,34 @@ export const DeleteNodeDocument = `
 
 export const DeleteNodeMutationKeys = () => ['DeleteNode'];
 
-export const DeleteNodeMutationInput = (input: Partial<DeleteNodeInput>) => input;
+/**
+ * Input transformer function for DeleteNodeMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input DeleteNodeInput - input
+ * @returns
+ */
+export const DeleteNodeMutationInput = (variables: DeleteNodeMutationVariables) => variables;
 
+/**
+ * Output transformer function for DeleteNodeMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data DeleteNodeMutation - The data returned from the GraphQL server
+ * @returns DeleteNodeRecord - The transformed data
+ */
+export const DeleteNodeMutationOutput = ({ deleteNode }: DeleteNodeMutation) =>
+  deleteNode && {
+    ...deleteNode,
+    nodes: deleteNode.nodes?.map((node) => ({
+      ...node,
+      properties: node?.properties && (JSON.parse(node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    })),
+    relationships: deleteNode.relationships?.map((relationship) => ({
+      ...relationship,
+      properties:
+        relationship?.properties &&
+        (JSON.parse(relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    })),
+  };
 export const CreateRelationshipDocument = `
     mutation CreateRelationship($input: CreateRelationshipInput!) {
   createRelationship(input: $input) {
@@ -2814,13 +2988,51 @@ export const CreateRelationshipDocument = `
 
 export const CreateRelationshipMutationKeys = () => ['CreateRelationship'];
 
-export const CreateRelationshipMutationInput = (input: Partial<CreateRelationshipInput>) => ({
-  ...input,
-  properties:
-    input.properties &&
-    (JSON.stringify(input.properties as unknown as Record<string, any>) as unknown as Record<string, any>),
+/**
+ * Input transformer function for CreateRelationshipMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input CreateRelationshipInput - input
+ * @returns
+ */
+export const CreateRelationshipMutationInput = (variables: CreateRelationshipMutationVariables) => ({
+  ...variables,
+  input: {
+    properties:
+      variables.input.properties &&
+      (JSON.stringify(variables.input.properties as unknown as Record<string, any>) as unknown as Stringified<
+        Scalars['AWSJSON']
+      >),
+  },
 });
 
+/**
+ * Output transformer function for CreateRelationshipMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateRelationshipMutation - The data returned from the GraphQL server
+ * @returns RelationshipGraphRecord - The transformed data
+ */
+export const CreateRelationshipMutationOutput = ({ createRelationship }: CreateRelationshipMutation) =>
+  createRelationship && {
+    ...createRelationship,
+    end: {
+      ...createRelationship.end,
+      properties:
+        createRelationship.end?.properties &&
+        (JSON.parse(createRelationship.end?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    },
+    relationship: {
+      ...createRelationship.relationship,
+      properties:
+        createRelationship.relationship?.properties &&
+        (JSON.parse(createRelationship.relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    },
+    start: {
+      ...createRelationship.start,
+      properties:
+        createRelationship.start?.properties &&
+        (JSON.parse(createRelationship.start?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    },
+  };
 export const UpdateRelationshipDocument = `
     mutation UpdateRelationship($input: UpdateRelationshipInput!) {
   updateRelationship(input: $input) {
@@ -2847,13 +3059,51 @@ export const UpdateRelationshipDocument = `
 
 export const UpdateRelationshipMutationKeys = () => ['UpdateRelationship'];
 
-export const UpdateRelationshipMutationInput = (input: Partial<UpdateRelationshipInput>) => ({
-  ...input,
-  properties:
-    input.properties &&
-    (JSON.stringify(input.properties as unknown as Record<string, any>) as unknown as Record<string, any>),
+/**
+ * Input transformer function for UpdateRelationshipMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input UpdateRelationshipInput - input
+ * @returns
+ */
+export const UpdateRelationshipMutationInput = (variables: UpdateRelationshipMutationVariables) => ({
+  ...variables,
+  input: {
+    properties:
+      variables.input.properties &&
+      (JSON.stringify(variables.input.properties as unknown as Record<string, any>) as unknown as Stringified<
+        Scalars['AWSJSON']
+      >),
+  },
 });
 
+/**
+ * Output transformer function for UpdateRelationshipMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdateRelationshipMutation - The data returned from the GraphQL server
+ * @returns RelationshipGraphRecord - The transformed data
+ */
+export const UpdateRelationshipMutationOutput = ({ updateRelationship }: UpdateRelationshipMutation) =>
+  updateRelationship && {
+    ...updateRelationship,
+    end: {
+      ...updateRelationship.end,
+      properties:
+        updateRelationship.end?.properties &&
+        (JSON.parse(updateRelationship.end?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    },
+    relationship: {
+      ...updateRelationship.relationship,
+      properties:
+        updateRelationship.relationship?.properties &&
+        (JSON.parse(updateRelationship.relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    },
+    start: {
+      ...updateRelationship.start,
+      properties:
+        updateRelationship.start?.properties &&
+        (JSON.parse(updateRelationship.start?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    },
+  };
 export const DeleteRelationshipDocument = `
     mutation DeleteRelationship($input: DeleteRelationshipInput!) {
   deleteRelationship(input: $input) {
@@ -2870,8 +3120,30 @@ export const DeleteRelationshipDocument = `
 
 export const DeleteRelationshipMutationKeys = () => ['DeleteRelationship'];
 
-export const DeleteRelationshipMutationInput = (input: Partial<DeleteRelationshipInput>) => input;
+/**
+ * Input transformer function for DeleteRelationshipMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input DeleteRelationshipInput - input
+ * @returns
+ */
+export const DeleteRelationshipMutationInput = (variables: DeleteRelationshipMutationVariables) => variables;
 
+/**
+ * Output transformer function for DeleteRelationshipMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data DeleteRelationshipMutation - The data returned from the GraphQL server
+ * @returns DeleteRelationshipRecord - The transformed data
+ */
+export const DeleteRelationshipMutationOutput = ({ deleteRelationship }: DeleteRelationshipMutation) =>
+  deleteRelationship && {
+    ...deleteRelationship,
+    relationships: deleteRelationship.relationships?.map((relationship) => ({
+      ...relationship,
+      properties:
+        relationship?.properties &&
+        (JSON.parse(relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
+    })),
+  };
 export const CreateConnectorDocument = `
     mutation CreateConnector($input: CreateConnectorInput!, $condition: ModelConnectorConditionInput) {
   createConnector(input: $input, condition: $condition) {
@@ -2915,13 +3187,39 @@ export const CreateConnectorDocument = `
 
 export const CreateConnectorMutationKeys = () => ['CreateConnector'];
 
-export const CreateConnectorMutationInput = (input: Partial<CreateConnectorInput>) => ({
-  ...input,
-  secretCredentials:
-    input.secretCredentials &&
-    (JSON.stringify(input.secretCredentials as unknown as Record<string, any>) as unknown as Record<string, any>),
+/**
+ * Input transformer function for CreateConnectorMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelConnectorConditionInput - condition
+ * @param input CreateConnectorInput - input
+ * @returns
+ */
+export const CreateConnectorMutationInput = (variables: CreateConnectorMutationVariables) => ({
+  ...variables,
+  input: {
+    secretCredentials:
+      variables.input.secretCredentials &&
+      (JSON.stringify(variables.input.secretCredentials as unknown as Record<string, any>) as unknown as Stringified<
+        Scalars['AWSJSON']
+      >),
+  },
 });
 
+type Parsed<T> = T;
+
+/**
+ * Output transformer function for CreateConnectorMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateConnectorMutation - The data returned from the GraphQL server
+ * @returns Connector - The transformed data
+ */
+export const CreateConnectorMutationOutput = ({ createConnector }: CreateConnectorMutation) =>
+  createConnector && {
+    ...createConnector,
+    secretCredentials:
+      createConnector.secretCredentials &&
+      (JSON.parse(createConnector.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
+  };
 export const UpdateConnectorDocument = `
     mutation UpdateConnector($input: UpdateConnectorInput!, $condition: ModelConnectorConditionInput) {
   updateConnector(input: $input, condition: $condition) {
@@ -2965,13 +3263,37 @@ export const UpdateConnectorDocument = `
 
 export const UpdateConnectorMutationKeys = () => ['UpdateConnector'];
 
-export const UpdateConnectorMutationInput = (input: Partial<UpdateConnectorInput>) => ({
-  ...input,
-  secretCredentials:
-    input.secretCredentials &&
-    (JSON.stringify(input.secretCredentials as unknown as Record<string, any>) as unknown as Record<string, any>),
+/**
+ * Input transformer function for UpdateConnectorMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelConnectorConditionInput - condition
+ * @param input UpdateConnectorInput - input
+ * @returns
+ */
+export const UpdateConnectorMutationInput = (variables: UpdateConnectorMutationVariables) => ({
+  ...variables,
+  input: {
+    secretCredentials:
+      variables.input.secretCredentials &&
+      (JSON.stringify(variables.input.secretCredentials as unknown as Record<string, any>) as unknown as Stringified<
+        Scalars['AWSJSON']
+      >),
+  },
 });
 
+/**
+ * Output transformer function for UpdateConnectorMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdateConnectorMutation - The data returned from the GraphQL server
+ * @returns Connector - The transformed data
+ */
+export const UpdateConnectorMutationOutput = ({ updateConnector }: UpdateConnectorMutation) =>
+  updateConnector && {
+    ...updateConnector,
+    secretCredentials:
+      updateConnector.secretCredentials &&
+      (JSON.parse(updateConnector.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
+  };
 export const DeleteConnectorDocument = `
     mutation DeleteConnector($input: DeleteConnectorInput!, $condition: ModelConnectorConditionInput) {
   deleteConnector(input: $input, condition: $condition) {
@@ -3015,8 +3337,28 @@ export const DeleteConnectorDocument = `
 
 export const DeleteConnectorMutationKeys = () => ['DeleteConnector'];
 
-export const DeleteConnectorMutationInput = (input: Partial<DeleteConnectorInput>) => input;
+/**
+ * Input transformer function for DeleteConnectorMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelConnectorConditionInput - condition
+ * @param input DeleteConnectorInput - input
+ * @returns
+ */
+export const DeleteConnectorMutationInput = (variables: DeleteConnectorMutationVariables) => variables;
 
+/**
+ * Output transformer function for DeleteConnectorMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data DeleteConnectorMutation - The data returned from the GraphQL server
+ * @returns Connector - The transformed data
+ */
+export const DeleteConnectorMutationOutput = ({ deleteConnector }: DeleteConnectorMutation) =>
+  deleteConnector && {
+    ...deleteConnector,
+    secretCredentials:
+      deleteConnector.secretCredentials &&
+      (JSON.parse(deleteConnector.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
+  };
 export const CreateTransformationDocument = `
     mutation CreateTransformation($input: CreateTransformationInput!, $condition: ModelTransformationConditionInput) {
   createTransformation(input: $input, condition: $condition) {
@@ -3060,8 +3402,33 @@ export const CreateTransformationDocument = `
 
 export const CreateTransformationMutationKeys = () => ['CreateTransformation'];
 
-export const CreateTransformationMutationInput = (input: Partial<CreateTransformationInput>) => input;
+/**
+ * Input transformer function for CreateTransformationMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelTransformationConditionInput - condition
+ * @param input CreateTransformationInput - input
+ * @returns
+ */
+export const CreateTransformationMutationInput = (variables: CreateTransformationMutationVariables) => variables;
 
+/**
+ * Output transformer function for CreateTransformationMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateTransformationMutation - The data returned from the GraphQL server
+ * @returns Transformation - The transformed data
+ */
+export const CreateTransformationMutationOutput = ({ createTransformation }: CreateTransformationMutation) =>
+  createTransformation && {
+    ...createTransformation,
+    connector: {
+      ...createTransformation.connector,
+      secretCredentials:
+        createTransformation.connector?.secretCredentials &&
+        (JSON.parse(createTransformation.connector?.secretCredentials as unknown as string) as Parsed<
+          Scalars['AWSJSON']
+        >),
+    },
+  };
 export const UpdateTransformationDocument = `
     mutation UpdateTransformation($input: UpdateTransformationInput!, $condition: ModelTransformationConditionInput) {
   updateTransformation(input: $input, condition: $condition) {
@@ -3105,8 +3472,33 @@ export const UpdateTransformationDocument = `
 
 export const UpdateTransformationMutationKeys = () => ['UpdateTransformation'];
 
-export const UpdateTransformationMutationInput = (input: Partial<UpdateTransformationInput>) => input;
+/**
+ * Input transformer function for UpdateTransformationMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelTransformationConditionInput - condition
+ * @param input UpdateTransformationInput - input
+ * @returns
+ */
+export const UpdateTransformationMutationInput = (variables: UpdateTransformationMutationVariables) => variables;
 
+/**
+ * Output transformer function for UpdateTransformationMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdateTransformationMutation - The data returned from the GraphQL server
+ * @returns Transformation - The transformed data
+ */
+export const UpdateTransformationMutationOutput = ({ updateTransformation }: UpdateTransformationMutation) =>
+  updateTransformation && {
+    ...updateTransformation,
+    connector: {
+      ...updateTransformation.connector,
+      secretCredentials:
+        updateTransformation.connector?.secretCredentials &&
+        (JSON.parse(updateTransformation.connector?.secretCredentials as unknown as string) as Parsed<
+          Scalars['AWSJSON']
+        >),
+    },
+  };
 export const DeleteTransformationDocument = `
     mutation DeleteTransformation($input: DeleteTransformationInput!, $condition: ModelTransformationConditionInput) {
   deleteTransformation(input: $input, condition: $condition) {
@@ -3150,8 +3542,33 @@ export const DeleteTransformationDocument = `
 
 export const DeleteTransformationMutationKeys = () => ['DeleteTransformation'];
 
-export const DeleteTransformationMutationInput = (input: Partial<DeleteTransformationInput>) => input;
+/**
+ * Input transformer function for DeleteTransformationMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelTransformationConditionInput - condition
+ * @param input DeleteTransformationInput - input
+ * @returns
+ */
+export const DeleteTransformationMutationInput = (variables: DeleteTransformationMutationVariables) => variables;
 
+/**
+ * Output transformer function for DeleteTransformationMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data DeleteTransformationMutation - The data returned from the GraphQL server
+ * @returns Transformation - The transformed data
+ */
+export const DeleteTransformationMutationOutput = ({ deleteTransformation }: DeleteTransformationMutation) =>
+  deleteTransformation && {
+    ...deleteTransformation,
+    connector: {
+      ...deleteTransformation.connector,
+      secretCredentials:
+        deleteTransformation.connector?.secretCredentials &&
+        (JSON.parse(deleteTransformation.connector?.secretCredentials as unknown as string) as Parsed<
+          Scalars['AWSJSON']
+        >),
+    },
+  };
 export const CreateOrganizationDocument = `
     mutation CreateOrganization($input: CreateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
   createOrganization(input: $input, condition: $condition) {
@@ -3167,8 +3584,23 @@ export const CreateOrganizationDocument = `
 
 export const CreateOrganizationMutationKeys = () => ['CreateOrganization'];
 
-export const CreateOrganizationMutationInput = (input: Partial<CreateOrganizationInput>) => input;
+/**
+ * Input transformer function for CreateOrganizationMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelOrganizationConditionInput - condition
+ * @param input CreateOrganizationInput - input
+ * @returns
+ */
+export const CreateOrganizationMutationInput = (variables: CreateOrganizationMutationVariables) => variables;
 
+/**
+ * Output transformer function for CreateOrganizationMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateOrganizationMutation - The data returned from the GraphQL server
+ * @returns Organization - The transformed data
+ */
+export const CreateOrganizationMutationOutput = ({ createOrganization }: CreateOrganizationMutation) =>
+  createOrganization;
 export const UpdateOrganizationDocument = `
     mutation UpdateOrganization($input: UpdateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
   updateOrganization(input: $input, condition: $condition) {
@@ -3184,8 +3616,23 @@ export const UpdateOrganizationDocument = `
 
 export const UpdateOrganizationMutationKeys = () => ['UpdateOrganization'];
 
-export const UpdateOrganizationMutationInput = (input: Partial<UpdateOrganizationInput>) => input;
+/**
+ * Input transformer function for UpdateOrganizationMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelOrganizationConditionInput - condition
+ * @param input UpdateOrganizationInput - input
+ * @returns
+ */
+export const UpdateOrganizationMutationInput = (variables: UpdateOrganizationMutationVariables) => variables;
 
+/**
+ * Output transformer function for UpdateOrganizationMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdateOrganizationMutation - The data returned from the GraphQL server
+ * @returns Organization - The transformed data
+ */
+export const UpdateOrganizationMutationOutput = ({ updateOrganization }: UpdateOrganizationMutation) =>
+  updateOrganization;
 export const CreatePerspectiveDocument = `
     mutation CreatePerspective($input: CreatePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   createPerspective(input: $input, condition: $condition) {
@@ -3211,8 +3658,22 @@ export const CreatePerspectiveDocument = `
 
 export const CreatePerspectiveMutationKeys = () => ['CreatePerspective'];
 
-export const CreatePerspectiveMutationInput = (input: Partial<CreatePerspectiveInput>) => input;
+/**
+ * Input transformer function for CreatePerspectiveMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelPerspectiveConditionInput - condition
+ * @param input CreatePerspectiveInput - input
+ * @returns
+ */
+export const CreatePerspectiveMutationInput = (variables: CreatePerspectiveMutationVariables) => variables;
 
+/**
+ * Output transformer function for CreatePerspectiveMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreatePerspectiveMutation - The data returned from the GraphQL server
+ * @returns Perspective - The transformed data
+ */
+export const CreatePerspectiveMutationOutput = ({ createPerspective }: CreatePerspectiveMutation) => createPerspective;
 export const UpdatePerspectiveDocument = `
     mutation UpdatePerspective($input: UpdatePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   updatePerspective(input: $input, condition: $condition) {
@@ -3238,8 +3699,22 @@ export const UpdatePerspectiveDocument = `
 
 export const UpdatePerspectiveMutationKeys = () => ['UpdatePerspective'];
 
-export const UpdatePerspectiveMutationInput = (input: Partial<UpdatePerspectiveInput>) => input;
+/**
+ * Input transformer function for UpdatePerspectiveMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelPerspectiveConditionInput - condition
+ * @param input UpdatePerspectiveInput - input
+ * @returns
+ */
+export const UpdatePerspectiveMutationInput = (variables: UpdatePerspectiveMutationVariables) => variables;
 
+/**
+ * Output transformer function for UpdatePerspectiveMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdatePerspectiveMutation - The data returned from the GraphQL server
+ * @returns Perspective - The transformed data
+ */
+export const UpdatePerspectiveMutationOutput = ({ updatePerspective }: UpdatePerspectiveMutation) => updatePerspective;
 export const DeletePerspectiveDocument = `
     mutation DeletePerspective($input: DeletePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   deletePerspective(input: $input, condition: $condition) {
@@ -3265,8 +3740,22 @@ export const DeletePerspectiveDocument = `
 
 export const DeletePerspectiveMutationKeys = () => ['DeletePerspective'];
 
-export const DeletePerspectiveMutationInput = (input: Partial<DeletePerspectiveInput>) => input;
+/**
+ * Input transformer function for DeletePerspectiveMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelPerspectiveConditionInput - condition
+ * @param input DeletePerspectiveInput - input
+ * @returns
+ */
+export const DeletePerspectiveMutationInput = (variables: DeletePerspectiveMutationVariables) => variables;
 
+/**
+ * Output transformer function for DeletePerspectiveMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data DeletePerspectiveMutation - The data returned from the GraphQL server
+ * @returns Perspective - The transformed data
+ */
+export const DeletePerspectiveMutationOutput = ({ deletePerspective }: DeletePerspectiveMutation) => deletePerspective;
 export const CreateSchemaDocument = `
     mutation CreateSchema($input: CreateSchemaInput!, $condition: ModelSchemaConditionInput) {
   createSchema(input: $input, condition: $condition) {
@@ -3306,8 +3795,22 @@ export const CreateSchemaDocument = `
 
 export const CreateSchemaMutationKeys = () => ['CreateSchema'];
 
-export const CreateSchemaMutationInput = (input: Partial<CreateSchemaInput>) => input;
+/**
+ * Input transformer function for CreateSchemaMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelSchemaConditionInput - condition
+ * @param input CreateSchemaInput - input
+ * @returns
+ */
+export const CreateSchemaMutationInput = (variables: CreateSchemaMutationVariables) => variables;
 
+/**
+ * Output transformer function for CreateSchemaMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateSchemaMutation - The data returned from the GraphQL server
+ * @returns Schema - The transformed data
+ */
+export const CreateSchemaMutationOutput = ({ createSchema }: CreateSchemaMutation) => createSchema;
 export const UpdateSchemaDocument = `
     mutation UpdateSchema($input: UpdateSchemaInput!, $condition: ModelSchemaConditionInput) {
   updateSchema(input: $input, condition: $condition) {
@@ -3347,8 +3850,22 @@ export const UpdateSchemaDocument = `
 
 export const UpdateSchemaMutationKeys = () => ['UpdateSchema'];
 
-export const UpdateSchemaMutationInput = (input: Partial<UpdateSchemaInput>) => input;
+/**
+ * Input transformer function for UpdateSchemaMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelSchemaConditionInput - condition
+ * @param input UpdateSchemaInput - input
+ * @returns
+ */
+export const UpdateSchemaMutationInput = (variables: UpdateSchemaMutationVariables) => variables;
 
+/**
+ * Output transformer function for UpdateSchemaMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdateSchemaMutation - The data returned from the GraphQL server
+ * @returns Schema - The transformed data
+ */
+export const UpdateSchemaMutationOutput = ({ updateSchema }: UpdateSchemaMutation) => updateSchema;
 export const DeleteSchemaDocument = `
     mutation DeleteSchema($input: DeleteSchemaInput!, $condition: ModelSchemaConditionInput) {
   deleteSchema(input: $input, condition: $condition) {
@@ -3388,8 +3905,22 @@ export const DeleteSchemaDocument = `
 
 export const DeleteSchemaMutationKeys = () => ['DeleteSchema'];
 
-export const DeleteSchemaMutationInput = (input: Partial<DeleteSchemaInput>) => input;
+/**
+ * Input transformer function for DeleteSchemaMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelSchemaConditionInput - condition
+ * @param input DeleteSchemaInput - input
+ * @returns
+ */
+export const DeleteSchemaMutationInput = (variables: DeleteSchemaMutationVariables) => variables;
 
+/**
+ * Output transformer function for DeleteSchemaMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data DeleteSchemaMutation - The data returned from the GraphQL server
+ * @returns Schema - The transformed data
+ */
+export const DeleteSchemaMutationOutput = ({ deleteSchema }: DeleteSchemaMutation) => deleteSchema;
 export const CreateTestDocument = `
     mutation CreateTest($input: CreateTestInput!, $condition: ModelTestConditionInput) {
   createTest(input: $input, condition: $condition) {
@@ -3406,8 +3937,22 @@ export const CreateTestDocument = `
 
 export const CreateTestMutationKeys = () => ['CreateTest'];
 
-export const CreateTestMutationInput = (input: Partial<CreateTestInput>) => input;
+/**
+ * Input transformer function for CreateTestMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelTestConditionInput - condition
+ * @param input CreateTestInput - input
+ * @returns
+ */
+export const CreateTestMutationInput = (variables: CreateTestMutationVariables) => variables;
 
+/**
+ * Output transformer function for CreateTestMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateTestMutation - The data returned from the GraphQL server
+ * @returns Test - The transformed data
+ */
+export const CreateTestMutationOutput = ({ createTest }: CreateTestMutation) => createTest;
 export const UpdateTestDocument = `
     mutation UpdateTest($input: UpdateTestInput!, $condition: ModelTestConditionInput) {
   updateTest(input: $input, condition: $condition) {
@@ -3424,8 +3969,22 @@ export const UpdateTestDocument = `
 
 export const UpdateTestMutationKeys = () => ['UpdateTest'];
 
-export const UpdateTestMutationInput = (input: Partial<UpdateTestInput>) => input;
+/**
+ * Input transformer function for UpdateTestMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelTestConditionInput - condition
+ * @param input UpdateTestInput - input
+ * @returns
+ */
+export const UpdateTestMutationInput = (variables: UpdateTestMutationVariables) => variables;
 
+/**
+ * Output transformer function for UpdateTestMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data UpdateTestMutation - The data returned from the GraphQL server
+ * @returns Test - The transformed data
+ */
+export const UpdateTestMutationOutput = ({ updateTest }: UpdateTestMutation) => updateTest;
 export const DeleteTestDocument = `
     mutation DeleteTest($input: DeleteTestInput!, $condition: ModelTestConditionInput) {
   deleteTest(input: $input, condition: $condition) {
@@ -3442,8 +4001,22 @@ export const DeleteTestDocument = `
 
 export const DeleteTestMutationKeys = () => ['DeleteTest'];
 
-export const DeleteTestMutationInput = (input: Partial<DeleteTestInput>) => input;
+/**
+ * Input transformer function for DeleteTestMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param condition ModelTestConditionInput - condition
+ * @param input DeleteTestInput - input
+ * @returns
+ */
+export const DeleteTestMutationInput = (variables: DeleteTestMutationVariables) => variables;
 
+/**
+ * Output transformer function for DeleteTestMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data DeleteTestMutation - The data returned from the GraphQL server
+ * @returns Test - The transformed data
+ */
+export const DeleteTestMutationOutput = ({ deleteTest }: DeleteTestMutation) => deleteTest;
 export const RunPerspectiveDocument = `
     mutation RunPerspective($input: RunPerspectiveInput!) {
   runPerspective(input: $input) {
@@ -3454,8 +4027,26 @@ export const RunPerspectiveDocument = `
 
 export const RunPerspectiveMutationKeys = () => ['RunPerspective'];
 
-export const RunPerspectiveMutationInput = (input: Partial<RunPerspectiveInput>) => input;
+/**
+ * Input transformer function for RunPerspectiveMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input RunPerspectiveInput - input
+ * @returns
+ */
+export const RunPerspectiveMutationInput = (variables: RunPerspectiveMutationVariables) => variables;
 
+/**
+ * Output transformer function for RunPerspectiveMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data RunPerspectiveMutation - The data returned from the GraphQL server
+ * @returns RunPerspectiveResult - The transformed data
+ */
+export const RunPerspectiveMutationOutput = ({ runPerspective }: RunPerspectiveMutation) =>
+  runPerspective && {
+    ...runPerspective,
+    records:
+      runPerspective.records && (JSON.parse(runPerspective.records as unknown as string) as Parsed<Scalars['AWSJSON']>),
+  };
 export const CreateUserDocument = `
     mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
@@ -3469,8 +4060,21 @@ export const CreateUserDocument = `
 
 export const CreateUserMutationKeys = () => ['CreateUser'];
 
-export const CreateUserMutationInput = (input: Partial<CreateUserInput>) => input;
+/**
+ * Input transformer function for CreateUserMutation.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input CreateUserInput - input
+ * @returns
+ */
+export const CreateUserMutationInput = (variables: CreateUserMutationVariables) => variables;
 
+/**
+ * Output transformer function for CreateUserMutation.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CreateUserMutation - The data returned from the GraphQL server
+ * @returns User - The transformed data
+ */
+export const CreateUserMutationOutput = ({ createUser }: CreateUserMutation) => createUser;
 export const EchoDocument = `
     query Echo($msg: String) {
   echo(msg: $msg)
@@ -3479,11 +4083,25 @@ export const EchoDocument = `
 
 export const EchoQueryKeys = (variables?: EchoQueryVariables) =>
   variables === undefined ? ['Echo'] : ['Echo', variables];
+
 /**
- * EchoQuery
+ * Output transformer function for EchoQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data EchoQuery - The data returned from the GraphQL server
+ * @returns String - The transformed data
  */
 export const EchoQueryOutput = ({ echo }: EchoQuery) => echo;
 
+/**
+ * Fetcher function for EchoQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const EchoQueryFetcher = (
+  variables?: EchoQueryVariables,
+  options?: RequestInit['headers'],
+  input = EchoQueryInput,
+  output = EchoQueryOutput,
+) => fetchWithAmplify<EchoQuery, EchoQueryVariables>(EchoDocument, variables, options, input, output);
 export const CustomTestDocument = `
     query CustomTest($id: ID!) {
   customTest(id: $id) {
@@ -3499,11 +4117,25 @@ export const CustomTestDocument = `
     `;
 
 export const CustomTestQueryKeys = (variables: CustomTestQueryVariables) => ['CustomTest', variables];
+
 /**
- * CustomTestQuery
+ * Output transformer function for CustomTestQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data CustomTestQuery - The data returned from the GraphQL server
+ * @returns Test - The transformed data
  */
 export const CustomTestQueryOutput = ({ customTest }: CustomTestQuery) => customTest;
 
+/**
+ * Fetcher function for CustomTestQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const CustomTestQueryFetcher = (
+  variables: CustomTestQueryVariables,
+  options?: RequestInit['headers'],
+  input = CustomTestQueryInput,
+  output = CustomTestQueryOutput,
+) => fetchWithAmplify<CustomTestQuery, CustomTestQueryVariables>(CustomTestDocument, variables, options, input, output);
 export const GetConnectorManifestDocument = `
     query GetConnectorManifest($query: QueryGetConnectorManifestQueryInput!) {
   getConnectorManifest(query: $query) {
@@ -3529,12 +4161,33 @@ export const GetConnectorManifestQueryKeys = (variables: GetConnectorManifestQue
   'GetConnectorManifest',
   variables,
 ];
+
 /**
- * GetConnectorManifestQuery
+ * Output transformer function for GetConnectorManifestQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetConnectorManifestQuery - The data returned from the GraphQL server
+ * @returns ConnectorManifest - The transformed data
  */
 export const GetConnectorManifestQueryOutput = ({ getConnectorManifest }: GetConnectorManifestQuery) =>
   getConnectorManifest;
 
+/**
+ * Fetcher function for GetConnectorManifestQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetConnectorManifestQueryFetcher = (
+  variables: GetConnectorManifestQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetConnectorManifestQueryInput,
+  output = GetConnectorManifestQueryOutput,
+) =>
+  fetchWithAmplify<GetConnectorManifestQuery, GetConnectorManifestQueryVariables>(
+    GetConnectorManifestDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const GetConnectorDocument = `
     query GetConnector($id: ID!) {
   getConnector(id: $id) {
@@ -3576,22 +4229,39 @@ export const GetConnectorDocument = `
 }
     `;
 
-    /**
-     * 
-     * @param variables 
-     * @returns 
-     */
 export const GetConnectorQueryKeys = (variables: GetConnectorQueryVariables) => ['GetConnector', variables];
+
 /**
- * GetConnectorQuery
+ * Output transformer function for GetConnectorQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetConnectorQuery - The data returned from the GraphQL server
+ * @returns Connector - The transformed data
  */
 export const GetConnectorQueryOutput = ({ getConnector }: GetConnectorQuery) =>
   getConnector && {
     ...getConnector,
     secretCredentials:
-      getConnector.secretCredentials && JSON.parse(getConnector.secretCredentials as unknown as string),
+      getConnector.secretCredentials &&
+      (JSON.parse(getConnector.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
   };
 
+/**
+ * Fetcher function for GetConnectorQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetConnectorQueryFetcher = (
+  variables: GetConnectorQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetConnectorQueryInput,
+  output = GetConnectorQueryOutput,
+) =>
+  fetchWithAmplify<GetConnectorQuery, GetConnectorQueryVariables>(
+    GetConnectorDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const ListConnectorsDocument = `
     query ListConnectors($filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
   listConnectors(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -3627,18 +4297,41 @@ export const ListConnectorsDocument = `
 
 export const ListConnectorsQueryKeys = (variables?: ListConnectorsQueryVariables) =>
   variables === undefined ? ['ListConnectors'] : ['ListConnectors', variables];
+
 /**
- * ListConnectorsQuery
+ * Output transformer function for ListConnectorsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data ListConnectorsQuery - The data returned from the GraphQL server
+ * @returns ModelConnectorConnection - The transformed data
  */
 export const ListConnectorsQueryOutput = ({ listConnectors }: ListConnectorsQuery) =>
   listConnectors && {
     ...listConnectors,
     items: listConnectors.items?.map((item) => ({
       ...item,
-      secretCredentials: item?.secretCredentials && JSON.parse(item?.secretCredentials as unknown as string),
+      secretCredentials:
+        item?.secretCredentials &&
+        (JSON.parse(item?.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
     })),
   };
 
+/**
+ * Fetcher function for ListConnectorsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const ListConnectorsQueryFetcher = (
+  variables?: ListConnectorsQueryVariables,
+  options?: RequestInit['headers'],
+  input = ListConnectorsQueryInput,
+  output = ListConnectorsQueryOutput,
+) =>
+  fetchWithAmplify<ListConnectorsQuery, ListConnectorsQueryVariables>(
+    ListConnectorsDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const GetConnectorBySourceDocument = `
     query GetConnectorBySource($source: String!, $sortDirection: ModelSortDirection, $filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
   getConnectorBySource(
@@ -3682,18 +4375,41 @@ export const GetConnectorBySourceQueryKeys = (variables: GetConnectorBySourceQue
   'GetConnectorBySource',
   variables,
 ];
+
 /**
- * GetConnectorBySourceQuery
+ * Output transformer function for GetConnectorBySourceQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetConnectorBySourceQuery - The data returned from the GraphQL server
+ * @returns ModelConnectorConnection - The transformed data
  */
 export const GetConnectorBySourceQueryOutput = ({ getConnectorBySource }: GetConnectorBySourceQuery) =>
   getConnectorBySource && {
     ...getConnectorBySource,
     items: getConnectorBySource.items?.map((item) => ({
       ...item,
-      secretCredentials: item?.secretCredentials && JSON.parse(item?.secretCredentials as unknown as string),
+      secretCredentials:
+        item?.secretCredentials &&
+        (JSON.parse(item?.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
     })),
   };
 
+/**
+ * Fetcher function for GetConnectorBySourceQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetConnectorBySourceQueryFetcher = (
+  variables: GetConnectorBySourceQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetConnectorBySourceQueryInput,
+  output = GetConnectorBySourceQueryOutput,
+) =>
+  fetchWithAmplify<GetConnectorBySourceQuery, GetConnectorBySourceQueryVariables>(
+    GetConnectorBySourceDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const GetTransformationDocument = `
     query GetTransformation($id: ID!) {
   getTransformation(id: $id) {
@@ -3739,8 +4455,12 @@ export const GetTransformationQueryKeys = (variables: GetTransformationQueryVari
   'GetTransformation',
   variables,
 ];
+
 /**
- * GetTransformationQuery
+ * Output transformer function for GetTransformationQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetTransformationQuery - The data returned from the GraphQL server
+ * @returns Transformation - The transformed data
  */
 export const GetTransformationQueryOutput = ({ getTransformation }: GetTransformationQuery) =>
   getTransformation && {
@@ -3749,10 +4469,27 @@ export const GetTransformationQueryOutput = ({ getTransformation }: GetTransform
       ...getTransformation.connector,
       secretCredentials:
         getTransformation.connector?.secretCredentials &&
-        JSON.parse(getTransformation.connector?.secretCredentials as unknown as string),
+        (JSON.parse(getTransformation.connector?.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
     },
   };
 
+/**
+ * Fetcher function for GetTransformationQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetTransformationQueryFetcher = (
+  variables: GetTransformationQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetTransformationQueryInput,
+  output = GetTransformationQueryOutput,
+) =>
+  fetchWithAmplify<GetTransformationQuery, GetTransformationQueryVariables>(
+    GetTransformationDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const ListTransformationsDocument = `
     query ListTransformations($filter: ModelTransformationFilterInput, $limit: Int, $nextToken: String) {
   listTransformations(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -3788,8 +4525,12 @@ export const ListTransformationsDocument = `
 
 export const ListTransformationsQueryKeys = (variables?: ListTransformationsQueryVariables) =>
   variables === undefined ? ['ListTransformations'] : ['ListTransformations', variables];
+
 /**
- * ListTransformationsQuery
+ * Output transformer function for ListTransformationsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data ListTransformationsQuery - The data returned from the GraphQL server
+ * @returns ModelTransformationConnection - The transformed data
  */
 export const ListTransformationsQueryOutput = ({ listTransformations }: ListTransformationsQuery) =>
   listTransformations && {
@@ -3799,11 +4540,29 @@ export const ListTransformationsQueryOutput = ({ listTransformations }: ListTran
       connector: {
         ...item?.connector,
         secretCredentials:
-          item?.connector?.secretCredentials && JSON.parse(item?.connector?.secretCredentials as unknown as string),
+          item?.connector?.secretCredentials &&
+          (JSON.parse(item?.connector?.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
       },
     })),
   };
 
+/**
+ * Fetcher function for ListTransformationsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const ListTransformationsQueryFetcher = (
+  variables?: ListTransformationsQueryVariables,
+  options?: RequestInit['headers'],
+  input = ListTransformationsQueryInput,
+  output = ListTransformationsQueryOutput,
+) =>
+  fetchWithAmplify<ListTransformationsQuery, ListTransformationsQueryVariables>(
+    ListTransformationsDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const GetTransformationsByConnectorDocument = `
     query GetTransformationsByConnector($connectorID: ID!, $sortDirection: ModelSortDirection, $filter: ModelTransformationFilterInput, $limit: Int, $nextToken: String) {
   getTransformationsByConnector(
@@ -3847,8 +4606,12 @@ export const GetTransformationsByConnectorQueryKeys = (variables: GetTransformat
   'GetTransformationsByConnector',
   variables,
 ];
+
 /**
- * GetTransformationsByConnectorQuery
+ * Output transformer function for GetTransformationsByConnectorQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetTransformationsByConnectorQuery - The data returned from the GraphQL server
+ * @returns ModelTransformationConnection - The transformed data
  */
 export const GetTransformationsByConnectorQueryOutput = ({
   getTransformationsByConnector,
@@ -3860,11 +4623,29 @@ export const GetTransformationsByConnectorQueryOutput = ({
       connector: {
         ...item?.connector,
         secretCredentials:
-          item?.connector?.secretCredentials && JSON.parse(item?.connector?.secretCredentials as unknown as string),
+          item?.connector?.secretCredentials &&
+          (JSON.parse(item?.connector?.secretCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
       },
     })),
   };
 
+/**
+ * Fetcher function for GetTransformationsByConnectorQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetTransformationsByConnectorQueryFetcher = (
+  variables: GetTransformationsByConnectorQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetTransformationsByConnectorQueryInput,
+  output = GetTransformationsByConnectorQueryOutput,
+) =>
+  fetchWithAmplify<GetTransformationsByConnectorQuery, GetTransformationsByConnectorQueryVariables>(
+    GetTransformationsByConnectorDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const GetOrganizationDocument = `
     query GetOrganization($id: ID!) {
   getOrganization(id: $id) {
@@ -3879,11 +4660,32 @@ export const GetOrganizationDocument = `
     `;
 
 export const GetOrganizationQueryKeys = (variables: GetOrganizationQueryVariables) => ['GetOrganization', variables];
+
 /**
- * GetOrganizationQuery
+ * Output transformer function for GetOrganizationQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetOrganizationQuery - The data returned from the GraphQL server
+ * @returns Organization - The transformed data
  */
 export const GetOrganizationQueryOutput = ({ getOrganization }: GetOrganizationQuery) => getOrganization;
 
+/**
+ * Fetcher function for GetOrganizationQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetOrganizationQueryFetcher = (
+  variables: GetOrganizationQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetOrganizationQueryInput,
+  output = GetOrganizationQueryOutput,
+) =>
+  fetchWithAmplify<GetOrganizationQuery, GetOrganizationQueryVariables>(
+    GetOrganizationDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const ListOrganizationsDocument = `
     query ListOrganizations($filter: ModelOrganizationFilterInput, $limit: Int, $nextToken: String) {
   listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -3902,11 +4704,32 @@ export const ListOrganizationsDocument = `
 
 export const ListOrganizationsQueryKeys = (variables?: ListOrganizationsQueryVariables) =>
   variables === undefined ? ['ListOrganizations'] : ['ListOrganizations', variables];
+
 /**
- * ListOrganizationsQuery
+ * Output transformer function for ListOrganizationsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data ListOrganizationsQuery - The data returned from the GraphQL server
+ * @returns ModelOrganizationConnection - The transformed data
  */
 export const ListOrganizationsQueryOutput = ({ listOrganizations }: ListOrganizationsQuery) => listOrganizations;
 
+/**
+ * Fetcher function for ListOrganizationsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const ListOrganizationsQueryFetcher = (
+  variables?: ListOrganizationsQueryVariables,
+  options?: RequestInit['headers'],
+  input = ListOrganizationsQueryInput,
+  output = ListOrganizationsQueryOutput,
+) =>
+  fetchWithAmplify<ListOrganizationsQuery, ListOrganizationsQueryVariables>(
+    ListOrganizationsDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const GetPerspectiveDocument = `
     query GetPerspective($id: ID!) {
   getPerspective(id: $id) {
@@ -3931,11 +4754,32 @@ export const GetPerspectiveDocument = `
     `;
 
 export const GetPerspectiveQueryKeys = (variables: GetPerspectiveQueryVariables) => ['GetPerspective', variables];
+
 /**
- * GetPerspectiveQuery
+ * Output transformer function for GetPerspectiveQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetPerspectiveQuery - The data returned from the GraphQL server
+ * @returns Perspective - The transformed data
  */
 export const GetPerspectiveQueryOutput = ({ getPerspective }: GetPerspectiveQuery) => getPerspective;
 
+/**
+ * Fetcher function for GetPerspectiveQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetPerspectiveQueryFetcher = (
+  variables: GetPerspectiveQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetPerspectiveQueryInput,
+  output = GetPerspectiveQueryOutput,
+) =>
+  fetchWithAmplify<GetPerspectiveQuery, GetPerspectiveQueryVariables>(
+    GetPerspectiveDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const ListPerspectivesDocument = `
     query ListPerspectives($filter: ModelPerspectiveFilterInput, $limit: Int, $nextToken: String) {
   listPerspectives(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -3964,11 +4808,32 @@ export const ListPerspectivesDocument = `
 
 export const ListPerspectivesQueryKeys = (variables?: ListPerspectivesQueryVariables) =>
   variables === undefined ? ['ListPerspectives'] : ['ListPerspectives', variables];
+
 /**
- * ListPerspectivesQuery
+ * Output transformer function for ListPerspectivesQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data ListPerspectivesQuery - The data returned from the GraphQL server
+ * @returns ModelPerspectiveConnection - The transformed data
  */
 export const ListPerspectivesQueryOutput = ({ listPerspectives }: ListPerspectivesQuery) => listPerspectives;
 
+/**
+ * Fetcher function for ListPerspectivesQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const ListPerspectivesQueryFetcher = (
+  variables?: ListPerspectivesQueryVariables,
+  options?: RequestInit['headers'],
+  input = ListPerspectivesQueryInput,
+  output = ListPerspectivesQueryOutput,
+) =>
+  fetchWithAmplify<ListPerspectivesQuery, ListPerspectivesQueryVariables>(
+    ListPerspectivesDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const GetSchemaDocument = `
     query GetSchema($id: ID!) {
   getSchema(id: $id) {
@@ -4007,11 +4872,25 @@ export const GetSchemaDocument = `
     `;
 
 export const GetSchemaQueryKeys = (variables: GetSchemaQueryVariables) => ['GetSchema', variables];
+
 /**
- * GetSchemaQuery
+ * Output transformer function for GetSchemaQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetSchemaQuery - The data returned from the GraphQL server
+ * @returns Schema - The transformed data
  */
 export const GetSchemaQueryOutput = ({ getSchema }: GetSchemaQuery) => getSchema;
 
+/**
+ * Fetcher function for GetSchemaQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetSchemaQueryFetcher = (
+  variables: GetSchemaQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetSchemaQueryInput,
+  output = GetSchemaQueryOutput,
+) => fetchWithAmplify<GetSchemaQuery, GetSchemaQueryVariables>(GetSchemaDocument, variables, options, input, output);
 export const ListSchemasDocument = `
     query ListSchemas($filter: ModelSchemaFilterInput, $limit: Int, $nextToken: String) {
   listSchemas(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -4054,11 +4933,26 @@ export const ListSchemasDocument = `
 
 export const ListSchemasQueryKeys = (variables?: ListSchemasQueryVariables) =>
   variables === undefined ? ['ListSchemas'] : ['ListSchemas', variables];
+
 /**
- * ListSchemasQuery
+ * Output transformer function for ListSchemasQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data ListSchemasQuery - The data returned from the GraphQL server
+ * @returns ModelSchemaConnection - The transformed data
  */
 export const ListSchemasQueryOutput = ({ listSchemas }: ListSchemasQuery) => listSchemas;
 
+/**
+ * Fetcher function for ListSchemasQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const ListSchemasQueryFetcher = (
+  variables?: ListSchemasQueryVariables,
+  options?: RequestInit['headers'],
+  input = ListSchemasQueryInput,
+  output = ListSchemasQueryOutput,
+) =>
+  fetchWithAmplify<ListSchemasQuery, ListSchemasQueryVariables>(ListSchemasDocument, variables, options, input, output);
 export const GetTestDocument = `
     query GetTest($id: ID!) {
   getTest(id: $id) {
@@ -4074,11 +4968,25 @@ export const GetTestDocument = `
     `;
 
 export const GetTestQueryKeys = (variables: GetTestQueryVariables) => ['GetTest', variables];
+
 /**
- * GetTestQuery
+ * Output transformer function for GetTestQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetTestQuery - The data returned from the GraphQL server
+ * @returns Test - The transformed data
  */
 export const GetTestQueryOutput = ({ getTest }: GetTestQuery) => getTest;
 
+/**
+ * Fetcher function for GetTestQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetTestQueryFetcher = (
+  variables: GetTestQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetTestQueryInput,
+  output = GetTestQueryOutput,
+) => fetchWithAmplify<GetTestQuery, GetTestQueryVariables>(GetTestDocument, variables, options, input, output);
 export const ListTestsDocument = `
     query ListTests($filter: ModelTestFilterInput, $limit: Int, $nextToken: String) {
   listTests(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -4098,11 +5006,25 @@ export const ListTestsDocument = `
 
 export const ListTestsQueryKeys = (variables?: ListTestsQueryVariables) =>
   variables === undefined ? ['ListTests'] : ['ListTests', variables];
+
 /**
- * ListTestsQuery
+ * Output transformer function for ListTestsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data ListTestsQuery - The data returned from the GraphQL server
+ * @returns ModelTestConnection - The transformed data
  */
 export const ListTestsQueryOutput = ({ listTests }: ListTestsQuery) => listTests;
 
+/**
+ * Fetcher function for ListTestsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const ListTestsQueryFetcher = (
+  variables?: ListTestsQueryVariables,
+  options?: RequestInit['headers'],
+  input = ListTestsQueryInput,
+  output = ListTestsQueryOutput,
+) => fetchWithAmplify<ListTestsQuery, ListTestsQueryVariables>(ListTestsDocument, variables, options, input, output);
 export const SearchGraphDocument = `
     query SearchGraph($input: SearchGraphInput!) {
   searchGraph(input: $input) {
@@ -4119,8 +5041,20 @@ export const SearchGraphDocument = `
     `;
 
 export const SearchGraphQueryKeys = (variables: SearchGraphQueryVariables) => ['SearchGraph', variables];
+
 /**
- * SearchGraphQuery
+ * Input transformer function for SearchGraphQuery.
+ * It stringifies all JSON input fields before sending them to the GraphQL server.
+ * @param input SearchGraphInput - input
+ * @returns
+ */
+export const SearchGraphQueryInput = (variables: SearchGraphQueryVariables) => variables;
+
+/**
+ * Output transformer function for SearchGraphQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data SearchGraphQuery - The data returned from the GraphQL server
+ * @returns SearchGraphResult - The transformed data
  */
 export const SearchGraphQueryOutput = ({ searchGraph }: SearchGraphQuery) =>
   searchGraph && {
@@ -4129,11 +5063,24 @@ export const SearchGraphQueryOutput = ({ searchGraph }: SearchGraphQuery) =>
       ...record,
       node: {
         ...record?.node,
-        properties: record?.node?.properties && JSON.parse(record?.node?.properties as unknown as string),
+        properties:
+          record?.node?.properties &&
+          (JSON.parse(record?.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
       },
     })),
   };
 
+/**
+ * Fetcher function for SearchGraphQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const SearchGraphQueryFetcher = (
+  variables: SearchGraphQueryVariables,
+  options?: RequestInit['headers'],
+  input = SearchGraphQueryInput,
+  output = SearchGraphQueryOutput,
+) =>
+  fetchWithAmplify<SearchGraphQuery, SearchGraphQueryVariables>(SearchGraphDocument, variables, options, input, output);
 export const GetNodeDocument = `
     query GetNode($identity: ID!) {
   getNode(identity: $identity) {
@@ -4161,31 +5108,49 @@ export const GetNodeDocument = `
     `;
 
 export const GetNodeQueryKeys = (variables: GetNodeQueryVariables) => ['GetNode', variables];
+
 /**
- * GetNodeQuery
+ * Output transformer function for GetNodeQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetNodeQuery - The data returned from the GraphQL server
+ * @returns NodeGraphRecord - The transformed data
  */
 export const GetNodeQueryOutput = ({ getNode }: GetNodeQuery) =>
   getNode && {
     ...getNode,
     node: {
       ...getNode.node,
-      properties: getNode.node?.properties && JSON.parse(getNode.node?.properties as unknown as string),
+      properties:
+        getNode.node?.properties &&
+        (JSON.parse(getNode.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
     },
     relationships: getNode.relationships?.map((relationship) => ({
       ...relationship,
       node: {
         ...relationship?.node,
-        properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as unknown as string),
+        properties:
+          relationship?.node?.properties &&
+          (JSON.parse(relationship?.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
       },
       relationship: {
         ...relationship?.relationship,
         properties:
           relationship?.relationship?.properties &&
-          JSON.parse(relationship?.relationship?.properties as unknown as string),
+          (JSON.parse(relationship?.relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
       },
     })),
   };
 
+/**
+ * Fetcher function for GetNodeQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetNodeQueryFetcher = (
+  variables: GetNodeQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetNodeQueryInput,
+  output = GetNodeQueryOutput,
+) => fetchWithAmplify<GetNodeQuery, GetNodeQueryVariables>(GetNodeDocument, variables, options, input, output);
 export const GetRelationshipDocument = `
     query GetRelationship($identity: ID!) {
   getRelationship(identity: $identity) {
@@ -4211,29 +5176,53 @@ export const GetRelationshipDocument = `
     `;
 
 export const GetRelationshipQueryKeys = (variables: GetRelationshipQueryVariables) => ['GetRelationship', variables];
+
 /**
- * GetRelationshipQuery
+ * Output transformer function for GetRelationshipQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetRelationshipQuery - The data returned from the GraphQL server
+ * @returns RelationshipGraphRecord - The transformed data
  */
 export const GetRelationshipQueryOutput = ({ getRelationship }: GetRelationshipQuery) =>
   getRelationship && {
     ...getRelationship,
     end: {
       ...getRelationship.end,
-      properties: getRelationship.end?.properties && JSON.parse(getRelationship.end?.properties as unknown as string),
+      properties:
+        getRelationship.end?.properties &&
+        (JSON.parse(getRelationship.end?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
     },
     relationship: {
       ...getRelationship.relationship,
       properties:
         getRelationship.relationship?.properties &&
-        JSON.parse(getRelationship.relationship?.properties as unknown as string),
+        (JSON.parse(getRelationship.relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
     },
     start: {
       ...getRelationship.start,
       properties:
-        getRelationship.start?.properties && JSON.parse(getRelationship.start?.properties as unknown as string),
+        getRelationship.start?.properties &&
+        (JSON.parse(getRelationship.start?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
     },
   };
 
+/**
+ * Fetcher function for GetRelationshipQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetRelationshipQueryFetcher = (
+  variables: GetRelationshipQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetRelationshipQueryInput,
+  output = GetRelationshipQueryOutput,
+) =>
+  fetchWithAmplify<GetRelationshipQuery, GetRelationshipQueryVariables>(
+    GetRelationshipDocument,
+    variables,
+    options,
+    input,
+    output,
+  );
 export const ListNodesDocument = `
     query ListNodes($label: String!) {
   listNodes(label: $label) {
@@ -4263,8 +5252,12 @@ export const ListNodesDocument = `
     `;
 
 export const ListNodesQueryKeys = (variables: ListNodesQueryVariables) => ['ListNodes', variables];
+
 /**
- * ListNodesQuery
+ * Output transformer function for ListNodesQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data ListNodesQuery - The data returned from the GraphQL server
+ * @returns NodesGraphRecord - The transformed data
  */
 export const ListNodesQueryOutput = ({ listNodes }: ListNodesQuery) =>
   listNodes && {
@@ -4273,24 +5266,38 @@ export const ListNodesQueryOutput = ({ listNodes }: ListNodesQuery) =>
       ...record,
       node: {
         ...record?.node,
-        properties: record?.node?.properties && JSON.parse(record?.node?.properties as unknown as string),
+        properties:
+          record?.node?.properties &&
+          (JSON.parse(record?.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
       },
       relationships: record?.relationships?.map((relationship) => ({
         ...relationship,
         node: {
           ...relationship?.node,
-          properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as unknown as string),
+          properties:
+            relationship?.node?.properties &&
+            (JSON.parse(relationship?.node?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
         },
         relationship: {
           ...relationship?.relationship,
           properties:
             relationship?.relationship?.properties &&
-            JSON.parse(relationship?.relationship?.properties as unknown as string),
+            (JSON.parse(relationship?.relationship?.properties as unknown as string) as Parsed<Scalars['AWSJSON']>),
         },
       })),
     })),
   };
 
+/**
+ * Fetcher function for ListNodesQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const ListNodesQueryFetcher = (
+  variables: ListNodesQueryVariables,
+  options?: RequestInit['headers'],
+  input = ListNodesQueryInput,
+  output = ListNodesQueryOutput,
+) => fetchWithAmplify<ListNodesQuery, ListNodesQueryVariables>(ListNodesDocument, variables, options, input, output);
 export const ListUsersDocument = `
     query ListUsers($groupID: ID!) {
   listUsers(groupID: $groupID) {
@@ -4303,11 +5310,25 @@ export const ListUsersDocument = `
     `;
 
 export const ListUsersQueryKeys = (variables: ListUsersQueryVariables) => ['ListUsers', variables];
+
 /**
- * ListUsersQuery
+ * Output transformer function for ListUsersQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data ListUsersQuery - The data returned from the GraphQL server
+ * @returns User[] - The transformed data
  */
 export const ListUsersQueryOutput = ({ listUsers }: ListUsersQuery) => listUsers;
 
+/**
+ * Fetcher function for ListUsersQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const ListUsersQueryFetcher = (
+  variables: ListUsersQueryVariables,
+  options?: RequestInit['headers'],
+  input = ListUsersQueryInput,
+  output = ListUsersQueryOutput,
+) => fetchWithAmplify<ListUsersQuery, ListUsersQueryVariables>(ListUsersDocument, variables, options, input, output);
 export const GetConnectorCredentialsDocument = `
     query GetConnectorCredentials($id: ID!) {
   getConnectorCredentials(id: $id) {
@@ -4321,13 +5342,35 @@ export const GetConnectorCredentialsQueryKeys = (variables: GetConnectorCredenti
   'GetConnectorCredentials',
   variables,
 ];
+
 /**
- * GetConnectorCredentialsQuery
+ * Output transformer function for GetConnectorCredentialsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * @param data GetConnectorCredentialsQuery - The data returned from the GraphQL server
+ * @returns ConnectorCredentials - The transformed data
  */
 export const GetConnectorCredentialsQueryOutput = ({ getConnectorCredentials }: GetConnectorCredentialsQuery) =>
   getConnectorCredentials && {
     ...getConnectorCredentials,
     plainCredentials:
       getConnectorCredentials.plainCredentials &&
-      JSON.parse(getConnectorCredentials.plainCredentials as unknown as string),
+      (JSON.parse(getConnectorCredentials.plainCredentials as unknown as string) as Parsed<Scalars['AWSJSON']>),
   };
+
+/**
+ * Fetcher function for GetConnectorCredentialsQuery.
+ * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ */
+export const GetConnectorCredentialsQueryFetcher = (
+  variables: GetConnectorCredentialsQueryVariables,
+  options?: RequestInit['headers'],
+  input = GetConnectorCredentialsQueryInput,
+  output = GetConnectorCredentialsQueryOutput,
+) =>
+  fetchWithAmplify<GetConnectorCredentialsQuery, GetConnectorCredentialsQueryVariables>(
+    GetConnectorCredentialsDocument,
+    variables,
+    options,
+    input,
+    output,
+  );

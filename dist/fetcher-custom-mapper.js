@@ -11,7 +11,6 @@ class CustomMapperFetcher {
         }
         this._mapper = (0, visitor_plugin_common_1.parseMapper)(customFetcher.func);
         this._isReactHook = customFetcher.isReactHook;
-        this._customizer = (0, visitor_plugin_common_1.parseMapper)(customFetcher.customizerFunc);
     }
     getFetcherFnName(operationResultType, operationVariablesTypes) {
         return `${this._mapper.type}<${operationResultType}, ${operationVariablesTypes}>`;
@@ -100,8 +99,13 @@ class CustomMapperFetcher {
             return '';
         const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
         const typedFetcher = this.getFetcherFnName(operationResultType, operationVariablesTypes);
-        const impl = `${typedFetcher}(${documentVariableName}, variables, options)`;
-        return `\nuse${operationName}.fetcher = (${variables}, options?: RequestInit['headers']) => ${impl};`;
+        const impl = `${typedFetcher}(${documentVariableName}, variables, options, input, output)`;
+        const comment = `\n/**
+    * Fetcher function for ${operationName}.
+    * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+    */`;
+        const implementation = `export const ${operationName}Fetcher = (${variables}, options?: RequestInit['headers'], input = ${operationName}Input, output = ${operationName}Output) => ${impl};`;
+        return `\n${comment}\n${implementation}`;
     }
 }
 exports.CustomMapperFetcher = CustomMapperFetcher;

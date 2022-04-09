@@ -17,7 +17,6 @@ export class CustomMapperFetcher implements FetcherRenderer {
     }
     this._mapper = parseMapper(customFetcher.func);
     this._isReactHook = customFetcher.isReactHook;
-    this._customizer = parseMapper(customFetcher.customizerFunc);
   }
 
   private getFetcherFnName(operationResultType: string, operationVariablesTypes: string): string {
@@ -158,8 +157,14 @@ export class CustomMapperFetcher implements FetcherRenderer {
     const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
 
     const typedFetcher = this.getFetcherFnName(operationResultType, operationVariablesTypes);
-    const impl = `${typedFetcher}(${documentVariableName}, variables, options)`;
+    const impl = `${typedFetcher}(${documentVariableName}, variables, options, input, output)`;
 
-    return `\nuse${operationName}.fetcher = (${variables}, options?: RequestInit['headers']) => ${impl};`;
+    const comment = `\n/**
+    * Fetcher function for ${operationName}.
+    * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+    */`;
+
+    const implementation = `export const ${operationName}Fetcher = (${variables}, options?: RequestInit['headers'], input = ${operationName}Input, output = ${operationName}Output) => ${impl};`;
+    return `\n${comment}\n${implementation}`;
   }
 }

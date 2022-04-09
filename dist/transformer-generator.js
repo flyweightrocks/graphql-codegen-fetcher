@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateInputTransformer = exports.generateOutputTransformer = void 0;
+exports.generateInputTransformer = exports.generateOutputTransformer = exports.generateQueryVariablesSignature = void 0;
 const graphql_1 = require("graphql");
-const change_case_all_1 = require("change-case-all");
 const toScalarType = (type) => ['ID', 'String', 'Boolean', 'Int', 'Float', 'AWSDateTime', 'AWSJSON'].includes(type) ? `Scalars['${type}']` : type;
 const isScalarField = (type) => type instanceof graphql_1.GraphQLScalarType || type instanceof graphql_1.GraphQLEnumType;
 const isArrayField = (type) => type instanceof graphql_1.GraphQLList || (type instanceof graphql_1.GraphQLNonNull && type.ofType instanceof graphql_1.GraphQLList);
@@ -65,30 +64,45 @@ const getInputVariablesType = (fieldDefinition) => {
         ])),
     };
 };
-function generateOutputTransformer(node, operationName, fields) {
-    const nodeName = node.name.value;
-    const fieldName = (0, change_case_all_1.lowerCaseFirst)(nodeName);
-    const fieldDefinition = fields[fieldName];
-    const outputType = getOutputType(fieldDefinition);
+function generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes) {
+    return `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
+}
+exports.generateQueryVariablesSignature = generateQueryVariablesSignature;
+function generateOutputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, field) {
+    const outputType = getOutputType(field);
     const comment = `\n/**
-  * ${operationName}
+  * Output transformer function for ${operationName}.
+  * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+  * @param data ${operationResultType} - The data returned from the GraphQL server
+  * @returns ${outputType.typeName} - The transformed data
   */`;
-    const implementation = `export const ${operationName}Output = ({ ${fieldName} }: ${nodeName}${(0, change_case_all_1.upperCaseFirst)(node.operation)}) => ${hasJsonFields(outputType.fields)
-        ? `${fieldName} && ({...${fieldName}, ${transformJsonFields(outputType.fields, `${fieldName}`, 'parse').join('\n')} })`
-        : fieldName};`;
+    const implementation = `export const ${operationName}Output = ({ ${field.name} }: ${operationResultType}) => ${hasJsonFields(outputType.fields)
+        ? `${field.name} && ({...${field.name}, ${transformJsonFields(outputType.fields, `${field.name}`, 'parse').join('\n')} })`
+        : field.name};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateOutputTransformer = generateOutputTransformer;
-function generateInputTransformer(node, operationName, fields) {
-    const nodeName = node.name.value;
-    const fieldName = (0, change_case_all_1.lowerCaseFirst)(nodeName);
-    const fieldDefinition = fields[fieldName];
-    const variablesType = getInputVariablesType(fieldDefinition);
+function generateInputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, field) {
+    const variablesType = getInputVariablesType(field);
     if (!variablesType || !variablesType.input?.fields)
         return '';
-    return `\nexport const ${operationName}Input = (input: Partial<${variablesType.input.typeName}>) => ${hasJsonFields(variablesType.input.fields)
-        ? `({...input, ${transformJsonFields(variablesType.input.fields, `input`, 'stringify').join('\n')} })`
-        : 'input'};`;
+    console.log(variablesType);
+    const signature = generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes);
+    const comment = `\n/**
+  * Input transformer function for ${operationName}. 
+  * It stringifies all JSON input fields before sending them to the GraphQL server.
+  ${Object.keys(variablesType)
+        .map((field) => `* @param ${field} ${variablesType[field].typeName} - ${field}`)
+        .join('\n')}
+  * @returns 
+  */`;
+    const implementation = `export const ${operationName}Input = (${signature}) => ${Object.keys(variablesType).some((field) => hasJsonFields(variablesType[field].fields))
+        ? `({...variables, ${Object.keys(variablesType)
+            .filter((field) => hasJsonFields(variablesType[field].fields))
+            .map((field) => `${field}: { ${transformJsonFields(variablesType[field].fields || {}, `variables.${field}`, 'stringify')} },`)
+            .join('\n')} })`
+        : 'variables'};`;
+    return `\n${comment}\n${implementation}`;
 }
 exports.generateInputTransformer = generateInputTransformer;
 const transformJsonFields = (fields, path, transformer) => {
@@ -112,9 +126,9 @@ const transformJsonFields = (fields, path, transformer) => {
         else {
             if (fieldValue === 'AWSJSON') {
                 transformer === 'parse' &&
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as unknown as string),`);
+                    stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as unknown as string) as Parsed<Scalars['AWSJSON']>,`);
                 transformer === 'stringify' &&
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as unknown as Record<string, any>) as unknown as Record<string, any>,`);
+                    stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as unknown as Record<string, any>) as unknown as Stringified<Scalars['AWSJSON']>,`);
             }
         }
     }
