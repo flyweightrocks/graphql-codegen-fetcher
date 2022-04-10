@@ -11,94 +11,7 @@ import {
   OperationDefinitionNode,
 } from 'graphql';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case-all';
-
-type OperationFields = { [field: string]: string } | { [field: string]: OperationFields };
-type OperationType = {
-  // fieldName: string;
-  typeName: string;
-  fields?: OperationFields;
-};
-type OperationOutputType = OperationType;
-type OperationInputType = OperationType;
-type OperationVariablesType = {
-  input?: OperationInputType;
-} & {
-  [variable: string]: OperationType;
-};
-
-const toScalarType = (type: string) =>
-  ['ID', 'String', 'Boolean', 'Int', 'Float', 'AWSDateTime', 'AWSJSON'].includes(type) ? `Scalars['${type}']` : type;
-
-const isScalarField = (type: GraphQLType) => type instanceof GraphQLScalarType || type instanceof GraphQLEnumType;
-
-const isArrayField = (type: GraphQLType) =>
-  type instanceof GraphQLList || (type instanceof GraphQLNonNull && type.ofType instanceof GraphQLList);
-
-const isMandatoryField = (type: GraphQLType) => type instanceof GraphQLNonNull;
-
-const isModelField = (type: GraphQLType): boolean => {
-  if (type instanceof GraphQLNonNull || type instanceof GraphQLList) return isModelField(type.ofType);
-
-  if (type.name.startsWith('Model') && type.name.endsWith('Connection')) return true;
-  if (type.name.startsWith('Model') && type.name.endsWith('Input')) return true;
-
-  return false;
-};
-
-const getTypeName = (type: GraphQLType): string => {
-  if (type instanceof GraphQLNonNull) return getTypeName(type.ofType);
-  if (type instanceof GraphQLList) return getTypeName(type.ofType) + '[]';
-
-  return type.name;
-};
-
-const resolveFields = (type: GraphQLType): any => {
-  if (type instanceof GraphQLNonNull) {
-    const resolved = resolveFields(type.ofType);
-    return resolved;
-  } else if (type instanceof GraphQLList) {
-    const resolved = resolveFields(type.ofType);
-    return resolved;
-  } else if (type instanceof GraphQLObjectType || type instanceof GraphQLInputObjectType) {
-    const fields = type.getFields();
-    const resolved = Object.fromEntries(
-      Object.values(fields).map((field) => {
-        const isModel = isModelField(field.type);
-        const isArray = isArrayField(field.type);
-        const isMandatory = isMandatoryField(field.type);
-
-        if (isModel) return [field.name, field.type.name];
-
-        return [`${field.name}${isArray ? '[]' : ''}${isMandatory ? '!' : ''}`, resolveFields(field.type)];
-      }),
-    );
-    return resolved;
-  } else if (type instanceof GraphQLScalarType || type instanceof GraphQLEnumType) {
-    return type.name;
-  }
-};
-
-const getOutputType = (fieldDefinition: GraphQLField<any, any>): OperationOutputType => {
-  return {
-    // fieldName: fieldDefinition.name,
-    typeName: getTypeName(fieldDefinition.type),
-    fields: isScalarField(fieldDefinition.type) ? {} : resolveFields(fieldDefinition.type),
-  };
-};
-
-const getInputVariablesType = (fieldDefinition: GraphQLField<any, any>): OperationVariablesType => {
-  return {
-    ...Object.fromEntries(
-      fieldDefinition.args.map((arg) => [
-        arg.name,
-        {
-          typeName: getTypeName(arg.type),
-          fields: resolveFields(arg.type),
-        },
-      ]),
-    ),
-  };
-};
+import { OperationFields, OperationOutputType, OperationVariablesType } from './type-resolver';
 
 export function generateQueryVariablesSignature(
   hasRequiredVariables: boolean,
@@ -113,13 +26,16 @@ export function generateOutputTransformer(
   operationVariablesTypes: string,
   operationResultType: string,
   hasRequiredVariables: boolean,
-  field: GraphQLField<any, any>,
+  outputType: OperationOutputType,
+  // field: GraphQLField<any, any>,
 ) {
-  const outputType = getOutputType(field);
+  // const outputType = getOutputType(field);
 
   // if (!operationType || !operationType.fields) return '';
 
   // const returnType = returnTypeName ? toScalarType(returnTypeName) : toScalarType(operationType.output.typeName);
+
+  const { fieldName, fields } = outputType;
 
   const comment = `\n/**
   * Output transformer function for ${operationName}.
@@ -127,12 +43,12 @@ export function generateOutputTransformer(
   * @param data ${operationResultType} - The data returned from the GraphQL server
   * @returns ${outputType.typeName} - The transformed data
   */`;
-  const implementation = `export const ${operationName}Output = ({ ${field.name} }: ${operationResultType}) => ${
+  const implementation = `export const ${operationName}Output = ({ ${fieldName} }: ${operationResultType}) => ${
     hasJsonFields(outputType.fields)
-      ? `${field.name} && ({...${field.name}, ${transformJsonFields(outputType.fields!, `${field.name}`, 'parse').join(
-          '\n',
-        )} })`
-      : field.name
+      ? `${fieldName} && ({...${fieldName}, ${transformJsonFields(fields!, `${fieldName}`, 'parse').join('\n')} }) as ${
+          outputType.typeName
+        }`
+      : `${fieldName} as ${outputType.typeName}`
   };`;
 
   return `\n${comment}\n${implementation}`;
@@ -144,15 +60,23 @@ export function generateInputTransformer(
   operationVariablesTypes: string,
   operationResultType: string,
   hasRequiredVariables: boolean,
-  field: GraphQLField<any, any>,
+  variablesType: OperationVariablesType,
 ) {
-  const variablesType = getInputVariablesType(field);
+  // const variablesType = getInputVariablesType(field);
 
-  // if (!operationType || !operationType.fields) return '';
+  if (!variablesType || Object.keys(variablesType).length === 0) {
+    const comment = `\n/**
+    * Input transformer function for ${operationName}. 
+    * It stringifies all JSON input fields before sending them to the GraphQL server.
+    ${Object.keys(variablesType)
+      .map((field) => `* @param ${field} ${variablesType[field].typeName} - ${field}`)
+      .join('\n')}
+    * @returns 
+    */`;
+    const implementation = `export const ${operationName}Input = undefined;`;
 
-  // const returnType = returnTypeName ? toScalarType(returnTypeName) : toScalarType(operationType.output.typeName);
-
-  if (!variablesType || !variablesType.input?.fields) return '';
+    return `\n${comment}\n${implementation}`;
+  }
 
   console.log(variablesType);
 
@@ -178,8 +102,8 @@ export function generateInputTransformer(
                 'stringify',
               )} },`,
           )
-          .join('\n')} })`
-      : 'variables'
+          .join('\n')} }) as ${operationVariablesTypes}`
+      : `variables as ${operationVariablesTypes}`
   };`;
 
   return `\n${comment}\n${implementation}`;
@@ -222,14 +146,10 @@ const transformJsonFields = (fields: OperationFields, path: string, transformer:
     } else {
       if (fieldValue === 'AWSJSON') {
         transformer === 'parse' &&
-          stack.push(
-            `${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as unknown as string) as Parsed<Scalars['AWSJSON']>,`,
-          );
+          stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as unknown as string),`);
 
         transformer === 'stringify' &&
-          stack.push(
-            `${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as unknown as Record<string, any>) as unknown as Stringified<Scalars['AWSJSON']>,`,
-          );
+          stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as unknown as Record<string, any>),`);
       }
     }
   }

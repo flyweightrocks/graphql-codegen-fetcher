@@ -18,6 +18,7 @@ import { GraphQLRequestClientFetcher } from './fetcher-graphql-request';
 import { generateMutationKeyMaker, generateQueryKeyMaker } from './keys-generator';
 import { generateInputTransformer, generateOutputTransformer } from './transformer-generator';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case-all';
+import { getInputVariablesType, getOutputType } from './type-resolver';
 
 export interface ReactQueryPluginConfig extends ClientSideBasePluginConfig {
   errorType: string;
@@ -169,27 +170,33 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
     const fieldName = lowerCaseFirst(nodeName); // createNode, getNode, ...
     const fieldDefinition = this.fields[fieldName];
 
+    const outputType = getOutputType(fieldDefinition);
+    const outputResultType = outputType.typeName;
+    const variablesType = getInputVariablesType(fieldDefinition);
+    const inputVariablesType = operationVariablesTypes;
+
     // console.log({ operationName, operationResultType, operationVariablesTypes });
 
     let query = '';
 
     if (operationType === 'Query') {
       query += generateQueryKeyMaker(node, operationName, operationVariablesTypes, hasRequiredVariables);
-      query += `\n${generateInputTransformer(
+      query += generateInputTransformer(
         node,
         operationName,
         operationVariablesTypes,
         operationResultType,
         hasRequiredVariables,
-        fieldDefinition,
-      )};\n`;
+        variablesType,
+      );
       query += generateOutputTransformer(
         node,
         operationName,
         operationVariablesTypes,
         operationResultType,
         hasRequiredVariables,
-        fieldDefinition,
+        outputType,
+        // fieldDefinition,
       );
       query += this.fetcher.generateFetcherFetch(
         node,
@@ -198,6 +205,8 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
         operationResultType,
         operationVariablesTypes,
         hasRequiredVariables,
+        outputResultType,
+        inputVariablesType,
       );
     } else if (operationType === 'Mutation') {
       // let query = this.fetcher.generateMutationHook(
@@ -216,7 +225,7 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
         operationVariablesTypes,
         operationResultType,
         hasRequiredVariables,
-        fieldDefinition,
+        variablesType,
       );
       query += generateOutputTransformer(
         node,
@@ -224,7 +233,18 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
         operationVariablesTypes,
         operationResultType,
         hasRequiredVariables,
-        fieldDefinition,
+        outputType,
+        // fieldDefinition,
+      );
+      query += this.fetcher.generateFetcherFetch(
+        node,
+        documentVariableName,
+        operationName,
+        operationResultType,
+        operationVariablesTypes,
+        hasRequiredVariables,
+        outputResultType,
+        inputVariablesType,
       );
 
       // }

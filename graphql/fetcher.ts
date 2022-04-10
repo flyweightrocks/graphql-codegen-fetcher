@@ -1,17 +1,17 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { API, graphqlOperation, GraphQLResult } from '@aws-amplify/api';
 
-export const fetchWithAmplify = <TData, TVariables>(
+export const fetchWithAmplify = <TData, TVariables, TOutput = TData, TInput = TVariables>(
   query: string,
   variables?: TVariables,
   options?: RequestInit['headers'],
-  input?: () => TVariables,
-  output?: () => TData,
+  outputFn?: (data: TData) => TOutput,
+  inputFn?: (variables?: TVariables) => TInput,
 ): (() => Promise<TData>) => {
   return async () => {
     const result = await (API.graphql({
       query,
-      variables: variables || {},
+      variables: inputFn ? inputFn(variables) : variables || {},
       authMode: 'AMAZON_COGNITO_USER_POOLS',
     }) as unknown as Promise<GraphQLResult<TData>>);
 
@@ -20,6 +20,6 @@ export const fetchWithAmplify = <TData, TVariables>(
       throw new Error(message);
     }
 
-    return result.data!;
+    return outputFn ? outputFn(result.data) : result.data;
   };
 };

@@ -33,5 +33,7 @@ export interface FetcherRenderer {
     operationResultType: string,
     operationVariablesTypes: string,
     hasRequiredVariables: boolean,
+    outputResultType: string,
+    inportVariablesTypes: string,
   ) => string;
 }
