@@ -9,21 +9,21 @@ class CustomMapperFetcher {
             customFetcher = { func: customFetcher };
         }
         this._mapper = (0, visitor_plugin_common_1.parseMapper)(customFetcher.func);
-        this._isReactHook = customFetcher.isReactHook;
+        this._isReactHook = !!customFetcher.isReactHook;
     }
     getFetcherFnName(operationResultType, operationVariablesTypes, outputResultType, inputVariablesType) {
         return `${this._mapper.type}<${operationResultType}, ${operationVariablesTypes}, ${outputResultType}, ${inputVariablesType}>`;
     }
     generateFetcherImplementaion() {
         if (this._mapper.isExternal) {
-            return (0, visitor_plugin_common_1.buildMapperImport)(this._mapper.source, [
+            return ((0, visitor_plugin_common_1.buildMapperImport)(this._mapper.source, [
                 {
                     identifier: this._mapper.type,
                     asDefault: this._mapper.default,
                 },
-            ], this.visitor.config.useTypeImports);
+            ], this.visitor.config.useTypeImports) || '');
         }
-        return null;
+        return '';
     }
     generateFetcherFetch(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables, outputResultType, inputVariablesTypes = operationVariablesTypes) {
         if (this._isReactHook)
@@ -32,8 +32,10 @@ class CustomMapperFetcher {
         const typedFetcher = this.getFetcherFnName(operationResultType, operationVariablesTypes, outputResultType, inputVariablesTypes);
         const impl = `${typedFetcher}(${documentVariableName}, variables, options, outputFn, inputFn)`;
         const comment = `\n/**
-    * Fetcher function for ${operationName}.
-    * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+    * Fetcher function for \`${operationName}\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function, if available, must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function, if available, must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
     */`;
         const implementation = `export const ${operationName}Fetcher = (${variables}, options?: RequestInit['headers'], outputFn = ${operationName}Output, inputFn = ${operationName}Input) => ${impl};`;
         return `\n${comment}\n${implementation}`;

@@ -7,17 +7,13 @@ import {
   LoadedFragment,
 } from '@graphql-codegen/visitor-plugin-common';
 import autoBind from 'auto-bind';
-import { pascalCase } from 'change-case-all';
+import { lowerCaseFirst, pascalCase } from 'change-case-all';
 import { GraphQLField, GraphQLSchema, OperationDefinitionNode } from 'graphql';
 import { ReactQueryRawPluginConfig } from './config';
-import { FetcherRenderer } from './fetcher';
 import { CustomMapperFetcher } from './fetcher-custom-mapper';
-import { FetchFetcher } from './fetcher-fetch';
-import { HardcodedFetchFetcher } from './fetcher-fetch-hardcoded';
-import { GraphQLRequestClientFetcher } from './fetcher-graphql-request';
-import { generateMutationKeyMaker, generateQueryKeyMaker } from './keys-generator';
-import { generateInputTransformer, generateOutputTransformer } from './transformer-generator';
-import { upperCaseFirst, lowerCaseFirst } from 'change-case-all';
+import { FetcherRenderer } from './fetcher-renderer';
+import { generateMutationKeyMaker, generateQueryKeyMaker } from './key-maker';
+import { generateInputTransformer, generateOutputTransformer } from './transformer';
 import { getInputVariablesType, getOutputType } from './type-resolver';
 
 export interface ReactQueryPluginConfig extends ClientSideBasePluginConfig {
@@ -95,14 +91,6 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
   }
 
   private createFetcher(raw: ReactQueryRawPluginConfig['fetcher']): FetcherRenderer {
-    if (raw === 'fetch') {
-      return new FetchFetcher(this);
-    } else if (typeof raw === 'object' && 'endpoint' in raw) {
-      return new HardcodedFetchFetcher(this, raw);
-    } else if (raw === 'graphql-request') {
-      return new GraphQLRequestClientFetcher(this);
-    }
-
     return new CustomMapperFetcher(this, raw);
   }
 
@@ -175,8 +163,6 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
     const variablesType = getInputVariablesType(fieldDefinition);
     const inputVariablesType = operationVariablesTypes;
 
-    // console.log({ operationName, operationResultType, operationVariablesTypes });
-
     let query = '';
 
     if (operationType === 'Query') {
@@ -196,7 +182,6 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
         operationResultType,
         hasRequiredVariables,
         outputType,
-        // fieldDefinition,
       );
       query += this.fetcher.generateFetcherFetch(
         node,
@@ -209,15 +194,6 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
         inputVariablesType,
       );
     } else if (operationType === 'Mutation') {
-      // let query = this.fetcher.generateMutationHook(
-      //   node,
-      //   documentVariableName,
-      //   operationName,
-      //   operationResultType,
-      //   operationVariablesTypes,
-      //   hasRequiredVariables,
-      // );
-      // if (this.config.exposeMutationKeys) {
       query += generateMutationKeyMaker(node, operationName);
       query += generateInputTransformer(
         node,
@@ -234,7 +210,6 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
         operationResultType,
         hasRequiredVariables,
         outputType,
-        // fieldDefinition,
       );
       query += this.fetcher.generateFetcherFetch(
         node,
@@ -246,26 +221,8 @@ export class ReactQueryVisitor extends ClientSideBaseVisitor<ReactQueryRawPlugin
         outputResultType,
         inputVariablesType,
       );
-
-      // }
-      // if (this.config.exposeFetcher && !(this.fetcher as any)._isReactHook) {
-      //   query += this.fetcher.generateFetcherFetch(
-      //     node,
-      //     documentVariableName,
-      //     operationName,
-      //     operationResultType,
-      //     operationVariablesTypes,
-      //     hasRequiredVariables,
-      //   );
-      // }
-      // return query;
     } else if (operationType === 'Subscription') {
-      // eslint-disable-next-line no-console
-      console.warn(
-        `Plugin "typescript-react-query" does not support GraphQL Subscriptions at the moment! Ignoring "${
-          node.name!.value
-        }"...`,
-      );
+      // not supported yet
     }
 
     return query;

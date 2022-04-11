@@ -5,43 +5,40 @@ function generateQueryVariablesSignature(hasRequiredVariables, operationVariable
     return `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
 }
 exports.generateQueryVariablesSignature = generateQueryVariablesSignature;
-function generateOutputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, outputType) {
-    const { fieldName, fields } = outputType;
+function generateOutputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, output) {
+    const hasJson = hasJsonFields(output.fields);
     const comment = `\n/**
   * Output transformer function for \`${operationName}\`.
-  * It extracts the \`${fieldName}\` field from the result and transforms it into a \`${outputType.typeName}\` object.
+  * It extracts the \`${output.fieldName}\` field from the result and transforms it into a \`${output.typeName}\` object.
   * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
   * If the object does not conatain any JSON fields, it will return the orignal object.
   * @param data ${operationResultType} - The data returned from the GraphQL server
-  * @returns ${outputType.typeName} - The transformed data
+  * @returns ${output.typeName} - The transformed data
   */`;
-    const implementation = `export const ${operationName}Output = ({ ${fieldName} }: ${operationResultType}) => ${hasJsonFields(outputType.fields)
-        ? `${fieldName} && ({...${fieldName}, ${transformJsonFields(fields, `${fieldName}`, 'parse').join('\n')} }) as ${outputType.typeName}`
-        : `${fieldName} as ${outputType.typeName}`};`;
+    const implementation = `export const ${operationName}Output = ({ ${output.fieldName} }: ${operationResultType}) => ${hasJson
+        ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(output.fields, `${output.fieldName}`, 'parse').join('\n')} }) as ${output.typeName}`
+        : `${output.fieldName} as ${output.typeName}`};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateOutputTransformer = generateOutputTransformer;
-function generateInputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, variablesType) {
+function generateInputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, inputVariables) {
     const signature = generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes);
-    const hasVariables = variablesType && Object.keys(variablesType).length > 0;
-    const hasJson = Object.keys(variablesType).some((field) => hasJsonFields(variablesType[field].fields));
+    const hasJson = inputVariables.some((field) => hasJsonFields(field.fields));
     const comment = `\n/**
   * Input transformer function for \`${operationName}\`.
   * It transforms the fields of the variables into JSON strings.
   * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
   * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
-  * If no variables are defined, the function returns \`undefined\`.
-  * ${hasVariables ? `@param variables \`${operationVariablesTypes}\` - The original variables` : ''}
-  * ${hasVariables ? `@returns \`${operationVariablesTypes}\` - The transformed variables` : '@returns `undefined`'}
+  * 
+  * @param variables \`${operationVariablesTypes}\` - The original variables
+  * @returns \`${operationVariablesTypes}\` - The transformed variables
   */`;
-    const implementation = hasVariables
-        ? `export const ${operationName}Input = (${signature}) => ${hasJson
-            ? `({...variables, ${Object.keys(variablesType)
-                .filter((field) => hasJsonFields(variablesType[field].fields))
-                .map((field) => `${field}: { ${transformJsonFields(variablesType[field].fields || {}, `variables.${field}`, 'stringify')} },`)
-                .join('\n')} }) as ${operationVariablesTypes}`
-            : `variables as ${operationVariablesTypes}`};`
-        : `export const ${operationName}Input = () => undefined;`;
+    const implementation = `export const ${operationName}Input = (${signature}) => ${hasJson
+        ? `({...variables, ${inputVariables
+            .filter((variable) => hasJsonFields(variable.fields))
+            .map((variable) => `${variable.fieldName}: { ${transformJsonFields(variable.fields || {}, `variables.${variable.fieldName}`, 'stringify')} },`)
+            .join('\n')} }) as ${operationVariablesTypes}`
+        : `variables as ${operationVariablesTypes}`};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateInputTransformer = generateInputTransformer;
@@ -88,4 +85,4 @@ const hasJsonFields = (fields) => {
     })
         .filter(Boolean).length > 0);
 };
-//# sourceMappingURL=transformer-generator.js.map
+//# sourceMappingURL=transformer.js.map

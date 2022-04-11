@@ -37,14 +37,31 @@ type Organization @model(subscriptions: null, mutations: { create: "createOrgani
 #   name: String!
 # }
 
-type User {
-  id: ID!
+type CognitoUser @aws_cognito_user_pools @aws_api_key {
+  username: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
-  email: String!
+  attributes: AWSJSON!
+}
+
+type CognitoUserList @aws_cognito_user_pools @aws_api_key {
+  items: [CognitoUser]!
+  nextToken: String
+}
+
+input FindUsersInput {
+  email: String
 }
 
 input CreateUserInput {
-  groupID: String! # => Organization ID
+  # organizationId: ID!
   email: String!
+}
+
+input UpdateUserInput {
+  email: String!
+}
+
+input DeleteUserInput {
+  username: ID!
 }

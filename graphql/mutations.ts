@@ -2,6 +2,11 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const emptyMutation = /* GraphQL */ `
+  mutation EmptyMutation {
+    emptyMutation
+  }
+`;
 export const runConnector = /* GraphQL */ `
   mutation RunConnector($input: RunConnectorInput!) {
     runConnector(input: $input)
@@ -422,36 +427,6 @@ export const deleteTransformation = /* GraphQL */ `
     }
   }
 `;
-export const createOrganization = /* GraphQL */ `
-  mutation CreateOrganization(
-    $input: CreateOrganizationInput!
-    $condition: ModelOrganizationConditionInput
-  ) {
-    createOrganization(input: $input, condition: $condition) {
-      id
-      createdAt
-      updatedAt
-      adminGroup
-      userGroup
-      name
-    }
-  }
-`;
-export const updateOrganization = /* GraphQL */ `
-  mutation UpdateOrganization(
-    $input: UpdateOrganizationInput!
-    $condition: ModelOrganizationConditionInput
-  ) {
-    updateOrganization(input: $input, condition: $condition) {
-      id
-      createdAt
-      updatedAt
-      adminGroup
-      userGroup
-      name
-    }
-  }
-`;
 export const createPerspective = /* GraphQL */ `
   mutation CreatePerspective(
     $input: CreatePerspectiveInput!
@@ -692,6 +667,36 @@ export const deleteTest = /* GraphQL */ `
     }
   }
 `;
+export const createOrganization = /* GraphQL */ `
+  mutation CreateOrganization(
+    $input: CreateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    createOrganization(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      adminGroup
+      userGroup
+      name
+    }
+  }
+`;
+export const updateOrganization = /* GraphQL */ `
+  mutation UpdateOrganization(
+    $input: UpdateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    updateOrganization(input: $input, condition: $condition) {
+      id
+      createdAt
+      updatedAt
+      adminGroup
+      userGroup
+      name
+    }
+  }
+`;
 export const runPerspective = /* GraphQL */ `
   mutation RunPerspective($input: RunPerspectiveInput!) {
     runPerspective(input: $input) {
@@ -702,10 +707,30 @@ export const runPerspective = /* GraphQL */ `
 export const createUser = /* GraphQL */ `
   mutation CreateUser($input: CreateUserInput!) {
     createUser(input: $input) {
-      id
+      username
       createdAt
       updatedAt
-      email
+      attributes
+    }
+  }
+`;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      username
+      createdAt
+      updatedAt
+      attributes
+    }
+  }
+`;
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser($input: DeleteUserInput!) {
+    deleteUser(input: $input) {
+      username
+      createdAt
+      updatedAt
+      attributes
     }
   }
 `;

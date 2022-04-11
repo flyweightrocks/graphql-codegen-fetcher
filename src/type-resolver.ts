@@ -12,19 +12,14 @@ import {
 } from 'graphql';
 import { upperCaseFirst, lowerCaseFirst } from 'change-case-all';
 
-export type OperationFields = { [field: string]: string } | { [field: string]: OperationFields };
-export type OperationType = {
+export type OperationFieldMap = { [field: string]: string } | { [field: string]: OperationFieldMap };
+export type OperationField = {
   fieldName: string;
   typeName: string;
-  fields?: OperationFields;
+  fields: OperationFieldMap;
 };
-export type OperationOutputType = OperationType;
-export type OperationInputType = OperationType;
-export type OperationVariablesType = {
-  input?: OperationInputType;
-} & {
-  [variable: string]: OperationType;
-};
+export type OperationOutputField = OperationField;
+export type OperationInputVariableField = OperationField[];
 
 const toScalarType = (type: string) =>
   ['ID', 'String', 'Boolean', 'Int', 'Float', 'AWSDateTime', 'AWSJSON'].includes(type) ? `Scalars['${type}']` : type;
@@ -49,7 +44,7 @@ const getTypeName = (type: GraphQLType): string => {
   if (type instanceof GraphQLNonNull) return getTypeName(type.ofType);
   if (type instanceof GraphQLList) return getTypeName(type.ofType) + '[]';
 
-  return type.name;
+  return toScalarType(type.name);
 };
 
 const resolveFields = (type: GraphQLType): any => {
@@ -78,7 +73,7 @@ const resolveFields = (type: GraphQLType): any => {
   }
 };
 
-export const getOutputType = (fieldDefinition: GraphQLField<any, any>): OperationOutputType => {
+export const getOutputType = (fieldDefinition: GraphQLField<any, any>): OperationOutputField => {
   return {
     fieldName: fieldDefinition.name,
     typeName: getTypeName(fieldDefinition.type),
@@ -86,17 +81,10 @@ export const getOutputType = (fieldDefinition: GraphQLField<any, any>): Operatio
   };
 };
 
-export const getInputVariablesType = (fieldDefinition: GraphQLField<any, any>): OperationVariablesType => {
-  return {
-    ...Object.fromEntries(
-      fieldDefinition.args.map((arg) => [
-        arg.name,
-        {
-          fieldName: arg.name,
-          typeName: getTypeName(arg.type),
-          fields: resolveFields(arg.type),
-        },
-      ]),
-    ),
-  };
+export const getInputVariablesType = (fieldDefinition: GraphQLField<any, any>): OperationInputVariableField => {
+  return fieldDefinition.args.map((arg) => ({
+    fieldName: arg.name,
+    typeName: getTypeName(arg.type),
+    fields: resolveFields(arg.type),
+  }));
 };

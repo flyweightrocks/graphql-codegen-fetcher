@@ -7,7 +7,7 @@ export const fetchWithAmplify = <TData, TVariables, TOutput = TData, TInput = TV
   options?: RequestInit['headers'],
   outputFn?: (data: TData) => TOutput,
   inputFn?: (variables?: TVariables) => TInput,
-): (() => Promise<TData>) => {
+): (() => Promise<TOutput>) => {
   return async () => {
     const result = await (API.graphql({
       query,

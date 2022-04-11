@@ -2,6 +2,11 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const emptyQuery = /* GraphQL */ `
+  query EmptyQuery {
+    emptyQuery
+  }
+`;
 export const echo = /* GraphQL */ `
   query Echo($msg: String) {
     echo(msg: $msg)
@@ -280,37 +285,6 @@ export const getTransformationsByConnector = /* GraphQL */ `
     }
   }
 `;
-export const getOrganization = /* GraphQL */ `
-  query GetOrganization($id: ID!) {
-    getOrganization(id: $id) {
-      id
-      createdAt
-      updatedAt
-      adminGroup
-      userGroup
-      name
-    }
-  }
-`;
-export const listOrganizations = /* GraphQL */ `
-  query ListOrganizations(
-    $filter: ModelOrganizationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        createdAt
-        updatedAt
-        adminGroup
-        userGroup
-        name
-      }
-      nextToken
-    }
-  }
-`;
 export const getPerspective = /* GraphQL */ `
   query GetPerspective($id: ID!) {
     getPerspective(id: $id) {
@@ -474,6 +448,37 @@ export const listTests = /* GraphQL */ `
     }
   }
 `;
+export const getOrganization = /* GraphQL */ `
+  query GetOrganization($id: ID!) {
+    getOrganization(id: $id) {
+      id
+      createdAt
+      updatedAt
+      adminGroup
+      userGroup
+      name
+    }
+  }
+`;
+export const listOrganizations = /* GraphQL */ `
+  query ListOrganizations(
+    $filter: ModelOrganizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        createdAt
+        updatedAt
+        adminGroup
+        userGroup
+        name
+      }
+      nextToken
+    }
+  }
+`;
 export const searchGraph = /* GraphQL */ `
   query SearchGraph($input: SearchGraphInput!) {
     searchGraph(input: $input) {
@@ -563,13 +568,39 @@ export const listNodes = /* GraphQL */ `
     }
   }
 `;
-export const listUsers = /* GraphQL */ `
-  query ListUsers($groupID: ID!) {
-    listUsers(groupID: $groupID) {
-      id
+export const getUser = /* GraphQL */ `
+  query GetUser($username: ID!) {
+    getUser(username: $username) {
+      username
       createdAt
       updatedAt
-      email
+      attributes
+    }
+  }
+`;
+export const findUsers = /* GraphQL */ `
+  query FindUsers($input: FindUsersInput!) {
+    findUsers(input: $input) {
+      items {
+        username
+        createdAt
+        updatedAt
+        attributes
+      }
+      nextToken
+    }
+  }
+`;
+export const listUsers = /* GraphQL */ `
+  query ListUsers($nextToken: String) {
+    listUsers(nextToken: $nextToken) {
+      items {
+        username
+        createdAt
+        updatedAt
+        attributes
+      }
+      nextToken
     }
   }
 `;

@@ -1,5 +1,6 @@
 # All queries with function resolvers must be in the same schema.graphql file, otherwise the queries will be created without resolver function
 type Query {
+  emptyQuery: String
   # Test method
   echo(msg: String): String @function(name: "nebula-api-${env}-resolver")
 
@@ -35,8 +36,26 @@ type Query {
       { allow: private },
     ])
 
-  # List all users by cognito group
-  listUsers(groupID: ID!): [User]
+  # Users
+  # --------------------------------------------------------------------------------------------
+  # Get user by username ID
+  getUser(username: ID!): CognitoUser
+    @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
+
+  # Get user by username ID
+  findUsers(input: FindUsersInput!): CognitoUserList
+    @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
+
+  # List all users in organisation
+  listUsers(nextToken: String): CognitoUserList
     @function(name: "nebula-api-${env}-resolver")
     @auth(rules: [
       { allow: public },
@@ -61,6 +80,8 @@ type Query {
 }
 
 type Mutation {
+  emptyMutation: Int
+
   runPerspective(input: RunPerspectiveInput!): RunPerspectiveResult
     @function(name: "nebula-api-${env}-resolver")
     @auth(rules: [
@@ -97,9 +118,24 @@ type Mutation {
   # createOrganization(input: CreateOrganizationInput!): Organization
   #   @function(name: "nebula-api-${env}-resolver")
 
-
-  # Create a user and assign it to a cognito group
-  createUser(input: CreateUserInput!): User
+  # Users
+  # --------------------------------------------------------------------------------------------
+  # Create a user and assign it to the organizations' cognito group
+  createUser(input: CreateUserInput!): CognitoUser
+    @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
+  # Update a user
+  updateUser(input: UpdateUserInput!): CognitoUser
+    @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
+  # Delete a user
+  deleteUser(input: DeleteUserInput!): CognitoUser
     @function(name: "nebula-api-${env}-resolver")
     @auth(rules: [
       { allow: public },

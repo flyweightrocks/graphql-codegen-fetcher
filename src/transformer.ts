@@ -1,17 +1,5 @@
-import {
-  GraphQLEnumType,
-  GraphQLField,
-  GraphQLFieldMap,
-  GraphQLInputObjectType,
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLScalarType,
-  GraphQLType,
-  OperationDefinitionNode,
-} from 'graphql';
-import { upperCaseFirst, lowerCaseFirst } from 'change-case-all';
-import { OperationFields, OperationOutputType, OperationVariablesType } from './type-resolver';
+import { OperationDefinitionNode } from 'graphql';
+import { OperationFieldMap, OperationOutputField, OperationInputVariableField, OperationField } from './type-resolver';
 
 export function generateQueryVariablesSignature(
   hasRequiredVariables: boolean,
@@ -26,29 +14,27 @@ export function generateOutputTransformer(
   operationVariablesTypes: string,
   operationResultType: string,
   hasRequiredVariables: boolean,
-  outputType: OperationOutputType,
-  // field: GraphQLField<any, any>,
+  output: OperationField,
 ) {
-  // const outputType = getOutputType(field);
-
-  // if (!operationType || !operationType.fields) return '';
-
-  // const returnType = returnTypeName ? toScalarType(returnTypeName) : toScalarType(operationType.output.typeName);
-
-  const { fieldName, fields } = outputType;
+  const hasJson = hasJsonFields(output.fields);
 
   const comment = `\n/**
-  * Output transformer function for ${operationName}.
-  * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+  * Output transformer function for \`${operationName}\`.
+  * It extracts the \`${output.fieldName}\` field from the result and transforms it into a \`${output.typeName}\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
   * @param data ${operationResultType} - The data returned from the GraphQL server
-  * @returns ${outputType.typeName} - The transformed data
+  * @returns ${output.typeName} - The transformed data
   */`;
-  const implementation = `export const ${operationName}Output = ({ ${fieldName} }: ${operationResultType}) => ${
-    hasJsonFields(outputType.fields)
-      ? `${fieldName} && ({...${fieldName}, ${transformJsonFields(fields!, `${fieldName}`, 'parse').join('\n')} }) as ${
-          outputType.typeName
-        }`
-      : `${fieldName} as ${outputType.typeName}`
+
+  const implementation = `export const ${operationName}Output = ({ ${output.fieldName} }: ${operationResultType}) => ${
+    hasJson
+      ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(
+          output.fields,
+          `${output.fieldName}`,
+          'parse',
+        ).join('\n')} }) as ${output.typeName}`
+      : `${output.fieldName} as ${output.typeName}`
   };`;
 
   return `\n${comment}\n${implementation}`;
@@ -60,57 +46,41 @@ export function generateInputTransformer(
   operationVariablesTypes: string,
   operationResultType: string,
   hasRequiredVariables: boolean,
-  variablesType: OperationVariablesType,
+  inputVariables: OperationField[],
 ) {
-  // const variablesType = getInputVariablesType(field);
-
-  if (!variablesType || Object.keys(variablesType).length === 0) {
-    const comment = `\n/**
-    * Input transformer function for ${operationName}. 
-    * It stringifies all JSON input fields before sending them to the GraphQL server.
-    ${Object.keys(variablesType)
-      .map((field) => `* @param ${field} ${variablesType[field].typeName} - ${field}`)
-      .join('\n')}
-    * @returns 
-    */`;
-    const implementation = `export const ${operationName}Input = undefined;`;
-
-    return `\n${comment}\n${implementation}`;
-  }
-
-  console.log(variablesType);
-
   const signature = generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes);
+  const hasJson = inputVariables.some((field) => hasJsonFields(field.fields));
 
   const comment = `\n/**
-  * Input transformer function for ${operationName}. 
-  * It stringifies all JSON input fields before sending them to the GraphQL server.
-  ${Object.keys(variablesType)
-    .map((field) => `* @param ${field} ${variablesType[field].typeName} - ${field}`)
-    .join('\n')}
-  * @returns 
+  * Input transformer function for \`${operationName}\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`${operationVariablesTypes}\` - The original variables
+  * @returns \`${operationVariablesTypes}\` - The transformed variables
   */`;
+
   const implementation = `export const ${operationName}Input = (${signature}) => ${
-    Object.keys(variablesType).some((field) => hasJsonFields(variablesType[field].fields))
-      ? `({...variables, ${Object.keys(variablesType)
-          .filter((field) => hasJsonFields(variablesType[field].fields))
+    hasJson
+      ? `({...variables, ${inputVariables
+          .filter((variable) => hasJsonFields(variable.fields))
           .map(
-            (field) =>
-              `${field}: { ${transformJsonFields(
-                variablesType[field].fields || {},
-                `variables.${field}`,
+            (variable) =>
+              `${variable.fieldName}: { ${transformJsonFields(
+                variable.fields || {},
+                `variables.${variable.fieldName}`,
                 'stringify',
               )} },`,
           )
           .join('\n')} }) as ${operationVariablesTypes}`
       : `variables as ${operationVariablesTypes}`
   };`;
-
   return `\n${comment}\n${implementation}`;
 }
 
 // iterates through all nested fields and replace AWSJSON fields with JSON.parse() / JSON.stringify()
-const transformJsonFields = (fields: OperationFields, path: string, transformer: 'parse' | 'stringify') => {
+const transformJsonFields = (fields: OperationFieldMap, path: string, transformer: 'parse' | 'stringify') => {
   // try {
   const stack: string[] = [];
 
@@ -155,14 +125,10 @@ const transformJsonFields = (fields: OperationFields, path: string, transformer:
   }
 
   return stack;
-  // } catch {
-  //   // eslint-disable-next-line no-debugger
-  //   debugger;
-  // }
 };
 
 // checks if any of the nested fields has type AWSJSON
-const hasJsonFields = (fields?: OperationFields): boolean => {
+const hasJsonFields = (fields?: OperationFieldMap): boolean => {
   if (!fields) return false;
 
   return (

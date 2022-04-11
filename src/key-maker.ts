@@ -6,23 +6,6 @@ export function generateQueryVariablesSignature(
 ): string {
   return `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
 }
-export function generateInfiniteQueryKey(node: OperationDefinitionNode, hasRequiredVariables: boolean): string {
-  if (hasRequiredVariables) return `['${node.name!.value}.infinite', variables]`;
-  return `variables === undefined ? ['${node.name!.value}.infinite'] : ['${node.name!.value}.infinite', variables]`;
-}
-
-export function generateInfiniteQueryKeyMaker(
-  node: OperationDefinitionNode,
-  operationName: string,
-  operationVariablesTypes: string,
-  hasRequiredVariables: boolean,
-) {
-  const signature = generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes);
-  return `\nuseInfinite${operationName}.getKey = (${signature}) => ${generateInfiniteQueryKey(
-    node,
-    hasRequiredVariables,
-  )};\n`;
-}
 
 export function generateQueryKey(node: OperationDefinitionNode, hasRequiredVariables: boolean): string {
   if (hasRequiredVariables) return `['${node.name!.value}', variables]`;
@@ -36,7 +19,17 @@ export function generateQueryKeyMaker(
   hasRequiredVariables: boolean,
 ) {
   const signature = generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes);
-  return `\nexport const ${operationName}Keys = (${signature}) => ${generateQueryKey(node, hasRequiredVariables)};\n`;
+
+  const comment = `\n/**
+  * Key maker function for \`${operationName}\`.
+  */`;
+
+  const implementation = `\nexport const ${operationName}Keys = (${signature}) => ${generateQueryKey(
+    node,
+    hasRequiredVariables,
+  )};\n`;
+
+  return `\n${comment}\n${implementation}`;
 }
 
 export function generateMutationKey(node: OperationDefinitionNode): string {
@@ -44,5 +37,11 @@ export function generateMutationKey(node: OperationDefinitionNode): string {
 }
 
 export function generateMutationKeyMaker(node: OperationDefinitionNode, operationName: string) {
-  return `\nexport const ${operationName}Keys = () => ${generateMutationKey(node)};\n`;
+  const comment = `\n/**
+  * Key maker function for \`${operationName}\`.
+  */`;
+
+  const implementation = `\nexport const ${operationName}Keys = () => ${generateMutationKey(node)};\n`;
+
+  return `\n${comment}\n${implementation}`;
 }

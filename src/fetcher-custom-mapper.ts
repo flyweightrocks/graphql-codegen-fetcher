@@ -1,23 +1,19 @@
-import { ParsedMapper, buildMapperImport, parseMapper } from '@graphql-codegen/visitor-plugin-common';
-import { generateInfiniteQueryKey, generateMutationKey, generateQueryKey } from './keys-generator';
-
-import { CustomFetch } from './config';
-import { FetcherRenderer } from './fetcher';
+import { buildMapperImport, ParsedMapper, parseMapper } from '@graphql-codegen/visitor-plugin-common';
 import { OperationDefinitionNode } from 'graphql';
+import { CustomFetch } from './config';
+import { FetcherRenderer } from './fetcher-renderer';
 import { ReactQueryVisitor } from './visitor';
-import { OperationOutputType, OperationVariablesType } from './type-resolver';
 
 export class CustomMapperFetcher implements FetcherRenderer {
   private _mapper: ParsedMapper;
   private _isReactHook: boolean;
-  private _customizer: ParsedMapper;
 
   constructor(private visitor: ReactQueryVisitor, customFetcher: CustomFetch) {
     if (typeof customFetcher === 'string') {
       customFetcher = { func: customFetcher };
     }
     this._mapper = parseMapper(customFetcher.func);
-    this._isReactHook = customFetcher.isReactHook;
+    this._isReactHook = !!customFetcher.isReactHook;
   }
 
   private getFetcherFnName(
@@ -31,19 +27,21 @@ export class CustomMapperFetcher implements FetcherRenderer {
 
   generateFetcherImplementaion(): string {
     if (this._mapper.isExternal) {
-      return buildMapperImport(
-        this._mapper.source,
-        [
-          {
-            identifier: this._mapper.type,
-            asDefault: this._mapper.default,
-          },
-        ],
-        this.visitor.config.useTypeImports,
+      return (
+        buildMapperImport(
+          this._mapper.source,
+          [
+            {
+              identifier: this._mapper.type,
+              asDefault: this._mapper.default,
+            },
+          ],
+          this.visitor.config.useTypeImports,
+        ) || ''
       );
     }
 
-    return null;
+    return '';
   }
 
   // generateInfiniteQueryHook(
@@ -173,8 +171,10 @@ export class CustomMapperFetcher implements FetcherRenderer {
     const impl = `${typedFetcher}(${documentVariableName}, variables, options, outputFn, inputFn)`;
 
     const comment = `\n/**
-    * Fetcher function for ${operationName}.
-    * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+    * Fetcher function for \`${operationName}\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function, if available, must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function, if available, must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
     */`;
 
     const implementation = `export const ${operationName}Fetcher = (${variables}, options?: RequestInit['headers'], outputFn = ${operationName}Output, inputFn = ${operationName}Input) => ${impl};`;

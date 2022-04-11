@@ -20,7 +20,7 @@ const getTypeName = (type) => {
         return getTypeName(type.ofType);
     if (type instanceof graphql_1.GraphQLList)
         return getTypeName(type.ofType) + '[]';
-    return type.name;
+    return toScalarType(type.name);
 };
 const resolveFields = (type) => {
     if (type instanceof graphql_1.GraphQLNonNull) {
@@ -56,16 +56,11 @@ const getOutputType = (fieldDefinition) => {
 };
 exports.getOutputType = getOutputType;
 const getInputVariablesType = (fieldDefinition) => {
-    return {
-        ...Object.fromEntries(fieldDefinition.args.map((arg) => [
-            arg.name,
-            {
-                fieldName: arg.name,
-                typeName: getTypeName(arg.type),
-                fields: resolveFields(arg.type),
-            },
-        ])),
-    };
+    return fieldDefinition.args.map((arg) => ({
+        fieldName: arg.name,
+        typeName: getTypeName(arg.type),
+        fields: resolveFields(arg.type),
+    }));
 };
 exports.getInputVariablesType = getInputVariablesType;
 //# sourceMappingURL=type-resolver.js.map

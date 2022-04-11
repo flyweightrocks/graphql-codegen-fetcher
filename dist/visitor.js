@@ -8,12 +8,8 @@ const visitor_plugin_common_1 = require("@graphql-codegen/visitor-plugin-common"
 const auto_bind_1 = __importDefault(require("auto-bind"));
 const change_case_all_1 = require("change-case-all");
 const fetcher_custom_mapper_1 = require("./fetcher-custom-mapper");
-const fetcher_fetch_1 = require("./fetcher-fetch");
-const fetcher_fetch_hardcoded_1 = require("./fetcher-fetch-hardcoded");
-const fetcher_graphql_request_1 = require("./fetcher-graphql-request");
-const keys_generator_1 = require("./keys-generator");
-const transformer_generator_1 = require("./transformer-generator");
-const change_case_all_2 = require("change-case-all");
+const key_maker_1 = require("./key-maker");
+const transformer_1 = require("./transformer");
 const type_resolver_1 = require("./type-resolver");
 class ReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVisitor {
     constructor(schema, fragments, rawConfig, documents) {
@@ -53,15 +49,6 @@ class ReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVisitor {
         return this._imports;
     }
     createFetcher(raw) {
-        if (raw === 'fetch') {
-            return new fetcher_fetch_1.FetchFetcher(this);
-        }
-        else if (typeof raw === 'object' && 'endpoint' in raw) {
-            return new fetcher_fetch_hardcoded_1.HardcodedFetchFetcher(this, raw);
-        }
-        else if (raw === 'graphql-request') {
-            return new fetcher_graphql_request_1.GraphQLRequestClientFetcher(this);
-        }
         return new fetcher_custom_mapper_1.CustomMapperFetcher(this, raw);
     }
     get hasOperations() {
@@ -106,7 +93,7 @@ class ReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVisitor {
         });
         operationResultType = this._externalImportPrefix + operationResultType;
         operationVariablesTypes = this._externalImportPrefix + operationVariablesTypes;
-        const fieldName = (0, change_case_all_2.lowerCaseFirst)(nodeName);
+        const fieldName = (0, change_case_all_1.lowerCaseFirst)(nodeName);
         const fieldDefinition = this.fields[fieldName];
         const outputType = (0, type_resolver_1.getOutputType)(fieldDefinition);
         const outputResultType = outputType.typeName;
@@ -114,19 +101,18 @@ class ReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVisitor {
         const inputVariablesType = operationVariablesTypes;
         let query = '';
         if (operationType === 'Query') {
-            query += (0, keys_generator_1.generateQueryKeyMaker)(node, operationName, operationVariablesTypes, hasRequiredVariables);
-            query += (0, transformer_generator_1.generateInputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, variablesType);
-            query += (0, transformer_generator_1.generateOutputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, outputType);
+            query += (0, key_maker_1.generateQueryKeyMaker)(node, operationName, operationVariablesTypes, hasRequiredVariables);
+            query += (0, transformer_1.generateInputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, variablesType);
+            query += (0, transformer_1.generateOutputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, outputType);
             query += this.fetcher.generateFetcherFetch(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables, outputResultType, inputVariablesType);
         }
         else if (operationType === 'Mutation') {
-            query += (0, keys_generator_1.generateMutationKeyMaker)(node, operationName);
-            query += (0, transformer_generator_1.generateInputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, variablesType);
-            query += (0, transformer_generator_1.generateOutputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, outputType);
+            query += (0, key_maker_1.generateMutationKeyMaker)(node, operationName);
+            query += (0, transformer_1.generateInputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, variablesType);
+            query += (0, transformer_1.generateOutputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, outputType);
             query += this.fetcher.generateFetcherFetch(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables, outputResultType, inputVariablesType);
         }
         else if (operationType === 'Subscription') {
-            console.warn(`Plugin "typescript-react-query" does not support GraphQL Subscriptions at the moment! Ignoring "${node.name.value}"...`);
         }
         return query;
     }

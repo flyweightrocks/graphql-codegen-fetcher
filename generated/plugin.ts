@@ -19,6 +19,18 @@ export type Scalars = {
   AWSJSON: Record<string, any> | string;
 };
 
+export type CognitoUser = {
+  attributes: Scalars['AWSJSON'];
+  createdAt?: Maybe<Scalars['AWSDateTime']>;
+  updatedAt?: Maybe<Scalars['AWSDateTime']>;
+  username: Scalars['ID'];
+};
+
+export type CognitoUserList = {
+  items: Array<Maybe<CognitoUser>>;
+  nextToken?: Maybe<Scalars['String']>;
+};
+
 export type Connector = {
   createdAt?: Maybe<Scalars['AWSDateTime']>;
   id: Scalars['ID'];
@@ -169,7 +181,6 @@ export type CreateTransformationInput = {
 
 export type CreateUserInput = {
   email: Scalars['String'];
-  groupID: Scalars['String'];
 };
 
 export type DeleteConnectorCredentialsInput = {
@@ -211,6 +222,14 @@ export type DeleteTestInput = {
 
 export type DeleteTransformationInput = {
   id: Scalars['ID'];
+};
+
+export type DeleteUserInput = {
+  username: Scalars['ID'];
+};
+
+export type FindUsersInput = {
+  email?: InputMaybe<Scalars['String']>;
 };
 
 export enum GraphEntityType {
@@ -549,7 +568,7 @@ export type Mutation = {
   createSchema?: Maybe<Schema>;
   createTest?: Maybe<Test>;
   createTransformation?: Maybe<Transformation>;
-  createUser?: Maybe<User>;
+  createUser?: Maybe<CognitoUser>;
   deleteConnector?: Maybe<Connector>;
   deleteConnectorCredentials?: Maybe<ConnectorCredentials>;
   deleteNode?: Maybe<DeleteNodeRecord>;
@@ -558,6 +577,8 @@ export type Mutation = {
   deleteSchema?: Maybe<Schema>;
   deleteTest?: Maybe<Test>;
   deleteTransformation?: Maybe<Transformation>;
+  deleteUser?: Maybe<CognitoUser>;
+  emptyMutation?: Maybe<Scalars['Int']>;
   runConnector?: Maybe<Scalars['AWSJSON']>;
   runPerspective?: Maybe<RunPerspectiveResult>;
   updateConnector?: Maybe<Connector>;
@@ -569,6 +590,7 @@ export type Mutation = {
   updateSchema?: Maybe<Schema>;
   updateTest?: Maybe<Test>;
   updateTransformation?: Maybe<Transformation>;
+  updateUser?: Maybe<CognitoUser>;
 };
 
 export type MutationCreateConnectorArgs = {
@@ -654,6 +676,10 @@ export type MutationDeleteTransformationArgs = {
   input: DeleteTransformationInput;
 };
 
+export type MutationDeleteUserArgs = {
+  input: DeleteUserInput;
+};
+
 export type MutationRunConnectorArgs = {
   input: RunConnectorInput;
 };
@@ -702,6 +728,10 @@ export type MutationUpdateTestArgs = {
 export type MutationUpdateTransformationArgs = {
   condition?: InputMaybe<ModelTransformationConditionInput>;
   input: UpdateTransformationInput;
+};
+
+export type MutationUpdateUserArgs = {
+  input: UpdateUserInput;
 };
 
 export type NodeGraphRecord = {
@@ -778,6 +808,8 @@ export enum PerspectiveType {
 export type Query = {
   customTest?: Maybe<Test>;
   echo?: Maybe<Scalars['String']>;
+  emptyQuery?: Maybe<Scalars['String']>;
+  findUsers?: Maybe<CognitoUserList>;
   getConnector?: Maybe<Connector>;
   getConnectorBySource?: Maybe<ModelConnectorConnection>;
   getConnectorCredentials?: Maybe<ConnectorCredentials>;
@@ -790,6 +822,7 @@ export type Query = {
   getTest?: Maybe<Test>;
   getTransformation?: Maybe<Transformation>;
   getTransformationsByConnector?: Maybe<ModelTransformationConnection>;
+  getUser?: Maybe<CognitoUser>;
   listConnectors?: Maybe<ModelConnectorConnection>;
   listNodes?: Maybe<NodesGraphRecord>;
   listOrganizations?: Maybe<ModelOrganizationConnection>;
@@ -797,7 +830,7 @@ export type Query = {
   listSchemas?: Maybe<ModelSchemaConnection>;
   listTests?: Maybe<ModelTestConnection>;
   listTransformations?: Maybe<ModelTransformationConnection>;
-  listUsers?: Maybe<Array<Maybe<User>>>;
+  listUsers?: Maybe<CognitoUserList>;
   searchGraph?: Maybe<SearchGraphResult>;
 };
 
@@ -807,6 +840,10 @@ export type QueryCustomTestArgs = {
 
 export type QueryEchoArgs = {
   msg?: InputMaybe<Scalars['String']>;
+};
+
+export type QueryFindUsersArgs = {
+  input: FindUsersInput;
 };
 
 export type QueryGetConnectorArgs = {
@@ -865,6 +902,10 @@ export type QueryGetTransformationsByConnectorArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
+export type QueryGetUserArgs = {
+  username: Scalars['ID'];
+};
+
 export type QueryListConnectorsArgs = {
   filter?: InputMaybe<ModelConnectorFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -906,7 +947,7 @@ export type QueryListTransformationsArgs = {
 };
 
 export type QueryListUsersArgs = {
-  groupID: Scalars['ID'];
+  nextToken?: InputMaybe<Scalars['String']>;
 };
 
 export type QuerySearchGraphArgs = {
@@ -1144,12 +1185,13 @@ export type UpdateTransformationInput = {
   updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
 };
 
-export type User = {
-  createdAt?: Maybe<Scalars['AWSDateTime']>;
+export type UpdateUserInput = {
   email: Scalars['String'];
-  id: Scalars['ID'];
-  updatedAt?: Maybe<Scalars['AWSDateTime']>;
 };
+
+export type EmptyMutationMutationVariables = Exact<{ [key: string]: never }>;
+
+export type EmptyMutationMutation = { emptyMutation?: number | undefined };
 
 export type RunConnectorMutationVariables = Exact<{
   input: RunConnectorInput;
@@ -1630,42 +1672,6 @@ export type DeleteTransformationMutation = {
     | undefined;
 };
 
-export type CreateOrganizationMutationVariables = Exact<{
-  input: CreateOrganizationInput;
-  condition?: InputMaybe<ModelOrganizationConditionInput>;
-}>;
-
-export type CreateOrganizationMutation = {
-  createOrganization?:
-    | {
-        id: string;
-        createdAt?: any | undefined;
-        updatedAt?: any | undefined;
-        adminGroup?: string | undefined;
-        userGroup?: string | undefined;
-        name: string;
-      }
-    | undefined;
-};
-
-export type UpdateOrganizationMutationVariables = Exact<{
-  input: UpdateOrganizationInput;
-  condition?: InputMaybe<ModelOrganizationConditionInput>;
-}>;
-
-export type UpdateOrganizationMutation = {
-  updateOrganization?:
-    | {
-        id: string;
-        createdAt?: any | undefined;
-        updatedAt?: any | undefined;
-        adminGroup?: string | undefined;
-        userGroup?: string | undefined;
-        name: string;
-      }
-    | undefined;
-};
-
 export type CreatePerspectiveMutationVariables = Exact<{
   input: CreatePerspectiveInput;
   condition?: InputMaybe<ModelPerspectiveConditionInput>;
@@ -1927,6 +1933,42 @@ export type DeleteTestMutation = {
     | undefined;
 };
 
+export type CreateOrganizationMutationVariables = Exact<{
+  input: CreateOrganizationInput;
+  condition?: InputMaybe<ModelOrganizationConditionInput>;
+}>;
+
+export type CreateOrganizationMutation = {
+  createOrganization?:
+    | {
+        id: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        adminGroup?: string | undefined;
+        userGroup?: string | undefined;
+        name: string;
+      }
+    | undefined;
+};
+
+export type UpdateOrganizationMutationVariables = Exact<{
+  input: UpdateOrganizationInput;
+  condition?: InputMaybe<ModelOrganizationConditionInput>;
+}>;
+
+export type UpdateOrganizationMutation = {
+  updateOrganization?:
+    | {
+        id: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        adminGroup?: string | undefined;
+        userGroup?: string | undefined;
+        name: string;
+      }
+    | undefined;
+};
+
 export type RunPerspectiveMutationVariables = Exact<{
   input: RunPerspectiveInput;
 }>;
@@ -1938,8 +1980,49 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 export type CreateUserMutation = {
-  createUser?: { id: string; createdAt?: any | undefined; updatedAt?: any | undefined; email: string } | undefined;
+  createUser?:
+    | {
+        username: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        attributes: Record<string, any> | string;
+      }
+    | undefined;
 };
+
+export type UpdateUserMutationVariables = Exact<{
+  input: UpdateUserInput;
+}>;
+
+export type UpdateUserMutation = {
+  updateUser?:
+    | {
+        username: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        attributes: Record<string, any> | string;
+      }
+    | undefined;
+};
+
+export type DeleteUserMutationVariables = Exact<{
+  input: DeleteUserInput;
+}>;
+
+export type DeleteUserMutation = {
+  deleteUser?:
+    | {
+        username: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        attributes: Record<string, any> | string;
+      }
+    | undefined;
+};
+
+export type EmptyQueryQueryVariables = Exact<{ [key: string]: never }>;
+
+export type EmptyQueryQuery = { emptyQuery?: string | undefined };
 
 export type EchoQueryVariables = Exact<{
   msg?: InputMaybe<Scalars['String']>;
@@ -2276,48 +2359,6 @@ export type GetTransformationsByConnectorQuery = {
     | undefined;
 };
 
-export type GetOrganizationQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-export type GetOrganizationQuery = {
-  getOrganization?:
-    | {
-        id: string;
-        createdAt?: any | undefined;
-        updatedAt?: any | undefined;
-        adminGroup?: string | undefined;
-        userGroup?: string | undefined;
-        name: string;
-      }
-    | undefined;
-};
-
-export type ListOrganizationsQueryVariables = Exact<{
-  filter?: InputMaybe<ModelOrganizationFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-export type ListOrganizationsQuery = {
-  listOrganizations?:
-    | {
-        nextToken?: string | undefined;
-        items: Array<
-          | {
-              id: string;
-              createdAt?: any | undefined;
-              updatedAt?: any | undefined;
-              adminGroup?: string | undefined;
-              userGroup?: string | undefined;
-              name: string;
-            }
-          | undefined
-        >;
-      }
-    | undefined;
-};
-
 export type GetPerspectiveQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -2510,6 +2551,48 @@ export type ListTestsQuery = {
     | undefined;
 };
 
+export type GetOrganizationQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type GetOrganizationQuery = {
+  getOrganization?:
+    | {
+        id: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        adminGroup?: string | undefined;
+        userGroup?: string | undefined;
+        name: string;
+      }
+    | undefined;
+};
+
+export type ListOrganizationsQueryVariables = Exact<{
+  filter?: InputMaybe<ModelOrganizationFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+}>;
+
+export type ListOrganizationsQuery = {
+  listOrganizations?:
+    | {
+        nextToken?: string | undefined;
+        items: Array<
+          | {
+              id: string;
+              createdAt?: any | undefined;
+              updatedAt?: any | undefined;
+              adminGroup?: string | undefined;
+              userGroup?: string | undefined;
+              name: string;
+            }
+          | undefined
+        >;
+      }
+    | undefined;
+};
+
 export type SearchGraphQueryVariables = Exact<{
   input: SearchGraphInput;
 }>;
@@ -2599,13 +2682,60 @@ export type ListNodesQuery = {
     | undefined;
 };
 
+export type GetUserQueryVariables = Exact<{
+  username: Scalars['ID'];
+}>;
+
+export type GetUserQuery = {
+  getUser?:
+    | {
+        username: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        attributes: Record<string, any> | string;
+      }
+    | undefined;
+};
+
+export type FindUsersQueryVariables = Exact<{
+  input: FindUsersInput;
+}>;
+
+export type FindUsersQuery = {
+  findUsers?:
+    | {
+        nextToken?: string | undefined;
+        items: Array<
+          | {
+              username: string;
+              createdAt?: any | undefined;
+              updatedAt?: any | undefined;
+              attributes: Record<string, any> | string;
+            }
+          | undefined
+        >;
+      }
+    | undefined;
+};
+
 export type ListUsersQueryVariables = Exact<{
-  groupID: Scalars['ID'];
+  nextToken?: InputMaybe<Scalars['String']>;
 }>;
 
 export type ListUsersQuery = {
   listUsers?:
-    | Array<{ id: string; createdAt?: any | undefined; updatedAt?: any | undefined; email: string } | undefined>
+    | {
+        nextToken?: string | undefined;
+        items: Array<
+          | {
+              username: string;
+              createdAt?: any | undefined;
+              updatedAt?: any | undefined;
+              attributes: Record<string, any> | string;
+            }
+          | undefined
+        >;
+      }
     | undefined;
 };
 
@@ -2617,34 +2747,99 @@ export type GetConnectorCredentialsQuery = {
   getConnectorCredentials?: { id: string; plainCredentials: Record<string, any> | string } | undefined;
 };
 
+export const EmptyMutationDocument = `
+    mutation EmptyMutation {
+  emptyMutation
+}
+    `;
+
+/**
+ * Key maker function for `EmptyMutationMutation`.
+ */
+
+export const EmptyMutationMutationKeys = () => ['EmptyMutation'];
+
+/**
+ * Input transformer function for `EmptyMutationMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `EmptyMutationMutationVariables` - The original variables
+ * @returns `EmptyMutationMutationVariables` - The transformed variables
+ */
+export const EmptyMutationMutationInput = (variables?: EmptyMutationMutationVariables) =>
+  variables as EmptyMutationMutationVariables;
+
+/**
+ * Output transformer function for `EmptyMutationMutation`.
+ * It extracts the `emptyMutation` field from the result and transforms it into a `Scalars['Int']` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data EmptyMutationMutation - The data returned from the GraphQL server
+ * @returns Scalars['Int'] - The transformed data
+ */
+export const EmptyMutationMutationOutput = ({ emptyMutation }: EmptyMutationMutation) =>
+  emptyMutation as Scalars['Int'];
+
+/**
+ * Fetcher function for `EmptyMutationMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const EmptyMutationMutationFetcher = (
+  variables?: EmptyMutationMutationVariables,
+  options?: RequestInit['headers'],
+  outputFn = EmptyMutationMutationOutput,
+  inputFn = EmptyMutationMutationInput,
+) =>
+  fetchWithAmplify<
+    EmptyMutationMutation,
+    EmptyMutationMutationVariables,
+    Scalars['Int'],
+    EmptyMutationMutationVariables
+  >(EmptyMutationDocument, variables, options, outputFn, inputFn);
 export const RunConnectorDocument = `
     mutation RunConnector($input: RunConnectorInput!) {
   runConnector(input: $input)
 }
     `;
 
+/**
+ * Key maker function for `RunConnectorMutation`.
+ */
+
 export const RunConnectorMutationKeys = () => ['RunConnector'];
 
 /**
- * Input transformer function for RunConnectorMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input RunConnectorInput - input
- * @returns
+ * Input transformer function for `RunConnectorMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `RunConnectorMutationVariables` - The original variables
+ * @returns `RunConnectorMutationVariables` - The transformed variables
  */
 export const RunConnectorMutationInput = (variables: RunConnectorMutationVariables) =>
   variables as RunConnectorMutationVariables;
 
 /**
- * Output transformer function for RunConnectorMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `RunConnectorMutation`.
+ * It extracts the `runConnector` field from the result and transforms it into a `Scalars['AWSJSON']` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data RunConnectorMutation - The data returned from the GraphQL server
- * @returns AWSJSON - The transformed data
+ * @returns Scalars['AWSJSON'] - The transformed data
  */
-export const RunConnectorMutationOutput = ({ runConnector }: RunConnectorMutation) => runConnector as AWSJSON;
+export const RunConnectorMutationOutput = ({ runConnector }: RunConnectorMutation) =>
+  runConnector as Scalars['AWSJSON'];
 
 /**
- * Fetcher function for RunConnectorMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `RunConnectorMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const RunConnectorMutationFetcher = (
   variables: RunConnectorMutationVariables,
@@ -2652,13 +2847,12 @@ export const RunConnectorMutationFetcher = (
   outputFn = RunConnectorMutationOutput,
   inputFn = RunConnectorMutationInput,
 ) =>
-  fetchWithAmplify<RunConnectorMutation, RunConnectorMutationVariables, AWSJSON, RunConnectorMutationVariables>(
-    RunConnectorDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<
+    RunConnectorMutation,
+    RunConnectorMutationVariables,
+    Scalars['AWSJSON'],
+    RunConnectorMutationVariables
+  >(RunConnectorDocument, variables, options, outputFn, inputFn);
 export const CreateConnectorCredentialsDocument = `
     mutation CreateConnectorCredentials($input: CreateConnectorCredentialsInput!) {
   createConnectorCredentials(input: $input) {
@@ -2668,13 +2862,20 @@ export const CreateConnectorCredentialsDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CreateConnectorCredentialsMutation`.
+ */
+
 export const CreateConnectorCredentialsMutationKeys = () => ['CreateConnectorCredentials'];
 
 /**
- * Input transformer function for CreateConnectorCredentialsMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input CreateConnectorCredentialsInput - input
- * @returns
+ * Input transformer function for `CreateConnectorCredentialsMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateConnectorCredentialsMutationVariables` - The original variables
+ * @returns `CreateConnectorCredentialsMutationVariables` - The transformed variables
  */
 export const CreateConnectorCredentialsMutationInput = (variables: CreateConnectorCredentialsMutationVariables) =>
   ({
@@ -2687,8 +2888,10 @@ export const CreateConnectorCredentialsMutationInput = (variables: CreateConnect
   } as CreateConnectorCredentialsMutationVariables);
 
 /**
- * Output transformer function for CreateConnectorCredentialsMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreateConnectorCredentialsMutation`.
+ * It extracts the `createConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreateConnectorCredentialsMutation - The data returned from the GraphQL server
  * @returns ConnectorCredentials - The transformed data
  */
@@ -2704,8 +2907,10 @@ export const CreateConnectorCredentialsMutationOutput = ({
   } as ConnectorCredentials);
 
 /**
- * Fetcher function for CreateConnectorCredentialsMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreateConnectorCredentialsMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreateConnectorCredentialsMutationFetcher = (
   variables: CreateConnectorCredentialsMutationVariables,
@@ -2728,13 +2933,20 @@ export const UpdateConnectorCredentialsDocument = `
 }
     `;
 
+/**
+ * Key maker function for `UpdateConnectorCredentialsMutation`.
+ */
+
 export const UpdateConnectorCredentialsMutationKeys = () => ['UpdateConnectorCredentials'];
 
 /**
- * Input transformer function for UpdateConnectorCredentialsMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input UpdateConnectorCredentialsInput - input
- * @returns
+ * Input transformer function for `UpdateConnectorCredentialsMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateConnectorCredentialsMutationVariables` - The original variables
+ * @returns `UpdateConnectorCredentialsMutationVariables` - The transformed variables
  */
 export const UpdateConnectorCredentialsMutationInput = (variables: UpdateConnectorCredentialsMutationVariables) =>
   ({
@@ -2747,8 +2959,10 @@ export const UpdateConnectorCredentialsMutationInput = (variables: UpdateConnect
   } as UpdateConnectorCredentialsMutationVariables);
 
 /**
- * Output transformer function for UpdateConnectorCredentialsMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `UpdateConnectorCredentialsMutation`.
+ * It extracts the `updateConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data UpdateConnectorCredentialsMutation - The data returned from the GraphQL server
  * @returns ConnectorCredentials - The transformed data
  */
@@ -2764,8 +2978,10 @@ export const UpdateConnectorCredentialsMutationOutput = ({
   } as ConnectorCredentials);
 
 /**
- * Fetcher function for UpdateConnectorCredentialsMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `UpdateConnectorCredentialsMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const UpdateConnectorCredentialsMutationFetcher = (
   variables: UpdateConnectorCredentialsMutationVariables,
@@ -2788,20 +3004,29 @@ export const DeleteConnectorCredentialsDocument = `
 }
     `;
 
+/**
+ * Key maker function for `DeleteConnectorCredentialsMutation`.
+ */
+
 export const DeleteConnectorCredentialsMutationKeys = () => ['DeleteConnectorCredentials'];
 
 /**
- * Input transformer function for DeleteConnectorCredentialsMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input DeleteConnectorCredentialsInput - input
- * @returns
+ * Input transformer function for `DeleteConnectorCredentialsMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteConnectorCredentialsMutationVariables` - The original variables
+ * @returns `DeleteConnectorCredentialsMutationVariables` - The transformed variables
  */
 export const DeleteConnectorCredentialsMutationInput = (variables: DeleteConnectorCredentialsMutationVariables) =>
   variables as DeleteConnectorCredentialsMutationVariables;
 
 /**
- * Output transformer function for DeleteConnectorCredentialsMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `DeleteConnectorCredentialsMutation`.
+ * It extracts the `deleteConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data DeleteConnectorCredentialsMutation - The data returned from the GraphQL server
  * @returns ConnectorCredentials - The transformed data
  */
@@ -2817,8 +3042,10 @@ export const DeleteConnectorCredentialsMutationOutput = ({
   } as ConnectorCredentials);
 
 /**
- * Fetcher function for DeleteConnectorCredentialsMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `DeleteConnectorCredentialsMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const DeleteConnectorCredentialsMutationFetcher = (
   variables: DeleteConnectorCredentialsMutationVariables,
@@ -2858,13 +3085,20 @@ export const CreateNodeDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CreateNodeMutation`.
+ */
+
 export const CreateNodeMutationKeys = () => ['CreateNode'];
 
 /**
- * Input transformer function for CreateNodeMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input CreateNodeInput - input
- * @returns
+ * Input transformer function for `CreateNodeMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateNodeMutationVariables` - The original variables
+ * @returns `CreateNodeMutationVariables` - The transformed variables
  */
 export const CreateNodeMutationInput = (variables: CreateNodeMutationVariables) =>
   ({
@@ -2876,8 +3110,10 @@ export const CreateNodeMutationInput = (variables: CreateNodeMutationVariables) 
   } as CreateNodeMutationVariables);
 
 /**
- * Output transformer function for CreateNodeMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreateNodeMutation`.
+ * It extracts the `createNode` field from the result and transforms it into a `NodeGraphRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreateNodeMutation - The data returned from the GraphQL server
  * @returns NodeGraphRecord - The transformed data
  */
@@ -2905,8 +3141,10 @@ export const CreateNodeMutationOutput = ({ createNode }: CreateNodeMutation) =>
   } as NodeGraphRecord);
 
 /**
- * Fetcher function for CreateNodeMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreateNodeMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreateNodeMutationFetcher = (
   variables: CreateNodeMutationVariables,
@@ -2947,13 +3185,20 @@ export const UpdateNodeDocument = `
 }
     `;
 
+/**
+ * Key maker function for `UpdateNodeMutation`.
+ */
+
 export const UpdateNodeMutationKeys = () => ['UpdateNode'];
 
 /**
- * Input transformer function for UpdateNodeMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input UpdateNodeInput - input
- * @returns
+ * Input transformer function for `UpdateNodeMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateNodeMutationVariables` - The original variables
+ * @returns `UpdateNodeMutationVariables` - The transformed variables
  */
 export const UpdateNodeMutationInput = (variables: UpdateNodeMutationVariables) =>
   ({
@@ -2965,8 +3210,10 @@ export const UpdateNodeMutationInput = (variables: UpdateNodeMutationVariables) 
   } as UpdateNodeMutationVariables);
 
 /**
- * Output transformer function for UpdateNodeMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `UpdateNodeMutation`.
+ * It extracts the `updateNode` field from the result and transforms it into a `NodeGraphRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data UpdateNodeMutation - The data returned from the GraphQL server
  * @returns NodeGraphRecord - The transformed data
  */
@@ -2994,8 +3241,10 @@ export const UpdateNodeMutationOutput = ({ updateNode }: UpdateNodeMutation) =>
   } as NodeGraphRecord);
 
 /**
- * Fetcher function for UpdateNodeMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `UpdateNodeMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const UpdateNodeMutationFetcher = (
   variables: UpdateNodeMutationVariables,
@@ -3029,20 +3278,29 @@ export const DeleteNodeDocument = `
 }
     `;
 
+/**
+ * Key maker function for `DeleteNodeMutation`.
+ */
+
 export const DeleteNodeMutationKeys = () => ['DeleteNode'];
 
 /**
- * Input transformer function for DeleteNodeMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input DeleteNodeInput - input
- * @returns
+ * Input transformer function for `DeleteNodeMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteNodeMutationVariables` - The original variables
+ * @returns `DeleteNodeMutationVariables` - The transformed variables
  */
 export const DeleteNodeMutationInput = (variables: DeleteNodeMutationVariables) =>
   variables as DeleteNodeMutationVariables;
 
 /**
- * Output transformer function for DeleteNodeMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `DeleteNodeMutation`.
+ * It extracts the `deleteNode` field from the result and transforms it into a `DeleteNodeRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data DeleteNodeMutation - The data returned from the GraphQL server
  * @returns DeleteNodeRecord - The transformed data
  */
@@ -3061,8 +3319,10 @@ export const DeleteNodeMutationOutput = ({ deleteNode }: DeleteNodeMutation) =>
   } as DeleteNodeRecord);
 
 /**
- * Fetcher function for DeleteNodeMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `DeleteNodeMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const DeleteNodeMutationFetcher = (
   variables: DeleteNodeMutationVariables,
@@ -3101,13 +3361,20 @@ export const CreateRelationshipDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CreateRelationshipMutation`.
+ */
+
 export const CreateRelationshipMutationKeys = () => ['CreateRelationship'];
 
 /**
- * Input transformer function for CreateRelationshipMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input CreateRelationshipInput - input
- * @returns
+ * Input transformer function for `CreateRelationshipMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateRelationshipMutationVariables` - The original variables
+ * @returns `CreateRelationshipMutationVariables` - The transformed variables
  */
 export const CreateRelationshipMutationInput = (variables: CreateRelationshipMutationVariables) =>
   ({
@@ -3119,8 +3386,10 @@ export const CreateRelationshipMutationInput = (variables: CreateRelationshipMut
   } as CreateRelationshipMutationVariables);
 
 /**
- * Output transformer function for CreateRelationshipMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreateRelationshipMutation`.
+ * It extracts the `createRelationship` field from the result and transforms it into a `RelationshipGraphRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreateRelationshipMutation - The data returned from the GraphQL server
  * @returns RelationshipGraphRecord - The transformed data
  */
@@ -3147,8 +3416,10 @@ export const CreateRelationshipMutationOutput = ({ createRelationship }: CreateR
   } as RelationshipGraphRecord);
 
 /**
- * Fetcher function for CreateRelationshipMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreateRelationshipMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreateRelationshipMutationFetcher = (
   variables: CreateRelationshipMutationVariables,
@@ -3186,13 +3457,20 @@ export const UpdateRelationshipDocument = `
 }
     `;
 
+/**
+ * Key maker function for `UpdateRelationshipMutation`.
+ */
+
 export const UpdateRelationshipMutationKeys = () => ['UpdateRelationship'];
 
 /**
- * Input transformer function for UpdateRelationshipMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input UpdateRelationshipInput - input
- * @returns
+ * Input transformer function for `UpdateRelationshipMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateRelationshipMutationVariables` - The original variables
+ * @returns `UpdateRelationshipMutationVariables` - The transformed variables
  */
 export const UpdateRelationshipMutationInput = (variables: UpdateRelationshipMutationVariables) =>
   ({
@@ -3204,8 +3482,10 @@ export const UpdateRelationshipMutationInput = (variables: UpdateRelationshipMut
   } as UpdateRelationshipMutationVariables);
 
 /**
- * Output transformer function for UpdateRelationshipMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `UpdateRelationshipMutation`.
+ * It extracts the `updateRelationship` field from the result and transforms it into a `RelationshipGraphRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data UpdateRelationshipMutation - The data returned from the GraphQL server
  * @returns RelationshipGraphRecord - The transformed data
  */
@@ -3232,8 +3512,10 @@ export const UpdateRelationshipMutationOutput = ({ updateRelationship }: UpdateR
   } as RelationshipGraphRecord);
 
 /**
- * Fetcher function for UpdateRelationshipMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `UpdateRelationshipMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const UpdateRelationshipMutationFetcher = (
   variables: UpdateRelationshipMutationVariables,
@@ -3261,20 +3543,29 @@ export const DeleteRelationshipDocument = `
 }
     `;
 
+/**
+ * Key maker function for `DeleteRelationshipMutation`.
+ */
+
 export const DeleteRelationshipMutationKeys = () => ['DeleteRelationship'];
 
 /**
- * Input transformer function for DeleteRelationshipMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input DeleteRelationshipInput - input
- * @returns
+ * Input transformer function for `DeleteRelationshipMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteRelationshipMutationVariables` - The original variables
+ * @returns `DeleteRelationshipMutationVariables` - The transformed variables
  */
 export const DeleteRelationshipMutationInput = (variables: DeleteRelationshipMutationVariables) =>
   variables as DeleteRelationshipMutationVariables;
 
 /**
- * Output transformer function for DeleteRelationshipMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `DeleteRelationshipMutation`.
+ * It extracts the `deleteRelationship` field from the result and transforms it into a `DeleteRelationshipRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data DeleteRelationshipMutation - The data returned from the GraphQL server
  * @returns DeleteRelationshipRecord - The transformed data
  */
@@ -3289,8 +3580,10 @@ export const DeleteRelationshipMutationOutput = ({ deleteRelationship }: DeleteR
   } as DeleteRelationshipRecord);
 
 /**
- * Fetcher function for DeleteRelationshipMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `DeleteRelationshipMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const DeleteRelationshipMutationFetcher = (
   variables: DeleteRelationshipMutationVariables,
@@ -3345,14 +3638,20 @@ export const CreateConnectorDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CreateConnectorMutation`.
+ */
+
 export const CreateConnectorMutationKeys = () => ['CreateConnector'];
 
 /**
- * Input transformer function for CreateConnectorMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelConnectorConditionInput - condition
- * @param input CreateConnectorInput - input
- * @returns
+ * Input transformer function for `CreateConnectorMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateConnectorMutationVariables` - The original variables
+ * @returns `CreateConnectorMutationVariables` - The transformed variables
  */
 export const CreateConnectorMutationInput = (variables: CreateConnectorMutationVariables) =>
   ({
@@ -3365,8 +3664,10 @@ export const CreateConnectorMutationInput = (variables: CreateConnectorMutationV
   } as CreateConnectorMutationVariables);
 
 /**
- * Output transformer function for CreateConnectorMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreateConnectorMutation`.
+ * It extracts the `createConnector` field from the result and transforms it into a `Connector` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreateConnectorMutation - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
@@ -3379,8 +3680,10 @@ export const CreateConnectorMutationOutput = ({ createConnector }: CreateConnect
   } as Connector);
 
 /**
- * Fetcher function for CreateConnectorMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreateConnectorMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreateConnectorMutationFetcher = (
   variables: CreateConnectorMutationVariables,
@@ -3435,14 +3738,20 @@ export const UpdateConnectorDocument = `
 }
     `;
 
+/**
+ * Key maker function for `UpdateConnectorMutation`.
+ */
+
 export const UpdateConnectorMutationKeys = () => ['UpdateConnector'];
 
 /**
- * Input transformer function for UpdateConnectorMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelConnectorConditionInput - condition
- * @param input UpdateConnectorInput - input
- * @returns
+ * Input transformer function for `UpdateConnectorMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateConnectorMutationVariables` - The original variables
+ * @returns `UpdateConnectorMutationVariables` - The transformed variables
  */
 export const UpdateConnectorMutationInput = (variables: UpdateConnectorMutationVariables) =>
   ({
@@ -3455,8 +3764,10 @@ export const UpdateConnectorMutationInput = (variables: UpdateConnectorMutationV
   } as UpdateConnectorMutationVariables);
 
 /**
- * Output transformer function for UpdateConnectorMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `UpdateConnectorMutation`.
+ * It extracts the `updateConnector` field from the result and transforms it into a `Connector` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data UpdateConnectorMutation - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
@@ -3469,8 +3780,10 @@ export const UpdateConnectorMutationOutput = ({ updateConnector }: UpdateConnect
   } as Connector);
 
 /**
- * Fetcher function for UpdateConnectorMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `UpdateConnectorMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const UpdateConnectorMutationFetcher = (
   variables: UpdateConnectorMutationVariables,
@@ -3525,21 +3838,29 @@ export const DeleteConnectorDocument = `
 }
     `;
 
+/**
+ * Key maker function for `DeleteConnectorMutation`.
+ */
+
 export const DeleteConnectorMutationKeys = () => ['DeleteConnector'];
 
 /**
- * Input transformer function for DeleteConnectorMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelConnectorConditionInput - condition
- * @param input DeleteConnectorInput - input
- * @returns
+ * Input transformer function for `DeleteConnectorMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteConnectorMutationVariables` - The original variables
+ * @returns `DeleteConnectorMutationVariables` - The transformed variables
  */
 export const DeleteConnectorMutationInput = (variables: DeleteConnectorMutationVariables) =>
   variables as DeleteConnectorMutationVariables;
 
 /**
- * Output transformer function for DeleteConnectorMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `DeleteConnectorMutation`.
+ * It extracts the `deleteConnector` field from the result and transforms it into a `Connector` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data DeleteConnectorMutation - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
@@ -3552,8 +3873,10 @@ export const DeleteConnectorMutationOutput = ({ deleteConnector }: DeleteConnect
   } as Connector);
 
 /**
- * Fetcher function for DeleteConnectorMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `DeleteConnectorMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const DeleteConnectorMutationFetcher = (
   variables: DeleteConnectorMutationVariables,
@@ -3608,21 +3931,29 @@ export const CreateTransformationDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CreateTransformationMutation`.
+ */
+
 export const CreateTransformationMutationKeys = () => ['CreateTransformation'];
 
 /**
- * Input transformer function for CreateTransformationMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelTransformationConditionInput - condition
- * @param input CreateTransformationInput - input
- * @returns
+ * Input transformer function for `CreateTransformationMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateTransformationMutationVariables` - The original variables
+ * @returns `CreateTransformationMutationVariables` - The transformed variables
  */
 export const CreateTransformationMutationInput = (variables: CreateTransformationMutationVariables) =>
   variables as CreateTransformationMutationVariables;
 
 /**
- * Output transformer function for CreateTransformationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreateTransformationMutation`.
+ * It extracts the `createTransformation` field from the result and transforms it into a `Transformation` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreateTransformationMutation - The data returned from the GraphQL server
  * @returns Transformation - The transformed data
  */
@@ -3639,8 +3970,10 @@ export const CreateTransformationMutationOutput = ({ createTransformation }: Cre
   } as Transformation);
 
 /**
- * Fetcher function for CreateTransformationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreateTransformationMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreateTransformationMutationFetcher = (
   variables: CreateTransformationMutationVariables,
@@ -3695,21 +4028,29 @@ export const UpdateTransformationDocument = `
 }
     `;
 
+/**
+ * Key maker function for `UpdateTransformationMutation`.
+ */
+
 export const UpdateTransformationMutationKeys = () => ['UpdateTransformation'];
 
 /**
- * Input transformer function for UpdateTransformationMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelTransformationConditionInput - condition
- * @param input UpdateTransformationInput - input
- * @returns
+ * Input transformer function for `UpdateTransformationMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateTransformationMutationVariables` - The original variables
+ * @returns `UpdateTransformationMutationVariables` - The transformed variables
  */
 export const UpdateTransformationMutationInput = (variables: UpdateTransformationMutationVariables) =>
   variables as UpdateTransformationMutationVariables;
 
 /**
- * Output transformer function for UpdateTransformationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `UpdateTransformationMutation`.
+ * It extracts the `updateTransformation` field from the result and transforms it into a `Transformation` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data UpdateTransformationMutation - The data returned from the GraphQL server
  * @returns Transformation - The transformed data
  */
@@ -3726,8 +4067,10 @@ export const UpdateTransformationMutationOutput = ({ updateTransformation }: Upd
   } as Transformation);
 
 /**
- * Fetcher function for UpdateTransformationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `UpdateTransformationMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const UpdateTransformationMutationFetcher = (
   variables: UpdateTransformationMutationVariables,
@@ -3782,21 +4125,29 @@ export const DeleteTransformationDocument = `
 }
     `;
 
+/**
+ * Key maker function for `DeleteTransformationMutation`.
+ */
+
 export const DeleteTransformationMutationKeys = () => ['DeleteTransformation'];
 
 /**
- * Input transformer function for DeleteTransformationMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelTransformationConditionInput - condition
- * @param input DeleteTransformationInput - input
- * @returns
+ * Input transformer function for `DeleteTransformationMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteTransformationMutationVariables` - The original variables
+ * @returns `DeleteTransformationMutationVariables` - The transformed variables
  */
 export const DeleteTransformationMutationInput = (variables: DeleteTransformationMutationVariables) =>
   variables as DeleteTransformationMutationVariables;
 
 /**
- * Output transformer function for DeleteTransformationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `DeleteTransformationMutation`.
+ * It extracts the `deleteTransformation` field from the result and transforms it into a `Transformation` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data DeleteTransformationMutation - The data returned from the GraphQL server
  * @returns Transformation - The transformed data
  */
@@ -3813,8 +4164,10 @@ export const DeleteTransformationMutationOutput = ({ deleteTransformation }: Del
   } as Transformation);
 
 /**
- * Fetcher function for DeleteTransformationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `DeleteTransformationMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const DeleteTransformationMutationFetcher = (
   variables: DeleteTransformationMutationVariables,
@@ -3828,106 +4181,6 @@ export const DeleteTransformationMutationFetcher = (
     Transformation,
     DeleteTransformationMutationVariables
   >(DeleteTransformationDocument, variables, options, outputFn, inputFn);
-export const CreateOrganizationDocument = `
-    mutation CreateOrganization($input: CreateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
-  createOrganization(input: $input, condition: $condition) {
-    id
-    createdAt
-    updatedAt
-    adminGroup
-    userGroup
-    name
-  }
-}
-    `;
-
-export const CreateOrganizationMutationKeys = () => ['CreateOrganization'];
-
-/**
- * Input transformer function for CreateOrganizationMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelOrganizationConditionInput - condition
- * @param input CreateOrganizationInput - input
- * @returns
- */
-export const CreateOrganizationMutationInput = (variables: CreateOrganizationMutationVariables) =>
-  variables as CreateOrganizationMutationVariables;
-
-/**
- * Output transformer function for CreateOrganizationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
- * @param data CreateOrganizationMutation - The data returned from the GraphQL server
- * @returns Organization - The transformed data
- */
-export const CreateOrganizationMutationOutput = ({ createOrganization }: CreateOrganizationMutation) =>
-  createOrganization as Organization;
-
-/**
- * Fetcher function for CreateOrganizationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
- */
-export const CreateOrganizationMutationFetcher = (
-  variables: CreateOrganizationMutationVariables,
-  options?: RequestInit['headers'],
-  outputFn = CreateOrganizationMutationOutput,
-  inputFn = CreateOrganizationMutationInput,
-) =>
-  fetchWithAmplify<
-    CreateOrganizationMutation,
-    CreateOrganizationMutationVariables,
-    Organization,
-    CreateOrganizationMutationVariables
-  >(CreateOrganizationDocument, variables, options, outputFn, inputFn);
-export const UpdateOrganizationDocument = `
-    mutation UpdateOrganization($input: UpdateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
-  updateOrganization(input: $input, condition: $condition) {
-    id
-    createdAt
-    updatedAt
-    adminGroup
-    userGroup
-    name
-  }
-}
-    `;
-
-export const UpdateOrganizationMutationKeys = () => ['UpdateOrganization'];
-
-/**
- * Input transformer function for UpdateOrganizationMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelOrganizationConditionInput - condition
- * @param input UpdateOrganizationInput - input
- * @returns
- */
-export const UpdateOrganizationMutationInput = (variables: UpdateOrganizationMutationVariables) =>
-  variables as UpdateOrganizationMutationVariables;
-
-/**
- * Output transformer function for UpdateOrganizationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
- * @param data UpdateOrganizationMutation - The data returned from the GraphQL server
- * @returns Organization - The transformed data
- */
-export const UpdateOrganizationMutationOutput = ({ updateOrganization }: UpdateOrganizationMutation) =>
-  updateOrganization as Organization;
-
-/**
- * Fetcher function for UpdateOrganizationMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
- */
-export const UpdateOrganizationMutationFetcher = (
-  variables: UpdateOrganizationMutationVariables,
-  options?: RequestInit['headers'],
-  outputFn = UpdateOrganizationMutationOutput,
-  inputFn = UpdateOrganizationMutationInput,
-) =>
-  fetchWithAmplify<
-    UpdateOrganizationMutation,
-    UpdateOrganizationMutationVariables,
-    Organization,
-    UpdateOrganizationMutationVariables
-  >(UpdateOrganizationDocument, variables, options, outputFn, inputFn);
 export const CreatePerspectiveDocument = `
     mutation CreatePerspective($input: CreatePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   createPerspective(input: $input, condition: $condition) {
@@ -3951,21 +4204,29 @@ export const CreatePerspectiveDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CreatePerspectiveMutation`.
+ */
+
 export const CreatePerspectiveMutationKeys = () => ['CreatePerspective'];
 
 /**
- * Input transformer function for CreatePerspectiveMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelPerspectiveConditionInput - condition
- * @param input CreatePerspectiveInput - input
- * @returns
+ * Input transformer function for `CreatePerspectiveMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreatePerspectiveMutationVariables` - The original variables
+ * @returns `CreatePerspectiveMutationVariables` - The transformed variables
  */
 export const CreatePerspectiveMutationInput = (variables: CreatePerspectiveMutationVariables) =>
   variables as CreatePerspectiveMutationVariables;
 
 /**
- * Output transformer function for CreatePerspectiveMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreatePerspectiveMutation`.
+ * It extracts the `createPerspective` field from the result and transforms it into a `Perspective` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreatePerspectiveMutation - The data returned from the GraphQL server
  * @returns Perspective - The transformed data
  */
@@ -3973,8 +4234,10 @@ export const CreatePerspectiveMutationOutput = ({ createPerspective }: CreatePer
   createPerspective as Perspective;
 
 /**
- * Fetcher function for CreatePerspectiveMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreatePerspectiveMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreatePerspectiveMutationFetcher = (
   variables: CreatePerspectiveMutationVariables,
@@ -4011,21 +4274,29 @@ export const UpdatePerspectiveDocument = `
 }
     `;
 
+/**
+ * Key maker function for `UpdatePerspectiveMutation`.
+ */
+
 export const UpdatePerspectiveMutationKeys = () => ['UpdatePerspective'];
 
 /**
- * Input transformer function for UpdatePerspectiveMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelPerspectiveConditionInput - condition
- * @param input UpdatePerspectiveInput - input
- * @returns
+ * Input transformer function for `UpdatePerspectiveMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdatePerspectiveMutationVariables` - The original variables
+ * @returns `UpdatePerspectiveMutationVariables` - The transformed variables
  */
 export const UpdatePerspectiveMutationInput = (variables: UpdatePerspectiveMutationVariables) =>
   variables as UpdatePerspectiveMutationVariables;
 
 /**
- * Output transformer function for UpdatePerspectiveMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `UpdatePerspectiveMutation`.
+ * It extracts the `updatePerspective` field from the result and transforms it into a `Perspective` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data UpdatePerspectiveMutation - The data returned from the GraphQL server
  * @returns Perspective - The transformed data
  */
@@ -4033,8 +4304,10 @@ export const UpdatePerspectiveMutationOutput = ({ updatePerspective }: UpdatePer
   updatePerspective as Perspective;
 
 /**
- * Fetcher function for UpdatePerspectiveMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `UpdatePerspectiveMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const UpdatePerspectiveMutationFetcher = (
   variables: UpdatePerspectiveMutationVariables,
@@ -4071,21 +4344,29 @@ export const DeletePerspectiveDocument = `
 }
     `;
 
+/**
+ * Key maker function for `DeletePerspectiveMutation`.
+ */
+
 export const DeletePerspectiveMutationKeys = () => ['DeletePerspective'];
 
 /**
- * Input transformer function for DeletePerspectiveMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelPerspectiveConditionInput - condition
- * @param input DeletePerspectiveInput - input
- * @returns
+ * Input transformer function for `DeletePerspectiveMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeletePerspectiveMutationVariables` - The original variables
+ * @returns `DeletePerspectiveMutationVariables` - The transformed variables
  */
 export const DeletePerspectiveMutationInput = (variables: DeletePerspectiveMutationVariables) =>
   variables as DeletePerspectiveMutationVariables;
 
 /**
- * Output transformer function for DeletePerspectiveMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `DeletePerspectiveMutation`.
+ * It extracts the `deletePerspective` field from the result and transforms it into a `Perspective` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data DeletePerspectiveMutation - The data returned from the GraphQL server
  * @returns Perspective - The transformed data
  */
@@ -4093,8 +4374,10 @@ export const DeletePerspectiveMutationOutput = ({ deletePerspective }: DeletePer
   deletePerspective as Perspective;
 
 /**
- * Fetcher function for DeletePerspectiveMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `DeletePerspectiveMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const DeletePerspectiveMutationFetcher = (
   variables: DeletePerspectiveMutationVariables,
@@ -4145,29 +4428,39 @@ export const CreateSchemaDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CreateSchemaMutation`.
+ */
+
 export const CreateSchemaMutationKeys = () => ['CreateSchema'];
 
 /**
- * Input transformer function for CreateSchemaMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelSchemaConditionInput - condition
- * @param input CreateSchemaInput - input
- * @returns
+ * Input transformer function for `CreateSchemaMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateSchemaMutationVariables` - The original variables
+ * @returns `CreateSchemaMutationVariables` - The transformed variables
  */
 export const CreateSchemaMutationInput = (variables: CreateSchemaMutationVariables) =>
   variables as CreateSchemaMutationVariables;
 
 /**
- * Output transformer function for CreateSchemaMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreateSchemaMutation`.
+ * It extracts the `createSchema` field from the result and transforms it into a `Schema` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreateSchemaMutation - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
 export const CreateSchemaMutationOutput = ({ createSchema }: CreateSchemaMutation) => createSchema as Schema;
 
 /**
- * Fetcher function for CreateSchemaMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreateSchemaMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreateSchemaMutationFetcher = (
   variables: CreateSchemaMutationVariables,
@@ -4219,29 +4512,39 @@ export const UpdateSchemaDocument = `
 }
     `;
 
+/**
+ * Key maker function for `UpdateSchemaMutation`.
+ */
+
 export const UpdateSchemaMutationKeys = () => ['UpdateSchema'];
 
 /**
- * Input transformer function for UpdateSchemaMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelSchemaConditionInput - condition
- * @param input UpdateSchemaInput - input
- * @returns
+ * Input transformer function for `UpdateSchemaMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateSchemaMutationVariables` - The original variables
+ * @returns `UpdateSchemaMutationVariables` - The transformed variables
  */
 export const UpdateSchemaMutationInput = (variables: UpdateSchemaMutationVariables) =>
   variables as UpdateSchemaMutationVariables;
 
 /**
- * Output transformer function for UpdateSchemaMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `UpdateSchemaMutation`.
+ * It extracts the `updateSchema` field from the result and transforms it into a `Schema` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data UpdateSchemaMutation - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
 export const UpdateSchemaMutationOutput = ({ updateSchema }: UpdateSchemaMutation) => updateSchema as Schema;
 
 /**
- * Fetcher function for UpdateSchemaMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `UpdateSchemaMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const UpdateSchemaMutationFetcher = (
   variables: UpdateSchemaMutationVariables,
@@ -4293,29 +4596,39 @@ export const DeleteSchemaDocument = `
 }
     `;
 
+/**
+ * Key maker function for `DeleteSchemaMutation`.
+ */
+
 export const DeleteSchemaMutationKeys = () => ['DeleteSchema'];
 
 /**
- * Input transformer function for DeleteSchemaMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelSchemaConditionInput - condition
- * @param input DeleteSchemaInput - input
- * @returns
+ * Input transformer function for `DeleteSchemaMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteSchemaMutationVariables` - The original variables
+ * @returns `DeleteSchemaMutationVariables` - The transformed variables
  */
 export const DeleteSchemaMutationInput = (variables: DeleteSchemaMutationVariables) =>
   variables as DeleteSchemaMutationVariables;
 
 /**
- * Output transformer function for DeleteSchemaMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `DeleteSchemaMutation`.
+ * It extracts the `deleteSchema` field from the result and transforms it into a `Schema` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data DeleteSchemaMutation - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
 export const DeleteSchemaMutationOutput = ({ deleteSchema }: DeleteSchemaMutation) => deleteSchema as Schema;
 
 /**
- * Fetcher function for DeleteSchemaMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `DeleteSchemaMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const DeleteSchemaMutationFetcher = (
   variables: DeleteSchemaMutationVariables,
@@ -4344,29 +4657,39 @@ export const CreateTestDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CreateTestMutation`.
+ */
+
 export const CreateTestMutationKeys = () => ['CreateTest'];
 
 /**
- * Input transformer function for CreateTestMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelTestConditionInput - condition
- * @param input CreateTestInput - input
- * @returns
+ * Input transformer function for `CreateTestMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateTestMutationVariables` - The original variables
+ * @returns `CreateTestMutationVariables` - The transformed variables
  */
 export const CreateTestMutationInput = (variables: CreateTestMutationVariables) =>
   variables as CreateTestMutationVariables;
 
 /**
- * Output transformer function for CreateTestMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreateTestMutation`.
+ * It extracts the `createTest` field from the result and transforms it into a `Test` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreateTestMutation - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
 export const CreateTestMutationOutput = ({ createTest }: CreateTestMutation) => createTest as Test;
 
 /**
- * Fetcher function for CreateTestMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreateTestMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreateTestMutationFetcher = (
   variables: CreateTestMutationVariables,
@@ -4395,29 +4718,39 @@ export const UpdateTestDocument = `
 }
     `;
 
+/**
+ * Key maker function for `UpdateTestMutation`.
+ */
+
 export const UpdateTestMutationKeys = () => ['UpdateTest'];
 
 /**
- * Input transformer function for UpdateTestMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelTestConditionInput - condition
- * @param input UpdateTestInput - input
- * @returns
+ * Input transformer function for `UpdateTestMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateTestMutationVariables` - The original variables
+ * @returns `UpdateTestMutationVariables` - The transformed variables
  */
 export const UpdateTestMutationInput = (variables: UpdateTestMutationVariables) =>
   variables as UpdateTestMutationVariables;
 
 /**
- * Output transformer function for UpdateTestMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `UpdateTestMutation`.
+ * It extracts the `updateTest` field from the result and transforms it into a `Test` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data UpdateTestMutation - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
 export const UpdateTestMutationOutput = ({ updateTest }: UpdateTestMutation) => updateTest as Test;
 
 /**
- * Fetcher function for UpdateTestMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `UpdateTestMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const UpdateTestMutationFetcher = (
   variables: UpdateTestMutationVariables,
@@ -4446,29 +4779,39 @@ export const DeleteTestDocument = `
 }
     `;
 
+/**
+ * Key maker function for `DeleteTestMutation`.
+ */
+
 export const DeleteTestMutationKeys = () => ['DeleteTest'];
 
 /**
- * Input transformer function for DeleteTestMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param condition ModelTestConditionInput - condition
- * @param input DeleteTestInput - input
- * @returns
+ * Input transformer function for `DeleteTestMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteTestMutationVariables` - The original variables
+ * @returns `DeleteTestMutationVariables` - The transformed variables
  */
 export const DeleteTestMutationInput = (variables: DeleteTestMutationVariables) =>
   variables as DeleteTestMutationVariables;
 
 /**
- * Output transformer function for DeleteTestMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `DeleteTestMutation`.
+ * It extracts the `deleteTest` field from the result and transforms it into a `Test` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data DeleteTestMutation - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
 export const DeleteTestMutationOutput = ({ deleteTest }: DeleteTestMutation) => deleteTest as Test;
 
 /**
- * Fetcher function for DeleteTestMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `DeleteTestMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const DeleteTestMutationFetcher = (
   variables: DeleteTestMutationVariables,
@@ -4483,6 +4826,126 @@ export const DeleteTestMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const CreateOrganizationDocument = `
+    mutation CreateOrganization($input: CreateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
+  createOrganization(input: $input, condition: $condition) {
+    id
+    createdAt
+    updatedAt
+    adminGroup
+    userGroup
+    name
+  }
+}
+    `;
+
+/**
+ * Key maker function for `CreateOrganizationMutation`.
+ */
+
+export const CreateOrganizationMutationKeys = () => ['CreateOrganization'];
+
+/**
+ * Input transformer function for `CreateOrganizationMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateOrganizationMutationVariables` - The original variables
+ * @returns `CreateOrganizationMutationVariables` - The transformed variables
+ */
+export const CreateOrganizationMutationInput = (variables: CreateOrganizationMutationVariables) =>
+  variables as CreateOrganizationMutationVariables;
+
+/**
+ * Output transformer function for `CreateOrganizationMutation`.
+ * It extracts the `createOrganization` field from the result and transforms it into a `Organization` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data CreateOrganizationMutation - The data returned from the GraphQL server
+ * @returns Organization - The transformed data
+ */
+export const CreateOrganizationMutationOutput = ({ createOrganization }: CreateOrganizationMutation) =>
+  createOrganization as Organization;
+
+/**
+ * Fetcher function for `CreateOrganizationMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const CreateOrganizationMutationFetcher = (
+  variables: CreateOrganizationMutationVariables,
+  options?: RequestInit['headers'],
+  outputFn = CreateOrganizationMutationOutput,
+  inputFn = CreateOrganizationMutationInput,
+) =>
+  fetchWithAmplify<
+    CreateOrganizationMutation,
+    CreateOrganizationMutationVariables,
+    Organization,
+    CreateOrganizationMutationVariables
+  >(CreateOrganizationDocument, variables, options, outputFn, inputFn);
+export const UpdateOrganizationDocument = `
+    mutation UpdateOrganization($input: UpdateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
+  updateOrganization(input: $input, condition: $condition) {
+    id
+    createdAt
+    updatedAt
+    adminGroup
+    userGroup
+    name
+  }
+}
+    `;
+
+/**
+ * Key maker function for `UpdateOrganizationMutation`.
+ */
+
+export const UpdateOrganizationMutationKeys = () => ['UpdateOrganization'];
+
+/**
+ * Input transformer function for `UpdateOrganizationMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateOrganizationMutationVariables` - The original variables
+ * @returns `UpdateOrganizationMutationVariables` - The transformed variables
+ */
+export const UpdateOrganizationMutationInput = (variables: UpdateOrganizationMutationVariables) =>
+  variables as UpdateOrganizationMutationVariables;
+
+/**
+ * Output transformer function for `UpdateOrganizationMutation`.
+ * It extracts the `updateOrganization` field from the result and transforms it into a `Organization` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data UpdateOrganizationMutation - The data returned from the GraphQL server
+ * @returns Organization - The transformed data
+ */
+export const UpdateOrganizationMutationOutput = ({ updateOrganization }: UpdateOrganizationMutation) =>
+  updateOrganization as Organization;
+
+/**
+ * Fetcher function for `UpdateOrganizationMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const UpdateOrganizationMutationFetcher = (
+  variables: UpdateOrganizationMutationVariables,
+  options?: RequestInit['headers'],
+  outputFn = UpdateOrganizationMutationOutput,
+  inputFn = UpdateOrganizationMutationInput,
+) =>
+  fetchWithAmplify<
+    UpdateOrganizationMutation,
+    UpdateOrganizationMutationVariables,
+    Organization,
+    UpdateOrganizationMutationVariables
+  >(UpdateOrganizationDocument, variables, options, outputFn, inputFn);
 export const RunPerspectiveDocument = `
     mutation RunPerspective($input: RunPerspectiveInput!) {
   runPerspective(input: $input) {
@@ -4491,20 +4954,29 @@ export const RunPerspectiveDocument = `
 }
     `;
 
+/**
+ * Key maker function for `RunPerspectiveMutation`.
+ */
+
 export const RunPerspectiveMutationKeys = () => ['RunPerspective'];
 
 /**
- * Input transformer function for RunPerspectiveMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input RunPerspectiveInput - input
- * @returns
+ * Input transformer function for `RunPerspectiveMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `RunPerspectiveMutationVariables` - The original variables
+ * @returns `RunPerspectiveMutationVariables` - The transformed variables
  */
 export const RunPerspectiveMutationInput = (variables: RunPerspectiveMutationVariables) =>
   variables as RunPerspectiveMutationVariables;
 
 /**
- * Output transformer function for RunPerspectiveMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `RunPerspectiveMutation`.
+ * It extracts the `runPerspective` field from the result and transforms it into a `RunPerspectiveResult` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data RunPerspectiveMutation - The data returned from the GraphQL server
  * @returns RunPerspectiveResult - The transformed data
  */
@@ -4516,8 +4988,10 @@ export const RunPerspectiveMutationOutput = ({ runPerspective }: RunPerspectiveM
   } as RunPerspectiveResult);
 
 /**
- * Fetcher function for RunPerspectiveMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `RunPerspectiveMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const RunPerspectiveMutationFetcher = (
   variables: RunPerspectiveMutationVariables,
@@ -4534,36 +5008,52 @@ export const RunPerspectiveMutationFetcher = (
 export const CreateUserDocument = `
     mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
-    id
+    username
     createdAt
     updatedAt
-    email
+    attributes
   }
 }
     `;
 
+/**
+ * Key maker function for `CreateUserMutation`.
+ */
+
 export const CreateUserMutationKeys = () => ['CreateUser'];
 
 /**
- * Input transformer function for CreateUserMutation.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input CreateUserInput - input
- * @returns
+ * Input transformer function for `CreateUserMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateUserMutationVariables` - The original variables
+ * @returns `CreateUserMutationVariables` - The transformed variables
  */
 export const CreateUserMutationInput = (variables: CreateUserMutationVariables) =>
   variables as CreateUserMutationVariables;
 
 /**
- * Output transformer function for CreateUserMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CreateUserMutation`.
+ * It extracts the `createUser` field from the result and transforms it into a `CognitoUser` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CreateUserMutation - The data returned from the GraphQL server
- * @returns User - The transformed data
+ * @returns CognitoUser - The transformed data
  */
-export const CreateUserMutationOutput = ({ createUser }: CreateUserMutation) => createUser as User;
+export const CreateUserMutationOutput = ({ createUser }: CreateUserMutation) =>
+  createUser &&
+  ({
+    ...createUser,
+    attributes: createUser.attributes && JSON.parse(createUser.attributes as unknown as string),
+  } as CognitoUser);
 
 /**
- * Fetcher function for CreateUserMutation.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CreateUserMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CreateUserMutationFetcher = (
   variables: CreateUserMutationVariables,
@@ -4571,8 +5061,187 @@ export const CreateUserMutationFetcher = (
   outputFn = CreateUserMutationOutput,
   inputFn = CreateUserMutationInput,
 ) =>
-  fetchWithAmplify<CreateUserMutation, CreateUserMutationVariables, User, CreateUserMutationVariables>(
+  fetchWithAmplify<CreateUserMutation, CreateUserMutationVariables, CognitoUser, CreateUserMutationVariables>(
     CreateUserDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+export const UpdateUserDocument = `
+    mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    username
+    createdAt
+    updatedAt
+    attributes
+  }
+}
+    `;
+
+/**
+ * Key maker function for `UpdateUserMutation`.
+ */
+
+export const UpdateUserMutationKeys = () => ['UpdateUser'];
+
+/**
+ * Input transformer function for `UpdateUserMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateUserMutationVariables` - The original variables
+ * @returns `UpdateUserMutationVariables` - The transformed variables
+ */
+export const UpdateUserMutationInput = (variables: UpdateUserMutationVariables) =>
+  variables as UpdateUserMutationVariables;
+
+/**
+ * Output transformer function for `UpdateUserMutation`.
+ * It extracts the `updateUser` field from the result and transforms it into a `CognitoUser` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data UpdateUserMutation - The data returned from the GraphQL server
+ * @returns CognitoUser - The transformed data
+ */
+export const UpdateUserMutationOutput = ({ updateUser }: UpdateUserMutation) =>
+  updateUser &&
+  ({
+    ...updateUser,
+    attributes: updateUser.attributes && JSON.parse(updateUser.attributes as unknown as string),
+  } as CognitoUser);
+
+/**
+ * Fetcher function for `UpdateUserMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const UpdateUserMutationFetcher = (
+  variables: UpdateUserMutationVariables,
+  options?: RequestInit['headers'],
+  outputFn = UpdateUserMutationOutput,
+  inputFn = UpdateUserMutationInput,
+) =>
+  fetchWithAmplify<UpdateUserMutation, UpdateUserMutationVariables, CognitoUser, UpdateUserMutationVariables>(
+    UpdateUserDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+export const DeleteUserDocument = `
+    mutation DeleteUser($input: DeleteUserInput!) {
+  deleteUser(input: $input) {
+    username
+    createdAt
+    updatedAt
+    attributes
+  }
+}
+    `;
+
+/**
+ * Key maker function for `DeleteUserMutation`.
+ */
+
+export const DeleteUserMutationKeys = () => ['DeleteUser'];
+
+/**
+ * Input transformer function for `DeleteUserMutation`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteUserMutationVariables` - The original variables
+ * @returns `DeleteUserMutationVariables` - The transformed variables
+ */
+export const DeleteUserMutationInput = (variables: DeleteUserMutationVariables) =>
+  variables as DeleteUserMutationVariables;
+
+/**
+ * Output transformer function for `DeleteUserMutation`.
+ * It extracts the `deleteUser` field from the result and transforms it into a `CognitoUser` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data DeleteUserMutation - The data returned from the GraphQL server
+ * @returns CognitoUser - The transformed data
+ */
+export const DeleteUserMutationOutput = ({ deleteUser }: DeleteUserMutation) =>
+  deleteUser &&
+  ({
+    ...deleteUser,
+    attributes: deleteUser.attributes && JSON.parse(deleteUser.attributes as unknown as string),
+  } as CognitoUser);
+
+/**
+ * Fetcher function for `DeleteUserMutation`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const DeleteUserMutationFetcher = (
+  variables: DeleteUserMutationVariables,
+  options?: RequestInit['headers'],
+  outputFn = DeleteUserMutationOutput,
+  inputFn = DeleteUserMutationInput,
+) =>
+  fetchWithAmplify<DeleteUserMutation, DeleteUserMutationVariables, CognitoUser, DeleteUserMutationVariables>(
+    DeleteUserDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+export const EmptyQueryDocument = `
+    query EmptyQuery {
+  emptyQuery
+}
+    `;
+
+/**
+ * Key maker function for `EmptyQueryQuery`.
+ */
+
+export const EmptyQueryQueryKeys = (variables?: EmptyQueryQueryVariables) =>
+  variables === undefined ? ['EmptyQuery'] : ['EmptyQuery', variables];
+
+/**
+ * Input transformer function for `EmptyQueryQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `EmptyQueryQueryVariables` - The original variables
+ * @returns `EmptyQueryQueryVariables` - The transformed variables
+ */
+export const EmptyQueryQueryInput = (variables?: EmptyQueryQueryVariables) => variables as EmptyQueryQueryVariables;
+
+/**
+ * Output transformer function for `EmptyQueryQuery`.
+ * It extracts the `emptyQuery` field from the result and transforms it into a `Scalars['String']` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data EmptyQueryQuery - The data returned from the GraphQL server
+ * @returns Scalars['String'] - The transformed data
+ */
+export const EmptyQueryQueryOutput = ({ emptyQuery }: EmptyQueryQuery) => emptyQuery as Scalars['String'];
+
+/**
+ * Fetcher function for `EmptyQueryQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const EmptyQueryQueryFetcher = (
+  variables?: EmptyQueryQueryVariables,
+  options?: RequestInit['headers'],
+  outputFn = EmptyQueryQueryOutput,
+  inputFn = EmptyQueryQueryInput,
+) =>
+  fetchWithAmplify<EmptyQueryQuery, EmptyQueryQueryVariables, Scalars['String'], EmptyQueryQueryVariables>(
+    EmptyQueryDocument,
     variables,
     options,
     outputFn,
@@ -4584,28 +5253,39 @@ export const EchoDocument = `
 }
     `;
 
+/**
+ * Key maker function for `EchoQuery`.
+ */
+
 export const EchoQueryKeys = (variables?: EchoQueryVariables) =>
   variables === undefined ? ['Echo'] : ['Echo', variables];
 
 /**
- * Input transformer function for EchoQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param msg String - msg
- * @returns
+ * Input transformer function for `EchoQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `EchoQueryVariables` - The original variables
+ * @returns `EchoQueryVariables` - The transformed variables
  */
 export const EchoQueryInput = (variables?: EchoQueryVariables) => variables as EchoQueryVariables;
 
 /**
- * Output transformer function for EchoQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `EchoQuery`.
+ * It extracts the `echo` field from the result and transforms it into a `Scalars['String']` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data EchoQuery - The data returned from the GraphQL server
- * @returns String - The transformed data
+ * @returns Scalars['String'] - The transformed data
  */
-export const EchoQueryOutput = ({ echo }: EchoQuery) => echo as String;
+export const EchoQueryOutput = ({ echo }: EchoQuery) => echo as Scalars['String'];
 
 /**
- * Fetcher function for EchoQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `EchoQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const EchoQueryFetcher = (
   variables?: EchoQueryVariables,
@@ -4613,7 +5293,7 @@ export const EchoQueryFetcher = (
   outputFn = EchoQueryOutput,
   inputFn = EchoQueryInput,
 ) =>
-  fetchWithAmplify<EchoQuery, EchoQueryVariables, String, EchoQueryVariables>(
+  fetchWithAmplify<EchoQuery, EchoQueryVariables, Scalars['String'], EchoQueryVariables>(
     EchoDocument,
     variables,
     options,
@@ -4634,27 +5314,38 @@ export const CustomTestDocument = `
 }
     `;
 
+/**
+ * Key maker function for `CustomTestQuery`.
+ */
+
 export const CustomTestQueryKeys = (variables: CustomTestQueryVariables) => ['CustomTest', variables];
 
 /**
- * Input transformer function for CustomTestQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param id ID - id
- * @returns
+ * Input transformer function for `CustomTestQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CustomTestQueryVariables` - The original variables
+ * @returns `CustomTestQueryVariables` - The transformed variables
  */
 export const CustomTestQueryInput = (variables: CustomTestQueryVariables) => variables as CustomTestQueryVariables;
 
 /**
- * Output transformer function for CustomTestQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `CustomTestQuery`.
+ * It extracts the `customTest` field from the result and transforms it into a `Test` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data CustomTestQuery - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
 export const CustomTestQueryOutput = ({ customTest }: CustomTestQuery) => customTest as Test;
 
 /**
- * Fetcher function for CustomTestQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `CustomTestQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const CustomTestQueryFetcher = (
   variables: CustomTestQueryVariables,
@@ -4690,23 +5381,32 @@ export const GetConnectorManifestDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetConnectorManifestQuery`.
+ */
+
 export const GetConnectorManifestQueryKeys = (variables: GetConnectorManifestQueryVariables) => [
   'GetConnectorManifest',
   variables,
 ];
 
 /**
- * Input transformer function for GetConnectorManifestQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param query QueryGetConnectorManifestQueryInput - query
- * @returns
+ * Input transformer function for `GetConnectorManifestQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetConnectorManifestQueryVariables` - The original variables
+ * @returns `GetConnectorManifestQueryVariables` - The transformed variables
  */
 export const GetConnectorManifestQueryInput = (variables: GetConnectorManifestQueryVariables) =>
   variables as GetConnectorManifestQueryVariables;
 
 /**
- * Output transformer function for GetConnectorManifestQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetConnectorManifestQuery`.
+ * It extracts the `getConnectorManifest` field from the result and transforms it into a `ConnectorManifest` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetConnectorManifestQuery - The data returned from the GraphQL server
  * @returns ConnectorManifest - The transformed data
  */
@@ -4714,8 +5414,10 @@ export const GetConnectorManifestQueryOutput = ({ getConnectorManifest }: GetCon
   getConnectorManifest as ConnectorManifest;
 
 /**
- * Fetcher function for GetConnectorManifestQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetConnectorManifestQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetConnectorManifestQueryFetcher = (
   variables: GetConnectorManifestQueryVariables,
@@ -4770,20 +5472,29 @@ export const GetConnectorDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetConnectorQuery`.
+ */
+
 export const GetConnectorQueryKeys = (variables: GetConnectorQueryVariables) => ['GetConnector', variables];
 
 /**
- * Input transformer function for GetConnectorQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param id ID - id
- * @returns
+ * Input transformer function for `GetConnectorQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetConnectorQueryVariables` - The original variables
+ * @returns `GetConnectorQueryVariables` - The transformed variables
  */
 export const GetConnectorQueryInput = (variables: GetConnectorQueryVariables) =>
   variables as GetConnectorQueryVariables;
 
 /**
- * Output transformer function for GetConnectorQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetConnectorQuery`.
+ * It extracts the `getConnector` field from the result and transforms it into a `Connector` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetConnectorQuery - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
@@ -4796,8 +5507,10 @@ export const GetConnectorQueryOutput = ({ getConnector }: GetConnectorQuery) =>
   } as Connector);
 
 /**
- * Fetcher function for GetConnectorQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetConnectorQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetConnectorQueryFetcher = (
   variables: GetConnectorQueryVariables,
@@ -4845,23 +5558,30 @@ export const ListConnectorsDocument = `
 }
     `;
 
+/**
+ * Key maker function for `ListConnectorsQuery`.
+ */
+
 export const ListConnectorsQueryKeys = (variables?: ListConnectorsQueryVariables) =>
   variables === undefined ? ['ListConnectors'] : ['ListConnectors', variables];
 
 /**
- * Input transformer function for ListConnectorsQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param filter ModelConnectorFilterInput - filter
- * @param limit Int - limit
- * @param nextToken String - nextToken
- * @returns
+ * Input transformer function for `ListConnectorsQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `ListConnectorsQueryVariables` - The original variables
+ * @returns `ListConnectorsQueryVariables` - The transformed variables
  */
 export const ListConnectorsQueryInput = (variables?: ListConnectorsQueryVariables) =>
   variables as ListConnectorsQueryVariables;
 
 /**
- * Output transformer function for ListConnectorsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `ListConnectorsQuery`.
+ * It extracts the `listConnectors` field from the result and transforms it into a `ModelConnectorConnection` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data ListConnectorsQuery - The data returned from the GraphQL server
  * @returns ModelConnectorConnection - The transformed data
  */
@@ -4876,8 +5596,10 @@ export const ListConnectorsQueryOutput = ({ listConnectors }: ListConnectorsQuer
   } as ModelConnectorConnection);
 
 /**
- * Fetcher function for ListConnectorsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `ListConnectorsQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const ListConnectorsQueryFetcher = (
   variables?: ListConnectorsQueryVariables,
@@ -4930,27 +5652,32 @@ export const GetConnectorBySourceDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetConnectorBySourceQuery`.
+ */
+
 export const GetConnectorBySourceQueryKeys = (variables: GetConnectorBySourceQueryVariables) => [
   'GetConnectorBySource',
   variables,
 ];
 
 /**
- * Input transformer function for GetConnectorBySourceQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param filter ModelConnectorFilterInput - filter
- * @param limit Int - limit
- * @param nextToken String - nextToken
- * @param sortDirection ModelSortDirection - sortDirection
- * @param source String - source
- * @returns
+ * Input transformer function for `GetConnectorBySourceQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetConnectorBySourceQueryVariables` - The original variables
+ * @returns `GetConnectorBySourceQueryVariables` - The transformed variables
  */
 export const GetConnectorBySourceQueryInput = (variables: GetConnectorBySourceQueryVariables) =>
   variables as GetConnectorBySourceQueryVariables;
 
 /**
- * Output transformer function for GetConnectorBySourceQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetConnectorBySourceQuery`.
+ * It extracts the `getConnectorBySource` field from the result and transforms it into a `ModelConnectorConnection` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetConnectorBySourceQuery - The data returned from the GraphQL server
  * @returns ModelConnectorConnection - The transformed data
  */
@@ -4965,8 +5692,10 @@ export const GetConnectorBySourceQueryOutput = ({ getConnectorBySource }: GetCon
   } as ModelConnectorConnection);
 
 /**
- * Fetcher function for GetConnectorBySourceQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetConnectorBySourceQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetConnectorBySourceQueryFetcher = (
   variables: GetConnectorBySourceQueryVariables,
@@ -5021,23 +5750,32 @@ export const GetTransformationDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetTransformationQuery`.
+ */
+
 export const GetTransformationQueryKeys = (variables: GetTransformationQueryVariables) => [
   'GetTransformation',
   variables,
 ];
 
 /**
- * Input transformer function for GetTransformationQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param id ID - id
- * @returns
+ * Input transformer function for `GetTransformationQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetTransformationQueryVariables` - The original variables
+ * @returns `GetTransformationQueryVariables` - The transformed variables
  */
 export const GetTransformationQueryInput = (variables: GetTransformationQueryVariables) =>
   variables as GetTransformationQueryVariables;
 
 /**
- * Output transformer function for GetTransformationQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetTransformationQuery`.
+ * It extracts the `getTransformation` field from the result and transforms it into a `Transformation` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetTransformationQuery - The data returned from the GraphQL server
  * @returns Transformation - The transformed data
  */
@@ -5054,8 +5792,10 @@ export const GetTransformationQueryOutput = ({ getTransformation }: GetTransform
   } as Transformation);
 
 /**
- * Fetcher function for GetTransformationQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetTransformationQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetTransformationQueryFetcher = (
   variables: GetTransformationQueryVariables,
@@ -5102,23 +5842,30 @@ export const ListTransformationsDocument = `
 }
     `;
 
+/**
+ * Key maker function for `ListTransformationsQuery`.
+ */
+
 export const ListTransformationsQueryKeys = (variables?: ListTransformationsQueryVariables) =>
   variables === undefined ? ['ListTransformations'] : ['ListTransformations', variables];
 
 /**
- * Input transformer function for ListTransformationsQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param filter ModelTransformationFilterInput - filter
- * @param limit Int - limit
- * @param nextToken String - nextToken
- * @returns
+ * Input transformer function for `ListTransformationsQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `ListTransformationsQueryVariables` - The original variables
+ * @returns `ListTransformationsQueryVariables` - The transformed variables
  */
 export const ListTransformationsQueryInput = (variables?: ListTransformationsQueryVariables) =>
   variables as ListTransformationsQueryVariables;
 
 /**
- * Output transformer function for ListTransformationsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `ListTransformationsQuery`.
+ * It extracts the `listTransformations` field from the result and transforms it into a `ModelTransformationConnection` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data ListTransformationsQuery - The data returned from the GraphQL server
  * @returns ModelTransformationConnection - The transformed data
  */
@@ -5137,8 +5884,10 @@ export const ListTransformationsQueryOutput = ({ listTransformations }: ListTran
   } as ModelTransformationConnection);
 
 /**
- * Fetcher function for ListTransformationsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `ListTransformationsQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const ListTransformationsQueryFetcher = (
   variables?: ListTransformationsQueryVariables,
@@ -5191,27 +5940,32 @@ export const GetTransformationsByConnectorDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetTransformationsByConnectorQuery`.
+ */
+
 export const GetTransformationsByConnectorQueryKeys = (variables: GetTransformationsByConnectorQueryVariables) => [
   'GetTransformationsByConnector',
   variables,
 ];
 
 /**
- * Input transformer function for GetTransformationsByConnectorQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param connectorID ID - connectorID
- * @param filter ModelTransformationFilterInput - filter
- * @param limit Int - limit
- * @param nextToken String - nextToken
- * @param sortDirection ModelSortDirection - sortDirection
- * @returns
+ * Input transformer function for `GetTransformationsByConnectorQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetTransformationsByConnectorQueryVariables` - The original variables
+ * @returns `GetTransformationsByConnectorQueryVariables` - The transformed variables
  */
 export const GetTransformationsByConnectorQueryInput = (variables: GetTransformationsByConnectorQueryVariables) =>
   variables as GetTransformationsByConnectorQueryVariables;
 
 /**
- * Output transformer function for GetTransformationsByConnectorQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetTransformationsByConnectorQuery`.
+ * It extracts the `getTransformationsByConnector` field from the result and transforms it into a `ModelTransformationConnection` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetTransformationsByConnectorQuery - The data returned from the GraphQL server
  * @returns ModelTransformationConnection - The transformed data
  */
@@ -5232,8 +5986,10 @@ export const GetTransformationsByConnectorQueryOutput = ({
   } as ModelTransformationConnection);
 
 /**
- * Fetcher function for GetTransformationsByConnectorQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetTransformationsByConnectorQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetTransformationsByConnectorQueryFetcher = (
   variables: GetTransformationsByConnectorQueryVariables,
@@ -5247,111 +6003,6 @@ export const GetTransformationsByConnectorQueryFetcher = (
     ModelTransformationConnection,
     GetTransformationsByConnectorQueryVariables
   >(GetTransformationsByConnectorDocument, variables, options, outputFn, inputFn);
-export const GetOrganizationDocument = `
-    query GetOrganization($id: ID!) {
-  getOrganization(id: $id) {
-    id
-    createdAt
-    updatedAt
-    adminGroup
-    userGroup
-    name
-  }
-}
-    `;
-
-export const GetOrganizationQueryKeys = (variables: GetOrganizationQueryVariables) => ['GetOrganization', variables];
-
-/**
- * Input transformer function for GetOrganizationQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param id ID - id
- * @returns
- */
-export const GetOrganizationQueryInput = (variables: GetOrganizationQueryVariables) =>
-  variables as GetOrganizationQueryVariables;
-
-/**
- * Output transformer function for GetOrganizationQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
- * @param data GetOrganizationQuery - The data returned from the GraphQL server
- * @returns Organization - The transformed data
- */
-export const GetOrganizationQueryOutput = ({ getOrganization }: GetOrganizationQuery) =>
-  getOrganization as Organization;
-
-/**
- * Fetcher function for GetOrganizationQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
- */
-export const GetOrganizationQueryFetcher = (
-  variables: GetOrganizationQueryVariables,
-  options?: RequestInit['headers'],
-  outputFn = GetOrganizationQueryOutput,
-  inputFn = GetOrganizationQueryInput,
-) =>
-  fetchWithAmplify<GetOrganizationQuery, GetOrganizationQueryVariables, Organization, GetOrganizationQueryVariables>(
-    GetOrganizationDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-export const ListOrganizationsDocument = `
-    query ListOrganizations($filter: ModelOrganizationFilterInput, $limit: Int, $nextToken: String) {
-  listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      createdAt
-      updatedAt
-      adminGroup
-      userGroup
-      name
-    }
-    nextToken
-  }
-}
-    `;
-
-export const ListOrganizationsQueryKeys = (variables?: ListOrganizationsQueryVariables) =>
-  variables === undefined ? ['ListOrganizations'] : ['ListOrganizations', variables];
-
-/**
- * Input transformer function for ListOrganizationsQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param filter ModelOrganizationFilterInput - filter
- * @param limit Int - limit
- * @param nextToken String - nextToken
- * @returns
- */
-export const ListOrganizationsQueryInput = (variables?: ListOrganizationsQueryVariables) =>
-  variables as ListOrganizationsQueryVariables;
-
-/**
- * Output transformer function for ListOrganizationsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
- * @param data ListOrganizationsQuery - The data returned from the GraphQL server
- * @returns ModelOrganizationConnection - The transformed data
- */
-export const ListOrganizationsQueryOutput = ({ listOrganizations }: ListOrganizationsQuery) =>
-  listOrganizations as ModelOrganizationConnection;
-
-/**
- * Fetcher function for ListOrganizationsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
- */
-export const ListOrganizationsQueryFetcher = (
-  variables?: ListOrganizationsQueryVariables,
-  options?: RequestInit['headers'],
-  outputFn = ListOrganizationsQueryOutput,
-  inputFn = ListOrganizationsQueryInput,
-) =>
-  fetchWithAmplify<
-    ListOrganizationsQuery,
-    ListOrganizationsQueryVariables,
-    ModelOrganizationConnection,
-    ListOrganizationsQueryVariables
-  >(ListOrganizationsDocument, variables, options, outputFn, inputFn);
 export const GetPerspectiveDocument = `
     query GetPerspective($id: ID!) {
   getPerspective(id: $id) {
@@ -5375,28 +6026,39 @@ export const GetPerspectiveDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetPerspectiveQuery`.
+ */
+
 export const GetPerspectiveQueryKeys = (variables: GetPerspectiveQueryVariables) => ['GetPerspective', variables];
 
 /**
- * Input transformer function for GetPerspectiveQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param id ID - id
- * @returns
+ * Input transformer function for `GetPerspectiveQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetPerspectiveQueryVariables` - The original variables
+ * @returns `GetPerspectiveQueryVariables` - The transformed variables
  */
 export const GetPerspectiveQueryInput = (variables: GetPerspectiveQueryVariables) =>
   variables as GetPerspectiveQueryVariables;
 
 /**
- * Output transformer function for GetPerspectiveQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetPerspectiveQuery`.
+ * It extracts the `getPerspective` field from the result and transforms it into a `Perspective` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetPerspectiveQuery - The data returned from the GraphQL server
  * @returns Perspective - The transformed data
  */
 export const GetPerspectiveQueryOutput = ({ getPerspective }: GetPerspectiveQuery) => getPerspective as Perspective;
 
 /**
- * Fetcher function for GetPerspectiveQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetPerspectiveQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetPerspectiveQueryFetcher = (
   variables: GetPerspectiveQueryVariables,
@@ -5437,23 +6099,30 @@ export const ListPerspectivesDocument = `
 }
     `;
 
+/**
+ * Key maker function for `ListPerspectivesQuery`.
+ */
+
 export const ListPerspectivesQueryKeys = (variables?: ListPerspectivesQueryVariables) =>
   variables === undefined ? ['ListPerspectives'] : ['ListPerspectives', variables];
 
 /**
- * Input transformer function for ListPerspectivesQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param filter ModelPerspectiveFilterInput - filter
- * @param limit Int - limit
- * @param nextToken String - nextToken
- * @returns
+ * Input transformer function for `ListPerspectivesQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `ListPerspectivesQueryVariables` - The original variables
+ * @returns `ListPerspectivesQueryVariables` - The transformed variables
  */
 export const ListPerspectivesQueryInput = (variables?: ListPerspectivesQueryVariables) =>
   variables as ListPerspectivesQueryVariables;
 
 /**
- * Output transformer function for ListPerspectivesQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `ListPerspectivesQuery`.
+ * It extracts the `listPerspectives` field from the result and transforms it into a `ModelPerspectiveConnection` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data ListPerspectivesQuery - The data returned from the GraphQL server
  * @returns ModelPerspectiveConnection - The transformed data
  */
@@ -5461,8 +6130,10 @@ export const ListPerspectivesQueryOutput = ({ listPerspectives }: ListPerspectiv
   listPerspectives as ModelPerspectiveConnection;
 
 /**
- * Fetcher function for ListPerspectivesQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `ListPerspectivesQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const ListPerspectivesQueryFetcher = (
   variables?: ListPerspectivesQueryVariables,
@@ -5513,27 +6184,38 @@ export const GetSchemaDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetSchemaQuery`.
+ */
+
 export const GetSchemaQueryKeys = (variables: GetSchemaQueryVariables) => ['GetSchema', variables];
 
 /**
- * Input transformer function for GetSchemaQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param id ID - id
- * @returns
+ * Input transformer function for `GetSchemaQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetSchemaQueryVariables` - The original variables
+ * @returns `GetSchemaQueryVariables` - The transformed variables
  */
 export const GetSchemaQueryInput = (variables: GetSchemaQueryVariables) => variables as GetSchemaQueryVariables;
 
 /**
- * Output transformer function for GetSchemaQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetSchemaQuery`.
+ * It extracts the `getSchema` field from the result and transforms it into a `Schema` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetSchemaQuery - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
 export const GetSchemaQueryOutput = ({ getSchema }: GetSchemaQuery) => getSchema as Schema;
 
 /**
- * Fetcher function for GetSchemaQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetSchemaQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetSchemaQueryFetcher = (
   variables: GetSchemaQueryVariables,
@@ -5588,30 +6270,39 @@ export const ListSchemasDocument = `
 }
     `;
 
+/**
+ * Key maker function for `ListSchemasQuery`.
+ */
+
 export const ListSchemasQueryKeys = (variables?: ListSchemasQueryVariables) =>
   variables === undefined ? ['ListSchemas'] : ['ListSchemas', variables];
 
 /**
- * Input transformer function for ListSchemasQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param filter ModelSchemaFilterInput - filter
- * @param limit Int - limit
- * @param nextToken String - nextToken
- * @returns
+ * Input transformer function for `ListSchemasQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `ListSchemasQueryVariables` - The original variables
+ * @returns `ListSchemasQueryVariables` - The transformed variables
  */
 export const ListSchemasQueryInput = (variables?: ListSchemasQueryVariables) => variables as ListSchemasQueryVariables;
 
 /**
- * Output transformer function for ListSchemasQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `ListSchemasQuery`.
+ * It extracts the `listSchemas` field from the result and transforms it into a `ModelSchemaConnection` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data ListSchemasQuery - The data returned from the GraphQL server
  * @returns ModelSchemaConnection - The transformed data
  */
 export const ListSchemasQueryOutput = ({ listSchemas }: ListSchemasQuery) => listSchemas as ModelSchemaConnection;
 
 /**
- * Fetcher function for ListSchemasQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `ListSchemasQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const ListSchemasQueryFetcher = (
   variables?: ListSchemasQueryVariables,
@@ -5640,27 +6331,38 @@ export const GetTestDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetTestQuery`.
+ */
+
 export const GetTestQueryKeys = (variables: GetTestQueryVariables) => ['GetTest', variables];
 
 /**
- * Input transformer function for GetTestQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param id ID - id
- * @returns
+ * Input transformer function for `GetTestQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetTestQueryVariables` - The original variables
+ * @returns `GetTestQueryVariables` - The transformed variables
  */
 export const GetTestQueryInput = (variables: GetTestQueryVariables) => variables as GetTestQueryVariables;
 
 /**
- * Output transformer function for GetTestQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetTestQuery`.
+ * It extracts the `getTest` field from the result and transforms it into a `Test` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetTestQuery - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
 export const GetTestQueryOutput = ({ getTest }: GetTestQuery) => getTest as Test;
 
 /**
- * Fetcher function for GetTestQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetTestQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetTestQueryFetcher = (
   variables: GetTestQueryVariables,
@@ -5692,30 +6394,39 @@ export const ListTestsDocument = `
 }
     `;
 
+/**
+ * Key maker function for `ListTestsQuery`.
+ */
+
 export const ListTestsQueryKeys = (variables?: ListTestsQueryVariables) =>
   variables === undefined ? ['ListTests'] : ['ListTests', variables];
 
 /**
- * Input transformer function for ListTestsQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param filter ModelTestFilterInput - filter
- * @param limit Int - limit
- * @param nextToken String - nextToken
- * @returns
+ * Input transformer function for `ListTestsQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `ListTestsQueryVariables` - The original variables
+ * @returns `ListTestsQueryVariables` - The transformed variables
  */
 export const ListTestsQueryInput = (variables?: ListTestsQueryVariables) => variables as ListTestsQueryVariables;
 
 /**
- * Output transformer function for ListTestsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `ListTestsQuery`.
+ * It extracts the `listTests` field from the result and transforms it into a `ModelTestConnection` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data ListTestsQuery - The data returned from the GraphQL server
  * @returns ModelTestConnection - The transformed data
  */
 export const ListTestsQueryOutput = ({ listTests }: ListTestsQuery) => listTests as ModelTestConnection;
 
 /**
- * Fetcher function for ListTestsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `ListTestsQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const ListTestsQueryFetcher = (
   variables?: ListTestsQueryVariables,
@@ -5730,6 +6441,131 @@ export const ListTestsQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const GetOrganizationDocument = `
+    query GetOrganization($id: ID!) {
+  getOrganization(id: $id) {
+    id
+    createdAt
+    updatedAt
+    adminGroup
+    userGroup
+    name
+  }
+}
+    `;
+
+/**
+ * Key maker function for `GetOrganizationQuery`.
+ */
+
+export const GetOrganizationQueryKeys = (variables: GetOrganizationQueryVariables) => ['GetOrganization', variables];
+
+/**
+ * Input transformer function for `GetOrganizationQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetOrganizationQueryVariables` - The original variables
+ * @returns `GetOrganizationQueryVariables` - The transformed variables
+ */
+export const GetOrganizationQueryInput = (variables: GetOrganizationQueryVariables) =>
+  variables as GetOrganizationQueryVariables;
+
+/**
+ * Output transformer function for `GetOrganizationQuery`.
+ * It extracts the `getOrganization` field from the result and transforms it into a `Organization` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data GetOrganizationQuery - The data returned from the GraphQL server
+ * @returns Organization - The transformed data
+ */
+export const GetOrganizationQueryOutput = ({ getOrganization }: GetOrganizationQuery) =>
+  getOrganization as Organization;
+
+/**
+ * Fetcher function for `GetOrganizationQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const GetOrganizationQueryFetcher = (
+  variables: GetOrganizationQueryVariables,
+  options?: RequestInit['headers'],
+  outputFn = GetOrganizationQueryOutput,
+  inputFn = GetOrganizationQueryInput,
+) =>
+  fetchWithAmplify<GetOrganizationQuery, GetOrganizationQueryVariables, Organization, GetOrganizationQueryVariables>(
+    GetOrganizationDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+export const ListOrganizationsDocument = `
+    query ListOrganizations($filter: ModelOrganizationFilterInput, $limit: Int, $nextToken: String) {
+  listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      createdAt
+      updatedAt
+      adminGroup
+      userGroup
+      name
+    }
+    nextToken
+  }
+}
+    `;
+
+/**
+ * Key maker function for `ListOrganizationsQuery`.
+ */
+
+export const ListOrganizationsQueryKeys = (variables?: ListOrganizationsQueryVariables) =>
+  variables === undefined ? ['ListOrganizations'] : ['ListOrganizations', variables];
+
+/**
+ * Input transformer function for `ListOrganizationsQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `ListOrganizationsQueryVariables` - The original variables
+ * @returns `ListOrganizationsQueryVariables` - The transformed variables
+ */
+export const ListOrganizationsQueryInput = (variables?: ListOrganizationsQueryVariables) =>
+  variables as ListOrganizationsQueryVariables;
+
+/**
+ * Output transformer function for `ListOrganizationsQuery`.
+ * It extracts the `listOrganizations` field from the result and transforms it into a `ModelOrganizationConnection` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data ListOrganizationsQuery - The data returned from the GraphQL server
+ * @returns ModelOrganizationConnection - The transformed data
+ */
+export const ListOrganizationsQueryOutput = ({ listOrganizations }: ListOrganizationsQuery) =>
+  listOrganizations as ModelOrganizationConnection;
+
+/**
+ * Fetcher function for `ListOrganizationsQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const ListOrganizationsQueryFetcher = (
+  variables?: ListOrganizationsQueryVariables,
+  options?: RequestInit['headers'],
+  outputFn = ListOrganizationsQueryOutput,
+  inputFn = ListOrganizationsQueryInput,
+) =>
+  fetchWithAmplify<
+    ListOrganizationsQuery,
+    ListOrganizationsQueryVariables,
+    ModelOrganizationConnection,
+    ListOrganizationsQueryVariables
+  >(ListOrganizationsDocument, variables, options, outputFn, inputFn);
 export const SearchGraphDocument = `
     query SearchGraph($input: SearchGraphInput!) {
   searchGraph(input: $input) {
@@ -5745,19 +6581,28 @@ export const SearchGraphDocument = `
 }
     `;
 
+/**
+ * Key maker function for `SearchGraphQuery`.
+ */
+
 export const SearchGraphQueryKeys = (variables: SearchGraphQueryVariables) => ['SearchGraph', variables];
 
 /**
- * Input transformer function for SearchGraphQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param input SearchGraphInput - input
- * @returns
+ * Input transformer function for `SearchGraphQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `SearchGraphQueryVariables` - The original variables
+ * @returns `SearchGraphQueryVariables` - The transformed variables
  */
 export const SearchGraphQueryInput = (variables: SearchGraphQueryVariables) => variables as SearchGraphQueryVariables;
 
 /**
- * Output transformer function for SearchGraphQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `SearchGraphQuery`.
+ * It extracts the `searchGraph` field from the result and transforms it into a `SearchGraphResult` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data SearchGraphQuery - The data returned from the GraphQL server
  * @returns SearchGraphResult - The transformed data
  */
@@ -5775,8 +6620,10 @@ export const SearchGraphQueryOutput = ({ searchGraph }: SearchGraphQuery) =>
   } as SearchGraphResult);
 
 /**
- * Fetcher function for SearchGraphQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `SearchGraphQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const SearchGraphQueryFetcher = (
   variables: SearchGraphQueryVariables,
@@ -5817,19 +6664,28 @@ export const GetNodeDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetNodeQuery`.
+ */
+
 export const GetNodeQueryKeys = (variables: GetNodeQueryVariables) => ['GetNode', variables];
 
 /**
- * Input transformer function for GetNodeQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param identity ID - identity
- * @returns
+ * Input transformer function for `GetNodeQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetNodeQueryVariables` - The original variables
+ * @returns `GetNodeQueryVariables` - The transformed variables
  */
 export const GetNodeQueryInput = (variables: GetNodeQueryVariables) => variables as GetNodeQueryVariables;
 
 /**
- * Output transformer function for GetNodeQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetNodeQuery`.
+ * It extracts the `getNode` field from the result and transforms it into a `NodeGraphRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetNodeQuery - The data returned from the GraphQL server
  * @returns NodeGraphRecord - The transformed data
  */
@@ -5857,8 +6713,10 @@ export const GetNodeQueryOutput = ({ getNode }: GetNodeQuery) =>
   } as NodeGraphRecord);
 
 /**
- * Fetcher function for GetNodeQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetNodeQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetNodeQueryFetcher = (
   variables: GetNodeQueryVariables,
@@ -5897,20 +6755,29 @@ export const GetRelationshipDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetRelationshipQuery`.
+ */
+
 export const GetRelationshipQueryKeys = (variables: GetRelationshipQueryVariables) => ['GetRelationship', variables];
 
 /**
- * Input transformer function for GetRelationshipQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param identity ID - identity
- * @returns
+ * Input transformer function for `GetRelationshipQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetRelationshipQueryVariables` - The original variables
+ * @returns `GetRelationshipQueryVariables` - The transformed variables
  */
 export const GetRelationshipQueryInput = (variables: GetRelationshipQueryVariables) =>
   variables as GetRelationshipQueryVariables;
 
 /**
- * Output transformer function for GetRelationshipQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetRelationshipQuery`.
+ * It extracts the `getRelationship` field from the result and transforms it into a `RelationshipGraphRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetRelationshipQuery - The data returned from the GraphQL server
  * @returns RelationshipGraphRecord - The transformed data
  */
@@ -5936,8 +6803,10 @@ export const GetRelationshipQueryOutput = ({ getRelationship }: GetRelationshipQ
   } as RelationshipGraphRecord);
 
 /**
- * Fetcher function for GetRelationshipQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetRelationshipQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetRelationshipQueryFetcher = (
   variables: GetRelationshipQueryVariables,
@@ -5979,19 +6848,28 @@ export const ListNodesDocument = `
 }
     `;
 
+/**
+ * Key maker function for `ListNodesQuery`.
+ */
+
 export const ListNodesQueryKeys = (variables: ListNodesQueryVariables) => ['ListNodes', variables];
 
 /**
- * Input transformer function for ListNodesQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param label String - label
- * @returns
+ * Input transformer function for `ListNodesQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `ListNodesQueryVariables` - The original variables
+ * @returns `ListNodesQueryVariables` - The transformed variables
  */
 export const ListNodesQueryInput = (variables: ListNodesQueryVariables) => variables as ListNodesQueryVariables;
 
 /**
- * Output transformer function for ListNodesQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `ListNodesQuery`.
+ * It extracts the `listNodes` field from the result and transforms it into a `NodesGraphRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data ListNodesQuery - The data returned from the GraphQL server
  * @returns NodesGraphRecord - The transformed data
  */
@@ -6022,8 +6900,10 @@ export const ListNodesQueryOutput = ({ listNodes }: ListNodesQuery) =>
   } as NodesGraphRecord);
 
 /**
- * Fetcher function for ListNodesQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `ListNodesQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const ListNodesQueryFetcher = (
   variables: ListNodesQueryVariables,
@@ -6038,46 +6918,199 @@ export const ListNodesQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const ListUsersDocument = `
-    query ListUsers($groupID: ID!) {
-  listUsers(groupID: $groupID) {
-    id
+export const GetUserDocument = `
+    query GetUser($username: ID!) {
+  getUser(username: $username) {
+    username
     createdAt
     updatedAt
-    email
+    attributes
   }
 }
     `;
 
-export const ListUsersQueryKeys = (variables: ListUsersQueryVariables) => ['ListUsers', variables];
-
 /**
- * Input transformer function for ListUsersQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param groupID ID - groupID
- * @returns
+ * Key maker function for `GetUserQuery`.
  */
-export const ListUsersQueryInput = (variables: ListUsersQueryVariables) => variables as ListUsersQueryVariables;
+
+export const GetUserQueryKeys = (variables: GetUserQueryVariables) => ['GetUser', variables];
 
 /**
- * Output transformer function for ListUsersQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Input transformer function for `GetUserQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetUserQueryVariables` - The original variables
+ * @returns `GetUserQueryVariables` - The transformed variables
+ */
+export const GetUserQueryInput = (variables: GetUserQueryVariables) => variables as GetUserQueryVariables;
+
+/**
+ * Output transformer function for `GetUserQuery`.
+ * It extracts the `getUser` field from the result and transforms it into a `CognitoUser` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data GetUserQuery - The data returned from the GraphQL server
+ * @returns CognitoUser - The transformed data
+ */
+export const GetUserQueryOutput = ({ getUser }: GetUserQuery) =>
+  getUser &&
+  ({
+    ...getUser,
+    attributes: getUser.attributes && JSON.parse(getUser.attributes as unknown as string),
+  } as CognitoUser);
+
+/**
+ * Fetcher function for `GetUserQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const GetUserQueryFetcher = (
+  variables: GetUserQueryVariables,
+  options?: RequestInit['headers'],
+  outputFn = GetUserQueryOutput,
+  inputFn = GetUserQueryInput,
+) =>
+  fetchWithAmplify<GetUserQuery, GetUserQueryVariables, CognitoUser, GetUserQueryVariables>(
+    GetUserDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+export const FindUsersDocument = `
+    query FindUsers($input: FindUsersInput!) {
+  findUsers(input: $input) {
+    items {
+      username
+      createdAt
+      updatedAt
+      attributes
+    }
+    nextToken
+  }
+}
+    `;
+
+/**
+ * Key maker function for `FindUsersQuery`.
+ */
+
+export const FindUsersQueryKeys = (variables: FindUsersQueryVariables) => ['FindUsers', variables];
+
+/**
+ * Input transformer function for `FindUsersQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `FindUsersQueryVariables` - The original variables
+ * @returns `FindUsersQueryVariables` - The transformed variables
+ */
+export const FindUsersQueryInput = (variables: FindUsersQueryVariables) => variables as FindUsersQueryVariables;
+
+/**
+ * Output transformer function for `FindUsersQuery`.
+ * It extracts the `findUsers` field from the result and transforms it into a `CognitoUserList` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data FindUsersQuery - The data returned from the GraphQL server
+ * @returns CognitoUserList - The transformed data
+ */
+export const FindUsersQueryOutput = ({ findUsers }: FindUsersQuery) =>
+  findUsers &&
+  ({
+    ...findUsers,
+    items: findUsers.items?.map((item) => ({
+      ...item,
+      attributes: item?.attributes && JSON.parse(item?.attributes as unknown as string),
+    })),
+  } as CognitoUserList);
+
+/**
+ * Fetcher function for `FindUsersQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ */
+export const FindUsersQueryFetcher = (
+  variables: FindUsersQueryVariables,
+  options?: RequestInit['headers'],
+  outputFn = FindUsersQueryOutput,
+  inputFn = FindUsersQueryInput,
+) =>
+  fetchWithAmplify<FindUsersQuery, FindUsersQueryVariables, CognitoUserList, FindUsersQueryVariables>(
+    FindUsersDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+export const ListUsersDocument = `
+    query ListUsers($nextToken: String) {
+  listUsers(nextToken: $nextToken) {
+    items {
+      username
+      createdAt
+      updatedAt
+      attributes
+    }
+    nextToken
+  }
+}
+    `;
+
+/**
+ * Key maker function for `ListUsersQuery`.
+ */
+
+export const ListUsersQueryKeys = (variables?: ListUsersQueryVariables) =>
+  variables === undefined ? ['ListUsers'] : ['ListUsers', variables];
+
+/**
+ * Input transformer function for `ListUsersQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `ListUsersQueryVariables` - The original variables
+ * @returns `ListUsersQueryVariables` - The transformed variables
+ */
+export const ListUsersQueryInput = (variables?: ListUsersQueryVariables) => variables as ListUsersQueryVariables;
+
+/**
+ * Output transformer function for `ListUsersQuery`.
+ * It extracts the `listUsers` field from the result and transforms it into a `CognitoUserList` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data ListUsersQuery - The data returned from the GraphQL server
- * @returns User[] - The transformed data
+ * @returns CognitoUserList - The transformed data
  */
-export const ListUsersQueryOutput = ({ listUsers }: ListUsersQuery) => listUsers as User[];
+export const ListUsersQueryOutput = ({ listUsers }: ListUsersQuery) =>
+  listUsers &&
+  ({
+    ...listUsers,
+    items: listUsers.items?.map((item) => ({
+      ...item,
+      attributes: item?.attributes && JSON.parse(item?.attributes as unknown as string),
+    })),
+  } as CognitoUserList);
 
 /**
- * Fetcher function for ListUsersQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `ListUsersQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const ListUsersQueryFetcher = (
-  variables: ListUsersQueryVariables,
+  variables?: ListUsersQueryVariables,
   options?: RequestInit['headers'],
   outputFn = ListUsersQueryOutput,
   inputFn = ListUsersQueryInput,
 ) =>
-  fetchWithAmplify<ListUsersQuery, ListUsersQueryVariables, User[], ListUsersQueryVariables>(
+  fetchWithAmplify<ListUsersQuery, ListUsersQueryVariables, CognitoUserList, ListUsersQueryVariables>(
     ListUsersDocument,
     variables,
     options,
@@ -6093,23 +7126,32 @@ export const GetConnectorCredentialsDocument = `
 }
     `;
 
+/**
+ * Key maker function for `GetConnectorCredentialsQuery`.
+ */
+
 export const GetConnectorCredentialsQueryKeys = (variables: GetConnectorCredentialsQueryVariables) => [
   'GetConnectorCredentials',
   variables,
 ];
 
 /**
- * Input transformer function for GetConnectorCredentialsQuery.
- * It stringifies all JSON input fields before sending them to the GraphQL server.
- * @param id ID - id
- * @returns
+ * Input transformer function for `GetConnectorCredentialsQuery`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetConnectorCredentialsQueryVariables` - The original variables
+ * @returns `GetConnectorCredentialsQueryVariables` - The transformed variables
  */
 export const GetConnectorCredentialsQueryInput = (variables: GetConnectorCredentialsQueryVariables) =>
   variables as GetConnectorCredentialsQueryVariables;
 
 /**
- * Output transformer function for GetConnectorCredentialsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Output transformer function for `GetConnectorCredentialsQuery`.
+ * It extracts the `getConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetConnectorCredentialsQuery - The data returned from the GraphQL server
  * @returns ConnectorCredentials - The transformed data
  */
@@ -6123,8 +7165,10 @@ export const GetConnectorCredentialsQueryOutput = ({ getConnectorCredentials }: 
   } as ConnectorCredentials);
 
 /**
- * Fetcher function for GetConnectorCredentialsQuery.
- * It extracts the data from the GrapohQL response and parses all JSON fields into objects.
+ * Fetcher function for `GetConnectorCredentialsQuery`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function, if available, must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function, if available, must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  */
 export const GetConnectorCredentialsQueryFetcher = (
   variables: GetConnectorCredentialsQueryVariables,

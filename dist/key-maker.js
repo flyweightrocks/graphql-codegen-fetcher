@@ -32,4 +32,4 @@ function generateMutationKeyMaker(node, operationName) {
     return `\n${comment}\n${implementation}`;
 }
 exports.generateMutationKeyMaker = generateMutationKeyMaker;
-//# sourceMappingURL=keys-generator.js.map
+//# sourceMappingURL=key-maker.js.map
