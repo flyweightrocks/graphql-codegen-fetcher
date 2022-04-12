@@ -63,19 +63,19 @@ class CustomMapperFetcher {
         const hookConfig = this.visitor.queryMethodMap;
         this.visitor.reactQueryHookIdentifiersInUse.add(hookConfig.query.hook);
         this.visitor.reactQueryOptionsIdentifiersInUse.add(hookConfig.query.options);
-        const options = `options?: ${hookConfig.query.options}<${outputResultType}, TError, TData>`;
+        const options = `options?: ${hookConfig.query.options}<${outputResultType} | undefined, TError, TData>`;
         const typedFetcher = this.getFetcherFnName(operationResultType, operationVariablesTypes, outputResultType, inputVariablesType);
         const impl = this._isReactHook
             ? `${typedFetcher}(${documentVariableName}).bind(null, variables)`
             : `${this.getFetcherName(operationName)}(variables)`;
         return `export const use${operationName} = <
-      TData = ${outputResultType},
+      TData = ${outputResultType} | undefined,
       TError = ${this.visitor.config.errorType}
     >(
       ${variables},
       ${options}
     ) =>
-    ${hookConfig.query.hook}<${outputResultType}, TError, TData>(
+    ${hookConfig.query.hook}<${outputResultType} | undefined , TError, TData>(
       ${(0, variables_generator_1.generateQueryKey)(node, hasRequiredVariables)},
       ${impl},
       options
@@ -88,7 +88,7 @@ class CustomMapperFetcher {
         const hookConfig = this.visitor.queryMethodMap;
         this.visitor.reactQueryHookIdentifiersInUse.add(hookConfig.mutation.hook);
         this.visitor.reactQueryOptionsIdentifiersInUse.add(hookConfig.mutation.options);
-        const options = `options?: ${hookConfig.mutation.options}<${outputResultType}, TError, ${inputVariablesType}, TContext>`;
+        const options = `options?: ${hookConfig.mutation.options}<${outputResultType} | undefined, TError, ${inputVariablesType}, TContext>`;
         const typedFetcher = this.getFetcherFnName(operationResultType, operationVariablesTypes, outputResultType, inputVariablesType);
         const impl = this._isReactHook
             ? `${typedFetcher}(${documentVariableName})`
@@ -97,7 +97,7 @@ class CustomMapperFetcher {
       TError = ${this.visitor.config.errorType},
       TContext = unknown
     >(${options}) =>
-    ${hookConfig.mutation.hook}<${outputResultType}, TError, ${inputVariablesType}, TContext>(
+    ${hookConfig.mutation.hook}<${outputResultType} | undefined, TError, ${inputVariablesType}, TContext>(
       ${(0, variables_generator_1.generateMutationKey)(node)},
       ${impl},
       options
