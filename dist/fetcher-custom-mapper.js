@@ -82,7 +82,7 @@ class CustomMapperFetcher {
     );`;
     }
     generateMutationHook(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables) {
-        const variables = `variables?: ${operationVariablesTypes}`;
+        const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
         const outputResultType = this.visitor.outputResultTypes[operationName];
         const inputVariablesType = operationVariablesTypes;
         const hookConfig = this.visitor.queryMethodMap;

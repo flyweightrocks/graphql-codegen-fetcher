@@ -144,7 +144,8 @@ export class CustomMapperFetcher implements FetcherRenderer {
     operationVariablesTypes: string,
     hasRequiredVariables: boolean,
   ): string {
-    const variables = `variables?: ${operationVariablesTypes}`;
+    // const variables = `variables?: ${operationVariablesTypes}`;
+    const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
     const outputResultType = this.visitor.outputResultTypes[operationName];
     const inputVariablesType = operationVariablesTypes;
 

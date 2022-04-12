@@ -2864,7 +2864,7 @@ export const useRunConnectorMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<Scalars['AWSJSON'], TError, RunConnectorMutationVariables, TContext>(
     ['RunConnector'],
-    (variables?: RunConnectorMutationVariables) => RunConnectorMutationFetcher(variables)(),
+    (variables: RunConnectorMutationVariables) => RunConnectorMutationFetcher(variables)(),
     options,
   );
 export const CreateConnectorCredentialsDocument = `
@@ -2939,7 +2939,7 @@ export const useCreateConnectorCredentialsMutation = <TError = unknown, TContext
 ) =>
   useMutation<ConnectorCredentials, TError, CreateConnectorCredentialsMutationVariables, TContext>(
     ['CreateConnectorCredentials'],
-    (variables?: CreateConnectorCredentialsMutationVariables) => CreateConnectorCredentialsMutationFetcher(variables)(),
+    (variables: CreateConnectorCredentialsMutationVariables) => CreateConnectorCredentialsMutationFetcher(variables)(),
     options,
   );
 export const UpdateConnectorCredentialsDocument = `
@@ -3014,7 +3014,7 @@ export const useUpdateConnectorCredentialsMutation = <TError = unknown, TContext
 ) =>
   useMutation<ConnectorCredentials, TError, UpdateConnectorCredentialsMutationVariables, TContext>(
     ['UpdateConnectorCredentials'],
-    (variables?: UpdateConnectorCredentialsMutationVariables) => UpdateConnectorCredentialsMutationFetcher(variables)(),
+    (variables: UpdateConnectorCredentialsMutationVariables) => UpdateConnectorCredentialsMutationFetcher(variables)(),
     options,
   );
 export const DeleteConnectorCredentialsDocument = `
@@ -3084,7 +3084,7 @@ export const useDeleteConnectorCredentialsMutation = <TError = unknown, TContext
 ) =>
   useMutation<ConnectorCredentials, TError, DeleteConnectorCredentialsMutationVariables, TContext>(
     ['DeleteConnectorCredentials'],
-    (variables?: DeleteConnectorCredentialsMutationVariables) => DeleteConnectorCredentialsMutationFetcher(variables)(),
+    (variables: DeleteConnectorCredentialsMutationVariables) => DeleteConnectorCredentialsMutationFetcher(variables)(),
     options,
   );
 export const CreateNodeDocument = `
@@ -3186,7 +3186,7 @@ export const useCreateNodeMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<NodeGraphRecord, TError, CreateNodeMutationVariables, TContext>(
     ['CreateNode'],
-    (variables?: CreateNodeMutationVariables) => CreateNodeMutationFetcher(variables)(),
+    (variables: CreateNodeMutationVariables) => CreateNodeMutationFetcher(variables)(),
     options,
   );
 export const UpdateNodeDocument = `
@@ -3288,7 +3288,7 @@ export const useUpdateNodeMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<NodeGraphRecord, TError, UpdateNodeMutationVariables, TContext>(
     ['UpdateNode'],
-    (variables?: UpdateNodeMutationVariables) => UpdateNodeMutationFetcher(variables)(),
+    (variables: UpdateNodeMutationVariables) => UpdateNodeMutationFetcher(variables)(),
     options,
   );
 export const DeleteNodeDocument = `
@@ -3373,7 +3373,7 @@ export const useDeleteNodeMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<DeleteNodeRecord, TError, DeleteNodeMutationVariables, TContext>(
     ['DeleteNode'],
-    (variables?: DeleteNodeMutationVariables) => DeleteNodeMutationFetcher(variables)(),
+    (variables: DeleteNodeMutationVariables) => DeleteNodeMutationFetcher(variables)(),
     options,
   );
 export const CreateRelationshipDocument = `
@@ -3470,7 +3470,7 @@ export const useCreateRelationshipMutation = <TError = unknown, TContext = unkno
 ) =>
   useMutation<RelationshipGraphRecord, TError, CreateRelationshipMutationVariables, TContext>(
     ['CreateRelationship'],
-    (variables?: CreateRelationshipMutationVariables) => CreateRelationshipMutationFetcher(variables)(),
+    (variables: CreateRelationshipMutationVariables) => CreateRelationshipMutationFetcher(variables)(),
     options,
   );
 export const UpdateRelationshipDocument = `
@@ -3567,7 +3567,7 @@ export const useUpdateRelationshipMutation = <TError = unknown, TContext = unkno
 ) =>
   useMutation<RelationshipGraphRecord, TError, UpdateRelationshipMutationVariables, TContext>(
     ['UpdateRelationship'],
-    (variables?: UpdateRelationshipMutationVariables) => UpdateRelationshipMutationFetcher(variables)(),
+    (variables: UpdateRelationshipMutationVariables) => UpdateRelationshipMutationFetcher(variables)(),
     options,
   );
 export const DeleteRelationshipDocument = `
@@ -3642,7 +3642,7 @@ export const useDeleteRelationshipMutation = <TError = unknown, TContext = unkno
 ) =>
   useMutation<DeleteRelationshipRecord, TError, DeleteRelationshipMutationVariables, TContext>(
     ['DeleteRelationship'],
-    (variables?: DeleteRelationshipMutationVariables) => DeleteRelationshipMutationFetcher(variables)(),
+    (variables: DeleteRelationshipMutationVariables) => DeleteRelationshipMutationFetcher(variables)(),
     options,
   );
 export const CreateConnectorDocument = `
@@ -3746,7 +3746,7 @@ export const useCreateConnectorMutation = <TError = unknown, TContext = unknown>
 ) =>
   useMutation<Connector, TError, CreateConnectorMutationVariables, TContext>(
     ['CreateConnector'],
-    (variables?: CreateConnectorMutationVariables) => CreateConnectorMutationFetcher(variables)(),
+    (variables: CreateConnectorMutationVariables) => CreateConnectorMutationFetcher(variables)(),
     options,
   );
 export const UpdateConnectorDocument = `
@@ -3850,7 +3850,7 @@ export const useUpdateConnectorMutation = <TError = unknown, TContext = unknown>
 ) =>
   useMutation<Connector, TError, UpdateConnectorMutationVariables, TContext>(
     ['UpdateConnector'],
-    (variables?: UpdateConnectorMutationVariables) => UpdateConnectorMutationFetcher(variables)(),
+    (variables: UpdateConnectorMutationVariables) => UpdateConnectorMutationFetcher(variables)(),
     options,
   );
 export const DeleteConnectorDocument = `
@@ -3949,7 +3949,7 @@ export const useDeleteConnectorMutation = <TError = unknown, TContext = unknown>
 ) =>
   useMutation<Connector, TError, DeleteConnectorMutationVariables, TContext>(
     ['DeleteConnector'],
-    (variables?: DeleteConnectorMutationVariables) => DeleteConnectorMutationFetcher(variables)(),
+    (variables: DeleteConnectorMutationVariables) => DeleteConnectorMutationFetcher(variables)(),
     options,
   );
 export const CreateTransformationDocument = `
@@ -4053,7 +4053,7 @@ export const useCreateTransformationMutation = <TError = unknown, TContext = unk
 ) =>
   useMutation<Transformation, TError, CreateTransformationMutationVariables, TContext>(
     ['CreateTransformation'],
-    (variables?: CreateTransformationMutationVariables) => CreateTransformationMutationFetcher(variables)(),
+    (variables: CreateTransformationMutationVariables) => CreateTransformationMutationFetcher(variables)(),
     options,
   );
 export const UpdateTransformationDocument = `
@@ -4157,7 +4157,7 @@ export const useUpdateTransformationMutation = <TError = unknown, TContext = unk
 ) =>
   useMutation<Transformation, TError, UpdateTransformationMutationVariables, TContext>(
     ['UpdateTransformation'],
-    (variables?: UpdateTransformationMutationVariables) => UpdateTransformationMutationFetcher(variables)(),
+    (variables: UpdateTransformationMutationVariables) => UpdateTransformationMutationFetcher(variables)(),
     options,
   );
 export const DeleteTransformationDocument = `
@@ -4261,7 +4261,7 @@ export const useDeleteTransformationMutation = <TError = unknown, TContext = unk
 ) =>
   useMutation<Transformation, TError, DeleteTransformationMutationVariables, TContext>(
     ['DeleteTransformation'],
-    (variables?: DeleteTransformationMutationVariables) => DeleteTransformationMutationFetcher(variables)(),
+    (variables: DeleteTransformationMutationVariables) => DeleteTransformationMutationFetcher(variables)(),
     options,
   );
 export const CreatePerspectiveDocument = `
@@ -4338,7 +4338,7 @@ export const useCreatePerspectiveMutation = <TError = unknown, TContext = unknow
 ) =>
   useMutation<Perspective, TError, CreatePerspectiveMutationVariables, TContext>(
     ['CreatePerspective'],
-    (variables?: CreatePerspectiveMutationVariables) => CreatePerspectiveMutationFetcher(variables)(),
+    (variables: CreatePerspectiveMutationVariables) => CreatePerspectiveMutationFetcher(variables)(),
     options,
   );
 export const UpdatePerspectiveDocument = `
@@ -4415,7 +4415,7 @@ export const useUpdatePerspectiveMutation = <TError = unknown, TContext = unknow
 ) =>
   useMutation<Perspective, TError, UpdatePerspectiveMutationVariables, TContext>(
     ['UpdatePerspective'],
-    (variables?: UpdatePerspectiveMutationVariables) => UpdatePerspectiveMutationFetcher(variables)(),
+    (variables: UpdatePerspectiveMutationVariables) => UpdatePerspectiveMutationFetcher(variables)(),
     options,
   );
 export const DeletePerspectiveDocument = `
@@ -4492,7 +4492,7 @@ export const useDeletePerspectiveMutation = <TError = unknown, TContext = unknow
 ) =>
   useMutation<Perspective, TError, DeletePerspectiveMutationVariables, TContext>(
     ['DeletePerspective'],
-    (variables?: DeletePerspectiveMutationVariables) => DeletePerspectiveMutationFetcher(variables)(),
+    (variables: DeletePerspectiveMutationVariables) => DeletePerspectiveMutationFetcher(variables)(),
     options,
   );
 export const CreateSchemaDocument = `
@@ -4583,7 +4583,7 @@ export const useCreateSchemaMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<Schema, TError, CreateSchemaMutationVariables, TContext>(
     ['CreateSchema'],
-    (variables?: CreateSchemaMutationVariables) => CreateSchemaMutationFetcher(variables)(),
+    (variables: CreateSchemaMutationVariables) => CreateSchemaMutationFetcher(variables)(),
     options,
   );
 export const UpdateSchemaDocument = `
@@ -4674,7 +4674,7 @@ export const useUpdateSchemaMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<Schema, TError, UpdateSchemaMutationVariables, TContext>(
     ['UpdateSchema'],
-    (variables?: UpdateSchemaMutationVariables) => UpdateSchemaMutationFetcher(variables)(),
+    (variables: UpdateSchemaMutationVariables) => UpdateSchemaMutationFetcher(variables)(),
     options,
   );
 export const DeleteSchemaDocument = `
@@ -4765,7 +4765,7 @@ export const useDeleteSchemaMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<Schema, TError, DeleteSchemaMutationVariables, TContext>(
     ['DeleteSchema'],
-    (variables?: DeleteSchemaMutationVariables) => DeleteSchemaMutationFetcher(variables)(),
+    (variables: DeleteSchemaMutationVariables) => DeleteSchemaMutationFetcher(variables)(),
     options,
   );
 export const CreateTestDocument = `
@@ -4833,7 +4833,7 @@ export const useCreateTestMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<Test, TError, CreateTestMutationVariables, TContext>(
     ['CreateTest'],
-    (variables?: CreateTestMutationVariables) => CreateTestMutationFetcher(variables)(),
+    (variables: CreateTestMutationVariables) => CreateTestMutationFetcher(variables)(),
     options,
   );
 export const UpdateTestDocument = `
@@ -4901,7 +4901,7 @@ export const useUpdateTestMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<Test, TError, UpdateTestMutationVariables, TContext>(
     ['UpdateTest'],
-    (variables?: UpdateTestMutationVariables) => UpdateTestMutationFetcher(variables)(),
+    (variables: UpdateTestMutationVariables) => UpdateTestMutationFetcher(variables)(),
     options,
   );
 export const DeleteTestDocument = `
@@ -4969,7 +4969,7 @@ export const useDeleteTestMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<Test, TError, DeleteTestMutationVariables, TContext>(
     ['DeleteTest'],
-    (variables?: DeleteTestMutationVariables) => DeleteTestMutationFetcher(variables)(),
+    (variables: DeleteTestMutationVariables) => DeleteTestMutationFetcher(variables)(),
     options,
   );
 export const CreateOrganizationDocument = `
@@ -5036,7 +5036,7 @@ export const useCreateOrganizationMutation = <TError = unknown, TContext = unkno
 ) =>
   useMutation<Organization, TError, CreateOrganizationMutationVariables, TContext>(
     ['CreateOrganization'],
-    (variables?: CreateOrganizationMutationVariables) => CreateOrganizationMutationFetcher(variables)(),
+    (variables: CreateOrganizationMutationVariables) => CreateOrganizationMutationFetcher(variables)(),
     options,
   );
 export const UpdateOrganizationDocument = `
@@ -5103,7 +5103,7 @@ export const useUpdateOrganizationMutation = <TError = unknown, TContext = unkno
 ) =>
   useMutation<Organization, TError, UpdateOrganizationMutationVariables, TContext>(
     ['UpdateOrganization'],
-    (variables?: UpdateOrganizationMutationVariables) => UpdateOrganizationMutationFetcher(variables)(),
+    (variables: UpdateOrganizationMutationVariables) => UpdateOrganizationMutationFetcher(variables)(),
     options,
   );
 export const RunPerspectiveDocument = `
@@ -5169,7 +5169,7 @@ export const useRunPerspectiveMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<RunPerspectiveResult, TError, RunPerspectiveMutationVariables, TContext>(
     ['RunPerspective'],
-    (variables?: RunPerspectiveMutationVariables) => RunPerspectiveMutationFetcher(variables)(),
+    (variables: RunPerspectiveMutationVariables) => RunPerspectiveMutationFetcher(variables)(),
     options,
   );
 export const CreateUserDocument = `
@@ -5236,7 +5236,7 @@ export const useCreateUserMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<CognitoUser, TError, CreateUserMutationVariables, TContext>(
     ['CreateUser'],
-    (variables?: CreateUserMutationVariables) => CreateUserMutationFetcher(variables)(),
+    (variables: CreateUserMutationVariables) => CreateUserMutationFetcher(variables)(),
     options,
   );
 export const UpdateUserDocument = `
@@ -5303,7 +5303,7 @@ export const useUpdateUserMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<CognitoUser, TError, UpdateUserMutationVariables, TContext>(
     ['UpdateUser'],
-    (variables?: UpdateUserMutationVariables) => UpdateUserMutationFetcher(variables)(),
+    (variables: UpdateUserMutationVariables) => UpdateUserMutationFetcher(variables)(),
     options,
   );
 export const DeleteUserDocument = `
@@ -5370,7 +5370,7 @@ export const useDeleteUserMutation = <TError = unknown, TContext = unknown>(
 ) =>
   useMutation<CognitoUser, TError, DeleteUserMutationVariables, TContext>(
     ['DeleteUser'],
-    (variables?: DeleteUserMutationVariables) => DeleteUserMutationFetcher(variables)(),
+    (variables: DeleteUserMutationVariables) => DeleteUserMutationFetcher(variables)(),
     options,
   );
 export const EmptyQueryDocument = `
