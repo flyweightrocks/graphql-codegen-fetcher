@@ -24,7 +24,11 @@ function generateQueryKey(node, hasRequiredVariables) {
 exports.generateQueryKey = generateQueryKey;
 function generateQueryKeyMaker(node, operationName, operationVariablesTypes, hasRequiredVariables) {
     const signature = generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes);
-    return `\nexport const ${operationName}Keys = (${signature}) => ${generateQueryKey(node, hasRequiredVariables)};\n`;
+    const comment = `\n/**
+  * Key maker function for \`${operationName}\`.
+  */`;
+    const implementation = `export const ${operationName}Keys = (${signature}) => ${generateQueryKey(node, hasRequiredVariables)};`;
+    return `\n${comment}\n${implementation}`;
 }
 exports.generateQueryKeyMaker = generateQueryKeyMaker;
 function generateMutationKey(node) {
@@ -32,7 +36,11 @@ function generateMutationKey(node) {
 }
 exports.generateMutationKey = generateMutationKey;
 function generateMutationKeyMaker(node, operationName) {
-    return `\nexport const ${operationName}Keys = () => ${generateMutationKey(node)};\n`;
+    const comment = `\n/**
+  * Key maker function for \`${operationName}\`.
+  */`;
+    const implementation = `export const ${operationName}Keys = () => ${generateMutationKey(node)};`;
+    return `\n${comment}\n${implementation}`;
 }
 exports.generateMutationKeyMaker = generateMutationKeyMaker;
 //# sourceMappingURL=variables-generator.js.map

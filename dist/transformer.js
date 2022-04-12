@@ -1,10 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateInputTransformer = exports.generateOutputTransformer = exports.generateQueryVariablesSignature = void 0;
-function generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes) {
-    return `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
-}
-exports.generateQueryVariablesSignature = generateQueryVariablesSignature;
+exports.generateInputTransformer = exports.generateOutputTransformer = void 0;
+const variables_generator_1 = require("./variables-generator");
 function generateOutputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, output) {
     const hasJson = hasJsonFields(output.fields);
     const comment = `\n/**
@@ -22,7 +19,7 @@ function generateOutputTransformer(node, operationName, operationVariablesTypes,
 }
 exports.generateOutputTransformer = generateOutputTransformer;
 function generateInputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, inputVariables) {
-    const signature = generateQueryVariablesSignature(hasRequiredVariables, operationVariablesTypes);
+    const signature = (0, variables_generator_1.generateQueryVariablesSignature)(hasRequiredVariables, operationVariablesTypes);
     const hasJson = inputVariables.some((field) => hasJsonFields(field.fields));
     const comment = `\n/**
   * Input transformer function for \`${operationName}\`.
@@ -62,10 +59,8 @@ const transformJsonFields = (fields, path, transformer) => {
         }
         else {
             if (fieldValue === 'AWSJSON') {
-                transformer === 'parse' &&
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as unknown as string),`);
-                transformer === 'stringify' &&
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as unknown as Record<string, any>),`);
+                transformer === 'parse' && stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any),`);
+                transformer === 'stringify' && stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any),`);
             }
         }
     }

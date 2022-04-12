@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ReactQueryVisitor = exports.plugin = void 0;
-const graphql_1 = require("graphql");
+exports.ExtendedReactQueryVisitor = exports.validate = exports.plugin = void 0;
 const plugin_helpers_1 = require("@graphql-codegen/plugin-helpers");
+const graphql_1 = require("graphql");
 const visitor_1 = require("./visitor");
-Object.defineProperty(exports, "ReactQueryVisitor", { enumerable: true, get: function () { return visitor_1.ReactQueryVisitor; } });
+Object.defineProperty(exports, "ExtendedReactQueryVisitor", { enumerable: true, get: function () { return visitor_1.ExtendedReactQueryVisitor; } });
 const plugin = (schema, documents, config) => {
     const allAst = (0, graphql_1.concatAST)(documents.map((v) => v.document));
     const allFragments = [
@@ -16,7 +16,7 @@ const plugin = (schema, documents, config) => {
         })),
         ...(config.externalFragments || []),
     ];
-    const visitor = new visitor_1.ReactQueryVisitor(schema, allFragments, config, documents);
+    const visitor = new visitor_1.ExtendedReactQueryVisitor(schema, allFragments, config, documents);
     const visitorResult = (0, plugin_helpers_1.oldVisit)(allAst, { leave: visitor });
     if (visitor.hasOperations) {
         return {
@@ -30,4 +30,6 @@ const plugin = (schema, documents, config) => {
     };
 };
 exports.plugin = plugin;
+var typescript_react_query_1 = require("@graphql-codegen/typescript-react-query");
+Object.defineProperty(exports, "validate", { enumerable: true, get: function () { return typescript_react_query_1.validate; } });
 //# sourceMappingURL=index.js.map

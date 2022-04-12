@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {} from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 import { fetchWithAmplify } from '../graphql/fetcher';
 export type Maybe<T> = T | undefined;
 export type InputMaybe<T> = T | undefined;
@@ -2756,7 +2756,6 @@ export const EmptyMutationDocument = `
 /**
  * Key maker function for `EmptyMutationMutation`.
  */
-
 export const EmptyMutationMutationKeys = () => ['EmptyMutation'];
 
 /**
@@ -2800,6 +2799,14 @@ export const EmptyMutationMutationFetcher = (
     Scalars['Int'],
     EmptyMutationMutationVariables
   >(EmptyMutationDocument, variables, options, outputFn, inputFn);
+export const useEmptyMutationMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Scalars['Int'], TError, EmptyMutationMutationVariables, TContext>,
+) =>
+  useMutation<Scalars['Int'], TError, EmptyMutationMutationVariables, TContext>(
+    ['EmptyMutation'],
+    (variables?: EmptyMutationMutationVariables) => EmptyMutationMutationFetcher(variables)(),
+    options,
+  );
 export const RunConnectorDocument = `
     mutation RunConnector($input: RunConnectorInput!) {
   runConnector(input: $input)
@@ -2809,7 +2816,6 @@ export const RunConnectorDocument = `
 /**
  * Key maker function for `RunConnectorMutation`.
  */
-
 export const RunConnectorMutationKeys = () => ['RunConnector'];
 
 /**
@@ -2853,6 +2859,14 @@ export const RunConnectorMutationFetcher = (
     Scalars['AWSJSON'],
     RunConnectorMutationVariables
   >(RunConnectorDocument, variables, options, outputFn, inputFn);
+export const useRunConnectorMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Scalars['AWSJSON'], TError, RunConnectorMutationVariables, TContext>,
+) =>
+  useMutation<Scalars['AWSJSON'], TError, RunConnectorMutationVariables, TContext>(
+    ['RunConnector'],
+    (variables?: RunConnectorMutationVariables) => RunConnectorMutationFetcher(variables)(),
+    options,
+  );
 export const CreateConnectorCredentialsDocument = `
     mutation CreateConnectorCredentials($input: CreateConnectorCredentialsInput!) {
   createConnectorCredentials(input: $input) {
@@ -2865,7 +2879,6 @@ export const CreateConnectorCredentialsDocument = `
 /**
  * Key maker function for `CreateConnectorCredentialsMutation`.
  */
-
 export const CreateConnectorCredentialsMutationKeys = () => ['CreateConnectorCredentials'];
 
 /**
@@ -2881,9 +2894,7 @@ export const CreateConnectorCredentialsMutationInput = (variables: CreateConnect
   ({
     ...variables,
     input: {
-      plainCredentials:
-        variables.input.plainCredentials &&
-        JSON.stringify(variables.input.plainCredentials as unknown as Record<string, any>),
+      plainCredentials: variables.input.plainCredentials && JSON.stringify(variables.input.plainCredentials as any),
     },
   } as CreateConnectorCredentialsMutationVariables);
 
@@ -2902,8 +2913,7 @@ export const CreateConnectorCredentialsMutationOutput = ({
   ({
     ...createConnectorCredentials,
     plainCredentials:
-      createConnectorCredentials.plainCredentials &&
-      JSON.parse(createConnectorCredentials.plainCredentials as unknown as string),
+      createConnectorCredentials.plainCredentials && JSON.parse(createConnectorCredentials.plainCredentials as any),
   } as ConnectorCredentials);
 
 /**
@@ -2924,6 +2934,14 @@ export const CreateConnectorCredentialsMutationFetcher = (
     ConnectorCredentials,
     CreateConnectorCredentialsMutationVariables
   >(CreateConnectorCredentialsDocument, variables, options, outputFn, inputFn);
+export const useCreateConnectorCredentialsMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<ConnectorCredentials, TError, CreateConnectorCredentialsMutationVariables, TContext>,
+) =>
+  useMutation<ConnectorCredentials, TError, CreateConnectorCredentialsMutationVariables, TContext>(
+    ['CreateConnectorCredentials'],
+    (variables?: CreateConnectorCredentialsMutationVariables) => CreateConnectorCredentialsMutationFetcher(variables)(),
+    options,
+  );
 export const UpdateConnectorCredentialsDocument = `
     mutation UpdateConnectorCredentials($input: UpdateConnectorCredentialsInput!) {
   updateConnectorCredentials(input: $input) {
@@ -2936,7 +2954,6 @@ export const UpdateConnectorCredentialsDocument = `
 /**
  * Key maker function for `UpdateConnectorCredentialsMutation`.
  */
-
 export const UpdateConnectorCredentialsMutationKeys = () => ['UpdateConnectorCredentials'];
 
 /**
@@ -2952,9 +2969,7 @@ export const UpdateConnectorCredentialsMutationInput = (variables: UpdateConnect
   ({
     ...variables,
     input: {
-      plainCredentials:
-        variables.input.plainCredentials &&
-        JSON.stringify(variables.input.plainCredentials as unknown as Record<string, any>),
+      plainCredentials: variables.input.plainCredentials && JSON.stringify(variables.input.plainCredentials as any),
     },
   } as UpdateConnectorCredentialsMutationVariables);
 
@@ -2973,8 +2988,7 @@ export const UpdateConnectorCredentialsMutationOutput = ({
   ({
     ...updateConnectorCredentials,
     plainCredentials:
-      updateConnectorCredentials.plainCredentials &&
-      JSON.parse(updateConnectorCredentials.plainCredentials as unknown as string),
+      updateConnectorCredentials.plainCredentials && JSON.parse(updateConnectorCredentials.plainCredentials as any),
   } as ConnectorCredentials);
 
 /**
@@ -2995,6 +3009,14 @@ export const UpdateConnectorCredentialsMutationFetcher = (
     ConnectorCredentials,
     UpdateConnectorCredentialsMutationVariables
   >(UpdateConnectorCredentialsDocument, variables, options, outputFn, inputFn);
+export const useUpdateConnectorCredentialsMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<ConnectorCredentials, TError, UpdateConnectorCredentialsMutationVariables, TContext>,
+) =>
+  useMutation<ConnectorCredentials, TError, UpdateConnectorCredentialsMutationVariables, TContext>(
+    ['UpdateConnectorCredentials'],
+    (variables?: UpdateConnectorCredentialsMutationVariables) => UpdateConnectorCredentialsMutationFetcher(variables)(),
+    options,
+  );
 export const DeleteConnectorCredentialsDocument = `
     mutation DeleteConnectorCredentials($input: DeleteConnectorCredentialsInput!) {
   deleteConnectorCredentials(input: $input) {
@@ -3007,7 +3029,6 @@ export const DeleteConnectorCredentialsDocument = `
 /**
  * Key maker function for `DeleteConnectorCredentialsMutation`.
  */
-
 export const DeleteConnectorCredentialsMutationKeys = () => ['DeleteConnectorCredentials'];
 
 /**
@@ -3037,8 +3058,7 @@ export const DeleteConnectorCredentialsMutationOutput = ({
   ({
     ...deleteConnectorCredentials,
     plainCredentials:
-      deleteConnectorCredentials.plainCredentials &&
-      JSON.parse(deleteConnectorCredentials.plainCredentials as unknown as string),
+      deleteConnectorCredentials.plainCredentials && JSON.parse(deleteConnectorCredentials.plainCredentials as any),
   } as ConnectorCredentials);
 
 /**
@@ -3059,6 +3079,14 @@ export const DeleteConnectorCredentialsMutationFetcher = (
     ConnectorCredentials,
     DeleteConnectorCredentialsMutationVariables
   >(DeleteConnectorCredentialsDocument, variables, options, outputFn, inputFn);
+export const useDeleteConnectorCredentialsMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<ConnectorCredentials, TError, DeleteConnectorCredentialsMutationVariables, TContext>,
+) =>
+  useMutation<ConnectorCredentials, TError, DeleteConnectorCredentialsMutationVariables, TContext>(
+    ['DeleteConnectorCredentials'],
+    (variables?: DeleteConnectorCredentialsMutationVariables) => DeleteConnectorCredentialsMutationFetcher(variables)(),
+    options,
+  );
 export const CreateNodeDocument = `
     mutation CreateNode($input: CreateNodeInput!) {
   createNode(input: $input) {
@@ -3088,7 +3116,6 @@ export const CreateNodeDocument = `
 /**
  * Key maker function for `CreateNodeMutation`.
  */
-
 export const CreateNodeMutationKeys = () => ['CreateNode'];
 
 /**
@@ -3103,10 +3130,7 @@ export const CreateNodeMutationKeys = () => ['CreateNode'];
 export const CreateNodeMutationInput = (variables: CreateNodeMutationVariables) =>
   ({
     ...variables,
-    input: {
-      properties:
-        variables.input.properties && JSON.stringify(variables.input.properties as unknown as Record<string, any>),
-    },
+    input: { properties: variables.input.properties && JSON.stringify(variables.input.properties as any) },
   } as CreateNodeMutationVariables);
 
 /**
@@ -3123,19 +3147,17 @@ export const CreateNodeMutationOutput = ({ createNode }: CreateNodeMutation) =>
     ...createNode,
     node: {
       ...createNode.node,
-      properties: createNode.node?.properties && JSON.parse(createNode.node?.properties as unknown as string),
+      properties: createNode.node?.properties && JSON.parse(createNode.node?.properties as any),
     },
     relationships: createNode.relationships?.map((relationship) => ({
       ...relationship,
       node: {
         ...relationship?.node,
-        properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as unknown as string),
+        properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as any),
       },
       relationship: {
         ...relationship?.relationship,
-        properties:
-          relationship?.relationship?.properties &&
-          JSON.parse(relationship?.relationship?.properties as unknown as string),
+        properties: relationship?.relationship?.properties && JSON.parse(relationship?.relationship?.properties as any),
       },
     })),
   } as NodeGraphRecord);
@@ -3158,6 +3180,14 @@ export const CreateNodeMutationFetcher = (
     options,
     outputFn,
     inputFn,
+  );
+export const useCreateNodeMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<NodeGraphRecord, TError, CreateNodeMutationVariables, TContext>,
+) =>
+  useMutation<NodeGraphRecord, TError, CreateNodeMutationVariables, TContext>(
+    ['CreateNode'],
+    (variables?: CreateNodeMutationVariables) => CreateNodeMutationFetcher(variables)(),
+    options,
   );
 export const UpdateNodeDocument = `
     mutation UpdateNode($input: UpdateNodeInput!) {
@@ -3188,7 +3218,6 @@ export const UpdateNodeDocument = `
 /**
  * Key maker function for `UpdateNodeMutation`.
  */
-
 export const UpdateNodeMutationKeys = () => ['UpdateNode'];
 
 /**
@@ -3203,10 +3232,7 @@ export const UpdateNodeMutationKeys = () => ['UpdateNode'];
 export const UpdateNodeMutationInput = (variables: UpdateNodeMutationVariables) =>
   ({
     ...variables,
-    input: {
-      properties:
-        variables.input.properties && JSON.stringify(variables.input.properties as unknown as Record<string, any>),
-    },
+    input: { properties: variables.input.properties && JSON.stringify(variables.input.properties as any) },
   } as UpdateNodeMutationVariables);
 
 /**
@@ -3223,19 +3249,17 @@ export const UpdateNodeMutationOutput = ({ updateNode }: UpdateNodeMutation) =>
     ...updateNode,
     node: {
       ...updateNode.node,
-      properties: updateNode.node?.properties && JSON.parse(updateNode.node?.properties as unknown as string),
+      properties: updateNode.node?.properties && JSON.parse(updateNode.node?.properties as any),
     },
     relationships: updateNode.relationships?.map((relationship) => ({
       ...relationship,
       node: {
         ...relationship?.node,
-        properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as unknown as string),
+        properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as any),
       },
       relationship: {
         ...relationship?.relationship,
-        properties:
-          relationship?.relationship?.properties &&
-          JSON.parse(relationship?.relationship?.properties as unknown as string),
+        properties: relationship?.relationship?.properties && JSON.parse(relationship?.relationship?.properties as any),
       },
     })),
   } as NodeGraphRecord);
@@ -3259,6 +3283,14 @@ export const UpdateNodeMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useUpdateNodeMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<NodeGraphRecord, TError, UpdateNodeMutationVariables, TContext>,
+) =>
+  useMutation<NodeGraphRecord, TError, UpdateNodeMutationVariables, TContext>(
+    ['UpdateNode'],
+    (variables?: UpdateNodeMutationVariables) => UpdateNodeMutationFetcher(variables)(),
+    options,
+  );
 export const DeleteNodeDocument = `
     mutation DeleteNode($input: DeleteNodeInput!) {
   deleteNode(input: $input) {
@@ -3281,7 +3313,6 @@ export const DeleteNodeDocument = `
 /**
  * Key maker function for `DeleteNodeMutation`.
  */
-
 export const DeleteNodeMutationKeys = () => ['DeleteNode'];
 
 /**
@@ -3310,11 +3341,11 @@ export const DeleteNodeMutationOutput = ({ deleteNode }: DeleteNodeMutation) =>
     ...deleteNode,
     nodes: deleteNode.nodes?.map((node) => ({
       ...node,
-      properties: node?.properties && JSON.parse(node?.properties as unknown as string),
+      properties: node?.properties && JSON.parse(node?.properties as any),
     })),
     relationships: deleteNode.relationships?.map((relationship) => ({
       ...relationship,
-      properties: relationship?.properties && JSON.parse(relationship?.properties as unknown as string),
+      properties: relationship?.properties && JSON.parse(relationship?.properties as any),
     })),
   } as DeleteNodeRecord);
 
@@ -3336,6 +3367,14 @@ export const DeleteNodeMutationFetcher = (
     options,
     outputFn,
     inputFn,
+  );
+export const useDeleteNodeMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<DeleteNodeRecord, TError, DeleteNodeMutationVariables, TContext>,
+) =>
+  useMutation<DeleteNodeRecord, TError, DeleteNodeMutationVariables, TContext>(
+    ['DeleteNode'],
+    (variables?: DeleteNodeMutationVariables) => DeleteNodeMutationFetcher(variables)(),
+    options,
   );
 export const CreateRelationshipDocument = `
     mutation CreateRelationship($input: CreateRelationshipInput!) {
@@ -3364,7 +3403,6 @@ export const CreateRelationshipDocument = `
 /**
  * Key maker function for `CreateRelationshipMutation`.
  */
-
 export const CreateRelationshipMutationKeys = () => ['CreateRelationship'];
 
 /**
@@ -3379,10 +3417,7 @@ export const CreateRelationshipMutationKeys = () => ['CreateRelationship'];
 export const CreateRelationshipMutationInput = (variables: CreateRelationshipMutationVariables) =>
   ({
     ...variables,
-    input: {
-      properties:
-        variables.input.properties && JSON.stringify(variables.input.properties as unknown as Record<string, any>),
-    },
+    input: { properties: variables.input.properties && JSON.stringify(variables.input.properties as any) },
   } as CreateRelationshipMutationVariables);
 
 /**
@@ -3399,19 +3434,16 @@ export const CreateRelationshipMutationOutput = ({ createRelationship }: CreateR
     ...createRelationship,
     end: {
       ...createRelationship.end,
-      properties:
-        createRelationship.end?.properties && JSON.parse(createRelationship.end?.properties as unknown as string),
+      properties: createRelationship.end?.properties && JSON.parse(createRelationship.end?.properties as any),
     },
     relationship: {
       ...createRelationship.relationship,
       properties:
-        createRelationship.relationship?.properties &&
-        JSON.parse(createRelationship.relationship?.properties as unknown as string),
+        createRelationship.relationship?.properties && JSON.parse(createRelationship.relationship?.properties as any),
     },
     start: {
       ...createRelationship.start,
-      properties:
-        createRelationship.start?.properties && JSON.parse(createRelationship.start?.properties as unknown as string),
+      properties: createRelationship.start?.properties && JSON.parse(createRelationship.start?.properties as any),
     },
   } as RelationshipGraphRecord);
 
@@ -3433,6 +3465,14 @@ export const CreateRelationshipMutationFetcher = (
     RelationshipGraphRecord,
     CreateRelationshipMutationVariables
   >(CreateRelationshipDocument, variables, options, outputFn, inputFn);
+export const useCreateRelationshipMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<RelationshipGraphRecord, TError, CreateRelationshipMutationVariables, TContext>,
+) =>
+  useMutation<RelationshipGraphRecord, TError, CreateRelationshipMutationVariables, TContext>(
+    ['CreateRelationship'],
+    (variables?: CreateRelationshipMutationVariables) => CreateRelationshipMutationFetcher(variables)(),
+    options,
+  );
 export const UpdateRelationshipDocument = `
     mutation UpdateRelationship($input: UpdateRelationshipInput!) {
   updateRelationship(input: $input) {
@@ -3460,7 +3500,6 @@ export const UpdateRelationshipDocument = `
 /**
  * Key maker function for `UpdateRelationshipMutation`.
  */
-
 export const UpdateRelationshipMutationKeys = () => ['UpdateRelationship'];
 
 /**
@@ -3475,10 +3514,7 @@ export const UpdateRelationshipMutationKeys = () => ['UpdateRelationship'];
 export const UpdateRelationshipMutationInput = (variables: UpdateRelationshipMutationVariables) =>
   ({
     ...variables,
-    input: {
-      properties:
-        variables.input.properties && JSON.stringify(variables.input.properties as unknown as Record<string, any>),
-    },
+    input: { properties: variables.input.properties && JSON.stringify(variables.input.properties as any) },
   } as UpdateRelationshipMutationVariables);
 
 /**
@@ -3495,19 +3531,16 @@ export const UpdateRelationshipMutationOutput = ({ updateRelationship }: UpdateR
     ...updateRelationship,
     end: {
       ...updateRelationship.end,
-      properties:
-        updateRelationship.end?.properties && JSON.parse(updateRelationship.end?.properties as unknown as string),
+      properties: updateRelationship.end?.properties && JSON.parse(updateRelationship.end?.properties as any),
     },
     relationship: {
       ...updateRelationship.relationship,
       properties:
-        updateRelationship.relationship?.properties &&
-        JSON.parse(updateRelationship.relationship?.properties as unknown as string),
+        updateRelationship.relationship?.properties && JSON.parse(updateRelationship.relationship?.properties as any),
     },
     start: {
       ...updateRelationship.start,
-      properties:
-        updateRelationship.start?.properties && JSON.parse(updateRelationship.start?.properties as unknown as string),
+      properties: updateRelationship.start?.properties && JSON.parse(updateRelationship.start?.properties as any),
     },
   } as RelationshipGraphRecord);
 
@@ -3529,6 +3562,14 @@ export const UpdateRelationshipMutationFetcher = (
     RelationshipGraphRecord,
     UpdateRelationshipMutationVariables
   >(UpdateRelationshipDocument, variables, options, outputFn, inputFn);
+export const useUpdateRelationshipMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<RelationshipGraphRecord, TError, UpdateRelationshipMutationVariables, TContext>,
+) =>
+  useMutation<RelationshipGraphRecord, TError, UpdateRelationshipMutationVariables, TContext>(
+    ['UpdateRelationship'],
+    (variables?: UpdateRelationshipMutationVariables) => UpdateRelationshipMutationFetcher(variables)(),
+    options,
+  );
 export const DeleteRelationshipDocument = `
     mutation DeleteRelationship($input: DeleteRelationshipInput!) {
   deleteRelationship(input: $input) {
@@ -3546,7 +3587,6 @@ export const DeleteRelationshipDocument = `
 /**
  * Key maker function for `DeleteRelationshipMutation`.
  */
-
 export const DeleteRelationshipMutationKeys = () => ['DeleteRelationship'];
 
 /**
@@ -3575,7 +3615,7 @@ export const DeleteRelationshipMutationOutput = ({ deleteRelationship }: DeleteR
     ...deleteRelationship,
     relationships: deleteRelationship.relationships?.map((relationship) => ({
       ...relationship,
-      properties: relationship?.properties && JSON.parse(relationship?.properties as unknown as string),
+      properties: relationship?.properties && JSON.parse(relationship?.properties as any),
     })),
   } as DeleteRelationshipRecord);
 
@@ -3597,6 +3637,14 @@ export const DeleteRelationshipMutationFetcher = (
     DeleteRelationshipRecord,
     DeleteRelationshipMutationVariables
   >(DeleteRelationshipDocument, variables, options, outputFn, inputFn);
+export const useDeleteRelationshipMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<DeleteRelationshipRecord, TError, DeleteRelationshipMutationVariables, TContext>,
+) =>
+  useMutation<DeleteRelationshipRecord, TError, DeleteRelationshipMutationVariables, TContext>(
+    ['DeleteRelationship'],
+    (variables?: DeleteRelationshipMutationVariables) => DeleteRelationshipMutationFetcher(variables)(),
+    options,
+  );
 export const CreateConnectorDocument = `
     mutation CreateConnector($input: CreateConnectorInput!, $condition: ModelConnectorConditionInput) {
   createConnector(input: $input, condition: $condition) {
@@ -3641,7 +3689,6 @@ export const CreateConnectorDocument = `
 /**
  * Key maker function for `CreateConnectorMutation`.
  */
-
 export const CreateConnectorMutationKeys = () => ['CreateConnector'];
 
 /**
@@ -3657,9 +3704,7 @@ export const CreateConnectorMutationInput = (variables: CreateConnectorMutationV
   ({
     ...variables,
     input: {
-      secretCredentials:
-        variables.input.secretCredentials &&
-        JSON.stringify(variables.input.secretCredentials as unknown as Record<string, any>),
+      secretCredentials: variables.input.secretCredentials && JSON.stringify(variables.input.secretCredentials as any),
     },
   } as CreateConnectorMutationVariables);
 
@@ -3675,8 +3720,7 @@ export const CreateConnectorMutationOutput = ({ createConnector }: CreateConnect
   createConnector &&
   ({
     ...createConnector,
-    secretCredentials:
-      createConnector.secretCredentials && JSON.parse(createConnector.secretCredentials as unknown as string),
+    secretCredentials: createConnector.secretCredentials && JSON.parse(createConnector.secretCredentials as any),
   } as Connector);
 
 /**
@@ -3697,6 +3741,14 @@ export const CreateConnectorMutationFetcher = (
     Connector,
     CreateConnectorMutationVariables
   >(CreateConnectorDocument, variables, options, outputFn, inputFn);
+export const useCreateConnectorMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Connector, TError, CreateConnectorMutationVariables, TContext>,
+) =>
+  useMutation<Connector, TError, CreateConnectorMutationVariables, TContext>(
+    ['CreateConnector'],
+    (variables?: CreateConnectorMutationVariables) => CreateConnectorMutationFetcher(variables)(),
+    options,
+  );
 export const UpdateConnectorDocument = `
     mutation UpdateConnector($input: UpdateConnectorInput!, $condition: ModelConnectorConditionInput) {
   updateConnector(input: $input, condition: $condition) {
@@ -3741,7 +3793,6 @@ export const UpdateConnectorDocument = `
 /**
  * Key maker function for `UpdateConnectorMutation`.
  */
-
 export const UpdateConnectorMutationKeys = () => ['UpdateConnector'];
 
 /**
@@ -3757,9 +3808,7 @@ export const UpdateConnectorMutationInput = (variables: UpdateConnectorMutationV
   ({
     ...variables,
     input: {
-      secretCredentials:
-        variables.input.secretCredentials &&
-        JSON.stringify(variables.input.secretCredentials as unknown as Record<string, any>),
+      secretCredentials: variables.input.secretCredentials && JSON.stringify(variables.input.secretCredentials as any),
     },
   } as UpdateConnectorMutationVariables);
 
@@ -3775,8 +3824,7 @@ export const UpdateConnectorMutationOutput = ({ updateConnector }: UpdateConnect
   updateConnector &&
   ({
     ...updateConnector,
-    secretCredentials:
-      updateConnector.secretCredentials && JSON.parse(updateConnector.secretCredentials as unknown as string),
+    secretCredentials: updateConnector.secretCredentials && JSON.parse(updateConnector.secretCredentials as any),
   } as Connector);
 
 /**
@@ -3797,6 +3845,14 @@ export const UpdateConnectorMutationFetcher = (
     Connector,
     UpdateConnectorMutationVariables
   >(UpdateConnectorDocument, variables, options, outputFn, inputFn);
+export const useUpdateConnectorMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Connector, TError, UpdateConnectorMutationVariables, TContext>,
+) =>
+  useMutation<Connector, TError, UpdateConnectorMutationVariables, TContext>(
+    ['UpdateConnector'],
+    (variables?: UpdateConnectorMutationVariables) => UpdateConnectorMutationFetcher(variables)(),
+    options,
+  );
 export const DeleteConnectorDocument = `
     mutation DeleteConnector($input: DeleteConnectorInput!, $condition: ModelConnectorConditionInput) {
   deleteConnector(input: $input, condition: $condition) {
@@ -3841,7 +3897,6 @@ export const DeleteConnectorDocument = `
 /**
  * Key maker function for `DeleteConnectorMutation`.
  */
-
 export const DeleteConnectorMutationKeys = () => ['DeleteConnector'];
 
 /**
@@ -3868,8 +3923,7 @@ export const DeleteConnectorMutationOutput = ({ deleteConnector }: DeleteConnect
   deleteConnector &&
   ({
     ...deleteConnector,
-    secretCredentials:
-      deleteConnector.secretCredentials && JSON.parse(deleteConnector.secretCredentials as unknown as string),
+    secretCredentials: deleteConnector.secretCredentials && JSON.parse(deleteConnector.secretCredentials as any),
   } as Connector);
 
 /**
@@ -3890,6 +3944,14 @@ export const DeleteConnectorMutationFetcher = (
     Connector,
     DeleteConnectorMutationVariables
   >(DeleteConnectorDocument, variables, options, outputFn, inputFn);
+export const useDeleteConnectorMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Connector, TError, DeleteConnectorMutationVariables, TContext>,
+) =>
+  useMutation<Connector, TError, DeleteConnectorMutationVariables, TContext>(
+    ['DeleteConnector'],
+    (variables?: DeleteConnectorMutationVariables) => DeleteConnectorMutationFetcher(variables)(),
+    options,
+  );
 export const CreateTransformationDocument = `
     mutation CreateTransformation($input: CreateTransformationInput!, $condition: ModelTransformationConditionInput) {
   createTransformation(input: $input, condition: $condition) {
@@ -3934,7 +3996,6 @@ export const CreateTransformationDocument = `
 /**
  * Key maker function for `CreateTransformationMutation`.
  */
-
 export const CreateTransformationMutationKeys = () => ['CreateTransformation'];
 
 /**
@@ -3965,7 +4026,7 @@ export const CreateTransformationMutationOutput = ({ createTransformation }: Cre
       ...createTransformation.connector,
       secretCredentials:
         createTransformation.connector?.secretCredentials &&
-        JSON.parse(createTransformation.connector?.secretCredentials as unknown as string),
+        JSON.parse(createTransformation.connector?.secretCredentials as any),
     },
   } as Transformation);
 
@@ -3987,6 +4048,14 @@ export const CreateTransformationMutationFetcher = (
     Transformation,
     CreateTransformationMutationVariables
   >(CreateTransformationDocument, variables, options, outputFn, inputFn);
+export const useCreateTransformationMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Transformation, TError, CreateTransformationMutationVariables, TContext>,
+) =>
+  useMutation<Transformation, TError, CreateTransformationMutationVariables, TContext>(
+    ['CreateTransformation'],
+    (variables?: CreateTransformationMutationVariables) => CreateTransformationMutationFetcher(variables)(),
+    options,
+  );
 export const UpdateTransformationDocument = `
     mutation UpdateTransformation($input: UpdateTransformationInput!, $condition: ModelTransformationConditionInput) {
   updateTransformation(input: $input, condition: $condition) {
@@ -4031,7 +4100,6 @@ export const UpdateTransformationDocument = `
 /**
  * Key maker function for `UpdateTransformationMutation`.
  */
-
 export const UpdateTransformationMutationKeys = () => ['UpdateTransformation'];
 
 /**
@@ -4062,7 +4130,7 @@ export const UpdateTransformationMutationOutput = ({ updateTransformation }: Upd
       ...updateTransformation.connector,
       secretCredentials:
         updateTransformation.connector?.secretCredentials &&
-        JSON.parse(updateTransformation.connector?.secretCredentials as unknown as string),
+        JSON.parse(updateTransformation.connector?.secretCredentials as any),
     },
   } as Transformation);
 
@@ -4084,6 +4152,14 @@ export const UpdateTransformationMutationFetcher = (
     Transformation,
     UpdateTransformationMutationVariables
   >(UpdateTransformationDocument, variables, options, outputFn, inputFn);
+export const useUpdateTransformationMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Transformation, TError, UpdateTransformationMutationVariables, TContext>,
+) =>
+  useMutation<Transformation, TError, UpdateTransformationMutationVariables, TContext>(
+    ['UpdateTransformation'],
+    (variables?: UpdateTransformationMutationVariables) => UpdateTransformationMutationFetcher(variables)(),
+    options,
+  );
 export const DeleteTransformationDocument = `
     mutation DeleteTransformation($input: DeleteTransformationInput!, $condition: ModelTransformationConditionInput) {
   deleteTransformation(input: $input, condition: $condition) {
@@ -4128,7 +4204,6 @@ export const DeleteTransformationDocument = `
 /**
  * Key maker function for `DeleteTransformationMutation`.
  */
-
 export const DeleteTransformationMutationKeys = () => ['DeleteTransformation'];
 
 /**
@@ -4159,7 +4234,7 @@ export const DeleteTransformationMutationOutput = ({ deleteTransformation }: Del
       ...deleteTransformation.connector,
       secretCredentials:
         deleteTransformation.connector?.secretCredentials &&
-        JSON.parse(deleteTransformation.connector?.secretCredentials as unknown as string),
+        JSON.parse(deleteTransformation.connector?.secretCredentials as any),
     },
   } as Transformation);
 
@@ -4181,6 +4256,14 @@ export const DeleteTransformationMutationFetcher = (
     Transformation,
     DeleteTransformationMutationVariables
   >(DeleteTransformationDocument, variables, options, outputFn, inputFn);
+export const useDeleteTransformationMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Transformation, TError, DeleteTransformationMutationVariables, TContext>,
+) =>
+  useMutation<Transformation, TError, DeleteTransformationMutationVariables, TContext>(
+    ['DeleteTransformation'],
+    (variables?: DeleteTransformationMutationVariables) => DeleteTransformationMutationFetcher(variables)(),
+    options,
+  );
 export const CreatePerspectiveDocument = `
     mutation CreatePerspective($input: CreatePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   createPerspective(input: $input, condition: $condition) {
@@ -4207,7 +4290,6 @@ export const CreatePerspectiveDocument = `
 /**
  * Key maker function for `CreatePerspectiveMutation`.
  */
-
 export const CreatePerspectiveMutationKeys = () => ['CreatePerspective'];
 
 /**
@@ -4251,6 +4333,14 @@ export const CreatePerspectiveMutationFetcher = (
     Perspective,
     CreatePerspectiveMutationVariables
   >(CreatePerspectiveDocument, variables, options, outputFn, inputFn);
+export const useCreatePerspectiveMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Perspective, TError, CreatePerspectiveMutationVariables, TContext>,
+) =>
+  useMutation<Perspective, TError, CreatePerspectiveMutationVariables, TContext>(
+    ['CreatePerspective'],
+    (variables?: CreatePerspectiveMutationVariables) => CreatePerspectiveMutationFetcher(variables)(),
+    options,
+  );
 export const UpdatePerspectiveDocument = `
     mutation UpdatePerspective($input: UpdatePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   updatePerspective(input: $input, condition: $condition) {
@@ -4277,7 +4367,6 @@ export const UpdatePerspectiveDocument = `
 /**
  * Key maker function for `UpdatePerspectiveMutation`.
  */
-
 export const UpdatePerspectiveMutationKeys = () => ['UpdatePerspective'];
 
 /**
@@ -4321,6 +4410,14 @@ export const UpdatePerspectiveMutationFetcher = (
     Perspective,
     UpdatePerspectiveMutationVariables
   >(UpdatePerspectiveDocument, variables, options, outputFn, inputFn);
+export const useUpdatePerspectiveMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Perspective, TError, UpdatePerspectiveMutationVariables, TContext>,
+) =>
+  useMutation<Perspective, TError, UpdatePerspectiveMutationVariables, TContext>(
+    ['UpdatePerspective'],
+    (variables?: UpdatePerspectiveMutationVariables) => UpdatePerspectiveMutationFetcher(variables)(),
+    options,
+  );
 export const DeletePerspectiveDocument = `
     mutation DeletePerspective($input: DeletePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   deletePerspective(input: $input, condition: $condition) {
@@ -4347,7 +4444,6 @@ export const DeletePerspectiveDocument = `
 /**
  * Key maker function for `DeletePerspectiveMutation`.
  */
-
 export const DeletePerspectiveMutationKeys = () => ['DeletePerspective'];
 
 /**
@@ -4391,6 +4487,14 @@ export const DeletePerspectiveMutationFetcher = (
     Perspective,
     DeletePerspectiveMutationVariables
   >(DeletePerspectiveDocument, variables, options, outputFn, inputFn);
+export const useDeletePerspectiveMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Perspective, TError, DeletePerspectiveMutationVariables, TContext>,
+) =>
+  useMutation<Perspective, TError, DeletePerspectiveMutationVariables, TContext>(
+    ['DeletePerspective'],
+    (variables?: DeletePerspectiveMutationVariables) => DeletePerspectiveMutationFetcher(variables)(),
+    options,
+  );
 export const CreateSchemaDocument = `
     mutation CreateSchema($input: CreateSchemaInput!, $condition: ModelSchemaConditionInput) {
   createSchema(input: $input, condition: $condition) {
@@ -4431,7 +4535,6 @@ export const CreateSchemaDocument = `
 /**
  * Key maker function for `CreateSchemaMutation`.
  */
-
 export const CreateSchemaMutationKeys = () => ['CreateSchema'];
 
 /**
@@ -4475,6 +4578,14 @@ export const CreateSchemaMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useCreateSchemaMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Schema, TError, CreateSchemaMutationVariables, TContext>,
+) =>
+  useMutation<Schema, TError, CreateSchemaMutationVariables, TContext>(
+    ['CreateSchema'],
+    (variables?: CreateSchemaMutationVariables) => CreateSchemaMutationFetcher(variables)(),
+    options,
+  );
 export const UpdateSchemaDocument = `
     mutation UpdateSchema($input: UpdateSchemaInput!, $condition: ModelSchemaConditionInput) {
   updateSchema(input: $input, condition: $condition) {
@@ -4515,7 +4626,6 @@ export const UpdateSchemaDocument = `
 /**
  * Key maker function for `UpdateSchemaMutation`.
  */
-
 export const UpdateSchemaMutationKeys = () => ['UpdateSchema'];
 
 /**
@@ -4559,6 +4669,14 @@ export const UpdateSchemaMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useUpdateSchemaMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Schema, TError, UpdateSchemaMutationVariables, TContext>,
+) =>
+  useMutation<Schema, TError, UpdateSchemaMutationVariables, TContext>(
+    ['UpdateSchema'],
+    (variables?: UpdateSchemaMutationVariables) => UpdateSchemaMutationFetcher(variables)(),
+    options,
+  );
 export const DeleteSchemaDocument = `
     mutation DeleteSchema($input: DeleteSchemaInput!, $condition: ModelSchemaConditionInput) {
   deleteSchema(input: $input, condition: $condition) {
@@ -4599,7 +4717,6 @@ export const DeleteSchemaDocument = `
 /**
  * Key maker function for `DeleteSchemaMutation`.
  */
-
 export const DeleteSchemaMutationKeys = () => ['DeleteSchema'];
 
 /**
@@ -4643,6 +4760,14 @@ export const DeleteSchemaMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useDeleteSchemaMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Schema, TError, DeleteSchemaMutationVariables, TContext>,
+) =>
+  useMutation<Schema, TError, DeleteSchemaMutationVariables, TContext>(
+    ['DeleteSchema'],
+    (variables?: DeleteSchemaMutationVariables) => DeleteSchemaMutationFetcher(variables)(),
+    options,
+  );
 export const CreateTestDocument = `
     mutation CreateTest($input: CreateTestInput!, $condition: ModelTestConditionInput) {
   createTest(input: $input, condition: $condition) {
@@ -4660,7 +4785,6 @@ export const CreateTestDocument = `
 /**
  * Key maker function for `CreateTestMutation`.
  */
-
 export const CreateTestMutationKeys = () => ['CreateTest'];
 
 /**
@@ -4704,6 +4828,14 @@ export const CreateTestMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useCreateTestMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Test, TError, CreateTestMutationVariables, TContext>,
+) =>
+  useMutation<Test, TError, CreateTestMutationVariables, TContext>(
+    ['CreateTest'],
+    (variables?: CreateTestMutationVariables) => CreateTestMutationFetcher(variables)(),
+    options,
+  );
 export const UpdateTestDocument = `
     mutation UpdateTest($input: UpdateTestInput!, $condition: ModelTestConditionInput) {
   updateTest(input: $input, condition: $condition) {
@@ -4721,7 +4853,6 @@ export const UpdateTestDocument = `
 /**
  * Key maker function for `UpdateTestMutation`.
  */
-
 export const UpdateTestMutationKeys = () => ['UpdateTest'];
 
 /**
@@ -4765,6 +4896,14 @@ export const UpdateTestMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useUpdateTestMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Test, TError, UpdateTestMutationVariables, TContext>,
+) =>
+  useMutation<Test, TError, UpdateTestMutationVariables, TContext>(
+    ['UpdateTest'],
+    (variables?: UpdateTestMutationVariables) => UpdateTestMutationFetcher(variables)(),
+    options,
+  );
 export const DeleteTestDocument = `
     mutation DeleteTest($input: DeleteTestInput!, $condition: ModelTestConditionInput) {
   deleteTest(input: $input, condition: $condition) {
@@ -4782,7 +4921,6 @@ export const DeleteTestDocument = `
 /**
  * Key maker function for `DeleteTestMutation`.
  */
-
 export const DeleteTestMutationKeys = () => ['DeleteTest'];
 
 /**
@@ -4826,6 +4964,14 @@ export const DeleteTestMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useDeleteTestMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Test, TError, DeleteTestMutationVariables, TContext>,
+) =>
+  useMutation<Test, TError, DeleteTestMutationVariables, TContext>(
+    ['DeleteTest'],
+    (variables?: DeleteTestMutationVariables) => DeleteTestMutationFetcher(variables)(),
+    options,
+  );
 export const CreateOrganizationDocument = `
     mutation CreateOrganization($input: CreateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
   createOrganization(input: $input, condition: $condition) {
@@ -4842,7 +4988,6 @@ export const CreateOrganizationDocument = `
 /**
  * Key maker function for `CreateOrganizationMutation`.
  */
-
 export const CreateOrganizationMutationKeys = () => ['CreateOrganization'];
 
 /**
@@ -4886,6 +5031,14 @@ export const CreateOrganizationMutationFetcher = (
     Organization,
     CreateOrganizationMutationVariables
   >(CreateOrganizationDocument, variables, options, outputFn, inputFn);
+export const useCreateOrganizationMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Organization, TError, CreateOrganizationMutationVariables, TContext>,
+) =>
+  useMutation<Organization, TError, CreateOrganizationMutationVariables, TContext>(
+    ['CreateOrganization'],
+    (variables?: CreateOrganizationMutationVariables) => CreateOrganizationMutationFetcher(variables)(),
+    options,
+  );
 export const UpdateOrganizationDocument = `
     mutation UpdateOrganization($input: UpdateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
   updateOrganization(input: $input, condition: $condition) {
@@ -4902,7 +5055,6 @@ export const UpdateOrganizationDocument = `
 /**
  * Key maker function for `UpdateOrganizationMutation`.
  */
-
 export const UpdateOrganizationMutationKeys = () => ['UpdateOrganization'];
 
 /**
@@ -4946,6 +5098,14 @@ export const UpdateOrganizationMutationFetcher = (
     Organization,
     UpdateOrganizationMutationVariables
   >(UpdateOrganizationDocument, variables, options, outputFn, inputFn);
+export const useUpdateOrganizationMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<Organization, TError, UpdateOrganizationMutationVariables, TContext>,
+) =>
+  useMutation<Organization, TError, UpdateOrganizationMutationVariables, TContext>(
+    ['UpdateOrganization'],
+    (variables?: UpdateOrganizationMutationVariables) => UpdateOrganizationMutationFetcher(variables)(),
+    options,
+  );
 export const RunPerspectiveDocument = `
     mutation RunPerspective($input: RunPerspectiveInput!) {
   runPerspective(input: $input) {
@@ -4957,7 +5117,6 @@ export const RunPerspectiveDocument = `
 /**
  * Key maker function for `RunPerspectiveMutation`.
  */
-
 export const RunPerspectiveMutationKeys = () => ['RunPerspective'];
 
 /**
@@ -4984,7 +5143,7 @@ export const RunPerspectiveMutationOutput = ({ runPerspective }: RunPerspectiveM
   runPerspective &&
   ({
     ...runPerspective,
-    records: runPerspective.records && JSON.parse(runPerspective.records as unknown as string),
+    records: runPerspective.records && JSON.parse(runPerspective.records as any),
   } as RunPerspectiveResult);
 
 /**
@@ -5005,6 +5164,14 @@ export const RunPerspectiveMutationFetcher = (
     RunPerspectiveResult,
     RunPerspectiveMutationVariables
   >(RunPerspectiveDocument, variables, options, outputFn, inputFn);
+export const useRunPerspectiveMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<RunPerspectiveResult, TError, RunPerspectiveMutationVariables, TContext>,
+) =>
+  useMutation<RunPerspectiveResult, TError, RunPerspectiveMutationVariables, TContext>(
+    ['RunPerspective'],
+    (variables?: RunPerspectiveMutationVariables) => RunPerspectiveMutationFetcher(variables)(),
+    options,
+  );
 export const CreateUserDocument = `
     mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
@@ -5019,7 +5186,6 @@ export const CreateUserDocument = `
 /**
  * Key maker function for `CreateUserMutation`.
  */
-
 export const CreateUserMutationKeys = () => ['CreateUser'];
 
 /**
@@ -5044,10 +5210,7 @@ export const CreateUserMutationInput = (variables: CreateUserMutationVariables) 
  */
 export const CreateUserMutationOutput = ({ createUser }: CreateUserMutation) =>
   createUser &&
-  ({
-    ...createUser,
-    attributes: createUser.attributes && JSON.parse(createUser.attributes as unknown as string),
-  } as CognitoUser);
+  ({ ...createUser, attributes: createUser.attributes && JSON.parse(createUser.attributes as any) } as CognitoUser);
 
 /**
  * Fetcher function for `CreateUserMutation`.
@@ -5068,6 +5231,14 @@ export const CreateUserMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useCreateUserMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<CognitoUser, TError, CreateUserMutationVariables, TContext>,
+) =>
+  useMutation<CognitoUser, TError, CreateUserMutationVariables, TContext>(
+    ['CreateUser'],
+    (variables?: CreateUserMutationVariables) => CreateUserMutationFetcher(variables)(),
+    options,
+  );
 export const UpdateUserDocument = `
     mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
@@ -5082,7 +5253,6 @@ export const UpdateUserDocument = `
 /**
  * Key maker function for `UpdateUserMutation`.
  */
-
 export const UpdateUserMutationKeys = () => ['UpdateUser'];
 
 /**
@@ -5107,10 +5277,7 @@ export const UpdateUserMutationInput = (variables: UpdateUserMutationVariables) 
  */
 export const UpdateUserMutationOutput = ({ updateUser }: UpdateUserMutation) =>
   updateUser &&
-  ({
-    ...updateUser,
-    attributes: updateUser.attributes && JSON.parse(updateUser.attributes as unknown as string),
-  } as CognitoUser);
+  ({ ...updateUser, attributes: updateUser.attributes && JSON.parse(updateUser.attributes as any) } as CognitoUser);
 
 /**
  * Fetcher function for `UpdateUserMutation`.
@@ -5131,6 +5298,14 @@ export const UpdateUserMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useUpdateUserMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<CognitoUser, TError, UpdateUserMutationVariables, TContext>,
+) =>
+  useMutation<CognitoUser, TError, UpdateUserMutationVariables, TContext>(
+    ['UpdateUser'],
+    (variables?: UpdateUserMutationVariables) => UpdateUserMutationFetcher(variables)(),
+    options,
+  );
 export const DeleteUserDocument = `
     mutation DeleteUser($input: DeleteUserInput!) {
   deleteUser(input: $input) {
@@ -5145,7 +5320,6 @@ export const DeleteUserDocument = `
 /**
  * Key maker function for `DeleteUserMutation`.
  */
-
 export const DeleteUserMutationKeys = () => ['DeleteUser'];
 
 /**
@@ -5170,10 +5344,7 @@ export const DeleteUserMutationInput = (variables: DeleteUserMutationVariables) 
  */
 export const DeleteUserMutationOutput = ({ deleteUser }: DeleteUserMutation) =>
   deleteUser &&
-  ({
-    ...deleteUser,
-    attributes: deleteUser.attributes && JSON.parse(deleteUser.attributes as unknown as string),
-  } as CognitoUser);
+  ({ ...deleteUser, attributes: deleteUser.attributes && JSON.parse(deleteUser.attributes as any) } as CognitoUser);
 
 /**
  * Fetcher function for `DeleteUserMutation`.
@@ -5194,6 +5365,14 @@ export const DeleteUserMutationFetcher = (
     outputFn,
     inputFn,
   );
+export const useDeleteUserMutation = <TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<CognitoUser, TError, DeleteUserMutationVariables, TContext>,
+) =>
+  useMutation<CognitoUser, TError, DeleteUserMutationVariables, TContext>(
+    ['DeleteUser'],
+    (variables?: DeleteUserMutationVariables) => DeleteUserMutationFetcher(variables)(),
+    options,
+  );
 export const EmptyQueryDocument = `
     query EmptyQuery {
   emptyQuery
@@ -5203,7 +5382,6 @@ export const EmptyQueryDocument = `
 /**
  * Key maker function for `EmptyQueryQuery`.
  */
-
 export const EmptyQueryQueryKeys = (variables?: EmptyQueryQueryVariables) =>
   variables === undefined ? ['EmptyQuery'] : ['EmptyQuery', variables];
 
@@ -5247,6 +5425,17 @@ export const EmptyQueryQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useEmptyQueryQuery = <TData = Scalars['String'], TError = unknown>(
+  variables?: EmptyQueryQueryVariables,
+  options?: UseQueryOptions<Scalars['String'], TError, TData>,
+) =>
+  useQuery<Scalars['String'], TError, TData>(
+    variables === undefined ? ['EmptyQuery'] : ['EmptyQuery', variables],
+    EmptyQueryQueryFetcher(variables),
+    options,
+  );
+useEmptyQueryQuery.getKey = EmptyQueryQueryKeys;
+
 export const EchoDocument = `
     query Echo($msg: String) {
   echo(msg: $msg)
@@ -5256,7 +5445,6 @@ export const EchoDocument = `
 /**
  * Key maker function for `EchoQuery`.
  */
-
 export const EchoQueryKeys = (variables?: EchoQueryVariables) =>
   variables === undefined ? ['Echo'] : ['Echo', variables];
 
@@ -5300,6 +5488,17 @@ export const EchoQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useEchoQuery = <TData = Scalars['String'], TError = unknown>(
+  variables?: EchoQueryVariables,
+  options?: UseQueryOptions<Scalars['String'], TError, TData>,
+) =>
+  useQuery<Scalars['String'], TError, TData>(
+    variables === undefined ? ['Echo'] : ['Echo', variables],
+    EchoQueryFetcher(variables),
+    options,
+  );
+useEchoQuery.getKey = EchoQueryKeys;
+
 export const CustomTestDocument = `
     query CustomTest($id: ID!) {
   customTest(id: $id) {
@@ -5317,7 +5516,6 @@ export const CustomTestDocument = `
 /**
  * Key maker function for `CustomTestQuery`.
  */
-
 export const CustomTestQueryKeys = (variables: CustomTestQueryVariables) => ['CustomTest', variables];
 
 /**
@@ -5360,6 +5558,12 @@ export const CustomTestQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useCustomTestQuery = <TData = Test, TError = unknown>(
+  variables: CustomTestQueryVariables,
+  options?: UseQueryOptions<Test, TError, TData>,
+) => useQuery<Test, TError, TData>(['CustomTest', variables], CustomTestQueryFetcher(variables), options);
+useCustomTestQuery.getKey = CustomTestQueryKeys;
+
 export const GetConnectorManifestDocument = `
     query GetConnectorManifest($query: QueryGetConnectorManifestQueryInput!) {
   getConnectorManifest(query: $query) {
@@ -5384,7 +5588,6 @@ export const GetConnectorManifestDocument = `
 /**
  * Key maker function for `GetConnectorManifestQuery`.
  */
-
 export const GetConnectorManifestQueryKeys = (variables: GetConnectorManifestQueryVariables) => [
   'GetConnectorManifest',
   variables,
@@ -5431,6 +5634,17 @@ export const GetConnectorManifestQueryFetcher = (
     ConnectorManifest,
     GetConnectorManifestQueryVariables
   >(GetConnectorManifestDocument, variables, options, outputFn, inputFn);
+export const useGetConnectorManifestQuery = <TData = ConnectorManifest, TError = unknown>(
+  variables: GetConnectorManifestQueryVariables,
+  options?: UseQueryOptions<ConnectorManifest, TError, TData>,
+) =>
+  useQuery<ConnectorManifest, TError, TData>(
+    ['GetConnectorManifest', variables],
+    GetConnectorManifestQueryFetcher(variables),
+    options,
+  );
+useGetConnectorManifestQuery.getKey = GetConnectorManifestQueryKeys;
+
 export const GetConnectorDocument = `
     query GetConnector($id: ID!) {
   getConnector(id: $id) {
@@ -5475,7 +5689,6 @@ export const GetConnectorDocument = `
 /**
  * Key maker function for `GetConnectorQuery`.
  */
-
 export const GetConnectorQueryKeys = (variables: GetConnectorQueryVariables) => ['GetConnector', variables];
 
 /**
@@ -5502,8 +5715,7 @@ export const GetConnectorQueryOutput = ({ getConnector }: GetConnectorQuery) =>
   getConnector &&
   ({
     ...getConnector,
-    secretCredentials:
-      getConnector.secretCredentials && JSON.parse(getConnector.secretCredentials as unknown as string),
+    secretCredentials: getConnector.secretCredentials && JSON.parse(getConnector.secretCredentials as any),
   } as Connector);
 
 /**
@@ -5525,6 +5737,12 @@ export const GetConnectorQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useGetConnectorQuery = <TData = Connector, TError = unknown>(
+  variables: GetConnectorQueryVariables,
+  options?: UseQueryOptions<Connector, TError, TData>,
+) => useQuery<Connector, TError, TData>(['GetConnector', variables], GetConnectorQueryFetcher(variables), options);
+useGetConnectorQuery.getKey = GetConnectorQueryKeys;
+
 export const ListConnectorsDocument = `
     query ListConnectors($filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
   listConnectors(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -5561,7 +5779,6 @@ export const ListConnectorsDocument = `
 /**
  * Key maker function for `ListConnectorsQuery`.
  */
-
 export const ListConnectorsQueryKeys = (variables?: ListConnectorsQueryVariables) =>
   variables === undefined ? ['ListConnectors'] : ['ListConnectors', variables];
 
@@ -5591,7 +5808,7 @@ export const ListConnectorsQueryOutput = ({ listConnectors }: ListConnectorsQuer
     ...listConnectors,
     items: listConnectors.items?.map((item) => ({
       ...item,
-      secretCredentials: item?.secretCredentials && JSON.parse(item?.secretCredentials as unknown as string),
+      secretCredentials: item?.secretCredentials && JSON.parse(item?.secretCredentials as any),
     })),
   } as ModelConnectorConnection);
 
@@ -5613,6 +5830,17 @@ export const ListConnectorsQueryFetcher = (
     ModelConnectorConnection,
     ListConnectorsQueryVariables
   >(ListConnectorsDocument, variables, options, outputFn, inputFn);
+export const useListConnectorsQuery = <TData = ModelConnectorConnection, TError = unknown>(
+  variables?: ListConnectorsQueryVariables,
+  options?: UseQueryOptions<ModelConnectorConnection, TError, TData>,
+) =>
+  useQuery<ModelConnectorConnection, TError, TData>(
+    variables === undefined ? ['ListConnectors'] : ['ListConnectors', variables],
+    ListConnectorsQueryFetcher(variables),
+    options,
+  );
+useListConnectorsQuery.getKey = ListConnectorsQueryKeys;
+
 export const GetConnectorBySourceDocument = `
     query GetConnectorBySource($source: String!, $sortDirection: ModelSortDirection, $filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
   getConnectorBySource(
@@ -5655,7 +5883,6 @@ export const GetConnectorBySourceDocument = `
 /**
  * Key maker function for `GetConnectorBySourceQuery`.
  */
-
 export const GetConnectorBySourceQueryKeys = (variables: GetConnectorBySourceQueryVariables) => [
   'GetConnectorBySource',
   variables,
@@ -5687,7 +5914,7 @@ export const GetConnectorBySourceQueryOutput = ({ getConnectorBySource }: GetCon
     ...getConnectorBySource,
     items: getConnectorBySource.items?.map((item) => ({
       ...item,
-      secretCredentials: item?.secretCredentials && JSON.parse(item?.secretCredentials as unknown as string),
+      secretCredentials: item?.secretCredentials && JSON.parse(item?.secretCredentials as any),
     })),
   } as ModelConnectorConnection);
 
@@ -5709,6 +5936,17 @@ export const GetConnectorBySourceQueryFetcher = (
     ModelConnectorConnection,
     GetConnectorBySourceQueryVariables
   >(GetConnectorBySourceDocument, variables, options, outputFn, inputFn);
+export const useGetConnectorBySourceQuery = <TData = ModelConnectorConnection, TError = unknown>(
+  variables: GetConnectorBySourceQueryVariables,
+  options?: UseQueryOptions<ModelConnectorConnection, TError, TData>,
+) =>
+  useQuery<ModelConnectorConnection, TError, TData>(
+    ['GetConnectorBySource', variables],
+    GetConnectorBySourceQueryFetcher(variables),
+    options,
+  );
+useGetConnectorBySourceQuery.getKey = GetConnectorBySourceQueryKeys;
+
 export const GetTransformationDocument = `
     query GetTransformation($id: ID!) {
   getTransformation(id: $id) {
@@ -5753,7 +5991,6 @@ export const GetTransformationDocument = `
 /**
  * Key maker function for `GetTransformationQuery`.
  */
-
 export const GetTransformationQueryKeys = (variables: GetTransformationQueryVariables) => [
   'GetTransformation',
   variables,
@@ -5787,7 +6024,7 @@ export const GetTransformationQueryOutput = ({ getTransformation }: GetTransform
       ...getTransformation.connector,
       secretCredentials:
         getTransformation.connector?.secretCredentials &&
-        JSON.parse(getTransformation.connector?.secretCredentials as unknown as string),
+        JSON.parse(getTransformation.connector?.secretCredentials as any),
     },
   } as Transformation);
 
@@ -5809,6 +6046,17 @@ export const GetTransformationQueryFetcher = (
     Transformation,
     GetTransformationQueryVariables
   >(GetTransformationDocument, variables, options, outputFn, inputFn);
+export const useGetTransformationQuery = <TData = Transformation, TError = unknown>(
+  variables: GetTransformationQueryVariables,
+  options?: UseQueryOptions<Transformation, TError, TData>,
+) =>
+  useQuery<Transformation, TError, TData>(
+    ['GetTransformation', variables],
+    GetTransformationQueryFetcher(variables),
+    options,
+  );
+useGetTransformationQuery.getKey = GetTransformationQueryKeys;
+
 export const ListTransformationsDocument = `
     query ListTransformations($filter: ModelTransformationFilterInput, $limit: Int, $nextToken: String) {
   listTransformations(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -5845,7 +6093,6 @@ export const ListTransformationsDocument = `
 /**
  * Key maker function for `ListTransformationsQuery`.
  */
-
 export const ListTransformationsQueryKeys = (variables?: ListTransformationsQueryVariables) =>
   variables === undefined ? ['ListTransformations'] : ['ListTransformations', variables];
 
@@ -5877,8 +6124,7 @@ export const ListTransformationsQueryOutput = ({ listTransformations }: ListTran
       ...item,
       connector: {
         ...item?.connector,
-        secretCredentials:
-          item?.connector?.secretCredentials && JSON.parse(item?.connector?.secretCredentials as unknown as string),
+        secretCredentials: item?.connector?.secretCredentials && JSON.parse(item?.connector?.secretCredentials as any),
       },
     })),
   } as ModelTransformationConnection);
@@ -5901,6 +6147,17 @@ export const ListTransformationsQueryFetcher = (
     ModelTransformationConnection,
     ListTransformationsQueryVariables
   >(ListTransformationsDocument, variables, options, outputFn, inputFn);
+export const useListTransformationsQuery = <TData = ModelTransformationConnection, TError = unknown>(
+  variables?: ListTransformationsQueryVariables,
+  options?: UseQueryOptions<ModelTransformationConnection, TError, TData>,
+) =>
+  useQuery<ModelTransformationConnection, TError, TData>(
+    variables === undefined ? ['ListTransformations'] : ['ListTransformations', variables],
+    ListTransformationsQueryFetcher(variables),
+    options,
+  );
+useListTransformationsQuery.getKey = ListTransformationsQueryKeys;
+
 export const GetTransformationsByConnectorDocument = `
     query GetTransformationsByConnector($connectorID: ID!, $sortDirection: ModelSortDirection, $filter: ModelTransformationFilterInput, $limit: Int, $nextToken: String) {
   getTransformationsByConnector(
@@ -5943,7 +6200,6 @@ export const GetTransformationsByConnectorDocument = `
 /**
  * Key maker function for `GetTransformationsByConnectorQuery`.
  */
-
 export const GetTransformationsByConnectorQueryKeys = (variables: GetTransformationsByConnectorQueryVariables) => [
   'GetTransformationsByConnector',
   variables,
@@ -5979,8 +6235,7 @@ export const GetTransformationsByConnectorQueryOutput = ({
       ...item,
       connector: {
         ...item?.connector,
-        secretCredentials:
-          item?.connector?.secretCredentials && JSON.parse(item?.connector?.secretCredentials as unknown as string),
+        secretCredentials: item?.connector?.secretCredentials && JSON.parse(item?.connector?.secretCredentials as any),
       },
     })),
   } as ModelTransformationConnection);
@@ -6003,6 +6258,17 @@ export const GetTransformationsByConnectorQueryFetcher = (
     ModelTransformationConnection,
     GetTransformationsByConnectorQueryVariables
   >(GetTransformationsByConnectorDocument, variables, options, outputFn, inputFn);
+export const useGetTransformationsByConnectorQuery = <TData = ModelTransformationConnection, TError = unknown>(
+  variables: GetTransformationsByConnectorQueryVariables,
+  options?: UseQueryOptions<ModelTransformationConnection, TError, TData>,
+) =>
+  useQuery<ModelTransformationConnection, TError, TData>(
+    ['GetTransformationsByConnector', variables],
+    GetTransformationsByConnectorQueryFetcher(variables),
+    options,
+  );
+useGetTransformationsByConnectorQuery.getKey = GetTransformationsByConnectorQueryKeys;
+
 export const GetPerspectiveDocument = `
     query GetPerspective($id: ID!) {
   getPerspective(id: $id) {
@@ -6029,7 +6295,6 @@ export const GetPerspectiveDocument = `
 /**
  * Key maker function for `GetPerspectiveQuery`.
  */
-
 export const GetPerspectiveQueryKeys = (variables: GetPerspectiveQueryVariables) => ['GetPerspective', variables];
 
 /**
@@ -6073,6 +6338,13 @@ export const GetPerspectiveQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useGetPerspectiveQuery = <TData = Perspective, TError = unknown>(
+  variables: GetPerspectiveQueryVariables,
+  options?: UseQueryOptions<Perspective, TError, TData>,
+) =>
+  useQuery<Perspective, TError, TData>(['GetPerspective', variables], GetPerspectiveQueryFetcher(variables), options);
+useGetPerspectiveQuery.getKey = GetPerspectiveQueryKeys;
+
 export const ListPerspectivesDocument = `
     query ListPerspectives($filter: ModelPerspectiveFilterInput, $limit: Int, $nextToken: String) {
   listPerspectives(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -6102,7 +6374,6 @@ export const ListPerspectivesDocument = `
 /**
  * Key maker function for `ListPerspectivesQuery`.
  */
-
 export const ListPerspectivesQueryKeys = (variables?: ListPerspectivesQueryVariables) =>
   variables === undefined ? ['ListPerspectives'] : ['ListPerspectives', variables];
 
@@ -6147,6 +6418,17 @@ export const ListPerspectivesQueryFetcher = (
     ModelPerspectiveConnection,
     ListPerspectivesQueryVariables
   >(ListPerspectivesDocument, variables, options, outputFn, inputFn);
+export const useListPerspectivesQuery = <TData = ModelPerspectiveConnection, TError = unknown>(
+  variables?: ListPerspectivesQueryVariables,
+  options?: UseQueryOptions<ModelPerspectiveConnection, TError, TData>,
+) =>
+  useQuery<ModelPerspectiveConnection, TError, TData>(
+    variables === undefined ? ['ListPerspectives'] : ['ListPerspectives', variables],
+    ListPerspectivesQueryFetcher(variables),
+    options,
+  );
+useListPerspectivesQuery.getKey = ListPerspectivesQueryKeys;
+
 export const GetSchemaDocument = `
     query GetSchema($id: ID!) {
   getSchema(id: $id) {
@@ -6187,7 +6469,6 @@ export const GetSchemaDocument = `
 /**
  * Key maker function for `GetSchemaQuery`.
  */
-
 export const GetSchemaQueryKeys = (variables: GetSchemaQueryVariables) => ['GetSchema', variables];
 
 /**
@@ -6230,6 +6511,12 @@ export const GetSchemaQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useGetSchemaQuery = <TData = Schema, TError = unknown>(
+  variables: GetSchemaQueryVariables,
+  options?: UseQueryOptions<Schema, TError, TData>,
+) => useQuery<Schema, TError, TData>(['GetSchema', variables], GetSchemaQueryFetcher(variables), options);
+useGetSchemaQuery.getKey = GetSchemaQueryKeys;
+
 export const ListSchemasDocument = `
     query ListSchemas($filter: ModelSchemaFilterInput, $limit: Int, $nextToken: String) {
   listSchemas(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -6273,7 +6560,6 @@ export const ListSchemasDocument = `
 /**
  * Key maker function for `ListSchemasQuery`.
  */
-
 export const ListSchemasQueryKeys = (variables?: ListSchemasQueryVariables) =>
   variables === undefined ? ['ListSchemas'] : ['ListSchemas', variables];
 
@@ -6317,6 +6603,17 @@ export const ListSchemasQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useListSchemasQuery = <TData = ModelSchemaConnection, TError = unknown>(
+  variables?: ListSchemasQueryVariables,
+  options?: UseQueryOptions<ModelSchemaConnection, TError, TData>,
+) =>
+  useQuery<ModelSchemaConnection, TError, TData>(
+    variables === undefined ? ['ListSchemas'] : ['ListSchemas', variables],
+    ListSchemasQueryFetcher(variables),
+    options,
+  );
+useListSchemasQuery.getKey = ListSchemasQueryKeys;
+
 export const GetTestDocument = `
     query GetTest($id: ID!) {
   getTest(id: $id) {
@@ -6334,7 +6631,6 @@ export const GetTestDocument = `
 /**
  * Key maker function for `GetTestQuery`.
  */
-
 export const GetTestQueryKeys = (variables: GetTestQueryVariables) => ['GetTest', variables];
 
 /**
@@ -6377,6 +6673,12 @@ export const GetTestQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useGetTestQuery = <TData = Test, TError = unknown>(
+  variables: GetTestQueryVariables,
+  options?: UseQueryOptions<Test, TError, TData>,
+) => useQuery<Test, TError, TData>(['GetTest', variables], GetTestQueryFetcher(variables), options);
+useGetTestQuery.getKey = GetTestQueryKeys;
+
 export const ListTestsDocument = `
     query ListTests($filter: ModelTestFilterInput, $limit: Int, $nextToken: String) {
   listTests(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -6397,7 +6699,6 @@ export const ListTestsDocument = `
 /**
  * Key maker function for `ListTestsQuery`.
  */
-
 export const ListTestsQueryKeys = (variables?: ListTestsQueryVariables) =>
   variables === undefined ? ['ListTests'] : ['ListTests', variables];
 
@@ -6441,6 +6742,17 @@ export const ListTestsQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useListTestsQuery = <TData = ModelTestConnection, TError = unknown>(
+  variables?: ListTestsQueryVariables,
+  options?: UseQueryOptions<ModelTestConnection, TError, TData>,
+) =>
+  useQuery<ModelTestConnection, TError, TData>(
+    variables === undefined ? ['ListTests'] : ['ListTests', variables],
+    ListTestsQueryFetcher(variables),
+    options,
+  );
+useListTestsQuery.getKey = ListTestsQueryKeys;
+
 export const GetOrganizationDocument = `
     query GetOrganization($id: ID!) {
   getOrganization(id: $id) {
@@ -6457,7 +6769,6 @@ export const GetOrganizationDocument = `
 /**
  * Key maker function for `GetOrganizationQuery`.
  */
-
 export const GetOrganizationQueryKeys = (variables: GetOrganizationQueryVariables) => ['GetOrganization', variables];
 
 /**
@@ -6502,6 +6813,17 @@ export const GetOrganizationQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useGetOrganizationQuery = <TData = Organization, TError = unknown>(
+  variables: GetOrganizationQueryVariables,
+  options?: UseQueryOptions<Organization, TError, TData>,
+) =>
+  useQuery<Organization, TError, TData>(
+    ['GetOrganization', variables],
+    GetOrganizationQueryFetcher(variables),
+    options,
+  );
+useGetOrganizationQuery.getKey = GetOrganizationQueryKeys;
+
 export const ListOrganizationsDocument = `
     query ListOrganizations($filter: ModelOrganizationFilterInput, $limit: Int, $nextToken: String) {
   listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -6521,7 +6843,6 @@ export const ListOrganizationsDocument = `
 /**
  * Key maker function for `ListOrganizationsQuery`.
  */
-
 export const ListOrganizationsQueryKeys = (variables?: ListOrganizationsQueryVariables) =>
   variables === undefined ? ['ListOrganizations'] : ['ListOrganizations', variables];
 
@@ -6566,6 +6887,17 @@ export const ListOrganizationsQueryFetcher = (
     ModelOrganizationConnection,
     ListOrganizationsQueryVariables
   >(ListOrganizationsDocument, variables, options, outputFn, inputFn);
+export const useListOrganizationsQuery = <TData = ModelOrganizationConnection, TError = unknown>(
+  variables?: ListOrganizationsQueryVariables,
+  options?: UseQueryOptions<ModelOrganizationConnection, TError, TData>,
+) =>
+  useQuery<ModelOrganizationConnection, TError, TData>(
+    variables === undefined ? ['ListOrganizations'] : ['ListOrganizations', variables],
+    ListOrganizationsQueryFetcher(variables),
+    options,
+  );
+useListOrganizationsQuery.getKey = ListOrganizationsQueryKeys;
+
 export const SearchGraphDocument = `
     query SearchGraph($input: SearchGraphInput!) {
   searchGraph(input: $input) {
@@ -6584,7 +6916,6 @@ export const SearchGraphDocument = `
 /**
  * Key maker function for `SearchGraphQuery`.
  */
-
 export const SearchGraphQueryKeys = (variables: SearchGraphQueryVariables) => ['SearchGraph', variables];
 
 /**
@@ -6614,7 +6945,7 @@ export const SearchGraphQueryOutput = ({ searchGraph }: SearchGraphQuery) =>
       ...record,
       node: {
         ...record?.node,
-        properties: record?.node?.properties && JSON.parse(record?.node?.properties as unknown as string),
+        properties: record?.node?.properties && JSON.parse(record?.node?.properties as any),
       },
     })),
   } as SearchGraphResult);
@@ -6638,6 +6969,13 @@ export const SearchGraphQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useSearchGraphQuery = <TData = SearchGraphResult, TError = unknown>(
+  variables: SearchGraphQueryVariables,
+  options?: UseQueryOptions<SearchGraphResult, TError, TData>,
+) =>
+  useQuery<SearchGraphResult, TError, TData>(['SearchGraph', variables], SearchGraphQueryFetcher(variables), options);
+useSearchGraphQuery.getKey = SearchGraphQueryKeys;
+
 export const GetNodeDocument = `
     query GetNode($identity: ID!) {
   getNode(identity: $identity) {
@@ -6667,7 +7005,6 @@ export const GetNodeDocument = `
 /**
  * Key maker function for `GetNodeQuery`.
  */
-
 export const GetNodeQueryKeys = (variables: GetNodeQueryVariables) => ['GetNode', variables];
 
 /**
@@ -6695,19 +7032,17 @@ export const GetNodeQueryOutput = ({ getNode }: GetNodeQuery) =>
     ...getNode,
     node: {
       ...getNode.node,
-      properties: getNode.node?.properties && JSON.parse(getNode.node?.properties as unknown as string),
+      properties: getNode.node?.properties && JSON.parse(getNode.node?.properties as any),
     },
     relationships: getNode.relationships?.map((relationship) => ({
       ...relationship,
       node: {
         ...relationship?.node,
-        properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as unknown as string),
+        properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as any),
       },
       relationship: {
         ...relationship?.relationship,
-        properties:
-          relationship?.relationship?.properties &&
-          JSON.parse(relationship?.relationship?.properties as unknown as string),
+        properties: relationship?.relationship?.properties && JSON.parse(relationship?.relationship?.properties as any),
       },
     })),
   } as NodeGraphRecord);
@@ -6731,6 +7066,12 @@ export const GetNodeQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useGetNodeQuery = <TData = NodeGraphRecord, TError = unknown>(
+  variables: GetNodeQueryVariables,
+  options?: UseQueryOptions<NodeGraphRecord, TError, TData>,
+) => useQuery<NodeGraphRecord, TError, TData>(['GetNode', variables], GetNodeQueryFetcher(variables), options);
+useGetNodeQuery.getKey = GetNodeQueryKeys;
+
 export const GetRelationshipDocument = `
     query GetRelationship($identity: ID!) {
   getRelationship(identity: $identity) {
@@ -6758,7 +7099,6 @@ export const GetRelationshipDocument = `
 /**
  * Key maker function for `GetRelationshipQuery`.
  */
-
 export const GetRelationshipQueryKeys = (variables: GetRelationshipQueryVariables) => ['GetRelationship', variables];
 
 /**
@@ -6787,18 +7127,16 @@ export const GetRelationshipQueryOutput = ({ getRelationship }: GetRelationshipQ
     ...getRelationship,
     end: {
       ...getRelationship.end,
-      properties: getRelationship.end?.properties && JSON.parse(getRelationship.end?.properties as unknown as string),
+      properties: getRelationship.end?.properties && JSON.parse(getRelationship.end?.properties as any),
     },
     relationship: {
       ...getRelationship.relationship,
       properties:
-        getRelationship.relationship?.properties &&
-        JSON.parse(getRelationship.relationship?.properties as unknown as string),
+        getRelationship.relationship?.properties && JSON.parse(getRelationship.relationship?.properties as any),
     },
     start: {
       ...getRelationship.start,
-      properties:
-        getRelationship.start?.properties && JSON.parse(getRelationship.start?.properties as unknown as string),
+      properties: getRelationship.start?.properties && JSON.parse(getRelationship.start?.properties as any),
     },
   } as RelationshipGraphRecord);
 
@@ -6820,6 +7158,17 @@ export const GetRelationshipQueryFetcher = (
     RelationshipGraphRecord,
     GetRelationshipQueryVariables
   >(GetRelationshipDocument, variables, options, outputFn, inputFn);
+export const useGetRelationshipQuery = <TData = RelationshipGraphRecord, TError = unknown>(
+  variables: GetRelationshipQueryVariables,
+  options?: UseQueryOptions<RelationshipGraphRecord, TError, TData>,
+) =>
+  useQuery<RelationshipGraphRecord, TError, TData>(
+    ['GetRelationship', variables],
+    GetRelationshipQueryFetcher(variables),
+    options,
+  );
+useGetRelationshipQuery.getKey = GetRelationshipQueryKeys;
+
 export const ListNodesDocument = `
     query ListNodes($label: String!) {
   listNodes(label: $label) {
@@ -6851,7 +7200,6 @@ export const ListNodesDocument = `
 /**
  * Key maker function for `ListNodesQuery`.
  */
-
 export const ListNodesQueryKeys = (variables: ListNodesQueryVariables) => ['ListNodes', variables];
 
 /**
@@ -6881,19 +7229,18 @@ export const ListNodesQueryOutput = ({ listNodes }: ListNodesQuery) =>
       ...record,
       node: {
         ...record?.node,
-        properties: record?.node?.properties && JSON.parse(record?.node?.properties as unknown as string),
+        properties: record?.node?.properties && JSON.parse(record?.node?.properties as any),
       },
       relationships: record?.relationships?.map((relationship) => ({
         ...relationship,
         node: {
           ...relationship?.node,
-          properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as unknown as string),
+          properties: relationship?.node?.properties && JSON.parse(relationship?.node?.properties as any),
         },
         relationship: {
           ...relationship?.relationship,
           properties:
-            relationship?.relationship?.properties &&
-            JSON.parse(relationship?.relationship?.properties as unknown as string),
+            relationship?.relationship?.properties && JSON.parse(relationship?.relationship?.properties as any),
         },
       })),
     })),
@@ -6918,6 +7265,12 @@ export const ListNodesQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useListNodesQuery = <TData = NodesGraphRecord, TError = unknown>(
+  variables: ListNodesQueryVariables,
+  options?: UseQueryOptions<NodesGraphRecord, TError, TData>,
+) => useQuery<NodesGraphRecord, TError, TData>(['ListNodes', variables], ListNodesQueryFetcher(variables), options);
+useListNodesQuery.getKey = ListNodesQueryKeys;
+
 export const GetUserDocument = `
     query GetUser($username: ID!) {
   getUser(username: $username) {
@@ -6932,7 +7285,6 @@ export const GetUserDocument = `
 /**
  * Key maker function for `GetUserQuery`.
  */
-
 export const GetUserQueryKeys = (variables: GetUserQueryVariables) => ['GetUser', variables];
 
 /**
@@ -6955,11 +7307,7 @@ export const GetUserQueryInput = (variables: GetUserQueryVariables) => variables
  * @returns CognitoUser - The transformed data
  */
 export const GetUserQueryOutput = ({ getUser }: GetUserQuery) =>
-  getUser &&
-  ({
-    ...getUser,
-    attributes: getUser.attributes && JSON.parse(getUser.attributes as unknown as string),
-  } as CognitoUser);
+  getUser && ({ ...getUser, attributes: getUser.attributes && JSON.parse(getUser.attributes as any) } as CognitoUser);
 
 /**
  * Fetcher function for `GetUserQuery`.
@@ -6980,6 +7328,12 @@ export const GetUserQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useGetUserQuery = <TData = CognitoUser, TError = unknown>(
+  variables: GetUserQueryVariables,
+  options?: UseQueryOptions<CognitoUser, TError, TData>,
+) => useQuery<CognitoUser, TError, TData>(['GetUser', variables], GetUserQueryFetcher(variables), options);
+useGetUserQuery.getKey = GetUserQueryKeys;
+
 export const FindUsersDocument = `
     query FindUsers($input: FindUsersInput!) {
   findUsers(input: $input) {
@@ -6997,7 +7351,6 @@ export const FindUsersDocument = `
 /**
  * Key maker function for `FindUsersQuery`.
  */
-
 export const FindUsersQueryKeys = (variables: FindUsersQueryVariables) => ['FindUsers', variables];
 
 /**
@@ -7025,7 +7378,7 @@ export const FindUsersQueryOutput = ({ findUsers }: FindUsersQuery) =>
     ...findUsers,
     items: findUsers.items?.map((item) => ({
       ...item,
-      attributes: item?.attributes && JSON.parse(item?.attributes as unknown as string),
+      attributes: item?.attributes && JSON.parse(item?.attributes as any),
     })),
   } as CognitoUserList);
 
@@ -7048,6 +7401,12 @@ export const FindUsersQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useFindUsersQuery = <TData = CognitoUserList, TError = unknown>(
+  variables: FindUsersQueryVariables,
+  options?: UseQueryOptions<CognitoUserList, TError, TData>,
+) => useQuery<CognitoUserList, TError, TData>(['FindUsers', variables], FindUsersQueryFetcher(variables), options);
+useFindUsersQuery.getKey = FindUsersQueryKeys;
+
 export const ListUsersDocument = `
     query ListUsers($nextToken: String) {
   listUsers(nextToken: $nextToken) {
@@ -7065,7 +7424,6 @@ export const ListUsersDocument = `
 /**
  * Key maker function for `ListUsersQuery`.
  */
-
 export const ListUsersQueryKeys = (variables?: ListUsersQueryVariables) =>
   variables === undefined ? ['ListUsers'] : ['ListUsers', variables];
 
@@ -7094,7 +7452,7 @@ export const ListUsersQueryOutput = ({ listUsers }: ListUsersQuery) =>
     ...listUsers,
     items: listUsers.items?.map((item) => ({
       ...item,
-      attributes: item?.attributes && JSON.parse(item?.attributes as unknown as string),
+      attributes: item?.attributes && JSON.parse(item?.attributes as any),
     })),
   } as CognitoUserList);
 
@@ -7117,6 +7475,17 @@ export const ListUsersQueryFetcher = (
     outputFn,
     inputFn,
   );
+export const useListUsersQuery = <TData = CognitoUserList, TError = unknown>(
+  variables?: ListUsersQueryVariables,
+  options?: UseQueryOptions<CognitoUserList, TError, TData>,
+) =>
+  useQuery<CognitoUserList, TError, TData>(
+    variables === undefined ? ['ListUsers'] : ['ListUsers', variables],
+    ListUsersQueryFetcher(variables),
+    options,
+  );
+useListUsersQuery.getKey = ListUsersQueryKeys;
+
 export const GetConnectorCredentialsDocument = `
     query GetConnectorCredentials($id: ID!) {
   getConnectorCredentials(id: $id) {
@@ -7129,7 +7498,6 @@ export const GetConnectorCredentialsDocument = `
 /**
  * Key maker function for `GetConnectorCredentialsQuery`.
  */
-
 export const GetConnectorCredentialsQueryKeys = (variables: GetConnectorCredentialsQueryVariables) => [
   'GetConnectorCredentials',
   variables,
@@ -7160,8 +7528,7 @@ export const GetConnectorCredentialsQueryOutput = ({ getConnectorCredentials }: 
   ({
     ...getConnectorCredentials,
     plainCredentials:
-      getConnectorCredentials.plainCredentials &&
-      JSON.parse(getConnectorCredentials.plainCredentials as unknown as string),
+      getConnectorCredentials.plainCredentials && JSON.parse(getConnectorCredentials.plainCredentials as any),
   } as ConnectorCredentials);
 
 /**
@@ -7182,3 +7549,13 @@ export const GetConnectorCredentialsQueryFetcher = (
     ConnectorCredentials,
     GetConnectorCredentialsQueryVariables
   >(GetConnectorCredentialsDocument, variables, options, outputFn, inputFn);
+export const useGetConnectorCredentialsQuery = <TData = ConnectorCredentials, TError = unknown>(
+  variables: GetConnectorCredentialsQueryVariables,
+  options?: UseQueryOptions<ConnectorCredentials, TError, TData>,
+) =>
+  useQuery<ConnectorCredentials, TError, TData>(
+    ['GetConnectorCredentials', variables],
+    GetConnectorCredentialsQueryFetcher(variables),
+    options,
+  );
+useGetConnectorCredentialsQuery.getKey = GetConnectorCredentialsQueryKeys;

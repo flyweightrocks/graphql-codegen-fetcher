@@ -1,10 +1,8 @@
-import { FragmentDefinitionNode, GraphQLSchema, Kind, concatAST, DocumentNode } from 'graphql';
-import { PluginFunction, PluginValidateFn, Types, oldVisit } from '@graphql-codegen/plugin-helpers';
-
+import { oldVisit, PluginFunction, Types } from '@graphql-codegen/plugin-helpers';
+import { ReactQueryRawPluginConfig } from '@graphql-codegen/typescript-react-query/config';
 import { LoadedFragment } from '@graphql-codegen/visitor-plugin-common';
-import { ReactQueryRawPluginConfig } from './config';
-import { ReactQueryVisitor } from './visitor';
-import { extname } from 'path';
+import { concatAST, DocumentNode, FragmentDefinitionNode, GraphQLSchema, Kind } from 'graphql';
+import { ExtendedReactQueryVisitor } from './visitor';
 
 export const plugin: PluginFunction<ReactQueryRawPluginConfig, Types.ComplexPluginOutput> = (
   schema: GraphQLSchema,
@@ -25,20 +23,21 @@ export const plugin: PluginFunction<ReactQueryRawPluginConfig, Types.ComplexPlug
     ...(config.externalFragments || []),
   ];
 
-  const visitor = new ReactQueryVisitor(schema, allFragments, config, documents);
+  const visitor = new ExtendedReactQueryVisitor(schema, allFragments, config, documents);
   const visitorResult = oldVisit(allAst, { leave: visitor });
 
   if (visitor.hasOperations) {
     return {
       prepend: [...visitor.getImports(), visitor.getFetcherImplementation()],
-      content: [visitor.fragments, ...visitorResult.definitions.filter((t) => typeof t === 'string')].join('\n'),
+      content: [visitor.fragments, ...visitorResult.definitions.filter((t: any) => typeof t === 'string')].join('\n'),
     };
   }
 
   return {
     prepend: [...visitor.getImports()],
-    content: [visitor.fragments, ...visitorResult.definitions.filter((t) => typeof t === 'string')].join('\n'),
+    content: [visitor.fragments, ...visitorResult.definitions.filter((t: any) => typeof t === 'string')].join('\n'),
   };
 };
 
-export { ReactQueryVisitor };
+export { validate } from '@graphql-codegen/typescript-react-query';
+export { ExtendedReactQueryVisitor };
