@@ -1,12 +1,13 @@
 import { OperationDefinitionNode } from 'graphql';
+import { generateQueryVariablesSignature } from './variables-generator';
 import { OperationFieldMap, OperationOutputField, OperationInputVariableField, OperationField } from './type-resolver';
 
-export function generateQueryVariablesSignature(
-  hasRequiredVariables: boolean,
-  operationVariablesTypes: string,
-): string {
-  return `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
-}
+// export function generateQueryVariablesSignature(
+//   hasRequiredVariables: boolean,
+//   operationVariablesTypes: string,
+// ): string {
+//   return `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
+// }
 
 export function generateOutputTransformer(
   node: OperationDefinitionNode,
@@ -115,11 +116,9 @@ const transformJsonFields = (fields: OperationFieldMap, path: string, transforme
       }
     } else {
       if (fieldValue === 'AWSJSON') {
-        transformer === 'parse' &&
-          stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as unknown as string),`);
+        transformer === 'parse' && stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any),`);
 
-        transformer === 'stringify' &&
-          stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as unknown as Record<string, any>),`);
+        transformer === 'stringify' && stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any),`);
       }
     }
   }
