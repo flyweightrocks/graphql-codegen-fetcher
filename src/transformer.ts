@@ -68,7 +68,7 @@ export function generateInputTransformer(
           .filter((variable) => hasJsonFields(variable.fields))
           .map(
             (variable) =>
-              `${variable.fieldName}: { ${transformJsonFields(
+              `${variable.fieldName}: { ...variables.${variable.fieldName}, ${transformJsonFields(
                 variable.fields || {},
                 `variables.${variable.fieldName}`,
                 'stringify',

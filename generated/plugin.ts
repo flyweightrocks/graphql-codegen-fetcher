@@ -2800,9 +2800,9 @@ export const EmptyMutationMutationFetcher = (
     EmptyMutationMutationVariables
   >(EmptyMutationDocument, variables, options, outputFn, inputFn);
 export const useEmptyMutationMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Scalars['Int'], TError, EmptyMutationMutationVariables, TContext>,
+  options?: UseMutationOptions<Scalars['Int'] | undefined, TError, EmptyMutationMutationVariables, TContext>,
 ) =>
-  useMutation<Scalars['Int'], TError, EmptyMutationMutationVariables, TContext>(
+  useMutation<Scalars['Int'] | undefined, TError, EmptyMutationMutationVariables, TContext>(
     ['EmptyMutation'],
     (variables?: EmptyMutationMutationVariables) => EmptyMutationMutationFetcher(variables)(),
     options,
@@ -2860,9 +2860,9 @@ export const RunConnectorMutationFetcher = (
     RunConnectorMutationVariables
   >(RunConnectorDocument, variables, options, outputFn, inputFn);
 export const useRunConnectorMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Scalars['AWSJSON'], TError, RunConnectorMutationVariables, TContext>,
+  options?: UseMutationOptions<Scalars['AWSJSON'] | undefined, TError, RunConnectorMutationVariables, TContext>,
 ) =>
-  useMutation<Scalars['AWSJSON'], TError, RunConnectorMutationVariables, TContext>(
+  useMutation<Scalars['AWSJSON'] | undefined, TError, RunConnectorMutationVariables, TContext>(
     ['RunConnector'],
     (variables: RunConnectorMutationVariables) => RunConnectorMutationFetcher(variables)(),
     options,
@@ -2894,6 +2894,7 @@ export const CreateConnectorCredentialsMutationInput = (variables: CreateConnect
   ({
     ...variables,
     input: {
+      ...variables.input,
       plainCredentials: variables.input.plainCredentials && JSON.stringify(variables.input.plainCredentials as any),
     },
   } as CreateConnectorCredentialsMutationVariables);
@@ -2935,9 +2936,14 @@ export const CreateConnectorCredentialsMutationFetcher = (
     CreateConnectorCredentialsMutationVariables
   >(CreateConnectorCredentialsDocument, variables, options, outputFn, inputFn);
 export const useCreateConnectorCredentialsMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials, TError, CreateConnectorCredentialsMutationVariables, TContext>,
+  options?: UseMutationOptions<
+    ConnectorCredentials | undefined,
+    TError,
+    CreateConnectorCredentialsMutationVariables,
+    TContext
+  >,
 ) =>
-  useMutation<ConnectorCredentials, TError, CreateConnectorCredentialsMutationVariables, TContext>(
+  useMutation<ConnectorCredentials | undefined, TError, CreateConnectorCredentialsMutationVariables, TContext>(
     ['CreateConnectorCredentials'],
     (variables: CreateConnectorCredentialsMutationVariables) => CreateConnectorCredentialsMutationFetcher(variables)(),
     options,
@@ -2969,6 +2975,7 @@ export const UpdateConnectorCredentialsMutationInput = (variables: UpdateConnect
   ({
     ...variables,
     input: {
+      ...variables.input,
       plainCredentials: variables.input.plainCredentials && JSON.stringify(variables.input.plainCredentials as any),
     },
   } as UpdateConnectorCredentialsMutationVariables);
@@ -3010,9 +3017,14 @@ export const UpdateConnectorCredentialsMutationFetcher = (
     UpdateConnectorCredentialsMutationVariables
   >(UpdateConnectorCredentialsDocument, variables, options, outputFn, inputFn);
 export const useUpdateConnectorCredentialsMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials, TError, UpdateConnectorCredentialsMutationVariables, TContext>,
+  options?: UseMutationOptions<
+    ConnectorCredentials | undefined,
+    TError,
+    UpdateConnectorCredentialsMutationVariables,
+    TContext
+  >,
 ) =>
-  useMutation<ConnectorCredentials, TError, UpdateConnectorCredentialsMutationVariables, TContext>(
+  useMutation<ConnectorCredentials | undefined, TError, UpdateConnectorCredentialsMutationVariables, TContext>(
     ['UpdateConnectorCredentials'],
     (variables: UpdateConnectorCredentialsMutationVariables) => UpdateConnectorCredentialsMutationFetcher(variables)(),
     options,
@@ -3080,9 +3092,14 @@ export const DeleteConnectorCredentialsMutationFetcher = (
     DeleteConnectorCredentialsMutationVariables
   >(DeleteConnectorCredentialsDocument, variables, options, outputFn, inputFn);
 export const useDeleteConnectorCredentialsMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials, TError, DeleteConnectorCredentialsMutationVariables, TContext>,
+  options?: UseMutationOptions<
+    ConnectorCredentials | undefined,
+    TError,
+    DeleteConnectorCredentialsMutationVariables,
+    TContext
+  >,
 ) =>
-  useMutation<ConnectorCredentials, TError, DeleteConnectorCredentialsMutationVariables, TContext>(
+  useMutation<ConnectorCredentials | undefined, TError, DeleteConnectorCredentialsMutationVariables, TContext>(
     ['DeleteConnectorCredentials'],
     (variables: DeleteConnectorCredentialsMutationVariables) => DeleteConnectorCredentialsMutationFetcher(variables)(),
     options,
@@ -3130,7 +3147,10 @@ export const CreateNodeMutationKeys = () => ['CreateNode'];
 export const CreateNodeMutationInput = (variables: CreateNodeMutationVariables) =>
   ({
     ...variables,
-    input: { properties: variables.input.properties && JSON.stringify(variables.input.properties as any) },
+    input: {
+      ...variables.input,
+      properties: variables.input.properties && JSON.stringify(variables.input.properties as any),
+    },
   } as CreateNodeMutationVariables);
 
 /**
@@ -3182,9 +3202,9 @@ export const CreateNodeMutationFetcher = (
     inputFn,
   );
 export const useCreateNodeMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<NodeGraphRecord, TError, CreateNodeMutationVariables, TContext>,
+  options?: UseMutationOptions<NodeGraphRecord | undefined, TError, CreateNodeMutationVariables, TContext>,
 ) =>
-  useMutation<NodeGraphRecord, TError, CreateNodeMutationVariables, TContext>(
+  useMutation<NodeGraphRecord | undefined, TError, CreateNodeMutationVariables, TContext>(
     ['CreateNode'],
     (variables: CreateNodeMutationVariables) => CreateNodeMutationFetcher(variables)(),
     options,
@@ -3232,7 +3252,10 @@ export const UpdateNodeMutationKeys = () => ['UpdateNode'];
 export const UpdateNodeMutationInput = (variables: UpdateNodeMutationVariables) =>
   ({
     ...variables,
-    input: { properties: variables.input.properties && JSON.stringify(variables.input.properties as any) },
+    input: {
+      ...variables.input,
+      properties: variables.input.properties && JSON.stringify(variables.input.properties as any),
+    },
   } as UpdateNodeMutationVariables);
 
 /**
@@ -3284,9 +3307,9 @@ export const UpdateNodeMutationFetcher = (
     inputFn,
   );
 export const useUpdateNodeMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<NodeGraphRecord, TError, UpdateNodeMutationVariables, TContext>,
+  options?: UseMutationOptions<NodeGraphRecord | undefined, TError, UpdateNodeMutationVariables, TContext>,
 ) =>
-  useMutation<NodeGraphRecord, TError, UpdateNodeMutationVariables, TContext>(
+  useMutation<NodeGraphRecord | undefined, TError, UpdateNodeMutationVariables, TContext>(
     ['UpdateNode'],
     (variables: UpdateNodeMutationVariables) => UpdateNodeMutationFetcher(variables)(),
     options,
@@ -3369,9 +3392,9 @@ export const DeleteNodeMutationFetcher = (
     inputFn,
   );
 export const useDeleteNodeMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<DeleteNodeRecord, TError, DeleteNodeMutationVariables, TContext>,
+  options?: UseMutationOptions<DeleteNodeRecord | undefined, TError, DeleteNodeMutationVariables, TContext>,
 ) =>
-  useMutation<DeleteNodeRecord, TError, DeleteNodeMutationVariables, TContext>(
+  useMutation<DeleteNodeRecord | undefined, TError, DeleteNodeMutationVariables, TContext>(
     ['DeleteNode'],
     (variables: DeleteNodeMutationVariables) => DeleteNodeMutationFetcher(variables)(),
     options,
@@ -3417,7 +3440,10 @@ export const CreateRelationshipMutationKeys = () => ['CreateRelationship'];
 export const CreateRelationshipMutationInput = (variables: CreateRelationshipMutationVariables) =>
   ({
     ...variables,
-    input: { properties: variables.input.properties && JSON.stringify(variables.input.properties as any) },
+    input: {
+      ...variables.input,
+      properties: variables.input.properties && JSON.stringify(variables.input.properties as any),
+    },
   } as CreateRelationshipMutationVariables);
 
 /**
@@ -3466,9 +3492,14 @@ export const CreateRelationshipMutationFetcher = (
     CreateRelationshipMutationVariables
   >(CreateRelationshipDocument, variables, options, outputFn, inputFn);
 export const useCreateRelationshipMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<RelationshipGraphRecord, TError, CreateRelationshipMutationVariables, TContext>,
+  options?: UseMutationOptions<
+    RelationshipGraphRecord | undefined,
+    TError,
+    CreateRelationshipMutationVariables,
+    TContext
+  >,
 ) =>
-  useMutation<RelationshipGraphRecord, TError, CreateRelationshipMutationVariables, TContext>(
+  useMutation<RelationshipGraphRecord | undefined, TError, CreateRelationshipMutationVariables, TContext>(
     ['CreateRelationship'],
     (variables: CreateRelationshipMutationVariables) => CreateRelationshipMutationFetcher(variables)(),
     options,
@@ -3514,7 +3545,10 @@ export const UpdateRelationshipMutationKeys = () => ['UpdateRelationship'];
 export const UpdateRelationshipMutationInput = (variables: UpdateRelationshipMutationVariables) =>
   ({
     ...variables,
-    input: { properties: variables.input.properties && JSON.stringify(variables.input.properties as any) },
+    input: {
+      ...variables.input,
+      properties: variables.input.properties && JSON.stringify(variables.input.properties as any),
+    },
   } as UpdateRelationshipMutationVariables);
 
 /**
@@ -3563,9 +3597,14 @@ export const UpdateRelationshipMutationFetcher = (
     UpdateRelationshipMutationVariables
   >(UpdateRelationshipDocument, variables, options, outputFn, inputFn);
 export const useUpdateRelationshipMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<RelationshipGraphRecord, TError, UpdateRelationshipMutationVariables, TContext>,
+  options?: UseMutationOptions<
+    RelationshipGraphRecord | undefined,
+    TError,
+    UpdateRelationshipMutationVariables,
+    TContext
+  >,
 ) =>
-  useMutation<RelationshipGraphRecord, TError, UpdateRelationshipMutationVariables, TContext>(
+  useMutation<RelationshipGraphRecord | undefined, TError, UpdateRelationshipMutationVariables, TContext>(
     ['UpdateRelationship'],
     (variables: UpdateRelationshipMutationVariables) => UpdateRelationshipMutationFetcher(variables)(),
     options,
@@ -3638,9 +3677,14 @@ export const DeleteRelationshipMutationFetcher = (
     DeleteRelationshipMutationVariables
   >(DeleteRelationshipDocument, variables, options, outputFn, inputFn);
 export const useDeleteRelationshipMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<DeleteRelationshipRecord, TError, DeleteRelationshipMutationVariables, TContext>,
+  options?: UseMutationOptions<
+    DeleteRelationshipRecord | undefined,
+    TError,
+    DeleteRelationshipMutationVariables,
+    TContext
+  >,
 ) =>
-  useMutation<DeleteRelationshipRecord, TError, DeleteRelationshipMutationVariables, TContext>(
+  useMutation<DeleteRelationshipRecord | undefined, TError, DeleteRelationshipMutationVariables, TContext>(
     ['DeleteRelationship'],
     (variables: DeleteRelationshipMutationVariables) => DeleteRelationshipMutationFetcher(variables)(),
     options,
@@ -3704,6 +3748,7 @@ export const CreateConnectorMutationInput = (variables: CreateConnectorMutationV
   ({
     ...variables,
     input: {
+      ...variables.input,
       secretCredentials: variables.input.secretCredentials && JSON.stringify(variables.input.secretCredentials as any),
     },
   } as CreateConnectorMutationVariables);
@@ -3742,9 +3787,9 @@ export const CreateConnectorMutationFetcher = (
     CreateConnectorMutationVariables
   >(CreateConnectorDocument, variables, options, outputFn, inputFn);
 export const useCreateConnectorMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Connector, TError, CreateConnectorMutationVariables, TContext>,
+  options?: UseMutationOptions<Connector | undefined, TError, CreateConnectorMutationVariables, TContext>,
 ) =>
-  useMutation<Connector, TError, CreateConnectorMutationVariables, TContext>(
+  useMutation<Connector | undefined, TError, CreateConnectorMutationVariables, TContext>(
     ['CreateConnector'],
     (variables: CreateConnectorMutationVariables) => CreateConnectorMutationFetcher(variables)(),
     options,
@@ -3808,6 +3853,7 @@ export const UpdateConnectorMutationInput = (variables: UpdateConnectorMutationV
   ({
     ...variables,
     input: {
+      ...variables.input,
       secretCredentials: variables.input.secretCredentials && JSON.stringify(variables.input.secretCredentials as any),
     },
   } as UpdateConnectorMutationVariables);
@@ -3846,9 +3892,9 @@ export const UpdateConnectorMutationFetcher = (
     UpdateConnectorMutationVariables
   >(UpdateConnectorDocument, variables, options, outputFn, inputFn);
 export const useUpdateConnectorMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Connector, TError, UpdateConnectorMutationVariables, TContext>,
+  options?: UseMutationOptions<Connector | undefined, TError, UpdateConnectorMutationVariables, TContext>,
 ) =>
-  useMutation<Connector, TError, UpdateConnectorMutationVariables, TContext>(
+  useMutation<Connector | undefined, TError, UpdateConnectorMutationVariables, TContext>(
     ['UpdateConnector'],
     (variables: UpdateConnectorMutationVariables) => UpdateConnectorMutationFetcher(variables)(),
     options,
@@ -3945,9 +3991,9 @@ export const DeleteConnectorMutationFetcher = (
     DeleteConnectorMutationVariables
   >(DeleteConnectorDocument, variables, options, outputFn, inputFn);
 export const useDeleteConnectorMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Connector, TError, DeleteConnectorMutationVariables, TContext>,
+  options?: UseMutationOptions<Connector | undefined, TError, DeleteConnectorMutationVariables, TContext>,
 ) =>
-  useMutation<Connector, TError, DeleteConnectorMutationVariables, TContext>(
+  useMutation<Connector | undefined, TError, DeleteConnectorMutationVariables, TContext>(
     ['DeleteConnector'],
     (variables: DeleteConnectorMutationVariables) => DeleteConnectorMutationFetcher(variables)(),
     options,
@@ -4049,9 +4095,9 @@ export const CreateTransformationMutationFetcher = (
     CreateTransformationMutationVariables
   >(CreateTransformationDocument, variables, options, outputFn, inputFn);
 export const useCreateTransformationMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Transformation, TError, CreateTransformationMutationVariables, TContext>,
+  options?: UseMutationOptions<Transformation | undefined, TError, CreateTransformationMutationVariables, TContext>,
 ) =>
-  useMutation<Transformation, TError, CreateTransformationMutationVariables, TContext>(
+  useMutation<Transformation | undefined, TError, CreateTransformationMutationVariables, TContext>(
     ['CreateTransformation'],
     (variables: CreateTransformationMutationVariables) => CreateTransformationMutationFetcher(variables)(),
     options,
@@ -4153,9 +4199,9 @@ export const UpdateTransformationMutationFetcher = (
     UpdateTransformationMutationVariables
   >(UpdateTransformationDocument, variables, options, outputFn, inputFn);
 export const useUpdateTransformationMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Transformation, TError, UpdateTransformationMutationVariables, TContext>,
+  options?: UseMutationOptions<Transformation | undefined, TError, UpdateTransformationMutationVariables, TContext>,
 ) =>
-  useMutation<Transformation, TError, UpdateTransformationMutationVariables, TContext>(
+  useMutation<Transformation | undefined, TError, UpdateTransformationMutationVariables, TContext>(
     ['UpdateTransformation'],
     (variables: UpdateTransformationMutationVariables) => UpdateTransformationMutationFetcher(variables)(),
     options,
@@ -4257,9 +4303,9 @@ export const DeleteTransformationMutationFetcher = (
     DeleteTransformationMutationVariables
   >(DeleteTransformationDocument, variables, options, outputFn, inputFn);
 export const useDeleteTransformationMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Transformation, TError, DeleteTransformationMutationVariables, TContext>,
+  options?: UseMutationOptions<Transformation | undefined, TError, DeleteTransformationMutationVariables, TContext>,
 ) =>
-  useMutation<Transformation, TError, DeleteTransformationMutationVariables, TContext>(
+  useMutation<Transformation | undefined, TError, DeleteTransformationMutationVariables, TContext>(
     ['DeleteTransformation'],
     (variables: DeleteTransformationMutationVariables) => DeleteTransformationMutationFetcher(variables)(),
     options,
@@ -4334,9 +4380,9 @@ export const CreatePerspectiveMutationFetcher = (
     CreatePerspectiveMutationVariables
   >(CreatePerspectiveDocument, variables, options, outputFn, inputFn);
 export const useCreatePerspectiveMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Perspective, TError, CreatePerspectiveMutationVariables, TContext>,
+  options?: UseMutationOptions<Perspective | undefined, TError, CreatePerspectiveMutationVariables, TContext>,
 ) =>
-  useMutation<Perspective, TError, CreatePerspectiveMutationVariables, TContext>(
+  useMutation<Perspective | undefined, TError, CreatePerspectiveMutationVariables, TContext>(
     ['CreatePerspective'],
     (variables: CreatePerspectiveMutationVariables) => CreatePerspectiveMutationFetcher(variables)(),
     options,
@@ -4411,9 +4457,9 @@ export const UpdatePerspectiveMutationFetcher = (
     UpdatePerspectiveMutationVariables
   >(UpdatePerspectiveDocument, variables, options, outputFn, inputFn);
 export const useUpdatePerspectiveMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Perspective, TError, UpdatePerspectiveMutationVariables, TContext>,
+  options?: UseMutationOptions<Perspective | undefined, TError, UpdatePerspectiveMutationVariables, TContext>,
 ) =>
-  useMutation<Perspective, TError, UpdatePerspectiveMutationVariables, TContext>(
+  useMutation<Perspective | undefined, TError, UpdatePerspectiveMutationVariables, TContext>(
     ['UpdatePerspective'],
     (variables: UpdatePerspectiveMutationVariables) => UpdatePerspectiveMutationFetcher(variables)(),
     options,
@@ -4488,9 +4534,9 @@ export const DeletePerspectiveMutationFetcher = (
     DeletePerspectiveMutationVariables
   >(DeletePerspectiveDocument, variables, options, outputFn, inputFn);
 export const useDeletePerspectiveMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Perspective, TError, DeletePerspectiveMutationVariables, TContext>,
+  options?: UseMutationOptions<Perspective | undefined, TError, DeletePerspectiveMutationVariables, TContext>,
 ) =>
-  useMutation<Perspective, TError, DeletePerspectiveMutationVariables, TContext>(
+  useMutation<Perspective | undefined, TError, DeletePerspectiveMutationVariables, TContext>(
     ['DeletePerspective'],
     (variables: DeletePerspectiveMutationVariables) => DeletePerspectiveMutationFetcher(variables)(),
     options,
@@ -4579,9 +4625,9 @@ export const CreateSchemaMutationFetcher = (
     inputFn,
   );
 export const useCreateSchemaMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Schema, TError, CreateSchemaMutationVariables, TContext>,
+  options?: UseMutationOptions<Schema | undefined, TError, CreateSchemaMutationVariables, TContext>,
 ) =>
-  useMutation<Schema, TError, CreateSchemaMutationVariables, TContext>(
+  useMutation<Schema | undefined, TError, CreateSchemaMutationVariables, TContext>(
     ['CreateSchema'],
     (variables: CreateSchemaMutationVariables) => CreateSchemaMutationFetcher(variables)(),
     options,
@@ -4670,9 +4716,9 @@ export const UpdateSchemaMutationFetcher = (
     inputFn,
   );
 export const useUpdateSchemaMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Schema, TError, UpdateSchemaMutationVariables, TContext>,
+  options?: UseMutationOptions<Schema | undefined, TError, UpdateSchemaMutationVariables, TContext>,
 ) =>
-  useMutation<Schema, TError, UpdateSchemaMutationVariables, TContext>(
+  useMutation<Schema | undefined, TError, UpdateSchemaMutationVariables, TContext>(
     ['UpdateSchema'],
     (variables: UpdateSchemaMutationVariables) => UpdateSchemaMutationFetcher(variables)(),
     options,
@@ -4761,9 +4807,9 @@ export const DeleteSchemaMutationFetcher = (
     inputFn,
   );
 export const useDeleteSchemaMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Schema, TError, DeleteSchemaMutationVariables, TContext>,
+  options?: UseMutationOptions<Schema | undefined, TError, DeleteSchemaMutationVariables, TContext>,
 ) =>
-  useMutation<Schema, TError, DeleteSchemaMutationVariables, TContext>(
+  useMutation<Schema | undefined, TError, DeleteSchemaMutationVariables, TContext>(
     ['DeleteSchema'],
     (variables: DeleteSchemaMutationVariables) => DeleteSchemaMutationFetcher(variables)(),
     options,
@@ -4829,9 +4875,9 @@ export const CreateTestMutationFetcher = (
     inputFn,
   );
 export const useCreateTestMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Test, TError, CreateTestMutationVariables, TContext>,
+  options?: UseMutationOptions<Test | undefined, TError, CreateTestMutationVariables, TContext>,
 ) =>
-  useMutation<Test, TError, CreateTestMutationVariables, TContext>(
+  useMutation<Test | undefined, TError, CreateTestMutationVariables, TContext>(
     ['CreateTest'],
     (variables: CreateTestMutationVariables) => CreateTestMutationFetcher(variables)(),
     options,
@@ -4897,9 +4943,9 @@ export const UpdateTestMutationFetcher = (
     inputFn,
   );
 export const useUpdateTestMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Test, TError, UpdateTestMutationVariables, TContext>,
+  options?: UseMutationOptions<Test | undefined, TError, UpdateTestMutationVariables, TContext>,
 ) =>
-  useMutation<Test, TError, UpdateTestMutationVariables, TContext>(
+  useMutation<Test | undefined, TError, UpdateTestMutationVariables, TContext>(
     ['UpdateTest'],
     (variables: UpdateTestMutationVariables) => UpdateTestMutationFetcher(variables)(),
     options,
@@ -4965,9 +5011,9 @@ export const DeleteTestMutationFetcher = (
     inputFn,
   );
 export const useDeleteTestMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Test, TError, DeleteTestMutationVariables, TContext>,
+  options?: UseMutationOptions<Test | undefined, TError, DeleteTestMutationVariables, TContext>,
 ) =>
-  useMutation<Test, TError, DeleteTestMutationVariables, TContext>(
+  useMutation<Test | undefined, TError, DeleteTestMutationVariables, TContext>(
     ['DeleteTest'],
     (variables: DeleteTestMutationVariables) => DeleteTestMutationFetcher(variables)(),
     options,
@@ -5032,9 +5078,9 @@ export const CreateOrganizationMutationFetcher = (
     CreateOrganizationMutationVariables
   >(CreateOrganizationDocument, variables, options, outputFn, inputFn);
 export const useCreateOrganizationMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Organization, TError, CreateOrganizationMutationVariables, TContext>,
+  options?: UseMutationOptions<Organization | undefined, TError, CreateOrganizationMutationVariables, TContext>,
 ) =>
-  useMutation<Organization, TError, CreateOrganizationMutationVariables, TContext>(
+  useMutation<Organization | undefined, TError, CreateOrganizationMutationVariables, TContext>(
     ['CreateOrganization'],
     (variables: CreateOrganizationMutationVariables) => CreateOrganizationMutationFetcher(variables)(),
     options,
@@ -5099,9 +5145,9 @@ export const UpdateOrganizationMutationFetcher = (
     UpdateOrganizationMutationVariables
   >(UpdateOrganizationDocument, variables, options, outputFn, inputFn);
 export const useUpdateOrganizationMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<Organization, TError, UpdateOrganizationMutationVariables, TContext>,
+  options?: UseMutationOptions<Organization | undefined, TError, UpdateOrganizationMutationVariables, TContext>,
 ) =>
-  useMutation<Organization, TError, UpdateOrganizationMutationVariables, TContext>(
+  useMutation<Organization | undefined, TError, UpdateOrganizationMutationVariables, TContext>(
     ['UpdateOrganization'],
     (variables: UpdateOrganizationMutationVariables) => UpdateOrganizationMutationFetcher(variables)(),
     options,
@@ -5165,9 +5211,9 @@ export const RunPerspectiveMutationFetcher = (
     RunPerspectiveMutationVariables
   >(RunPerspectiveDocument, variables, options, outputFn, inputFn);
 export const useRunPerspectiveMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<RunPerspectiveResult, TError, RunPerspectiveMutationVariables, TContext>,
+  options?: UseMutationOptions<RunPerspectiveResult | undefined, TError, RunPerspectiveMutationVariables, TContext>,
 ) =>
-  useMutation<RunPerspectiveResult, TError, RunPerspectiveMutationVariables, TContext>(
+  useMutation<RunPerspectiveResult | undefined, TError, RunPerspectiveMutationVariables, TContext>(
     ['RunPerspective'],
     (variables: RunPerspectiveMutationVariables) => RunPerspectiveMutationFetcher(variables)(),
     options,
@@ -5232,9 +5278,9 @@ export const CreateUserMutationFetcher = (
     inputFn,
   );
 export const useCreateUserMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<CognitoUser, TError, CreateUserMutationVariables, TContext>,
+  options?: UseMutationOptions<CognitoUser | undefined, TError, CreateUserMutationVariables, TContext>,
 ) =>
-  useMutation<CognitoUser, TError, CreateUserMutationVariables, TContext>(
+  useMutation<CognitoUser | undefined, TError, CreateUserMutationVariables, TContext>(
     ['CreateUser'],
     (variables: CreateUserMutationVariables) => CreateUserMutationFetcher(variables)(),
     options,
@@ -5299,9 +5345,9 @@ export const UpdateUserMutationFetcher = (
     inputFn,
   );
 export const useUpdateUserMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<CognitoUser, TError, UpdateUserMutationVariables, TContext>,
+  options?: UseMutationOptions<CognitoUser | undefined, TError, UpdateUserMutationVariables, TContext>,
 ) =>
-  useMutation<CognitoUser, TError, UpdateUserMutationVariables, TContext>(
+  useMutation<CognitoUser | undefined, TError, UpdateUserMutationVariables, TContext>(
     ['UpdateUser'],
     (variables: UpdateUserMutationVariables) => UpdateUserMutationFetcher(variables)(),
     options,
@@ -5366,9 +5412,9 @@ export const DeleteUserMutationFetcher = (
     inputFn,
   );
 export const useDeleteUserMutation = <TError = unknown, TContext = unknown>(
-  options?: UseMutationOptions<CognitoUser, TError, DeleteUserMutationVariables, TContext>,
+  options?: UseMutationOptions<CognitoUser | undefined, TError, DeleteUserMutationVariables, TContext>,
 ) =>
-  useMutation<CognitoUser, TError, DeleteUserMutationVariables, TContext>(
+  useMutation<CognitoUser | undefined, TError, DeleteUserMutationVariables, TContext>(
     ['DeleteUser'],
     (variables: DeleteUserMutationVariables) => DeleteUserMutationFetcher(variables)(),
     options,
@@ -5425,11 +5471,11 @@ export const EmptyQueryQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useEmptyQueryQuery = <TData = Scalars['String'], TError = unknown>(
+export const useEmptyQueryQuery = <TData = Scalars['String'] | undefined, TError = unknown>(
   variables?: EmptyQueryQueryVariables,
-  options?: UseQueryOptions<Scalars['String'], TError, TData>,
+  options?: UseQueryOptions<Scalars['String'] | undefined, TError, TData>,
 ) =>
-  useQuery<Scalars['String'], TError, TData>(
+  useQuery<Scalars['String'] | undefined, TError, TData>(
     variables === undefined ? ['EmptyQuery'] : ['EmptyQuery', variables],
     EmptyQueryQueryFetcher(variables),
     options,
@@ -5488,11 +5534,11 @@ export const EchoQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useEchoQuery = <TData = Scalars['String'], TError = unknown>(
+export const useEchoQuery = <TData = Scalars['String'] | undefined, TError = unknown>(
   variables?: EchoQueryVariables,
-  options?: UseQueryOptions<Scalars['String'], TError, TData>,
+  options?: UseQueryOptions<Scalars['String'] | undefined, TError, TData>,
 ) =>
-  useQuery<Scalars['String'], TError, TData>(
+  useQuery<Scalars['String'] | undefined, TError, TData>(
     variables === undefined ? ['Echo'] : ['Echo', variables],
     EchoQueryFetcher(variables),
     options,
@@ -5558,10 +5604,10 @@ export const CustomTestQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useCustomTestQuery = <TData = Test, TError = unknown>(
+export const useCustomTestQuery = <TData = Test | undefined, TError = unknown>(
   variables: CustomTestQueryVariables,
-  options?: UseQueryOptions<Test, TError, TData>,
-) => useQuery<Test, TError, TData>(['CustomTest', variables], CustomTestQueryFetcher(variables), options);
+  options?: UseQueryOptions<Test | undefined, TError, TData>,
+) => useQuery<Test | undefined, TError, TData>(['CustomTest', variables], CustomTestQueryFetcher(variables), options);
 useCustomTestQuery.getKey = CustomTestQueryKeys;
 
 export const GetConnectorManifestDocument = `
@@ -5634,11 +5680,11 @@ export const GetConnectorManifestQueryFetcher = (
     ConnectorManifest,
     GetConnectorManifestQueryVariables
   >(GetConnectorManifestDocument, variables, options, outputFn, inputFn);
-export const useGetConnectorManifestQuery = <TData = ConnectorManifest, TError = unknown>(
+export const useGetConnectorManifestQuery = <TData = ConnectorManifest | undefined, TError = unknown>(
   variables: GetConnectorManifestQueryVariables,
-  options?: UseQueryOptions<ConnectorManifest, TError, TData>,
+  options?: UseQueryOptions<ConnectorManifest | undefined, TError, TData>,
 ) =>
-  useQuery<ConnectorManifest, TError, TData>(
+  useQuery<ConnectorManifest | undefined, TError, TData>(
     ['GetConnectorManifest', variables],
     GetConnectorManifestQueryFetcher(variables),
     options,
@@ -5737,10 +5783,15 @@ export const GetConnectorQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useGetConnectorQuery = <TData = Connector, TError = unknown>(
+export const useGetConnectorQuery = <TData = Connector | undefined, TError = unknown>(
   variables: GetConnectorQueryVariables,
-  options?: UseQueryOptions<Connector, TError, TData>,
-) => useQuery<Connector, TError, TData>(['GetConnector', variables], GetConnectorQueryFetcher(variables), options);
+  options?: UseQueryOptions<Connector | undefined, TError, TData>,
+) =>
+  useQuery<Connector | undefined, TError, TData>(
+    ['GetConnector', variables],
+    GetConnectorQueryFetcher(variables),
+    options,
+  );
 useGetConnectorQuery.getKey = GetConnectorQueryKeys;
 
 export const ListConnectorsDocument = `
@@ -5830,11 +5881,11 @@ export const ListConnectorsQueryFetcher = (
     ModelConnectorConnection,
     ListConnectorsQueryVariables
   >(ListConnectorsDocument, variables, options, outputFn, inputFn);
-export const useListConnectorsQuery = <TData = ModelConnectorConnection, TError = unknown>(
+export const useListConnectorsQuery = <TData = ModelConnectorConnection | undefined, TError = unknown>(
   variables?: ListConnectorsQueryVariables,
-  options?: UseQueryOptions<ModelConnectorConnection, TError, TData>,
+  options?: UseQueryOptions<ModelConnectorConnection | undefined, TError, TData>,
 ) =>
-  useQuery<ModelConnectorConnection, TError, TData>(
+  useQuery<ModelConnectorConnection | undefined, TError, TData>(
     variables === undefined ? ['ListConnectors'] : ['ListConnectors', variables],
     ListConnectorsQueryFetcher(variables),
     options,
@@ -5936,11 +5987,11 @@ export const GetConnectorBySourceQueryFetcher = (
     ModelConnectorConnection,
     GetConnectorBySourceQueryVariables
   >(GetConnectorBySourceDocument, variables, options, outputFn, inputFn);
-export const useGetConnectorBySourceQuery = <TData = ModelConnectorConnection, TError = unknown>(
+export const useGetConnectorBySourceQuery = <TData = ModelConnectorConnection | undefined, TError = unknown>(
   variables: GetConnectorBySourceQueryVariables,
-  options?: UseQueryOptions<ModelConnectorConnection, TError, TData>,
+  options?: UseQueryOptions<ModelConnectorConnection | undefined, TError, TData>,
 ) =>
-  useQuery<ModelConnectorConnection, TError, TData>(
+  useQuery<ModelConnectorConnection | undefined, TError, TData>(
     ['GetConnectorBySource', variables],
     GetConnectorBySourceQueryFetcher(variables),
     options,
@@ -6046,11 +6097,11 @@ export const GetTransformationQueryFetcher = (
     Transformation,
     GetTransformationQueryVariables
   >(GetTransformationDocument, variables, options, outputFn, inputFn);
-export const useGetTransformationQuery = <TData = Transformation, TError = unknown>(
+export const useGetTransformationQuery = <TData = Transformation | undefined, TError = unknown>(
   variables: GetTransformationQueryVariables,
-  options?: UseQueryOptions<Transformation, TError, TData>,
+  options?: UseQueryOptions<Transformation | undefined, TError, TData>,
 ) =>
-  useQuery<Transformation, TError, TData>(
+  useQuery<Transformation | undefined, TError, TData>(
     ['GetTransformation', variables],
     GetTransformationQueryFetcher(variables),
     options,
@@ -6147,11 +6198,11 @@ export const ListTransformationsQueryFetcher = (
     ModelTransformationConnection,
     ListTransformationsQueryVariables
   >(ListTransformationsDocument, variables, options, outputFn, inputFn);
-export const useListTransformationsQuery = <TData = ModelTransformationConnection, TError = unknown>(
+export const useListTransformationsQuery = <TData = ModelTransformationConnection | undefined, TError = unknown>(
   variables?: ListTransformationsQueryVariables,
-  options?: UseQueryOptions<ModelTransformationConnection, TError, TData>,
+  options?: UseQueryOptions<ModelTransformationConnection | undefined, TError, TData>,
 ) =>
-  useQuery<ModelTransformationConnection, TError, TData>(
+  useQuery<ModelTransformationConnection | undefined, TError, TData>(
     variables === undefined ? ['ListTransformations'] : ['ListTransformations', variables],
     ListTransformationsQueryFetcher(variables),
     options,
@@ -6258,11 +6309,14 @@ export const GetTransformationsByConnectorQueryFetcher = (
     ModelTransformationConnection,
     GetTransformationsByConnectorQueryVariables
   >(GetTransformationsByConnectorDocument, variables, options, outputFn, inputFn);
-export const useGetTransformationsByConnectorQuery = <TData = ModelTransformationConnection, TError = unknown>(
+export const useGetTransformationsByConnectorQuery = <
+  TData = ModelTransformationConnection | undefined,
+  TError = unknown,
+>(
   variables: GetTransformationsByConnectorQueryVariables,
-  options?: UseQueryOptions<ModelTransformationConnection, TError, TData>,
+  options?: UseQueryOptions<ModelTransformationConnection | undefined, TError, TData>,
 ) =>
-  useQuery<ModelTransformationConnection, TError, TData>(
+  useQuery<ModelTransformationConnection | undefined, TError, TData>(
     ['GetTransformationsByConnector', variables],
     GetTransformationsByConnectorQueryFetcher(variables),
     options,
@@ -6338,11 +6392,15 @@ export const GetPerspectiveQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useGetPerspectiveQuery = <TData = Perspective, TError = unknown>(
+export const useGetPerspectiveQuery = <TData = Perspective | undefined, TError = unknown>(
   variables: GetPerspectiveQueryVariables,
-  options?: UseQueryOptions<Perspective, TError, TData>,
+  options?: UseQueryOptions<Perspective | undefined, TError, TData>,
 ) =>
-  useQuery<Perspective, TError, TData>(['GetPerspective', variables], GetPerspectiveQueryFetcher(variables), options);
+  useQuery<Perspective | undefined, TError, TData>(
+    ['GetPerspective', variables],
+    GetPerspectiveQueryFetcher(variables),
+    options,
+  );
 useGetPerspectiveQuery.getKey = GetPerspectiveQueryKeys;
 
 export const ListPerspectivesDocument = `
@@ -6418,11 +6476,11 @@ export const ListPerspectivesQueryFetcher = (
     ModelPerspectiveConnection,
     ListPerspectivesQueryVariables
   >(ListPerspectivesDocument, variables, options, outputFn, inputFn);
-export const useListPerspectivesQuery = <TData = ModelPerspectiveConnection, TError = unknown>(
+export const useListPerspectivesQuery = <TData = ModelPerspectiveConnection | undefined, TError = unknown>(
   variables?: ListPerspectivesQueryVariables,
-  options?: UseQueryOptions<ModelPerspectiveConnection, TError, TData>,
+  options?: UseQueryOptions<ModelPerspectiveConnection | undefined, TError, TData>,
 ) =>
-  useQuery<ModelPerspectiveConnection, TError, TData>(
+  useQuery<ModelPerspectiveConnection | undefined, TError, TData>(
     variables === undefined ? ['ListPerspectives'] : ['ListPerspectives', variables],
     ListPerspectivesQueryFetcher(variables),
     options,
@@ -6511,10 +6569,10 @@ export const GetSchemaQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useGetSchemaQuery = <TData = Schema, TError = unknown>(
+export const useGetSchemaQuery = <TData = Schema | undefined, TError = unknown>(
   variables: GetSchemaQueryVariables,
-  options?: UseQueryOptions<Schema, TError, TData>,
-) => useQuery<Schema, TError, TData>(['GetSchema', variables], GetSchemaQueryFetcher(variables), options);
+  options?: UseQueryOptions<Schema | undefined, TError, TData>,
+) => useQuery<Schema | undefined, TError, TData>(['GetSchema', variables], GetSchemaQueryFetcher(variables), options);
 useGetSchemaQuery.getKey = GetSchemaQueryKeys;
 
 export const ListSchemasDocument = `
@@ -6603,11 +6661,11 @@ export const ListSchemasQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useListSchemasQuery = <TData = ModelSchemaConnection, TError = unknown>(
+export const useListSchemasQuery = <TData = ModelSchemaConnection | undefined, TError = unknown>(
   variables?: ListSchemasQueryVariables,
-  options?: UseQueryOptions<ModelSchemaConnection, TError, TData>,
+  options?: UseQueryOptions<ModelSchemaConnection | undefined, TError, TData>,
 ) =>
-  useQuery<ModelSchemaConnection, TError, TData>(
+  useQuery<ModelSchemaConnection | undefined, TError, TData>(
     variables === undefined ? ['ListSchemas'] : ['ListSchemas', variables],
     ListSchemasQueryFetcher(variables),
     options,
@@ -6673,10 +6731,10 @@ export const GetTestQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useGetTestQuery = <TData = Test, TError = unknown>(
+export const useGetTestQuery = <TData = Test | undefined, TError = unknown>(
   variables: GetTestQueryVariables,
-  options?: UseQueryOptions<Test, TError, TData>,
-) => useQuery<Test, TError, TData>(['GetTest', variables], GetTestQueryFetcher(variables), options);
+  options?: UseQueryOptions<Test | undefined, TError, TData>,
+) => useQuery<Test | undefined, TError, TData>(['GetTest', variables], GetTestQueryFetcher(variables), options);
 useGetTestQuery.getKey = GetTestQueryKeys;
 
 export const ListTestsDocument = `
@@ -6742,11 +6800,11 @@ export const ListTestsQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useListTestsQuery = <TData = ModelTestConnection, TError = unknown>(
+export const useListTestsQuery = <TData = ModelTestConnection | undefined, TError = unknown>(
   variables?: ListTestsQueryVariables,
-  options?: UseQueryOptions<ModelTestConnection, TError, TData>,
+  options?: UseQueryOptions<ModelTestConnection | undefined, TError, TData>,
 ) =>
-  useQuery<ModelTestConnection, TError, TData>(
+  useQuery<ModelTestConnection | undefined, TError, TData>(
     variables === undefined ? ['ListTests'] : ['ListTests', variables],
     ListTestsQueryFetcher(variables),
     options,
@@ -6813,11 +6871,11 @@ export const GetOrganizationQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useGetOrganizationQuery = <TData = Organization, TError = unknown>(
+export const useGetOrganizationQuery = <TData = Organization | undefined, TError = unknown>(
   variables: GetOrganizationQueryVariables,
-  options?: UseQueryOptions<Organization, TError, TData>,
+  options?: UseQueryOptions<Organization | undefined, TError, TData>,
 ) =>
-  useQuery<Organization, TError, TData>(
+  useQuery<Organization | undefined, TError, TData>(
     ['GetOrganization', variables],
     GetOrganizationQueryFetcher(variables),
     options,
@@ -6887,11 +6945,11 @@ export const ListOrganizationsQueryFetcher = (
     ModelOrganizationConnection,
     ListOrganizationsQueryVariables
   >(ListOrganizationsDocument, variables, options, outputFn, inputFn);
-export const useListOrganizationsQuery = <TData = ModelOrganizationConnection, TError = unknown>(
+export const useListOrganizationsQuery = <TData = ModelOrganizationConnection | undefined, TError = unknown>(
   variables?: ListOrganizationsQueryVariables,
-  options?: UseQueryOptions<ModelOrganizationConnection, TError, TData>,
+  options?: UseQueryOptions<ModelOrganizationConnection | undefined, TError, TData>,
 ) =>
-  useQuery<ModelOrganizationConnection, TError, TData>(
+  useQuery<ModelOrganizationConnection | undefined, TError, TData>(
     variables === undefined ? ['ListOrganizations'] : ['ListOrganizations', variables],
     ListOrganizationsQueryFetcher(variables),
     options,
@@ -6969,11 +7027,15 @@ export const SearchGraphQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useSearchGraphQuery = <TData = SearchGraphResult, TError = unknown>(
+export const useSearchGraphQuery = <TData = SearchGraphResult | undefined, TError = unknown>(
   variables: SearchGraphQueryVariables,
-  options?: UseQueryOptions<SearchGraphResult, TError, TData>,
+  options?: UseQueryOptions<SearchGraphResult | undefined, TError, TData>,
 ) =>
-  useQuery<SearchGraphResult, TError, TData>(['SearchGraph', variables], SearchGraphQueryFetcher(variables), options);
+  useQuery<SearchGraphResult | undefined, TError, TData>(
+    ['SearchGraph', variables],
+    SearchGraphQueryFetcher(variables),
+    options,
+  );
 useSearchGraphQuery.getKey = SearchGraphQueryKeys;
 
 export const GetNodeDocument = `
@@ -7066,10 +7128,11 @@ export const GetNodeQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useGetNodeQuery = <TData = NodeGraphRecord, TError = unknown>(
+export const useGetNodeQuery = <TData = NodeGraphRecord | undefined, TError = unknown>(
   variables: GetNodeQueryVariables,
-  options?: UseQueryOptions<NodeGraphRecord, TError, TData>,
-) => useQuery<NodeGraphRecord, TError, TData>(['GetNode', variables], GetNodeQueryFetcher(variables), options);
+  options?: UseQueryOptions<NodeGraphRecord | undefined, TError, TData>,
+) =>
+  useQuery<NodeGraphRecord | undefined, TError, TData>(['GetNode', variables], GetNodeQueryFetcher(variables), options);
 useGetNodeQuery.getKey = GetNodeQueryKeys;
 
 export const GetRelationshipDocument = `
@@ -7158,11 +7221,11 @@ export const GetRelationshipQueryFetcher = (
     RelationshipGraphRecord,
     GetRelationshipQueryVariables
   >(GetRelationshipDocument, variables, options, outputFn, inputFn);
-export const useGetRelationshipQuery = <TData = RelationshipGraphRecord, TError = unknown>(
+export const useGetRelationshipQuery = <TData = RelationshipGraphRecord | undefined, TError = unknown>(
   variables: GetRelationshipQueryVariables,
-  options?: UseQueryOptions<RelationshipGraphRecord, TError, TData>,
+  options?: UseQueryOptions<RelationshipGraphRecord | undefined, TError, TData>,
 ) =>
-  useQuery<RelationshipGraphRecord, TError, TData>(
+  useQuery<RelationshipGraphRecord | undefined, TError, TData>(
     ['GetRelationship', variables],
     GetRelationshipQueryFetcher(variables),
     options,
@@ -7265,10 +7328,15 @@ export const ListNodesQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useListNodesQuery = <TData = NodesGraphRecord, TError = unknown>(
+export const useListNodesQuery = <TData = NodesGraphRecord | undefined, TError = unknown>(
   variables: ListNodesQueryVariables,
-  options?: UseQueryOptions<NodesGraphRecord, TError, TData>,
-) => useQuery<NodesGraphRecord, TError, TData>(['ListNodes', variables], ListNodesQueryFetcher(variables), options);
+  options?: UseQueryOptions<NodesGraphRecord | undefined, TError, TData>,
+) =>
+  useQuery<NodesGraphRecord | undefined, TError, TData>(
+    ['ListNodes', variables],
+    ListNodesQueryFetcher(variables),
+    options,
+  );
 useListNodesQuery.getKey = ListNodesQueryKeys;
 
 export const GetUserDocument = `
@@ -7328,10 +7396,10 @@ export const GetUserQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useGetUserQuery = <TData = CognitoUser, TError = unknown>(
+export const useGetUserQuery = <TData = CognitoUser | undefined, TError = unknown>(
   variables: GetUserQueryVariables,
-  options?: UseQueryOptions<CognitoUser, TError, TData>,
-) => useQuery<CognitoUser, TError, TData>(['GetUser', variables], GetUserQueryFetcher(variables), options);
+  options?: UseQueryOptions<CognitoUser | undefined, TError, TData>,
+) => useQuery<CognitoUser | undefined, TError, TData>(['GetUser', variables], GetUserQueryFetcher(variables), options);
 useGetUserQuery.getKey = GetUserQueryKeys;
 
 export const FindUsersDocument = `
@@ -7401,10 +7469,15 @@ export const FindUsersQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useFindUsersQuery = <TData = CognitoUserList, TError = unknown>(
+export const useFindUsersQuery = <TData = CognitoUserList | undefined, TError = unknown>(
   variables: FindUsersQueryVariables,
-  options?: UseQueryOptions<CognitoUserList, TError, TData>,
-) => useQuery<CognitoUserList, TError, TData>(['FindUsers', variables], FindUsersQueryFetcher(variables), options);
+  options?: UseQueryOptions<CognitoUserList | undefined, TError, TData>,
+) =>
+  useQuery<CognitoUserList | undefined, TError, TData>(
+    ['FindUsers', variables],
+    FindUsersQueryFetcher(variables),
+    options,
+  );
 useFindUsersQuery.getKey = FindUsersQueryKeys;
 
 export const ListUsersDocument = `
@@ -7475,11 +7548,11 @@ export const ListUsersQueryFetcher = (
     outputFn,
     inputFn,
   );
-export const useListUsersQuery = <TData = CognitoUserList, TError = unknown>(
+export const useListUsersQuery = <TData = CognitoUserList | undefined, TError = unknown>(
   variables?: ListUsersQueryVariables,
-  options?: UseQueryOptions<CognitoUserList, TError, TData>,
+  options?: UseQueryOptions<CognitoUserList | undefined, TError, TData>,
 ) =>
-  useQuery<CognitoUserList, TError, TData>(
+  useQuery<CognitoUserList | undefined, TError, TData>(
     variables === undefined ? ['ListUsers'] : ['ListUsers', variables],
     ListUsersQueryFetcher(variables),
     options,
@@ -7549,11 +7622,11 @@ export const GetConnectorCredentialsQueryFetcher = (
     ConnectorCredentials,
     GetConnectorCredentialsQueryVariables
   >(GetConnectorCredentialsDocument, variables, options, outputFn, inputFn);
-export const useGetConnectorCredentialsQuery = <TData = ConnectorCredentials, TError = unknown>(
+export const useGetConnectorCredentialsQuery = <TData = ConnectorCredentials | undefined, TError = unknown>(
   variables: GetConnectorCredentialsQueryVariables,
-  options?: UseQueryOptions<ConnectorCredentials, TError, TData>,
+  options?: UseQueryOptions<ConnectorCredentials | undefined, TError, TData>,
 ) =>
-  useQuery<ConnectorCredentials, TError, TData>(
+  useQuery<ConnectorCredentials | undefined, TError, TData>(
     ['GetConnectorCredentials', variables],
     GetConnectorCredentialsQueryFetcher(variables),
     options,

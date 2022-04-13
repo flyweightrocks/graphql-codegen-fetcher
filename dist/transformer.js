@@ -33,7 +33,7 @@ function generateInputTransformer(node, operationName, operationVariablesTypes, 
     const implementation = `export const ${operationName}Input = (${signature}) => ${hasJson
         ? `({...variables, ${inputVariables
             .filter((variable) => hasJsonFields(variable.fields))
-            .map((variable) => `${variable.fieldName}: { ${transformJsonFields(variable.fields || {}, `variables.${variable.fieldName}`, 'stringify')} },`)
+            .map((variable) => `${variable.fieldName}: { ...variables.${variable.fieldName}, ${transformJsonFields(variable.fields || {}, `variables.${variable.fieldName}`, 'stringify')} },`)
             .join('\n')} }) as ${operationVariablesTypes}`
         : `variables as ${operationVariablesTypes}`};`;
     return `\n${comment}\n${implementation}`;
