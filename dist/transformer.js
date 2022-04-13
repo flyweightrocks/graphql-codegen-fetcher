@@ -59,8 +59,10 @@ const transformJsonFields = (fields, path, transformer) => {
         }
         else {
             if (fieldValue === 'AWSJSON') {
-                transformer === 'parse' && stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any),`);
-                transformer === 'stringify' && stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any),`);
+                transformer === 'parse' &&
+                    stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
+                transformer === 'stringify' &&
+                    stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
             }
         }
     }
