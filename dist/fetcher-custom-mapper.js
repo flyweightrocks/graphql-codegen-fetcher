@@ -126,7 +126,7 @@ class CustomMapperFetcher {
     * @param inputFn - The input transformer function.
     * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
     */`;
-        const implementation = `export const ${this.getFetcherName(operationName)} = (${variables}, options?: RequestInit['headers'], outputFn = ${operationName}Output, inputFn = ${operationName}Input) => ${impl};`;
+        const implementation = `export const ${this.getFetcherName(operationName)} = (${variables}, options?: RequestInit['headers'], outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${impl};`;
         return `\n${comment}\n${implementation}\n`;
     }
     generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables) {

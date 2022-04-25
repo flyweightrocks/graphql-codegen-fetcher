@@ -12,7 +12,7 @@ function generateOutputTransformer(node, operationName, operationVariablesTypes,
   * @param data ${operationResultType} - The data returned from the GraphQL server
   * @returns ${output.typeName} - The transformed data
   */`;
-    const implementation = `export const ${operationName}Output = ({ ${output.fieldName} }: ${operationResultType}) => ${hasJson
+    const implementation = `export const ${operationName}OutputFn = ({ ${output.fieldName} }: ${operationResultType}) => ${hasJson
         ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(output.fields, `${output.fieldName}`, 'parse').join('\n')} }) as ${output.typeName}`
         : `${output.fieldName} as ${output.typeName}`};`;
     return `\n${comment}\n${implementation}`;
@@ -30,7 +30,7 @@ function generateInputTransformer(node, operationName, operationVariablesTypes, 
   * @param variables \`${operationVariablesTypes}\` - The original variables
   * @returns \`${operationVariablesTypes}\` - The transformed variables
   */`;
-    const implementation = `export const ${operationName}Input = (${signature}) => ${hasJson
+    const implementation = `export const ${operationName}InputFn = (${signature}) => ${hasJson
         ? `({...variables, ${inputVariables
             .filter((variable) => hasJsonFields(variable.fields))
             .map((variable) => `${variable.fieldName}: { ...variables.${variable.fieldName}, ${transformJsonFields(variable.fields || {}, `variables.${variable.fieldName}`, 'stringify')} },`)

@@ -1,13 +1,6 @@
 import { OperationDefinitionNode } from 'graphql';
+import { OperationField, OperationFieldMap } from './type-resolver';
 import { generateQueryVariablesSignature } from './variables-generator';
-import { OperationFieldMap, OperationOutputField, OperationInputVariableField, OperationField } from './type-resolver';
-
-// export function generateQueryVariablesSignature(
-//   hasRequiredVariables: boolean,
-//   operationVariablesTypes: string,
-// ): string {
-//   return `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
-// }
 
 export function generateOutputTransformer(
   node: OperationDefinitionNode,
@@ -28,7 +21,9 @@ export function generateOutputTransformer(
   * @returns ${output.typeName} - The transformed data
   */`;
 
-  const implementation = `export const ${operationName}Output = ({ ${output.fieldName} }: ${operationResultType}) => ${
+  const implementation = `export const ${operationName}OutputFn = ({ ${
+    output.fieldName
+  } }: ${operationResultType}) => ${
     hasJson
       ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(
           output.fields,
@@ -62,7 +57,7 @@ export function generateInputTransformer(
   * @returns \`${operationVariablesTypes}\` - The transformed variables
   */`;
 
-  const implementation = `export const ${operationName}Input = (${signature}) => ${
+  const implementation = `export const ${operationName}InputFn = (${signature}) => ${
     hasJson
       ? `({...variables, ${inputVariables
           .filter((variable) => hasJsonFields(variable.fields))

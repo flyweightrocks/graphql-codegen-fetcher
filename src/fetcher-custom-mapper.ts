@@ -219,7 +219,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
 
     const implementation = `export const ${this.getFetcherName(
       operationName,
-    )} = (${variables}, options?: RequestInit['headers'], outputFn = ${operationName}Output, inputFn = ${operationName}Input) => ${impl};`;
+    )} = (${variables}, options?: RequestInit['headers'], outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${impl};`;
     return `\n${comment}\n${implementation}\n`;
   }
 

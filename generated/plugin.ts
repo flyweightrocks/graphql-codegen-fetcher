@@ -2768,7 +2768,7 @@ export const EmptyMutationKeys = () => ['EmptyMutation'];
  * @param variables `EmptyMutationVariables` - The original variables
  * @returns `EmptyMutationVariables` - The transformed variables
  */
-export const EmptyMutationInput = (variables?: EmptyMutationVariables) => variables as EmptyMutationVariables;
+export const EmptyMutationInputFn = (variables?: EmptyMutationVariables) => variables as EmptyMutationVariables;
 
 /**
  * Output transformer function for `EmptyMutation`.
@@ -2778,7 +2778,7 @@ export const EmptyMutationInput = (variables?: EmptyMutationVariables) => variab
  * @param data EmptyMutation - The data returned from the GraphQL server
  * @returns Scalars['Int'] - The transformed data
  */
-export const EmptyMutationOutput = ({ emptyMutation }: EmptyMutation) => emptyMutation as Scalars['Int'];
+export const EmptyMutationOutputFn = ({ emptyMutation }: EmptyMutation) => emptyMutation as Scalars['Int'];
 
 /**
  * Fetcher function for `EmptyMutation`.
@@ -2792,13 +2792,13 @@ export const EmptyMutationOutput = ({ emptyMutation }: EmptyMutation) => emptyMu
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const EmptyMutationFetcher = (
   variables?: EmptyMutationVariables,
   options?: RequestInit['headers'],
-  outputFn = EmptyMutationOutput,
-  inputFn = EmptyMutationInput,
+  outputFn = EmptyMutationOutputFn,
+  inputFn = EmptyMutationInputFn,
 ) =>
   fetchWithAmplify<EmptyMutation, EmptyMutationVariables, Scalars['Int'], EmptyMutationVariables>(
     EmptyMutationDocument,
@@ -2843,7 +2843,7 @@ export const RunConnectorKeys = () => ['RunConnector'];
  * @param variables `RunConnectorVariables` - The original variables
  * @returns `RunConnectorVariables` - The transformed variables
  */
-export const RunConnectorInput = (variables: RunConnectorVariables) => variables as RunConnectorVariables;
+export const RunConnectorInputFn = (variables: RunConnectorVariables) => variables as RunConnectorVariables;
 
 /**
  * Output transformer function for `RunConnector`.
@@ -2853,7 +2853,7 @@ export const RunConnectorInput = (variables: RunConnectorVariables) => variables
  * @param data RunConnector - The data returned from the GraphQL server
  * @returns Scalars['AWSJSON'] - The transformed data
  */
-export const RunConnectorOutput = ({ runConnector }: RunConnector) => runConnector as Scalars['AWSJSON'];
+export const RunConnectorOutputFn = ({ runConnector }: RunConnector) => runConnector as Scalars['AWSJSON'];
 
 /**
  * Fetcher function for `RunConnector`.
@@ -2867,13 +2867,13 @@ export const RunConnectorOutput = ({ runConnector }: RunConnector) => runConnect
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const RunConnectorFetcher = (
   variables: RunConnectorVariables,
   options?: RequestInit['headers'],
-  outputFn = RunConnectorOutput,
-  inputFn = RunConnectorInput,
+  outputFn = RunConnectorOutputFn,
+  inputFn = RunConnectorInputFn,
 ) =>
   fetchWithAmplify<RunConnector, RunConnectorVariables, Scalars['AWSJSON'], RunConnectorVariables>(
     RunConnectorDocument,
@@ -2921,7 +2921,7 @@ export const CreateConnectorCredentialsKeys = () => ['CreateConnectorCredentials
  * @param variables `CreateConnectorCredentialsVariables` - The original variables
  * @returns `CreateConnectorCredentialsVariables` - The transformed variables
  */
-export const CreateConnectorCredentialsInput = (variables: CreateConnectorCredentialsVariables) =>
+export const CreateConnectorCredentialsInputFn = (variables: CreateConnectorCredentialsVariables) =>
   ({
     ...variables,
     input: {
@@ -2940,7 +2940,7 @@ export const CreateConnectorCredentialsInput = (variables: CreateConnectorCreden
  * @param data CreateConnectorCredentials - The data returned from the GraphQL server
  * @returns ConnectorCredentials - The transformed data
  */
-export const CreateConnectorCredentialsOutput = ({ createConnectorCredentials }: CreateConnectorCredentials) =>
+export const CreateConnectorCredentialsOutputFn = ({ createConnectorCredentials }: CreateConnectorCredentials) =>
   createConnectorCredentials &&
   ({
     ...createConnectorCredentials,
@@ -2961,13 +2961,13 @@ export const CreateConnectorCredentialsOutput = ({ createConnectorCredentials }:
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateConnectorCredentialsFetcher = (
   variables: CreateConnectorCredentialsVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateConnectorCredentialsOutput,
-  inputFn = CreateConnectorCredentialsInput,
+  outputFn = CreateConnectorCredentialsOutputFn,
+  inputFn = CreateConnectorCredentialsInputFn,
 ) =>
   fetchWithAmplify<
     CreateConnectorCredentials,
@@ -3015,7 +3015,7 @@ export const UpdateConnectorCredentialsKeys = () => ['UpdateConnectorCredentials
  * @param variables `UpdateConnectorCredentialsVariables` - The original variables
  * @returns `UpdateConnectorCredentialsVariables` - The transformed variables
  */
-export const UpdateConnectorCredentialsInput = (variables: UpdateConnectorCredentialsVariables) =>
+export const UpdateConnectorCredentialsInputFn = (variables: UpdateConnectorCredentialsVariables) =>
   ({
     ...variables,
     input: {
@@ -3034,7 +3034,7 @@ export const UpdateConnectorCredentialsInput = (variables: UpdateConnectorCreden
  * @param data UpdateConnectorCredentials - The data returned from the GraphQL server
  * @returns ConnectorCredentials - The transformed data
  */
-export const UpdateConnectorCredentialsOutput = ({ updateConnectorCredentials }: UpdateConnectorCredentials) =>
+export const UpdateConnectorCredentialsOutputFn = ({ updateConnectorCredentials }: UpdateConnectorCredentials) =>
   updateConnectorCredentials &&
   ({
     ...updateConnectorCredentials,
@@ -3055,13 +3055,13 @@ export const UpdateConnectorCredentialsOutput = ({ updateConnectorCredentials }:
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateConnectorCredentialsFetcher = (
   variables: UpdateConnectorCredentialsVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateConnectorCredentialsOutput,
-  inputFn = UpdateConnectorCredentialsInput,
+  outputFn = UpdateConnectorCredentialsOutputFn,
+  inputFn = UpdateConnectorCredentialsInputFn,
 ) =>
   fetchWithAmplify<
     UpdateConnectorCredentials,
@@ -3109,7 +3109,7 @@ export const DeleteConnectorCredentialsKeys = () => ['DeleteConnectorCredentials
  * @param variables `DeleteConnectorCredentialsVariables` - The original variables
  * @returns `DeleteConnectorCredentialsVariables` - The transformed variables
  */
-export const DeleteConnectorCredentialsInput = (variables: DeleteConnectorCredentialsVariables) =>
+export const DeleteConnectorCredentialsInputFn = (variables: DeleteConnectorCredentialsVariables) =>
   variables as DeleteConnectorCredentialsVariables;
 
 /**
@@ -3120,7 +3120,7 @@ export const DeleteConnectorCredentialsInput = (variables: DeleteConnectorCreden
  * @param data DeleteConnectorCredentials - The data returned from the GraphQL server
  * @returns ConnectorCredentials - The transformed data
  */
-export const DeleteConnectorCredentialsOutput = ({ deleteConnectorCredentials }: DeleteConnectorCredentials) =>
+export const DeleteConnectorCredentialsOutputFn = ({ deleteConnectorCredentials }: DeleteConnectorCredentials) =>
   deleteConnectorCredentials &&
   ({
     ...deleteConnectorCredentials,
@@ -3141,13 +3141,13 @@ export const DeleteConnectorCredentialsOutput = ({ deleteConnectorCredentials }:
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeleteConnectorCredentialsFetcher = (
   variables: DeleteConnectorCredentialsVariables,
   options?: RequestInit['headers'],
-  outputFn = DeleteConnectorCredentialsOutput,
-  inputFn = DeleteConnectorCredentialsInput,
+  outputFn = DeleteConnectorCredentialsOutputFn,
+  inputFn = DeleteConnectorCredentialsInputFn,
 ) =>
   fetchWithAmplify<
     DeleteConnectorCredentials,
@@ -3212,7 +3212,7 @@ export const CreateNodeKeys = () => ['CreateNode'];
  * @param variables `CreateNodeVariables` - The original variables
  * @returns `CreateNodeVariables` - The transformed variables
  */
-export const CreateNodeInput = (variables: CreateNodeVariables) =>
+export const CreateNodeInputFn = (variables: CreateNodeVariables) =>
   ({
     ...variables,
     input: {
@@ -3231,7 +3231,7 @@ export const CreateNodeInput = (variables: CreateNodeVariables) =>
  * @param data CreateNode - The data returned from the GraphQL server
  * @returns NodeGraphRecord - The transformed data
  */
-export const CreateNodeOutput = ({ createNode }: CreateNode) =>
+export const CreateNodeOutputFn = ({ createNode }: CreateNode) =>
   createNode &&
   ({
     ...createNode,
@@ -3270,13 +3270,13 @@ export const CreateNodeOutput = ({ createNode }: CreateNode) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateNodeFetcher = (
   variables: CreateNodeVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateNodeOutput,
-  inputFn = CreateNodeInput,
+  outputFn = CreateNodeOutputFn,
+  inputFn = CreateNodeInputFn,
 ) =>
   fetchWithAmplify<CreateNode, CreateNodeVariables, NodeGraphRecord, CreateNodeVariables>(
     CreateNodeDocument,
@@ -3341,7 +3341,7 @@ export const UpdateNodeKeys = () => ['UpdateNode'];
  * @param variables `UpdateNodeVariables` - The original variables
  * @returns `UpdateNodeVariables` - The transformed variables
  */
-export const UpdateNodeInput = (variables: UpdateNodeVariables) =>
+export const UpdateNodeInputFn = (variables: UpdateNodeVariables) =>
   ({
     ...variables,
     input: {
@@ -3360,7 +3360,7 @@ export const UpdateNodeInput = (variables: UpdateNodeVariables) =>
  * @param data UpdateNode - The data returned from the GraphQL server
  * @returns NodeGraphRecord - The transformed data
  */
-export const UpdateNodeOutput = ({ updateNode }: UpdateNode) =>
+export const UpdateNodeOutputFn = ({ updateNode }: UpdateNode) =>
   updateNode &&
   ({
     ...updateNode,
@@ -3399,13 +3399,13 @@ export const UpdateNodeOutput = ({ updateNode }: UpdateNode) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateNodeFetcher = (
   variables: UpdateNodeVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateNodeOutput,
-  inputFn = UpdateNodeInput,
+  outputFn = UpdateNodeOutputFn,
+  inputFn = UpdateNodeInputFn,
 ) =>
   fetchWithAmplify<UpdateNode, UpdateNodeVariables, NodeGraphRecord, UpdateNodeVariables>(
     UpdateNodeDocument,
@@ -3463,7 +3463,7 @@ export const DeleteNodeKeys = () => ['DeleteNode'];
  * @param variables `DeleteNodeVariables` - The original variables
  * @returns `DeleteNodeVariables` - The transformed variables
  */
-export const DeleteNodeInput = (variables: DeleteNodeVariables) => variables as DeleteNodeVariables;
+export const DeleteNodeInputFn = (variables: DeleteNodeVariables) => variables as DeleteNodeVariables;
 
 /**
  * Output transformer function for `DeleteNode`.
@@ -3473,7 +3473,7 @@ export const DeleteNodeInput = (variables: DeleteNodeVariables) => variables as 
  * @param data DeleteNode - The data returned from the GraphQL server
  * @returns DeleteNodeRecord - The transformed data
  */
-export const DeleteNodeOutput = ({ deleteNode }: DeleteNode) =>
+export const DeleteNodeOutputFn = ({ deleteNode }: DeleteNode) =>
   deleteNode &&
   ({
     ...deleteNode,
@@ -3500,13 +3500,13 @@ export const DeleteNodeOutput = ({ deleteNode }: DeleteNode) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeleteNodeFetcher = (
   variables: DeleteNodeVariables,
   options?: RequestInit['headers'],
-  outputFn = DeleteNodeOutput,
-  inputFn = DeleteNodeInput,
+  outputFn = DeleteNodeOutputFn,
+  inputFn = DeleteNodeInputFn,
 ) =>
   fetchWithAmplify<DeleteNode, DeleteNodeVariables, DeleteNodeRecord, DeleteNodeVariables>(
     DeleteNodeDocument,
@@ -3569,7 +3569,7 @@ export const CreateRelationshipKeys = () => ['CreateRelationship'];
  * @param variables `CreateRelationshipVariables` - The original variables
  * @returns `CreateRelationshipVariables` - The transformed variables
  */
-export const CreateRelationshipInput = (variables: CreateRelationshipVariables) =>
+export const CreateRelationshipInputFn = (variables: CreateRelationshipVariables) =>
   ({
     ...variables,
     input: {
@@ -3588,7 +3588,7 @@ export const CreateRelationshipInput = (variables: CreateRelationshipVariables) 
  * @param data CreateRelationship - The data returned from the GraphQL server
  * @returns RelationshipGraphRecord - The transformed data
  */
-export const CreateRelationshipOutput = ({ createRelationship }: CreateRelationship) =>
+export const CreateRelationshipOutputFn = ({ createRelationship }: CreateRelationship) =>
   createRelationship &&
   ({
     ...createRelationship,
@@ -3624,13 +3624,13 @@ export const CreateRelationshipOutput = ({ createRelationship }: CreateRelations
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateRelationshipFetcher = (
   variables: CreateRelationshipVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateRelationshipOutput,
-  inputFn = CreateRelationshipInput,
+  outputFn = CreateRelationshipOutputFn,
+  inputFn = CreateRelationshipInputFn,
 ) =>
   fetchWithAmplify<
     CreateRelationship,
@@ -3692,7 +3692,7 @@ export const UpdateRelationshipKeys = () => ['UpdateRelationship'];
  * @param variables `UpdateRelationshipVariables` - The original variables
  * @returns `UpdateRelationshipVariables` - The transformed variables
  */
-export const UpdateRelationshipInput = (variables: UpdateRelationshipVariables) =>
+export const UpdateRelationshipInputFn = (variables: UpdateRelationshipVariables) =>
   ({
     ...variables,
     input: {
@@ -3711,7 +3711,7 @@ export const UpdateRelationshipInput = (variables: UpdateRelationshipVariables) 
  * @param data UpdateRelationship - The data returned from the GraphQL server
  * @returns RelationshipGraphRecord - The transformed data
  */
-export const UpdateRelationshipOutput = ({ updateRelationship }: UpdateRelationship) =>
+export const UpdateRelationshipOutputFn = ({ updateRelationship }: UpdateRelationship) =>
   updateRelationship &&
   ({
     ...updateRelationship,
@@ -3747,13 +3747,13 @@ export const UpdateRelationshipOutput = ({ updateRelationship }: UpdateRelations
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateRelationshipFetcher = (
   variables: UpdateRelationshipVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateRelationshipOutput,
-  inputFn = UpdateRelationshipInput,
+  outputFn = UpdateRelationshipOutputFn,
+  inputFn = UpdateRelationshipInputFn,
 ) =>
   fetchWithAmplify<
     UpdateRelationship,
@@ -3805,7 +3805,7 @@ export const DeleteRelationshipKeys = () => ['DeleteRelationship'];
  * @param variables `DeleteRelationshipVariables` - The original variables
  * @returns `DeleteRelationshipVariables` - The transformed variables
  */
-export const DeleteRelationshipInput = (variables: DeleteRelationshipVariables) =>
+export const DeleteRelationshipInputFn = (variables: DeleteRelationshipVariables) =>
   variables as DeleteRelationshipVariables;
 
 /**
@@ -3816,7 +3816,7 @@ export const DeleteRelationshipInput = (variables: DeleteRelationshipVariables) 
  * @param data DeleteRelationship - The data returned from the GraphQL server
  * @returns DeleteRelationshipRecord - The transformed data
  */
-export const DeleteRelationshipOutput = ({ deleteRelationship }: DeleteRelationship) =>
+export const DeleteRelationshipOutputFn = ({ deleteRelationship }: DeleteRelationship) =>
   deleteRelationship &&
   ({
     ...deleteRelationship,
@@ -3839,13 +3839,13 @@ export const DeleteRelationshipOutput = ({ deleteRelationship }: DeleteRelations
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeleteRelationshipFetcher = (
   variables: DeleteRelationshipVariables,
   options?: RequestInit['headers'],
-  outputFn = DeleteRelationshipOutput,
-  inputFn = DeleteRelationshipInput,
+  outputFn = DeleteRelationshipOutputFn,
+  inputFn = DeleteRelationshipInputFn,
 ) =>
   fetchWithAmplify<
     DeleteRelationship,
@@ -3924,7 +3924,7 @@ export const CreateConnectorKeys = () => ['CreateConnector'];
  * @param variables `CreateConnectorVariables` - The original variables
  * @returns `CreateConnectorVariables` - The transformed variables
  */
-export const CreateConnectorInput = (variables: CreateConnectorVariables) =>
+export const CreateConnectorInputFn = (variables: CreateConnectorVariables) =>
   ({
     ...variables,
     input: {
@@ -3943,7 +3943,7 @@ export const CreateConnectorInput = (variables: CreateConnectorVariables) =>
  * @param data CreateConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const CreateConnectorOutput = ({ createConnector }: CreateConnector) =>
+export const CreateConnectorOutputFn = ({ createConnector }: CreateConnector) =>
   createConnector &&
   ({
     ...createConnector,
@@ -3964,13 +3964,13 @@ export const CreateConnectorOutput = ({ createConnector }: CreateConnector) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateConnectorFetcher = (
   variables: CreateConnectorVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateConnectorOutput,
-  inputFn = CreateConnectorInput,
+  outputFn = CreateConnectorOutputFn,
+  inputFn = CreateConnectorInputFn,
 ) =>
   fetchWithAmplify<CreateConnector, CreateConnectorVariables, Connector, CreateConnectorVariables>(
     CreateConnectorDocument,
@@ -4050,7 +4050,7 @@ export const UpdateConnectorKeys = () => ['UpdateConnector'];
  * @param variables `UpdateConnectorVariables` - The original variables
  * @returns `UpdateConnectorVariables` - The transformed variables
  */
-export const UpdateConnectorInput = (variables: UpdateConnectorVariables) =>
+export const UpdateConnectorInputFn = (variables: UpdateConnectorVariables) =>
   ({
     ...variables,
     input: {
@@ -4069,7 +4069,7 @@ export const UpdateConnectorInput = (variables: UpdateConnectorVariables) =>
  * @param data UpdateConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const UpdateConnectorOutput = ({ updateConnector }: UpdateConnector) =>
+export const UpdateConnectorOutputFn = ({ updateConnector }: UpdateConnector) =>
   updateConnector &&
   ({
     ...updateConnector,
@@ -4090,13 +4090,13 @@ export const UpdateConnectorOutput = ({ updateConnector }: UpdateConnector) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateConnectorFetcher = (
   variables: UpdateConnectorVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateConnectorOutput,
-  inputFn = UpdateConnectorInput,
+  outputFn = UpdateConnectorOutputFn,
+  inputFn = UpdateConnectorInputFn,
 ) =>
   fetchWithAmplify<UpdateConnector, UpdateConnectorVariables, Connector, UpdateConnectorVariables>(
     UpdateConnectorDocument,
@@ -4176,7 +4176,7 @@ export const DeleteConnectorKeys = () => ['DeleteConnector'];
  * @param variables `DeleteConnectorVariables` - The original variables
  * @returns `DeleteConnectorVariables` - The transformed variables
  */
-export const DeleteConnectorInput = (variables: DeleteConnectorVariables) => variables as DeleteConnectorVariables;
+export const DeleteConnectorInputFn = (variables: DeleteConnectorVariables) => variables as DeleteConnectorVariables;
 
 /**
  * Output transformer function for `DeleteConnector`.
@@ -4186,7 +4186,7 @@ export const DeleteConnectorInput = (variables: DeleteConnectorVariables) => var
  * @param data DeleteConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const DeleteConnectorOutput = ({ deleteConnector }: DeleteConnector) =>
+export const DeleteConnectorOutputFn = ({ deleteConnector }: DeleteConnector) =>
   deleteConnector &&
   ({
     ...deleteConnector,
@@ -4207,13 +4207,13 @@ export const DeleteConnectorOutput = ({ deleteConnector }: DeleteConnector) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeleteConnectorFetcher = (
   variables: DeleteConnectorVariables,
   options?: RequestInit['headers'],
-  outputFn = DeleteConnectorOutput,
-  inputFn = DeleteConnectorInput,
+  outputFn = DeleteConnectorOutputFn,
+  inputFn = DeleteConnectorInputFn,
 ) =>
   fetchWithAmplify<DeleteConnector, DeleteConnectorVariables, Connector, DeleteConnectorVariables>(
     DeleteConnectorDocument,
@@ -4293,7 +4293,7 @@ export const CreateTransformationKeys = () => ['CreateTransformation'];
  * @param variables `CreateTransformationVariables` - The original variables
  * @returns `CreateTransformationVariables` - The transformed variables
  */
-export const CreateTransformationInput = (variables: CreateTransformationVariables) =>
+export const CreateTransformationInputFn = (variables: CreateTransformationVariables) =>
   variables as CreateTransformationVariables;
 
 /**
@@ -4304,7 +4304,7 @@ export const CreateTransformationInput = (variables: CreateTransformationVariabl
  * @param data CreateTransformation - The data returned from the GraphQL server
  * @returns Transformation - The transformed data
  */
-export const CreateTransformationOutput = ({ createTransformation }: CreateTransformation) =>
+export const CreateTransformationOutputFn = ({ createTransformation }: CreateTransformation) =>
   createTransformation &&
   ({
     ...createTransformation,
@@ -4328,13 +4328,13 @@ export const CreateTransformationOutput = ({ createTransformation }: CreateTrans
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateTransformationFetcher = (
   variables: CreateTransformationVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateTransformationOutput,
-  inputFn = CreateTransformationInput,
+  outputFn = CreateTransformationOutputFn,
+  inputFn = CreateTransformationInputFn,
 ) =>
   fetchWithAmplify<CreateTransformation, CreateTransformationVariables, Transformation, CreateTransformationVariables>(
     CreateTransformationDocument,
@@ -4415,7 +4415,7 @@ export const UpdateTransformationKeys = () => ['UpdateTransformation'];
  * @param variables `UpdateTransformationVariables` - The original variables
  * @returns `UpdateTransformationVariables` - The transformed variables
  */
-export const UpdateTransformationInput = (variables: UpdateTransformationVariables) =>
+export const UpdateTransformationInputFn = (variables: UpdateTransformationVariables) =>
   variables as UpdateTransformationVariables;
 
 /**
@@ -4426,7 +4426,7 @@ export const UpdateTransformationInput = (variables: UpdateTransformationVariabl
  * @param data UpdateTransformation - The data returned from the GraphQL server
  * @returns Transformation - The transformed data
  */
-export const UpdateTransformationOutput = ({ updateTransformation }: UpdateTransformation) =>
+export const UpdateTransformationOutputFn = ({ updateTransformation }: UpdateTransformation) =>
   updateTransformation &&
   ({
     ...updateTransformation,
@@ -4450,13 +4450,13 @@ export const UpdateTransformationOutput = ({ updateTransformation }: UpdateTrans
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateTransformationFetcher = (
   variables: UpdateTransformationVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateTransformationOutput,
-  inputFn = UpdateTransformationInput,
+  outputFn = UpdateTransformationOutputFn,
+  inputFn = UpdateTransformationInputFn,
 ) =>
   fetchWithAmplify<UpdateTransformation, UpdateTransformationVariables, Transformation, UpdateTransformationVariables>(
     UpdateTransformationDocument,
@@ -4537,7 +4537,7 @@ export const DeleteTransformationKeys = () => ['DeleteTransformation'];
  * @param variables `DeleteTransformationVariables` - The original variables
  * @returns `DeleteTransformationVariables` - The transformed variables
  */
-export const DeleteTransformationInput = (variables: DeleteTransformationVariables) =>
+export const DeleteTransformationInputFn = (variables: DeleteTransformationVariables) =>
   variables as DeleteTransformationVariables;
 
 /**
@@ -4548,7 +4548,7 @@ export const DeleteTransformationInput = (variables: DeleteTransformationVariabl
  * @param data DeleteTransformation - The data returned from the GraphQL server
  * @returns Transformation - The transformed data
  */
-export const DeleteTransformationOutput = ({ deleteTransformation }: DeleteTransformation) =>
+export const DeleteTransformationOutputFn = ({ deleteTransformation }: DeleteTransformation) =>
   deleteTransformation &&
   ({
     ...deleteTransformation,
@@ -4572,13 +4572,13 @@ export const DeleteTransformationOutput = ({ deleteTransformation }: DeleteTrans
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeleteTransformationFetcher = (
   variables: DeleteTransformationVariables,
   options?: RequestInit['headers'],
-  outputFn = DeleteTransformationOutput,
-  inputFn = DeleteTransformationInput,
+  outputFn = DeleteTransformationOutputFn,
+  inputFn = DeleteTransformationInputFn,
 ) =>
   fetchWithAmplify<DeleteTransformation, DeleteTransformationVariables, Transformation, DeleteTransformationVariables>(
     DeleteTransformationDocument,
@@ -4641,7 +4641,7 @@ export const CreatePerspectiveKeys = () => ['CreatePerspective'];
  * @param variables `CreatePerspectiveVariables` - The original variables
  * @returns `CreatePerspectiveVariables` - The transformed variables
  */
-export const CreatePerspectiveInput = (variables: CreatePerspectiveVariables) =>
+export const CreatePerspectiveInputFn = (variables: CreatePerspectiveVariables) =>
   variables as CreatePerspectiveVariables;
 
 /**
@@ -4652,7 +4652,7 @@ export const CreatePerspectiveInput = (variables: CreatePerspectiveVariables) =>
  * @param data CreatePerspective - The data returned from the GraphQL server
  * @returns Perspective - The transformed data
  */
-export const CreatePerspectiveOutput = ({ createPerspective }: CreatePerspective) => createPerspective as Perspective;
+export const CreatePerspectiveOutputFn = ({ createPerspective }: CreatePerspective) => createPerspective as Perspective;
 
 /**
  * Fetcher function for `CreatePerspective`.
@@ -4666,13 +4666,13 @@ export const CreatePerspectiveOutput = ({ createPerspective }: CreatePerspective
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreatePerspectiveFetcher = (
   variables: CreatePerspectiveVariables,
   options?: RequestInit['headers'],
-  outputFn = CreatePerspectiveOutput,
-  inputFn = CreatePerspectiveInput,
+  outputFn = CreatePerspectiveOutputFn,
+  inputFn = CreatePerspectiveInputFn,
 ) =>
   fetchWithAmplify<CreatePerspective, CreatePerspectiveVariables, Perspective, CreatePerspectiveVariables>(
     CreatePerspectiveDocument,
@@ -4734,7 +4734,7 @@ export const UpdatePerspectiveKeys = () => ['UpdatePerspective'];
  * @param variables `UpdatePerspectiveVariables` - The original variables
  * @returns `UpdatePerspectiveVariables` - The transformed variables
  */
-export const UpdatePerspectiveInput = (variables: UpdatePerspectiveVariables) =>
+export const UpdatePerspectiveInputFn = (variables: UpdatePerspectiveVariables) =>
   variables as UpdatePerspectiveVariables;
 
 /**
@@ -4745,7 +4745,7 @@ export const UpdatePerspectiveInput = (variables: UpdatePerspectiveVariables) =>
  * @param data UpdatePerspective - The data returned from the GraphQL server
  * @returns Perspective - The transformed data
  */
-export const UpdatePerspectiveOutput = ({ updatePerspective }: UpdatePerspective) => updatePerspective as Perspective;
+export const UpdatePerspectiveOutputFn = ({ updatePerspective }: UpdatePerspective) => updatePerspective as Perspective;
 
 /**
  * Fetcher function for `UpdatePerspective`.
@@ -4759,13 +4759,13 @@ export const UpdatePerspectiveOutput = ({ updatePerspective }: UpdatePerspective
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdatePerspectiveFetcher = (
   variables: UpdatePerspectiveVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdatePerspectiveOutput,
-  inputFn = UpdatePerspectiveInput,
+  outputFn = UpdatePerspectiveOutputFn,
+  inputFn = UpdatePerspectiveInputFn,
 ) =>
   fetchWithAmplify<UpdatePerspective, UpdatePerspectiveVariables, Perspective, UpdatePerspectiveVariables>(
     UpdatePerspectiveDocument,
@@ -4827,7 +4827,7 @@ export const DeletePerspectiveKeys = () => ['DeletePerspective'];
  * @param variables `DeletePerspectiveVariables` - The original variables
  * @returns `DeletePerspectiveVariables` - The transformed variables
  */
-export const DeletePerspectiveInput = (variables: DeletePerspectiveVariables) =>
+export const DeletePerspectiveInputFn = (variables: DeletePerspectiveVariables) =>
   variables as DeletePerspectiveVariables;
 
 /**
@@ -4838,7 +4838,7 @@ export const DeletePerspectiveInput = (variables: DeletePerspectiveVariables) =>
  * @param data DeletePerspective - The data returned from the GraphQL server
  * @returns Perspective - The transformed data
  */
-export const DeletePerspectiveOutput = ({ deletePerspective }: DeletePerspective) => deletePerspective as Perspective;
+export const DeletePerspectiveOutputFn = ({ deletePerspective }: DeletePerspective) => deletePerspective as Perspective;
 
 /**
  * Fetcher function for `DeletePerspective`.
@@ -4852,13 +4852,13 @@ export const DeletePerspectiveOutput = ({ deletePerspective }: DeletePerspective
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeletePerspectiveFetcher = (
   variables: DeletePerspectiveVariables,
   options?: RequestInit['headers'],
-  outputFn = DeletePerspectiveOutput,
-  inputFn = DeletePerspectiveInput,
+  outputFn = DeletePerspectiveOutputFn,
+  inputFn = DeletePerspectiveInputFn,
 ) =>
   fetchWithAmplify<DeletePerspective, DeletePerspectiveVariables, Perspective, DeletePerspectiveVariables>(
     DeletePerspectiveDocument,
@@ -4934,7 +4934,7 @@ export const CreateSchemaKeys = () => ['CreateSchema'];
  * @param variables `CreateSchemaVariables` - The original variables
  * @returns `CreateSchemaVariables` - The transformed variables
  */
-export const CreateSchemaInput = (variables: CreateSchemaVariables) => variables as CreateSchemaVariables;
+export const CreateSchemaInputFn = (variables: CreateSchemaVariables) => variables as CreateSchemaVariables;
 
 /**
  * Output transformer function for `CreateSchema`.
@@ -4944,7 +4944,7 @@ export const CreateSchemaInput = (variables: CreateSchemaVariables) => variables
  * @param data CreateSchema - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
-export const CreateSchemaOutput = ({ createSchema }: CreateSchema) => createSchema as Schema;
+export const CreateSchemaOutputFn = ({ createSchema }: CreateSchema) => createSchema as Schema;
 
 /**
  * Fetcher function for `CreateSchema`.
@@ -4958,13 +4958,13 @@ export const CreateSchemaOutput = ({ createSchema }: CreateSchema) => createSche
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateSchemaFetcher = (
   variables: CreateSchemaVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateSchemaOutput,
-  inputFn = CreateSchemaInput,
+  outputFn = CreateSchemaOutputFn,
+  inputFn = CreateSchemaInputFn,
 ) =>
   fetchWithAmplify<CreateSchema, CreateSchemaVariables, Schema, CreateSchemaVariables>(
     CreateSchemaDocument,
@@ -5040,7 +5040,7 @@ export const UpdateSchemaKeys = () => ['UpdateSchema'];
  * @param variables `UpdateSchemaVariables` - The original variables
  * @returns `UpdateSchemaVariables` - The transformed variables
  */
-export const UpdateSchemaInput = (variables: UpdateSchemaVariables) => variables as UpdateSchemaVariables;
+export const UpdateSchemaInputFn = (variables: UpdateSchemaVariables) => variables as UpdateSchemaVariables;
 
 /**
  * Output transformer function for `UpdateSchema`.
@@ -5050,7 +5050,7 @@ export const UpdateSchemaInput = (variables: UpdateSchemaVariables) => variables
  * @param data UpdateSchema - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
-export const UpdateSchemaOutput = ({ updateSchema }: UpdateSchema) => updateSchema as Schema;
+export const UpdateSchemaOutputFn = ({ updateSchema }: UpdateSchema) => updateSchema as Schema;
 
 /**
  * Fetcher function for `UpdateSchema`.
@@ -5064,13 +5064,13 @@ export const UpdateSchemaOutput = ({ updateSchema }: UpdateSchema) => updateSche
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateSchemaFetcher = (
   variables: UpdateSchemaVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateSchemaOutput,
-  inputFn = UpdateSchemaInput,
+  outputFn = UpdateSchemaOutputFn,
+  inputFn = UpdateSchemaInputFn,
 ) =>
   fetchWithAmplify<UpdateSchema, UpdateSchemaVariables, Schema, UpdateSchemaVariables>(
     UpdateSchemaDocument,
@@ -5146,7 +5146,7 @@ export const DeleteSchemaKeys = () => ['DeleteSchema'];
  * @param variables `DeleteSchemaVariables` - The original variables
  * @returns `DeleteSchemaVariables` - The transformed variables
  */
-export const DeleteSchemaInput = (variables: DeleteSchemaVariables) => variables as DeleteSchemaVariables;
+export const DeleteSchemaInputFn = (variables: DeleteSchemaVariables) => variables as DeleteSchemaVariables;
 
 /**
  * Output transformer function for `DeleteSchema`.
@@ -5156,7 +5156,7 @@ export const DeleteSchemaInput = (variables: DeleteSchemaVariables) => variables
  * @param data DeleteSchema - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
-export const DeleteSchemaOutput = ({ deleteSchema }: DeleteSchema) => deleteSchema as Schema;
+export const DeleteSchemaOutputFn = ({ deleteSchema }: DeleteSchema) => deleteSchema as Schema;
 
 /**
  * Fetcher function for `DeleteSchema`.
@@ -5170,13 +5170,13 @@ export const DeleteSchemaOutput = ({ deleteSchema }: DeleteSchema) => deleteSche
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeleteSchemaFetcher = (
   variables: DeleteSchemaVariables,
   options?: RequestInit['headers'],
-  outputFn = DeleteSchemaOutput,
-  inputFn = DeleteSchemaInput,
+  outputFn = DeleteSchemaOutputFn,
+  inputFn = DeleteSchemaInputFn,
 ) =>
   fetchWithAmplify<DeleteSchema, DeleteSchemaVariables, Schema, DeleteSchemaVariables>(
     DeleteSchemaDocument,
@@ -5229,7 +5229,7 @@ export const CreateTestKeys = () => ['CreateTest'];
  * @param variables `CreateTestVariables` - The original variables
  * @returns `CreateTestVariables` - The transformed variables
  */
-export const CreateTestInput = (variables: CreateTestVariables) => variables as CreateTestVariables;
+export const CreateTestInputFn = (variables: CreateTestVariables) => variables as CreateTestVariables;
 
 /**
  * Output transformer function for `CreateTest`.
@@ -5239,7 +5239,7 @@ export const CreateTestInput = (variables: CreateTestVariables) => variables as 
  * @param data CreateTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const CreateTestOutput = ({ createTest }: CreateTest) => createTest as Test;
+export const CreateTestOutputFn = ({ createTest }: CreateTest) => createTest as Test;
 
 /**
  * Fetcher function for `CreateTest`.
@@ -5253,13 +5253,13 @@ export const CreateTestOutput = ({ createTest }: CreateTest) => createTest as Te
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateTestFetcher = (
   variables: CreateTestVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateTestOutput,
-  inputFn = CreateTestInput,
+  outputFn = CreateTestOutputFn,
+  inputFn = CreateTestInputFn,
 ) =>
   fetchWithAmplify<CreateTest, CreateTestVariables, Test, CreateTestVariables>(
     CreateTestDocument,
@@ -5312,7 +5312,7 @@ export const UpdateTestKeys = () => ['UpdateTest'];
  * @param variables `UpdateTestVariables` - The original variables
  * @returns `UpdateTestVariables` - The transformed variables
  */
-export const UpdateTestInput = (variables: UpdateTestVariables) => variables as UpdateTestVariables;
+export const UpdateTestInputFn = (variables: UpdateTestVariables) => variables as UpdateTestVariables;
 
 /**
  * Output transformer function for `UpdateTest`.
@@ -5322,7 +5322,7 @@ export const UpdateTestInput = (variables: UpdateTestVariables) => variables as 
  * @param data UpdateTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const UpdateTestOutput = ({ updateTest }: UpdateTest) => updateTest as Test;
+export const UpdateTestOutputFn = ({ updateTest }: UpdateTest) => updateTest as Test;
 
 /**
  * Fetcher function for `UpdateTest`.
@@ -5336,13 +5336,13 @@ export const UpdateTestOutput = ({ updateTest }: UpdateTest) => updateTest as Te
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateTestFetcher = (
   variables: UpdateTestVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateTestOutput,
-  inputFn = UpdateTestInput,
+  outputFn = UpdateTestOutputFn,
+  inputFn = UpdateTestInputFn,
 ) =>
   fetchWithAmplify<UpdateTest, UpdateTestVariables, Test, UpdateTestVariables>(
     UpdateTestDocument,
@@ -5395,7 +5395,7 @@ export const DeleteTestKeys = () => ['DeleteTest'];
  * @param variables `DeleteTestVariables` - The original variables
  * @returns `DeleteTestVariables` - The transformed variables
  */
-export const DeleteTestInput = (variables: DeleteTestVariables) => variables as DeleteTestVariables;
+export const DeleteTestInputFn = (variables: DeleteTestVariables) => variables as DeleteTestVariables;
 
 /**
  * Output transformer function for `DeleteTest`.
@@ -5405,7 +5405,7 @@ export const DeleteTestInput = (variables: DeleteTestVariables) => variables as 
  * @param data DeleteTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const DeleteTestOutput = ({ deleteTest }: DeleteTest) => deleteTest as Test;
+export const DeleteTestOutputFn = ({ deleteTest }: DeleteTest) => deleteTest as Test;
 
 /**
  * Fetcher function for `DeleteTest`.
@@ -5419,13 +5419,13 @@ export const DeleteTestOutput = ({ deleteTest }: DeleteTest) => deleteTest as Te
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeleteTestFetcher = (
   variables: DeleteTestVariables,
   options?: RequestInit['headers'],
-  outputFn = DeleteTestOutput,
-  inputFn = DeleteTestInput,
+  outputFn = DeleteTestOutputFn,
+  inputFn = DeleteTestInputFn,
 ) =>
   fetchWithAmplify<DeleteTest, DeleteTestVariables, Test, DeleteTestVariables>(
     DeleteTestDocument,
@@ -5477,7 +5477,7 @@ export const CreateOrganizationKeys = () => ['CreateOrganization'];
  * @param variables `CreateOrganizationVariables` - The original variables
  * @returns `CreateOrganizationVariables` - The transformed variables
  */
-export const CreateOrganizationInput = (variables: CreateOrganizationVariables) =>
+export const CreateOrganizationInputFn = (variables: CreateOrganizationVariables) =>
   variables as CreateOrganizationVariables;
 
 /**
@@ -5488,7 +5488,7 @@ export const CreateOrganizationInput = (variables: CreateOrganizationVariables) 
  * @param data CreateOrganization - The data returned from the GraphQL server
  * @returns Organization - The transformed data
  */
-export const CreateOrganizationOutput = ({ createOrganization }: CreateOrganization) =>
+export const CreateOrganizationOutputFn = ({ createOrganization }: CreateOrganization) =>
   createOrganization as Organization;
 
 /**
@@ -5503,13 +5503,13 @@ export const CreateOrganizationOutput = ({ createOrganization }: CreateOrganizat
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateOrganizationFetcher = (
   variables: CreateOrganizationVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateOrganizationOutput,
-  inputFn = CreateOrganizationInput,
+  outputFn = CreateOrganizationOutputFn,
+  inputFn = CreateOrganizationInputFn,
 ) =>
   fetchWithAmplify<CreateOrganization, CreateOrganizationVariables, Organization, CreateOrganizationVariables>(
     CreateOrganizationDocument,
@@ -5561,7 +5561,7 @@ export const UpdateOrganizationKeys = () => ['UpdateOrganization'];
  * @param variables `UpdateOrganizationVariables` - The original variables
  * @returns `UpdateOrganizationVariables` - The transformed variables
  */
-export const UpdateOrganizationInput = (variables: UpdateOrganizationVariables) =>
+export const UpdateOrganizationInputFn = (variables: UpdateOrganizationVariables) =>
   variables as UpdateOrganizationVariables;
 
 /**
@@ -5572,7 +5572,7 @@ export const UpdateOrganizationInput = (variables: UpdateOrganizationVariables) 
  * @param data UpdateOrganization - The data returned from the GraphQL server
  * @returns Organization - The transformed data
  */
-export const UpdateOrganizationOutput = ({ updateOrganization }: UpdateOrganization) =>
+export const UpdateOrganizationOutputFn = ({ updateOrganization }: UpdateOrganization) =>
   updateOrganization as Organization;
 
 /**
@@ -5587,13 +5587,13 @@ export const UpdateOrganizationOutput = ({ updateOrganization }: UpdateOrganizat
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateOrganizationFetcher = (
   variables: UpdateOrganizationVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateOrganizationOutput,
-  inputFn = UpdateOrganizationInput,
+  outputFn = UpdateOrganizationOutputFn,
+  inputFn = UpdateOrganizationInputFn,
 ) =>
   fetchWithAmplify<UpdateOrganization, UpdateOrganizationVariables, Organization, UpdateOrganizationVariables>(
     UpdateOrganizationDocument,
@@ -5640,7 +5640,7 @@ export const RunPerspectiveKeys = () => ['RunPerspective'];
  * @param variables `RunPerspectiveVariables` - The original variables
  * @returns `RunPerspectiveVariables` - The transformed variables
  */
-export const RunPerspectiveInput = (variables: RunPerspectiveVariables) => variables as RunPerspectiveVariables;
+export const RunPerspectiveInputFn = (variables: RunPerspectiveVariables) => variables as RunPerspectiveVariables;
 
 /**
  * Output transformer function for `RunPerspective`.
@@ -5650,7 +5650,7 @@ export const RunPerspectiveInput = (variables: RunPerspectiveVariables) => varia
  * @param data RunPerspective - The data returned from the GraphQL server
  * @returns RunPerspectiveResult - The transformed data
  */
-export const RunPerspectiveOutput = ({ runPerspective }: RunPerspective) =>
+export const RunPerspectiveOutputFn = ({ runPerspective }: RunPerspective) =>
   runPerspective &&
   ({
     ...runPerspective,
@@ -5669,13 +5669,13 @@ export const RunPerspectiveOutput = ({ runPerspective }: RunPerspective) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const RunPerspectiveFetcher = (
   variables: RunPerspectiveVariables,
   options?: RequestInit['headers'],
-  outputFn = RunPerspectiveOutput,
-  inputFn = RunPerspectiveInput,
+  outputFn = RunPerspectiveOutputFn,
+  inputFn = RunPerspectiveInputFn,
 ) =>
   fetchWithAmplify<RunPerspective, RunPerspectiveVariables, RunPerspectiveResult, RunPerspectiveVariables>(
     RunPerspectiveDocument,
@@ -5725,7 +5725,7 @@ export const CreateUserKeys = () => ['CreateUser'];
  * @param variables `CreateUserVariables` - The original variables
  * @returns `CreateUserVariables` - The transformed variables
  */
-export const CreateUserInput = (variables: CreateUserVariables) => variables as CreateUserVariables;
+export const CreateUserInputFn = (variables: CreateUserVariables) => variables as CreateUserVariables;
 
 /**
  * Output transformer function for `CreateUser`.
@@ -5735,7 +5735,7 @@ export const CreateUserInput = (variables: CreateUserVariables) => variables as 
  * @param data CreateUser - The data returned from the GraphQL server
  * @returns CognitoUser - The transformed data
  */
-export const CreateUserOutput = ({ createUser }: CreateUser) =>
+export const CreateUserOutputFn = ({ createUser }: CreateUser) =>
   createUser &&
   ({
     ...createUser,
@@ -5754,13 +5754,13 @@ export const CreateUserOutput = ({ createUser }: CreateUser) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CreateUserFetcher = (
   variables: CreateUserVariables,
   options?: RequestInit['headers'],
-  outputFn = CreateUserOutput,
-  inputFn = CreateUserInput,
+  outputFn = CreateUserOutputFn,
+  inputFn = CreateUserInputFn,
 ) =>
   fetchWithAmplify<CreateUser, CreateUserVariables, CognitoUser, CreateUserVariables>(
     CreateUserDocument,
@@ -5810,7 +5810,7 @@ export const UpdateUserKeys = () => ['UpdateUser'];
  * @param variables `UpdateUserVariables` - The original variables
  * @returns `UpdateUserVariables` - The transformed variables
  */
-export const UpdateUserInput = (variables: UpdateUserVariables) => variables as UpdateUserVariables;
+export const UpdateUserInputFn = (variables: UpdateUserVariables) => variables as UpdateUserVariables;
 
 /**
  * Output transformer function for `UpdateUser`.
@@ -5820,7 +5820,7 @@ export const UpdateUserInput = (variables: UpdateUserVariables) => variables as 
  * @param data UpdateUser - The data returned from the GraphQL server
  * @returns CognitoUser - The transformed data
  */
-export const UpdateUserOutput = ({ updateUser }: UpdateUser) =>
+export const UpdateUserOutputFn = ({ updateUser }: UpdateUser) =>
   updateUser &&
   ({
     ...updateUser,
@@ -5839,13 +5839,13 @@ export const UpdateUserOutput = ({ updateUser }: UpdateUser) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const UpdateUserFetcher = (
   variables: UpdateUserVariables,
   options?: RequestInit['headers'],
-  outputFn = UpdateUserOutput,
-  inputFn = UpdateUserInput,
+  outputFn = UpdateUserOutputFn,
+  inputFn = UpdateUserInputFn,
 ) =>
   fetchWithAmplify<UpdateUser, UpdateUserVariables, CognitoUser, UpdateUserVariables>(
     UpdateUserDocument,
@@ -5895,7 +5895,7 @@ export const DeleteUserKeys = () => ['DeleteUser'];
  * @param variables `DeleteUserVariables` - The original variables
  * @returns `DeleteUserVariables` - The transformed variables
  */
-export const DeleteUserInput = (variables: DeleteUserVariables) => variables as DeleteUserVariables;
+export const DeleteUserInputFn = (variables: DeleteUserVariables) => variables as DeleteUserVariables;
 
 /**
  * Output transformer function for `DeleteUser`.
@@ -5905,7 +5905,7 @@ export const DeleteUserInput = (variables: DeleteUserVariables) => variables as 
  * @param data DeleteUser - The data returned from the GraphQL server
  * @returns CognitoUser - The transformed data
  */
-export const DeleteUserOutput = ({ deleteUser }: DeleteUser) =>
+export const DeleteUserOutputFn = ({ deleteUser }: DeleteUser) =>
   deleteUser &&
   ({
     ...deleteUser,
@@ -5924,13 +5924,13 @@ export const DeleteUserOutput = ({ deleteUser }: DeleteUser) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const DeleteUserFetcher = (
   variables: DeleteUserVariables,
   options?: RequestInit['headers'],
-  outputFn = DeleteUserOutput,
-  inputFn = DeleteUserInput,
+  outputFn = DeleteUserOutputFn,
+  inputFn = DeleteUserInputFn,
 ) =>
   fetchWithAmplify<DeleteUser, DeleteUserVariables, CognitoUser, DeleteUserVariables>(
     DeleteUserDocument,
@@ -5976,7 +5976,7 @@ export const EmptyQueryKeys = (variables?: EmptyQueryVariables) =>
  * @param variables `EmptyQueryVariables` - The original variables
  * @returns `EmptyQueryVariables` - The transformed variables
  */
-export const EmptyQueryInput = (variables?: EmptyQueryVariables) => variables as EmptyQueryVariables;
+export const EmptyQueryInputFn = (variables?: EmptyQueryVariables) => variables as EmptyQueryVariables;
 
 /**
  * Output transformer function for `EmptyQuery`.
@@ -5986,7 +5986,7 @@ export const EmptyQueryInput = (variables?: EmptyQueryVariables) => variables as
  * @param data EmptyQuery - The data returned from the GraphQL server
  * @returns Scalars['String'] - The transformed data
  */
-export const EmptyQueryOutput = ({ emptyQuery }: EmptyQuery) => emptyQuery as Scalars['String'];
+export const EmptyQueryOutputFn = ({ emptyQuery }: EmptyQuery) => emptyQuery as Scalars['String'];
 
 /**
  * Fetcher function for `EmptyQuery`.
@@ -6000,13 +6000,13 @@ export const EmptyQueryOutput = ({ emptyQuery }: EmptyQuery) => emptyQuery as Sc
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const EmptyQueryFetcher = (
   variables?: EmptyQueryVariables,
   options?: RequestInit['headers'],
-  outputFn = EmptyQueryOutput,
-  inputFn = EmptyQueryInput,
+  outputFn = EmptyQueryOutputFn,
+  inputFn = EmptyQueryInputFn,
 ) =>
   fetchWithAmplify<EmptyQuery, EmptyQueryVariables, Scalars['String'], EmptyQueryVariables>(
     EmptyQueryDocument,
@@ -6054,7 +6054,7 @@ export const EchoKeys = (variables?: EchoVariables) => (variables === undefined 
  * @param variables `EchoVariables` - The original variables
  * @returns `EchoVariables` - The transformed variables
  */
-export const EchoInput = (variables?: EchoVariables) => variables as EchoVariables;
+export const EchoInputFn = (variables?: EchoVariables) => variables as EchoVariables;
 
 /**
  * Output transformer function for `Echo`.
@@ -6064,7 +6064,7 @@ export const EchoInput = (variables?: EchoVariables) => variables as EchoVariabl
  * @param data Echo - The data returned from the GraphQL server
  * @returns Scalars['String'] - The transformed data
  */
-export const EchoOutput = ({ echo }: Echo) => echo as Scalars['String'];
+export const EchoOutputFn = ({ echo }: Echo) => echo as Scalars['String'];
 
 /**
  * Fetcher function for `Echo`.
@@ -6078,13 +6078,13 @@ export const EchoOutput = ({ echo }: Echo) => echo as Scalars['String'];
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const EchoFetcher = (
   variables?: EchoVariables,
   options?: RequestInit['headers'],
-  outputFn = EchoOutput,
-  inputFn = EchoInput,
+  outputFn = EchoOutputFn,
+  inputFn = EchoInputFn,
 ) =>
   fetchWithAmplify<Echo, EchoVariables, Scalars['String'], EchoVariables>(
     EchoDocument,
@@ -6140,7 +6140,7 @@ export const CustomTestKeys = (variables: CustomTestVariables) => ['CustomTest',
  * @param variables `CustomTestVariables` - The original variables
  * @returns `CustomTestVariables` - The transformed variables
  */
-export const CustomTestInput = (variables: CustomTestVariables) => variables as CustomTestVariables;
+export const CustomTestInputFn = (variables: CustomTestVariables) => variables as CustomTestVariables;
 
 /**
  * Output transformer function for `CustomTest`.
@@ -6150,7 +6150,7 @@ export const CustomTestInput = (variables: CustomTestVariables) => variables as 
  * @param data CustomTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const CustomTestOutput = ({ customTest }: CustomTest) => customTest as Test;
+export const CustomTestOutputFn = ({ customTest }: CustomTest) => customTest as Test;
 
 /**
  * Fetcher function for `CustomTest`.
@@ -6164,13 +6164,13 @@ export const CustomTestOutput = ({ customTest }: CustomTest) => customTest as Te
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const CustomTestFetcher = (
   variables: CustomTestVariables,
   options?: RequestInit['headers'],
-  outputFn = CustomTestOutput,
-  inputFn = CustomTestInput,
+  outputFn = CustomTestOutputFn,
+  inputFn = CustomTestInputFn,
 ) =>
   fetchWithAmplify<CustomTest, CustomTestVariables, Test, CustomTestVariables>(
     CustomTestDocument,
@@ -6231,7 +6231,7 @@ export const GetConnectorManifestKeys = (variables: GetConnectorManifestVariable
  * @param variables `GetConnectorManifestVariables` - The original variables
  * @returns `GetConnectorManifestVariables` - The transformed variables
  */
-export const GetConnectorManifestInput = (variables: GetConnectorManifestVariables) =>
+export const GetConnectorManifestInputFn = (variables: GetConnectorManifestVariables) =>
   variables as GetConnectorManifestVariables;
 
 /**
@@ -6242,7 +6242,7 @@ export const GetConnectorManifestInput = (variables: GetConnectorManifestVariabl
  * @param data GetConnectorManifest - The data returned from the GraphQL server
  * @returns ConnectorManifest - The transformed data
  */
-export const GetConnectorManifestOutput = ({ getConnectorManifest }: GetConnectorManifest) =>
+export const GetConnectorManifestOutputFn = ({ getConnectorManifest }: GetConnectorManifest) =>
   getConnectorManifest as ConnectorManifest;
 
 /**
@@ -6257,13 +6257,13 @@ export const GetConnectorManifestOutput = ({ getConnectorManifest }: GetConnecto
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetConnectorManifestFetcher = (
   variables: GetConnectorManifestVariables,
   options?: RequestInit['headers'],
-  outputFn = GetConnectorManifestOutput,
-  inputFn = GetConnectorManifestInput,
+  outputFn = GetConnectorManifestOutputFn,
+  inputFn = GetConnectorManifestInputFn,
 ) =>
   fetchWithAmplify<
     GetConnectorManifest,
@@ -6346,7 +6346,7 @@ export const GetConnectorKeys = (variables: GetConnectorVariables) => ['GetConne
  * @param variables `GetConnectorVariables` - The original variables
  * @returns `GetConnectorVariables` - The transformed variables
  */
-export const GetConnectorInput = (variables: GetConnectorVariables) => variables as GetConnectorVariables;
+export const GetConnectorInputFn = (variables: GetConnectorVariables) => variables as GetConnectorVariables;
 
 /**
  * Output transformer function for `GetConnector`.
@@ -6356,7 +6356,7 @@ export const GetConnectorInput = (variables: GetConnectorVariables) => variables
  * @param data GetConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const GetConnectorOutput = ({ getConnector }: GetConnector) =>
+export const GetConnectorOutputFn = ({ getConnector }: GetConnector) =>
   getConnector &&
   ({
     ...getConnector,
@@ -6377,13 +6377,13 @@ export const GetConnectorOutput = ({ getConnector }: GetConnector) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetConnectorFetcher = (
   variables: GetConnectorVariables,
   options?: RequestInit['headers'],
-  outputFn = GetConnectorOutput,
-  inputFn = GetConnectorInput,
+  outputFn = GetConnectorOutputFn,
+  inputFn = GetConnectorInputFn,
 ) =>
   fetchWithAmplify<GetConnector, GetConnectorVariables, Connector, GetConnectorVariables>(
     GetConnectorDocument,
@@ -6455,7 +6455,7 @@ export const ListConnectorsKeys = (variables?: ListConnectorsVariables) =>
  * @param variables `ListConnectorsVariables` - The original variables
  * @returns `ListConnectorsVariables` - The transformed variables
  */
-export const ListConnectorsInput = (variables?: ListConnectorsVariables) => variables as ListConnectorsVariables;
+export const ListConnectorsInputFn = (variables?: ListConnectorsVariables) => variables as ListConnectorsVariables;
 
 /**
  * Output transformer function for `ListConnectors`.
@@ -6465,7 +6465,7 @@ export const ListConnectorsInput = (variables?: ListConnectorsVariables) => vari
  * @param data ListConnectors - The data returned from the GraphQL server
  * @returns ModelConnectorConnection - The transformed data
  */
-export const ListConnectorsOutput = ({ listConnectors }: ListConnectors) =>
+export const ListConnectorsOutputFn = ({ listConnectors }: ListConnectors) =>
   listConnectors &&
   ({
     ...listConnectors,
@@ -6488,13 +6488,13 @@ export const ListConnectorsOutput = ({ listConnectors }: ListConnectors) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const ListConnectorsFetcher = (
   variables?: ListConnectorsVariables,
   options?: RequestInit['headers'],
-  outputFn = ListConnectorsOutput,
-  inputFn = ListConnectorsInput,
+  outputFn = ListConnectorsOutputFn,
+  inputFn = ListConnectorsInputFn,
 ) =>
   fetchWithAmplify<ListConnectors, ListConnectorsVariables, ModelConnectorConnection, ListConnectorsVariables>(
     ListConnectorsDocument,
@@ -6578,7 +6578,7 @@ export const GetConnectorBySourceKeys = (variables: GetConnectorBySourceVariable
  * @param variables `GetConnectorBySourceVariables` - The original variables
  * @returns `GetConnectorBySourceVariables` - The transformed variables
  */
-export const GetConnectorBySourceInput = (variables: GetConnectorBySourceVariables) =>
+export const GetConnectorBySourceInputFn = (variables: GetConnectorBySourceVariables) =>
   variables as GetConnectorBySourceVariables;
 
 /**
@@ -6589,7 +6589,7 @@ export const GetConnectorBySourceInput = (variables: GetConnectorBySourceVariabl
  * @param data GetConnectorBySource - The data returned from the GraphQL server
  * @returns ModelConnectorConnection - The transformed data
  */
-export const GetConnectorBySourceOutput = ({ getConnectorBySource }: GetConnectorBySource) =>
+export const GetConnectorBySourceOutputFn = ({ getConnectorBySource }: GetConnectorBySource) =>
   getConnectorBySource &&
   ({
     ...getConnectorBySource,
@@ -6612,13 +6612,13 @@ export const GetConnectorBySourceOutput = ({ getConnectorBySource }: GetConnecto
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetConnectorBySourceFetcher = (
   variables: GetConnectorBySourceVariables,
   options?: RequestInit['headers'],
-  outputFn = GetConnectorBySourceOutput,
-  inputFn = GetConnectorBySourceInput,
+  outputFn = GetConnectorBySourceOutputFn,
+  inputFn = GetConnectorBySourceInputFn,
 ) =>
   fetchWithAmplify<
     GetConnectorBySource,
@@ -6701,7 +6701,7 @@ export const GetTransformationKeys = (variables: GetTransformationVariables) => 
  * @param variables `GetTransformationVariables` - The original variables
  * @returns `GetTransformationVariables` - The transformed variables
  */
-export const GetTransformationInput = (variables: GetTransformationVariables) =>
+export const GetTransformationInputFn = (variables: GetTransformationVariables) =>
   variables as GetTransformationVariables;
 
 /**
@@ -6712,7 +6712,7 @@ export const GetTransformationInput = (variables: GetTransformationVariables) =>
  * @param data GetTransformation - The data returned from the GraphQL server
  * @returns Transformation - The transformed data
  */
-export const GetTransformationOutput = ({ getTransformation }: GetTransformation) =>
+export const GetTransformationOutputFn = ({ getTransformation }: GetTransformation) =>
   getTransformation &&
   ({
     ...getTransformation,
@@ -6736,13 +6736,13 @@ export const GetTransformationOutput = ({ getTransformation }: GetTransformation
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetTransformationFetcher = (
   variables: GetTransformationVariables,
   options?: RequestInit['headers'],
-  outputFn = GetTransformationOutput,
-  inputFn = GetTransformationInput,
+  outputFn = GetTransformationOutputFn,
+  inputFn = GetTransformationInputFn,
 ) =>
   fetchWithAmplify<GetTransformation, GetTransformationVariables, Transformation, GetTransformationVariables>(
     GetTransformationDocument,
@@ -6818,7 +6818,7 @@ export const ListTransformationsKeys = (variables?: ListTransformationsVariables
  * @param variables `ListTransformationsVariables` - The original variables
  * @returns `ListTransformationsVariables` - The transformed variables
  */
-export const ListTransformationsInput = (variables?: ListTransformationsVariables) =>
+export const ListTransformationsInputFn = (variables?: ListTransformationsVariables) =>
   variables as ListTransformationsVariables;
 
 /**
@@ -6829,7 +6829,7 @@ export const ListTransformationsInput = (variables?: ListTransformationsVariable
  * @param data ListTransformations - The data returned from the GraphQL server
  * @returns ModelTransformationConnection - The transformed data
  */
-export const ListTransformationsOutput = ({ listTransformations }: ListTransformations) =>
+export const ListTransformationsOutputFn = ({ listTransformations }: ListTransformations) =>
   listTransformations &&
   ({
     ...listTransformations,
@@ -6856,13 +6856,13 @@ export const ListTransformationsOutput = ({ listTransformations }: ListTransform
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const ListTransformationsFetcher = (
   variables?: ListTransformationsVariables,
   options?: RequestInit['headers'],
-  outputFn = ListTransformationsOutput,
-  inputFn = ListTransformationsInput,
+  outputFn = ListTransformationsOutputFn,
+  inputFn = ListTransformationsInputFn,
 ) =>
   fetchWithAmplify<
     ListTransformations,
@@ -6946,7 +6946,7 @@ export const GetTransformationsByConnectorKeys = (variables: GetTransformationsB
  * @param variables `GetTransformationsByConnectorVariables` - The original variables
  * @returns `GetTransformationsByConnectorVariables` - The transformed variables
  */
-export const GetTransformationsByConnectorInput = (variables: GetTransformationsByConnectorVariables) =>
+export const GetTransformationsByConnectorInputFn = (variables: GetTransformationsByConnectorVariables) =>
   variables as GetTransformationsByConnectorVariables;
 
 /**
@@ -6957,7 +6957,9 @@ export const GetTransformationsByConnectorInput = (variables: GetTransformations
  * @param data GetTransformationsByConnector - The data returned from the GraphQL server
  * @returns ModelTransformationConnection - The transformed data
  */
-export const GetTransformationsByConnectorOutput = ({ getTransformationsByConnector }: GetTransformationsByConnector) =>
+export const GetTransformationsByConnectorOutputFn = ({
+  getTransformationsByConnector,
+}: GetTransformationsByConnector) =>
   getTransformationsByConnector &&
   ({
     ...getTransformationsByConnector,
@@ -6984,13 +6986,13 @@ export const GetTransformationsByConnectorOutput = ({ getTransformationsByConnec
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetTransformationsByConnectorFetcher = (
   variables: GetTransformationsByConnectorVariables,
   options?: RequestInit['headers'],
-  outputFn = GetTransformationsByConnectorOutput,
-  inputFn = GetTransformationsByConnectorInput,
+  outputFn = GetTransformationsByConnectorOutputFn,
+  inputFn = GetTransformationsByConnectorInputFn,
 ) =>
   fetchWithAmplify<
     GetTransformationsByConnector,
@@ -7055,7 +7057,7 @@ export const GetPerspectiveKeys = (variables: GetPerspectiveVariables) => ['GetP
  * @param variables `GetPerspectiveVariables` - The original variables
  * @returns `GetPerspectiveVariables` - The transformed variables
  */
-export const GetPerspectiveInput = (variables: GetPerspectiveVariables) => variables as GetPerspectiveVariables;
+export const GetPerspectiveInputFn = (variables: GetPerspectiveVariables) => variables as GetPerspectiveVariables;
 
 /**
  * Output transformer function for `GetPerspective`.
@@ -7065,7 +7067,7 @@ export const GetPerspectiveInput = (variables: GetPerspectiveVariables) => varia
  * @param data GetPerspective - The data returned from the GraphQL server
  * @returns Perspective - The transformed data
  */
-export const GetPerspectiveOutput = ({ getPerspective }: GetPerspective) => getPerspective as Perspective;
+export const GetPerspectiveOutputFn = ({ getPerspective }: GetPerspective) => getPerspective as Perspective;
 
 /**
  * Fetcher function for `GetPerspective`.
@@ -7079,13 +7081,13 @@ export const GetPerspectiveOutput = ({ getPerspective }: GetPerspective) => getP
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetPerspectiveFetcher = (
   variables: GetPerspectiveVariables,
   options?: RequestInit['headers'],
-  outputFn = GetPerspectiveOutput,
-  inputFn = GetPerspectiveInput,
+  outputFn = GetPerspectiveOutputFn,
+  inputFn = GetPerspectiveInputFn,
 ) =>
   fetchWithAmplify<GetPerspective, GetPerspectiveVariables, Perspective, GetPerspectiveVariables>(
     GetPerspectiveDocument,
@@ -7154,7 +7156,8 @@ export const ListPerspectivesKeys = (variables?: ListPerspectivesVariables) =>
  * @param variables `ListPerspectivesVariables` - The original variables
  * @returns `ListPerspectivesVariables` - The transformed variables
  */
-export const ListPerspectivesInput = (variables?: ListPerspectivesVariables) => variables as ListPerspectivesVariables;
+export const ListPerspectivesInputFn = (variables?: ListPerspectivesVariables) =>
+  variables as ListPerspectivesVariables;
 
 /**
  * Output transformer function for `ListPerspectives`.
@@ -7164,7 +7167,7 @@ export const ListPerspectivesInput = (variables?: ListPerspectivesVariables) => 
  * @param data ListPerspectives - The data returned from the GraphQL server
  * @returns ModelPerspectiveConnection - The transformed data
  */
-export const ListPerspectivesOutput = ({ listPerspectives }: ListPerspectives) =>
+export const ListPerspectivesOutputFn = ({ listPerspectives }: ListPerspectives) =>
   listPerspectives as ModelPerspectiveConnection;
 
 /**
@@ -7179,13 +7182,13 @@ export const ListPerspectivesOutput = ({ listPerspectives }: ListPerspectives) =
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const ListPerspectivesFetcher = (
   variables?: ListPerspectivesVariables,
   options?: RequestInit['headers'],
-  outputFn = ListPerspectivesOutput,
-  inputFn = ListPerspectivesInput,
+  outputFn = ListPerspectivesOutputFn,
+  inputFn = ListPerspectivesInputFn,
 ) =>
   fetchWithAmplify<ListPerspectives, ListPerspectivesVariables, ModelPerspectiveConnection, ListPerspectivesVariables>(
     ListPerspectivesDocument,
@@ -7264,7 +7267,7 @@ export const GetSchemaKeys = (variables: GetSchemaVariables) => ['GetSchema', va
  * @param variables `GetSchemaVariables` - The original variables
  * @returns `GetSchemaVariables` - The transformed variables
  */
-export const GetSchemaInput = (variables: GetSchemaVariables) => variables as GetSchemaVariables;
+export const GetSchemaInputFn = (variables: GetSchemaVariables) => variables as GetSchemaVariables;
 
 /**
  * Output transformer function for `GetSchema`.
@@ -7274,7 +7277,7 @@ export const GetSchemaInput = (variables: GetSchemaVariables) => variables as Ge
  * @param data GetSchema - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
-export const GetSchemaOutput = ({ getSchema }: GetSchema) => getSchema as Schema;
+export const GetSchemaOutputFn = ({ getSchema }: GetSchema) => getSchema as Schema;
 
 /**
  * Fetcher function for `GetSchema`.
@@ -7288,13 +7291,13 @@ export const GetSchemaOutput = ({ getSchema }: GetSchema) => getSchema as Schema
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetSchemaFetcher = (
   variables: GetSchemaVariables,
   options?: RequestInit['headers'],
-  outputFn = GetSchemaOutput,
-  inputFn = GetSchemaInput,
+  outputFn = GetSchemaOutputFn,
+  inputFn = GetSchemaInputFn,
 ) =>
   fetchWithAmplify<GetSchema, GetSchemaVariables, Schema, GetSchemaVariables>(
     GetSchemaDocument,
@@ -7372,7 +7375,7 @@ export const ListSchemasKeys = (variables?: ListSchemasVariables) =>
  * @param variables `ListSchemasVariables` - The original variables
  * @returns `ListSchemasVariables` - The transformed variables
  */
-export const ListSchemasInput = (variables?: ListSchemasVariables) => variables as ListSchemasVariables;
+export const ListSchemasInputFn = (variables?: ListSchemasVariables) => variables as ListSchemasVariables;
 
 /**
  * Output transformer function for `ListSchemas`.
@@ -7382,7 +7385,7 @@ export const ListSchemasInput = (variables?: ListSchemasVariables) => variables 
  * @param data ListSchemas - The data returned from the GraphQL server
  * @returns ModelSchemaConnection - The transformed data
  */
-export const ListSchemasOutput = ({ listSchemas }: ListSchemas) => listSchemas as ModelSchemaConnection;
+export const ListSchemasOutputFn = ({ listSchemas }: ListSchemas) => listSchemas as ModelSchemaConnection;
 
 /**
  * Fetcher function for `ListSchemas`.
@@ -7396,13 +7399,13 @@ export const ListSchemasOutput = ({ listSchemas }: ListSchemas) => listSchemas a
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const ListSchemasFetcher = (
   variables?: ListSchemasVariables,
   options?: RequestInit['headers'],
-  outputFn = ListSchemasOutput,
-  inputFn = ListSchemasInput,
+  outputFn = ListSchemasOutputFn,
+  inputFn = ListSchemasInputFn,
 ) =>
   fetchWithAmplify<ListSchemas, ListSchemasVariables, ModelSchemaConnection, ListSchemasVariables>(
     ListSchemasDocument,
@@ -7458,7 +7461,7 @@ export const GetTestKeys = (variables: GetTestVariables) => ['GetTest', variable
  * @param variables `GetTestVariables` - The original variables
  * @returns `GetTestVariables` - The transformed variables
  */
-export const GetTestInput = (variables: GetTestVariables) => variables as GetTestVariables;
+export const GetTestInputFn = (variables: GetTestVariables) => variables as GetTestVariables;
 
 /**
  * Output transformer function for `GetTest`.
@@ -7468,7 +7471,7 @@ export const GetTestInput = (variables: GetTestVariables) => variables as GetTes
  * @param data GetTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const GetTestOutput = ({ getTest }: GetTest) => getTest as Test;
+export const GetTestOutputFn = ({ getTest }: GetTest) => getTest as Test;
 
 /**
  * Fetcher function for `GetTest`.
@@ -7482,13 +7485,13 @@ export const GetTestOutput = ({ getTest }: GetTest) => getTest as Test;
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetTestFetcher = (
   variables: GetTestVariables,
   options?: RequestInit['headers'],
-  outputFn = GetTestOutput,
-  inputFn = GetTestInput,
+  outputFn = GetTestOutputFn,
+  inputFn = GetTestInputFn,
 ) =>
   fetchWithAmplify<GetTest, GetTestVariables, Test, GetTestVariables>(
     GetTestDocument,
@@ -7543,7 +7546,7 @@ export const ListTestsKeys = (variables?: ListTestsVariables) =>
  * @param variables `ListTestsVariables` - The original variables
  * @returns `ListTestsVariables` - The transformed variables
  */
-export const ListTestsInput = (variables?: ListTestsVariables) => variables as ListTestsVariables;
+export const ListTestsInputFn = (variables?: ListTestsVariables) => variables as ListTestsVariables;
 
 /**
  * Output transformer function for `ListTests`.
@@ -7553,7 +7556,7 @@ export const ListTestsInput = (variables?: ListTestsVariables) => variables as L
  * @param data ListTests - The data returned from the GraphQL server
  * @returns ModelTestConnection - The transformed data
  */
-export const ListTestsOutput = ({ listTests }: ListTests) => listTests as ModelTestConnection;
+export const ListTestsOutputFn = ({ listTests }: ListTests) => listTests as ModelTestConnection;
 
 /**
  * Fetcher function for `ListTests`.
@@ -7567,13 +7570,13 @@ export const ListTestsOutput = ({ listTests }: ListTests) => listTests as ModelT
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const ListTestsFetcher = (
   variables?: ListTestsVariables,
   options?: RequestInit['headers'],
-  outputFn = ListTestsOutput,
-  inputFn = ListTestsInput,
+  outputFn = ListTestsOutputFn,
+  inputFn = ListTestsInputFn,
 ) =>
   fetchWithAmplify<ListTests, ListTestsVariables, ModelTestConnection, ListTestsVariables>(
     ListTestsDocument,
@@ -7628,7 +7631,7 @@ export const GetOrganizationKeys = (variables: GetOrganizationVariables) => ['Ge
  * @param variables `GetOrganizationVariables` - The original variables
  * @returns `GetOrganizationVariables` - The transformed variables
  */
-export const GetOrganizationInput = (variables: GetOrganizationVariables) => variables as GetOrganizationVariables;
+export const GetOrganizationInputFn = (variables: GetOrganizationVariables) => variables as GetOrganizationVariables;
 
 /**
  * Output transformer function for `GetOrganization`.
@@ -7638,7 +7641,7 @@ export const GetOrganizationInput = (variables: GetOrganizationVariables) => var
  * @param data GetOrganization - The data returned from the GraphQL server
  * @returns Organization - The transformed data
  */
-export const GetOrganizationOutput = ({ getOrganization }: GetOrganization) => getOrganization as Organization;
+export const GetOrganizationOutputFn = ({ getOrganization }: GetOrganization) => getOrganization as Organization;
 
 /**
  * Fetcher function for `GetOrganization`.
@@ -7652,13 +7655,13 @@ export const GetOrganizationOutput = ({ getOrganization }: GetOrganization) => g
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetOrganizationFetcher = (
   variables: GetOrganizationVariables,
   options?: RequestInit['headers'],
-  outputFn = GetOrganizationOutput,
-  inputFn = GetOrganizationInput,
+  outputFn = GetOrganizationOutputFn,
+  inputFn = GetOrganizationInputFn,
 ) =>
   fetchWithAmplify<GetOrganization, GetOrganizationVariables, Organization, GetOrganizationVariables>(
     GetOrganizationDocument,
@@ -7717,7 +7720,7 @@ export const ListOrganizationsKeys = (variables?: ListOrganizationsVariables) =>
  * @param variables `ListOrganizationsVariables` - The original variables
  * @returns `ListOrganizationsVariables` - The transformed variables
  */
-export const ListOrganizationsInput = (variables?: ListOrganizationsVariables) =>
+export const ListOrganizationsInputFn = (variables?: ListOrganizationsVariables) =>
   variables as ListOrganizationsVariables;
 
 /**
@@ -7728,7 +7731,7 @@ export const ListOrganizationsInput = (variables?: ListOrganizationsVariables) =
  * @param data ListOrganizations - The data returned from the GraphQL server
  * @returns ModelOrganizationConnection - The transformed data
  */
-export const ListOrganizationsOutput = ({ listOrganizations }: ListOrganizations) =>
+export const ListOrganizationsOutputFn = ({ listOrganizations }: ListOrganizations) =>
   listOrganizations as ModelOrganizationConnection;
 
 /**
@@ -7743,13 +7746,13 @@ export const ListOrganizationsOutput = ({ listOrganizations }: ListOrganizations
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const ListOrganizationsFetcher = (
   variables?: ListOrganizationsVariables,
   options?: RequestInit['headers'],
-  outputFn = ListOrganizationsOutput,
-  inputFn = ListOrganizationsInput,
+  outputFn = ListOrganizationsOutputFn,
+  inputFn = ListOrganizationsInputFn,
 ) =>
   fetchWithAmplify<
     ListOrganizations,
@@ -7805,7 +7808,7 @@ export const SearchGraphKeys = (variables: SearchGraphVariables) => ['SearchGrap
  * @param variables `SearchGraphVariables` - The original variables
  * @returns `SearchGraphVariables` - The transformed variables
  */
-export const SearchGraphInput = (variables: SearchGraphVariables) => variables as SearchGraphVariables;
+export const SearchGraphInputFn = (variables: SearchGraphVariables) => variables as SearchGraphVariables;
 
 /**
  * Output transformer function for `SearchGraph`.
@@ -7815,7 +7818,7 @@ export const SearchGraphInput = (variables: SearchGraphVariables) => variables a
  * @param data SearchGraph - The data returned from the GraphQL server
  * @returns SearchGraphResult - The transformed data
  */
-export const SearchGraphOutput = ({ searchGraph }: SearchGraph) =>
+export const SearchGraphOutputFn = ({ searchGraph }: SearchGraph) =>
   searchGraph &&
   ({
     ...searchGraph,
@@ -7841,13 +7844,13 @@ export const SearchGraphOutput = ({ searchGraph }: SearchGraph) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const SearchGraphFetcher = (
   variables: SearchGraphVariables,
   options?: RequestInit['headers'],
-  outputFn = SearchGraphOutput,
-  inputFn = SearchGraphInput,
+  outputFn = SearchGraphOutputFn,
+  inputFn = SearchGraphInputFn,
 ) =>
   fetchWithAmplify<SearchGraph, SearchGraphVariables, SearchGraphResult, SearchGraphVariables>(
     SearchGraphDocument,
@@ -7915,7 +7918,7 @@ export const GetNodeKeys = (variables: GetNodeVariables) => ['GetNode', variable
  * @param variables `GetNodeVariables` - The original variables
  * @returns `GetNodeVariables` - The transformed variables
  */
-export const GetNodeInput = (variables: GetNodeVariables) => variables as GetNodeVariables;
+export const GetNodeInputFn = (variables: GetNodeVariables) => variables as GetNodeVariables;
 
 /**
  * Output transformer function for `GetNode`.
@@ -7925,7 +7928,7 @@ export const GetNodeInput = (variables: GetNodeVariables) => variables as GetNod
  * @param data GetNode - The data returned from the GraphQL server
  * @returns NodeGraphRecord - The transformed data
  */
-export const GetNodeOutput = ({ getNode }: GetNode) =>
+export const GetNodeOutputFn = ({ getNode }: GetNode) =>
   getNode &&
   ({
     ...getNode,
@@ -7963,13 +7966,13 @@ export const GetNodeOutput = ({ getNode }: GetNode) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetNodeFetcher = (
   variables: GetNodeVariables,
   options?: RequestInit['headers'],
-  outputFn = GetNodeOutput,
-  inputFn = GetNodeInput,
+  outputFn = GetNodeOutputFn,
+  inputFn = GetNodeInputFn,
 ) =>
   fetchWithAmplify<GetNode, GetNodeVariables, NodeGraphRecord, GetNodeVariables>(
     GetNodeDocument,
@@ -8030,7 +8033,7 @@ export const GetRelationshipKeys = (variables: GetRelationshipVariables) => ['Ge
  * @param variables `GetRelationshipVariables` - The original variables
  * @returns `GetRelationshipVariables` - The transformed variables
  */
-export const GetRelationshipInput = (variables: GetRelationshipVariables) => variables as GetRelationshipVariables;
+export const GetRelationshipInputFn = (variables: GetRelationshipVariables) => variables as GetRelationshipVariables;
 
 /**
  * Output transformer function for `GetRelationship`.
@@ -8040,7 +8043,7 @@ export const GetRelationshipInput = (variables: GetRelationshipVariables) => var
  * @param data GetRelationship - The data returned from the GraphQL server
  * @returns RelationshipGraphRecord - The transformed data
  */
-export const GetRelationshipOutput = ({ getRelationship }: GetRelationship) =>
+export const GetRelationshipOutputFn = ({ getRelationship }: GetRelationship) =>
   getRelationship &&
   ({
     ...getRelationship,
@@ -8076,13 +8079,13 @@ export const GetRelationshipOutput = ({ getRelationship }: GetRelationship) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetRelationshipFetcher = (
   variables: GetRelationshipVariables,
   options?: RequestInit['headers'],
-  outputFn = GetRelationshipOutput,
-  inputFn = GetRelationshipInput,
+  outputFn = GetRelationshipOutputFn,
+  inputFn = GetRelationshipInputFn,
 ) =>
   fetchWithAmplify<GetRelationship, GetRelationshipVariables, RelationshipGraphRecord, GetRelationshipVariables>(
     GetRelationshipDocument,
@@ -8152,7 +8155,7 @@ export const ListNodesKeys = (variables: ListNodesVariables) => ['ListNodes', va
  * @param variables `ListNodesVariables` - The original variables
  * @returns `ListNodesVariables` - The transformed variables
  */
-export const ListNodesInput = (variables: ListNodesVariables) => variables as ListNodesVariables;
+export const ListNodesInputFn = (variables: ListNodesVariables) => variables as ListNodesVariables;
 
 /**
  * Output transformer function for `ListNodes`.
@@ -8162,7 +8165,7 @@ export const ListNodesInput = (variables: ListNodesVariables) => variables as Li
  * @param data ListNodes - The data returned from the GraphQL server
  * @returns NodesGraphRecord - The transformed data
  */
-export const ListNodesOutput = ({ listNodes }: ListNodes) =>
+export const ListNodesOutputFn = ({ listNodes }: ListNodes) =>
   listNodes &&
   ({
     ...listNodes,
@@ -8203,13 +8206,13 @@ export const ListNodesOutput = ({ listNodes }: ListNodes) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const ListNodesFetcher = (
   variables: ListNodesVariables,
   options?: RequestInit['headers'],
-  outputFn = ListNodesOutput,
-  inputFn = ListNodesInput,
+  outputFn = ListNodesOutputFn,
+  inputFn = ListNodesInputFn,
 ) =>
   fetchWithAmplify<ListNodes, ListNodesVariables, NodesGraphRecord, ListNodesVariables>(
     ListNodesDocument,
@@ -8258,7 +8261,7 @@ export const GetUserKeys = (variables: GetUserVariables) => ['GetUser', variable
  * @param variables `GetUserVariables` - The original variables
  * @returns `GetUserVariables` - The transformed variables
  */
-export const GetUserInput = (variables: GetUserVariables) => variables as GetUserVariables;
+export const GetUserInputFn = (variables: GetUserVariables) => variables as GetUserVariables;
 
 /**
  * Output transformer function for `GetUser`.
@@ -8268,7 +8271,7 @@ export const GetUserInput = (variables: GetUserVariables) => variables as GetUse
  * @param data GetUser - The data returned from the GraphQL server
  * @returns CognitoUser - The transformed data
  */
-export const GetUserOutput = ({ getUser }: GetUser) =>
+export const GetUserOutputFn = ({ getUser }: GetUser) =>
   getUser &&
   ({
     ...getUser,
@@ -8287,13 +8290,13 @@ export const GetUserOutput = ({ getUser }: GetUser) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetUserFetcher = (
   variables: GetUserVariables,
   options?: RequestInit['headers'],
-  outputFn = GetUserOutput,
-  inputFn = GetUserInput,
+  outputFn = GetUserOutputFn,
+  inputFn = GetUserInputFn,
 ) =>
   fetchWithAmplify<GetUser, GetUserVariables, CognitoUser, GetUserVariables>(
     GetUserDocument,
@@ -8344,7 +8347,7 @@ export const FindUsersKeys = (variables: FindUsersVariables) => ['FindUsers', va
  * @param variables `FindUsersVariables` - The original variables
  * @returns `FindUsersVariables` - The transformed variables
  */
-export const FindUsersInput = (variables: FindUsersVariables) => variables as FindUsersVariables;
+export const FindUsersInputFn = (variables: FindUsersVariables) => variables as FindUsersVariables;
 
 /**
  * Output transformer function for `FindUsers`.
@@ -8354,7 +8357,7 @@ export const FindUsersInput = (variables: FindUsersVariables) => variables as Fi
  * @param data FindUsers - The data returned from the GraphQL server
  * @returns CognitoUserList - The transformed data
  */
-export const FindUsersOutput = ({ findUsers }: FindUsers) =>
+export const FindUsersOutputFn = ({ findUsers }: FindUsers) =>
   findUsers &&
   ({
     ...findUsers,
@@ -8376,13 +8379,13 @@ export const FindUsersOutput = ({ findUsers }: FindUsers) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const FindUsersFetcher = (
   variables: FindUsersVariables,
   options?: RequestInit['headers'],
-  outputFn = FindUsersOutput,
-  inputFn = FindUsersInput,
+  outputFn = FindUsersOutputFn,
+  inputFn = FindUsersInputFn,
 ) =>
   fetchWithAmplify<FindUsers, FindUsersVariables, CognitoUserList, FindUsersVariables>(
     FindUsersDocument,
@@ -8435,7 +8438,7 @@ export const ListUsersKeys = (variables?: ListUsersVariables) =>
  * @param variables `ListUsersVariables` - The original variables
  * @returns `ListUsersVariables` - The transformed variables
  */
-export const ListUsersInput = (variables?: ListUsersVariables) => variables as ListUsersVariables;
+export const ListUsersInputFn = (variables?: ListUsersVariables) => variables as ListUsersVariables;
 
 /**
  * Output transformer function for `ListUsers`.
@@ -8445,7 +8448,7 @@ export const ListUsersInput = (variables?: ListUsersVariables) => variables as L
  * @param data ListUsers - The data returned from the GraphQL server
  * @returns CognitoUserList - The transformed data
  */
-export const ListUsersOutput = ({ listUsers }: ListUsers) =>
+export const ListUsersOutputFn = ({ listUsers }: ListUsers) =>
   listUsers &&
   ({
     ...listUsers,
@@ -8467,13 +8470,13 @@ export const ListUsersOutput = ({ listUsers }: ListUsers) =>
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const ListUsersFetcher = (
   variables?: ListUsersVariables,
   options?: RequestInit['headers'],
-  outputFn = ListUsersOutput,
-  inputFn = ListUsersInput,
+  outputFn = ListUsersOutputFn,
+  inputFn = ListUsersInputFn,
 ) =>
   fetchWithAmplify<ListUsers, ListUsersVariables, CognitoUserList, ListUsersVariables>(
     ListUsersDocument,
@@ -8527,7 +8530,7 @@ export const GetConnectorCredentialsKeys = (variables: GetConnectorCredentialsVa
  * @param variables `GetConnectorCredentialsVariables` - The original variables
  * @returns `GetConnectorCredentialsVariables` - The transformed variables
  */
-export const GetConnectorCredentialsInput = (variables: GetConnectorCredentialsVariables) =>
+export const GetConnectorCredentialsInputFn = (variables: GetConnectorCredentialsVariables) =>
   variables as GetConnectorCredentialsVariables;
 
 /**
@@ -8538,7 +8541,7 @@ export const GetConnectorCredentialsInput = (variables: GetConnectorCredentialsV
  * @param data GetConnectorCredentials - The data returned from the GraphQL server
  * @returns ConnectorCredentials - The transformed data
  */
-export const GetConnectorCredentialsOutput = ({ getConnectorCredentials }: GetConnectorCredentials) =>
+export const GetConnectorCredentialsOutputFn = ({ getConnectorCredentials }: GetConnectorCredentials) =>
   getConnectorCredentials &&
   ({
     ...getConnectorCredentials,
@@ -8559,13 +8562,13 @@ export const GetConnectorCredentialsOutput = ({ getConnectorCredentials }: GetCo
  * @param options - The options to pass to the GraphQL operation.
  * @param outputFn - The output transformer function.
  * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or pass to ReactQuery as fetcher argument.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
 export const GetConnectorCredentialsFetcher = (
   variables: GetConnectorCredentialsVariables,
   options?: RequestInit['headers'],
-  outputFn = GetConnectorCredentialsOutput,
-  inputFn = GetConnectorCredentialsInput,
+  outputFn = GetConnectorCredentialsOutputFn,
+  inputFn = GetConnectorCredentialsInputFn,
 ) =>
   fetchWithAmplify<
     GetConnectorCredentials,
