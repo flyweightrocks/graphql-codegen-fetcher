@@ -30,6 +30,9 @@ generates:
         - SaveRelationship
         - ReadRelationship  
       fetcher: '../graphql/fetcher#fetchWithAmplify'
+      omitOperationSuffix: true
+      generateReactQueryHooks: true
+      generateGqlRequestFunctions: true
     plugins:
       - typescript
       - typescript-operations    

@@ -20,12 +20,12 @@ const plugin = (schema, documents, config) => {
     const visitorResult = (0, plugin_helpers_1.oldVisit)(allAst, { leave: visitor });
     if (visitor.hasOperations) {
         return {
-            prepend: [...visitor.getImports(), visitor.getFetcherImplementation()],
+            prepend: [...visitor.getImports(), '\n', visitor.getFetcherImplementation()],
             content: [visitor.fragments, ...visitorResult.definitions.filter((t) => typeof t === 'string')].join('\n'),
         };
     }
     return {
-        prepend: [...visitor.getImports()],
+        prepend: [...visitor.getImports(), '\n'],
         content: [visitor.fragments, ...visitorResult.definitions.filter((t) => typeof t === 'string')].join('\n'),
     };
 };

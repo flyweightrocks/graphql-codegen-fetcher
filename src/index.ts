@@ -2,9 +2,10 @@ import { oldVisit, PluginFunction, Types } from '@graphql-codegen/plugin-helpers
 import { ReactQueryRawPluginConfig } from '@graphql-codegen/typescript-react-query/config';
 import { LoadedFragment } from '@graphql-codegen/visitor-plugin-common';
 import { concatAST, DocumentNode, FragmentDefinitionNode, GraphQLSchema, Kind } from 'graphql';
+import { RawPluginConfig } from './config';
 import { ExtendedReactQueryVisitor } from './visitor';
 
-export const plugin: PluginFunction<ReactQueryRawPluginConfig, Types.ComplexPluginOutput> = (
+export const plugin: PluginFunction<RawPluginConfig, Types.ComplexPluginOutput> = (
   schema: GraphQLSchema,
   documents: Types.DocumentFile[],
   config: ReactQueryRawPluginConfig,
@@ -28,13 +29,13 @@ export const plugin: PluginFunction<ReactQueryRawPluginConfig, Types.ComplexPlug
 
   if (visitor.hasOperations) {
     return {
-      prepend: [...visitor.getImports(), visitor.getFetcherImplementation()],
+      prepend: [...visitor.getImports(), '\n', visitor.getFetcherImplementation()],
       content: [visitor.fragments, ...visitorResult.definitions.filter((t: any) => typeof t === 'string')].join('\n'),
     };
   }
 
   return {
-    prepend: [...visitor.getImports()],
+    prepend: [...visitor.getImports(), '\n'],
     content: [visitor.fragments, ...visitorResult.definitions.filter((t: any) => typeof t === 'string')].join('\n'),
   };
 };
