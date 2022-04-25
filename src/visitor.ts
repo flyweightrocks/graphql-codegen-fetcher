@@ -65,6 +65,12 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
   }
 
   public getImports(): string[] {
+    const baseImports = super.getImports();
+
+    if (!this.config.generateReactQueryHooks) {
+      return baseImports;
+    }
+
     return this.reactQueryVisitor.getImports();
   }
 
@@ -159,17 +165,19 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
         );
       }
 
-      query += this.fetcher.generateQueryHook(
-        node,
-        documentVariableName,
-        operationName,
-        operationResultType,
-        operationVariablesTypes,
-        hasRequiredVariables,
-      );
+      if (this.config.generateReactQueryHooks) {
+        query += this.fetcher.generateQueryHook(
+          node,
+          documentVariableName,
+          operationName,
+          operationResultType,
+          operationVariablesTypes,
+          hasRequiredVariables,
+        );
 
-      if (this.reactQueryVisitor.config.exposeQueryKeys) {
-        query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+        if (this.reactQueryVisitor.config.exposeQueryKeys) {
+          query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+        }
       }
     } else if (operationType === 'Mutation') {
       query += generateMutationKeyMaker(node, operationName);
@@ -209,7 +217,7 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
         );
       }
 
-      if (this.config.generateReactQueryHooks)
+      if (this.config.generateReactQueryHooks) {
         query += this.fetcher.generateMutationHook(
           node,
           documentVariableName,
@@ -219,8 +227,9 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
           hasRequiredVariables,
         );
 
-      if (this.reactQueryVisitor.config.exposeMutationKeys) {
-        query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+        if (this.reactQueryVisitor.config.exposeMutationKeys) {
+          query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+        }
       }
     } else if (operationType === 'Subscription') {
       // not supported yet

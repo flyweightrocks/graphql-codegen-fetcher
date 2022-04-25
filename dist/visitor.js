@@ -38,6 +38,10 @@ class ExtendedReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVi
         return this._collectedOperations.length > 0;
     }
     getImports() {
+        const baseImports = super.getImports();
+        if (!this.config.generateReactQueryHooks) {
+            return baseImports;
+        }
         return this.reactQueryVisitor.getImports();
     }
     getFetcherImplementation() {
@@ -84,9 +88,11 @@ class ExtendedReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVi
             if (this.config.generateGqlRequestFunctions) {
                 query += this.fetcher.generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
             }
-            query += this.fetcher.generateQueryHook(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
-            if (this.reactQueryVisitor.config.exposeQueryKeys) {
-                query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+            if (this.config.generateReactQueryHooks) {
+                query += this.fetcher.generateQueryHook(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
+                if (this.reactQueryVisitor.config.exposeQueryKeys) {
+                    query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+                }
             }
         }
         else if (operationType === 'Mutation') {
@@ -97,10 +103,11 @@ class ExtendedReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVi
             if (this.config.generateGqlRequestFunctions) {
                 query += this.fetcher.generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
             }
-            if (this.config.generateReactQueryHooks)
+            if (this.config.generateReactQueryHooks) {
                 query += this.fetcher.generateMutationHook(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
-            if (this.reactQueryVisitor.config.exposeMutationKeys) {
-                query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+                if (this.reactQueryVisitor.config.exposeMutationKeys) {
+                    query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+                }
             }
         }
         else if (operationType === 'Subscription') {
