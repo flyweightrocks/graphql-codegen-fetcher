@@ -23,6 +23,8 @@ export type Scalars = {
 export type CognitoUser = {
   attributes: Scalars['AWSJSON'];
   createdAt?: Maybe<Scalars['AWSDateTime']>;
+  enabled?: Maybe<Scalars['Boolean']>;
+  status?: Maybe<UserStatus>;
   updatedAt?: Maybe<Scalars['AWSDateTime']>;
   username: Scalars['ID'];
 };
@@ -33,12 +35,16 @@ export type CognitoUserList = {
 };
 
 export type Connector = {
+  active?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['AWSDateTime']>;
+  dataSource?: Maybe<Scalars['String']>;
+  descritpion?: Maybe<Scalars['String']>;
+  extractor?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: Scalars['String'];
-  secretCredentials?: Maybe<Scalars['AWSJSON']>;
+  resourceName: Scalars['String'];
+  secretCredentials?: Maybe<Scalars['String']>;
   service: ConnectorService;
-  source?: Maybe<Scalars['String']>;
   status: ConnectorStatus;
   topics?: Maybe<Array<Scalars['String']>>;
   transformations?: Maybe<ModelTransformationConnection>;
@@ -52,39 +58,10 @@ export type ConnectorTransformationsArgs = {
   sortDirection?: InputMaybe<ModelSortDirection>;
 };
 
-export type ConnectorAuthorization = {
-  authParams?: Maybe<Array<Scalars['String']>>;
-  authUrl?: Maybe<Scalars['String']>;
-  callbackParams?: Maybe<Array<Scalars['String']>>;
-  type: ConnectorAuthorizationType;
-};
-
-export enum ConnectorAuthorizationType {
-  Oauth = 'OAUTH',
-}
-
 export type ConnectorCredentials = {
   id: Scalars['ID'];
-  plainCredentials: Scalars['AWSJSON'];
-};
-
-export type ConnectorCredentialsField = {
-  field: Scalars['String'];
-  pattern?: Maybe<Scalars['String']>;
-  type: ConnectorCredentialsFieldType;
-};
-
-export enum ConnectorCredentialsFieldType {
-  AccessToken = 'ACCESS_TOKEN',
-  Domain = 'DOMAIN',
-}
-
-export type ConnectorManifest = {
-  authorization?: Maybe<ConnectorAuthorization>;
-  credentials?: Maybe<Array<ConnectorCredentialsField>>;
-  service?: Maybe<ConnectorService>;
-  topics?: Maybe<Array<Scalars['String']>>;
-  version?: Maybe<Scalars['String']>;
+  plainCredentials?: Maybe<Scalars['AWSJSON']>;
+  secretCredentials?: Maybe<Scalars['String']>;
 };
 
 export enum ConnectorService {
@@ -103,12 +80,16 @@ export type CreateConnectorCredentialsInput = {
 };
 
 export type CreateConnectorInput = {
+  active?: InputMaybe<Scalars['Boolean']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  dataSource?: InputMaybe<Scalars['String']>;
+  descritpion?: InputMaybe<Scalars['String']>;
+  extractor?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   name: Scalars['String'];
-  secretCredentials?: InputMaybe<Scalars['AWSJSON']>;
+  resourceName: Scalars['String'];
+  secretCredentials?: InputMaybe<Scalars['String']>;
   service: ConnectorService;
-  source?: InputMaybe<Scalars['String']>;
   status: ConnectorStatus;
   topics?: InputMaybe<Array<Scalars['String']>>;
   updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
@@ -244,6 +225,15 @@ export type GraphNode = {
   properties: Scalars['AWSJSON'];
 };
 
+export type GraphNodeRecord = {
+  node: GraphNode;
+  relationships?: Maybe<Array<GraphNodeRelationship>>;
+};
+
+export type GraphNodeRecords = {
+  records?: Maybe<Array<GraphNodeRecord>>;
+};
+
 export type GraphNodeRelationship = {
   node: GraphNode;
   relationship: GraphRelationship;
@@ -255,6 +245,17 @@ export type GraphRelationship = {
   properties: Scalars['AWSJSON'];
   start: Scalars['String'];
   type: Scalars['String'];
+};
+
+export type GraphRelationshipRecord = {
+  end: GraphNode;
+  relationship: GraphRelationship;
+  start: GraphNode;
+};
+
+export type ListNodesInput = {
+  identities: Array<Scalars['ID']>;
+  limit?: InputMaybe<Scalars['Int']>;
 };
 
 export enum ModelAttributeTypes {
@@ -278,14 +279,18 @@ export type ModelBooleanInput = {
 };
 
 export type ModelConnectorConditionInput = {
+  active?: InputMaybe<ModelBooleanInput>;
   and?: InputMaybe<Array<InputMaybe<ModelConnectorConditionInput>>>;
   createdAt?: InputMaybe<ModelStringInput>;
+  dataSource?: InputMaybe<ModelStringInput>;
+  descritpion?: InputMaybe<ModelStringInput>;
+  extractor?: InputMaybe<ModelStringInput>;
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelConnectorConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelConnectorConditionInput>>>;
+  resourceName?: InputMaybe<ModelStringInput>;
   secretCredentials?: InputMaybe<ModelStringInput>;
   service?: InputMaybe<ModelConnectorServiceInput>;
-  source?: InputMaybe<ModelStringInput>;
   status?: InputMaybe<ModelConnectorStatusInput>;
   topics?: InputMaybe<ModelStringInput>;
   updatedAt?: InputMaybe<ModelStringInput>;
@@ -297,15 +302,19 @@ export type ModelConnectorConnection = {
 };
 
 export type ModelConnectorFilterInput = {
+  active?: InputMaybe<ModelBooleanInput>;
   and?: InputMaybe<Array<InputMaybe<ModelConnectorFilterInput>>>;
   createdAt?: InputMaybe<ModelStringInput>;
+  dataSource?: InputMaybe<ModelStringInput>;
+  descritpion?: InputMaybe<ModelStringInput>;
+  extractor?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   name?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelConnectorFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelConnectorFilterInput>>>;
+  resourceName?: InputMaybe<ModelStringInput>;
   secretCredentials?: InputMaybe<ModelStringInput>;
   service?: InputMaybe<ModelConnectorServiceInput>;
-  source?: InputMaybe<ModelStringInput>;
   status?: InputMaybe<ModelConnectorStatusInput>;
   topics?: InputMaybe<ModelStringInput>;
   updatedAt?: InputMaybe<ModelStringInput>;
@@ -352,6 +361,16 @@ export type ModelIdInput = {
   ne?: InputMaybe<Scalars['ID']>;
   notContains?: InputMaybe<Scalars['ID']>;
   size?: InputMaybe<ModelSizeInput>;
+};
+
+export type ModelIdKeyConditionInput = {
+  beginsWith?: InputMaybe<Scalars['ID']>;
+  between?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  eq?: InputMaybe<Scalars['ID']>;
+  ge?: InputMaybe<Scalars['ID']>;
+  gt?: InputMaybe<Scalars['ID']>;
+  le?: InputMaybe<Scalars['ID']>;
+  lt?: InputMaybe<Scalars['ID']>;
 };
 
 export type ModelIntInput = {
@@ -562,10 +581,10 @@ export type ModelTransformationStatusInput = {
 export type Mutation = {
   createConnector?: Maybe<Connector>;
   createConnectorCredentials?: Maybe<ConnectorCredentials>;
-  createNode?: Maybe<NodeGraphRecord>;
+  createNode?: Maybe<GraphNodeRecord>;
   createOrganization?: Maybe<Organization>;
   createPerspective?: Maybe<Perspective>;
-  createRelationship?: Maybe<RelationshipGraphRecord>;
+  createRelationship?: Maybe<GraphRelationshipRecord>;
   createSchema?: Maybe<Schema>;
   createTest?: Maybe<Test>;
   createTransformation?: Maybe<Transformation>;
@@ -584,10 +603,10 @@ export type Mutation = {
   runPerspective?: Maybe<RunPerspectiveResult>;
   updateConnector?: Maybe<Connector>;
   updateConnectorCredentials?: Maybe<ConnectorCredentials>;
-  updateNode?: Maybe<NodeGraphRecord>;
+  updateNode?: Maybe<GraphNodeRecord>;
   updateOrganization?: Maybe<Organization>;
   updatePerspective?: Maybe<Perspective>;
-  updateRelationship?: Maybe<RelationshipGraphRecord>;
+  updateRelationship?: Maybe<GraphRelationshipRecord>;
   updateSchema?: Maybe<Schema>;
   updateTest?: Maybe<Test>;
   updateTransformation?: Maybe<Transformation>;
@@ -735,15 +754,6 @@ export type MutationUpdateUserArgs = {
   input: UpdateUserInput;
 };
 
-export type NodeGraphRecord = {
-  node: GraphNode;
-  relationships?: Maybe<Array<GraphNodeRelationship>>;
-};
-
-export type NodesGraphRecord = {
-  records?: Maybe<Array<NodeGraphRecord>>;
-};
-
 export type Organization = {
   adminGroup?: Maybe<Scalars['String']>;
   createdAt?: Maybe<Scalars['AWSDateTime']>;
@@ -812,20 +822,20 @@ export type Query = {
   emptyQuery?: Maybe<Scalars['String']>;
   findUsers?: Maybe<CognitoUserList>;
   getConnector?: Maybe<Connector>;
-  getConnectorBySource?: Maybe<ModelConnectorConnection>;
+  getConnectorByDataSource?: Maybe<ModelConnectorConnection>;
   getConnectorCredentials?: Maybe<ConnectorCredentials>;
-  getConnectorManifest?: Maybe<ConnectorManifest>;
-  getNode?: Maybe<NodeGraphRecord>;
+  getManifest?: Maybe<Scalars['AWSJSON']>;
+  getNode?: Maybe<GraphNodeRecord>;
   getOrganization?: Maybe<Organization>;
   getPerspective?: Maybe<Perspective>;
-  getRelationship?: Maybe<RelationshipGraphRecord>;
+  getRelationship?: Maybe<GraphRelationshipRecord>;
   getSchema?: Maybe<Schema>;
   getTest?: Maybe<Test>;
   getTransformation?: Maybe<Transformation>;
   getTransformationsByConnector?: Maybe<ModelTransformationConnection>;
   getUser?: Maybe<CognitoUser>;
   listConnectors?: Maybe<ModelConnectorConnection>;
-  listNodes?: Maybe<NodesGraphRecord>;
+  listNodes?: Maybe<GraphNodeRecords>;
   listOrganizations?: Maybe<ModelOrganizationConnection>;
   listPerspectives?: Maybe<ModelPerspectiveConnection>;
   listSchemas?: Maybe<ModelSchemaConnection>;
@@ -851,20 +861,21 @@ export type QueryGetConnectorArgs = {
   id: Scalars['ID'];
 };
 
-export type QueryGetConnectorBySourceArgs = {
+export type QueryGetConnectorByDataSourceArgs = {
+  dataSource: Scalars['String'];
   filter?: InputMaybe<ModelConnectorFilterInput>;
+  id?: InputMaybe<ModelIdKeyConditionInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sortDirection?: InputMaybe<ModelSortDirection>;
-  source: Scalars['String'];
 };
 
 export type QueryGetConnectorCredentialsArgs = {
   id: Scalars['ID'];
 };
 
-export type QueryGetConnectorManifestArgs = {
-  query: QueryGetConnectorManifestQueryInput;
+export type QueryGetManifestArgs = {
+  service: ConnectorService;
 };
 
 export type QueryGetNodeArgs = {
@@ -914,7 +925,7 @@ export type QueryListConnectorsArgs = {
 };
 
 export type QueryListNodesArgs = {
-  label: Scalars['String'];
+  input: ListNodesInput;
 };
 
 export type QueryListOrganizationsArgs = {
@@ -953,16 +964,6 @@ export type QueryListUsersArgs = {
 
 export type QuerySearchGraphArgs = {
   input: SearchGraphInput;
-};
-
-export type QueryGetConnectorManifestQueryInput = {
-  service: ConnectorService;
-};
-
-export type RelationshipGraphRecord = {
-  end: GraphNode;
-  relationship: GraphRelationship;
-  start: GraphNode;
 };
 
 export type RunConnectorInput = {
@@ -1111,12 +1112,16 @@ export type UpdateConnectorCredentialsInput = {
 };
 
 export type UpdateConnectorInput = {
+  active?: InputMaybe<Scalars['Boolean']>;
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  dataSource?: InputMaybe<Scalars['String']>;
+  descritpion?: InputMaybe<Scalars['String']>;
+  extractor?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   name?: InputMaybe<Scalars['String']>;
-  secretCredentials?: InputMaybe<Scalars['AWSJSON']>;
+  resourceName?: InputMaybe<Scalars['String']>;
+  secretCredentials?: InputMaybe<Scalars['String']>;
   service?: InputMaybe<ConnectorService>;
-  source?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<ConnectorStatus>;
   topics?: InputMaybe<Array<Scalars['String']>>;
   updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
@@ -1188,172 +1193,22 @@ export type UpdateTransformationInput = {
 
 export type UpdateUserInput = {
   email: Scalars['String'];
+  username: Scalars['ID'];
 };
+
+export enum UserStatus {
+  Archived = 'ARCHIVED',
+  Compromised = 'COMPROMISED',
+  Confirmed = 'CONFIRMED',
+  ForceChangePassword = 'FORCE_CHANGE_PASSWORD',
+  ResetRequired = 'RESET_REQUIRED',
+  Unconfirmed = 'UNCONFIRMED',
+  Unknown = 'UNKNOWN',
+}
 
 export type EmptyMutationVariables = Exact<{ [key: string]: never }>;
 
 export type EmptyMutation = { emptyMutation?: number | undefined };
-
-export type RunConnectorVariables = Exact<{
-  input: RunConnectorInput;
-}>;
-
-export type RunConnector = { runConnector?: Record<string, any> | string | undefined };
-
-export type CreateConnectorCredentialsVariables = Exact<{
-  input: CreateConnectorCredentialsInput;
-}>;
-
-export type CreateConnectorCredentials = {
-  createConnectorCredentials?: { id: string; plainCredentials: Record<string, any> | string } | undefined;
-};
-
-export type UpdateConnectorCredentialsVariables = Exact<{
-  input: UpdateConnectorCredentialsInput;
-}>;
-
-export type UpdateConnectorCredentials = {
-  updateConnectorCredentials?: { id: string; plainCredentials: Record<string, any> | string } | undefined;
-};
-
-export type DeleteConnectorCredentialsVariables = Exact<{
-  input: DeleteConnectorCredentialsInput;
-}>;
-
-export type DeleteConnectorCredentials = {
-  deleteConnectorCredentials?: { id: string; plainCredentials: Record<string, any> | string } | undefined;
-};
-
-export type CreateNodeVariables = Exact<{
-  input: CreateNodeInput;
-}>;
-
-export type CreateNode = {
-  createNode?:
-    | {
-        node: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
-        relationships?:
-          | Array<{
-              node: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
-              relationship: {
-                identity: string;
-                type: string;
-                start: string;
-                end: string;
-                properties: Record<string, any> | string;
-              };
-            }>
-          | undefined;
-      }
-    | undefined;
-};
-
-export type UpdateNodeVariables = Exact<{
-  input: UpdateNodeInput;
-}>;
-
-export type UpdateNode = {
-  updateNode?:
-    | {
-        node: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
-        relationships?:
-          | Array<{
-              node: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
-              relationship: {
-                identity: string;
-                type: string;
-                start: string;
-                end: string;
-                properties: Record<string, any> | string;
-              };
-            }>
-          | undefined;
-      }
-    | undefined;
-};
-
-export type DeleteNodeVariables = Exact<{
-  input: DeleteNodeInput;
-}>;
-
-export type DeleteNode = {
-  deleteNode?:
-    | {
-        nodes?:
-          | Array<{ identity: string; labels: Array<string>; properties: Record<string, any> | string }>
-          | undefined;
-        relationships?:
-          | Array<{
-              identity: string;
-              type: string;
-              start: string;
-              end: string;
-              properties: Record<string, any> | string;
-            }>
-          | undefined;
-      }
-    | undefined;
-};
-
-export type CreateRelationshipVariables = Exact<{
-  input: CreateRelationshipInput;
-}>;
-
-export type CreateRelationship = {
-  createRelationship?:
-    | {
-        start: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
-        end: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
-        relationship: {
-          identity: string;
-          type: string;
-          start: string;
-          end: string;
-          properties: Record<string, any> | string;
-        };
-      }
-    | undefined;
-};
-
-export type UpdateRelationshipVariables = Exact<{
-  input: UpdateRelationshipInput;
-}>;
-
-export type UpdateRelationship = {
-  updateRelationship?:
-    | {
-        start: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
-        end: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
-        relationship: {
-          identity: string;
-          type: string;
-          start: string;
-          end: string;
-          properties: Record<string, any> | string;
-        };
-      }
-    | undefined;
-};
-
-export type DeleteRelationshipVariables = Exact<{
-  input: DeleteRelationshipInput;
-}>;
-
-export type DeleteRelationship = {
-  deleteRelationship?:
-    | {
-        relationships?:
-          | Array<{
-              identity: string;
-              type: string;
-              start: string;
-              end: string;
-              properties: Record<string, any> | string;
-            }>
-          | undefined;
-      }
-    | undefined;
-};
 
 export type CreateConnectorVariables = Exact<{
   input: CreateConnectorInput;
@@ -1366,12 +1221,16 @@ export type CreateConnector = {
         id: string;
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
-        service: ConnectorService;
         name: string;
+        descritpion?: string | undefined;
+        resourceName: string;
+        extractor?: string | undefined;
         topics?: Array<string> | undefined;
+        service: ConnectorService;
+        active?: boolean | undefined;
         status: ConnectorStatus;
-        secretCredentials?: Record<string, any> | string | undefined;
-        source?: string | undefined;
+        secretCredentials?: string | undefined;
+        dataSource?: string | undefined;
         transformations?:
           | {
               nextToken?: string | undefined;
@@ -1391,12 +1250,16 @@ export type CreateConnector = {
                           id: string;
                           createdAt?: any | undefined;
                           updatedAt?: any | undefined;
-                          service: ConnectorService;
                           name: string;
+                          descritpion?: string | undefined;
+                          resourceName: string;
+                          extractor?: string | undefined;
                           topics?: Array<string> | undefined;
+                          service: ConnectorService;
+                          active?: boolean | undefined;
                           status: ConnectorStatus;
-                          secretCredentials?: Record<string, any> | string | undefined;
-                          source?: string | undefined;
+                          secretCredentials?: string | undefined;
+                          dataSource?: string | undefined;
                         }
                       | undefined;
                   }
@@ -1419,12 +1282,16 @@ export type UpdateConnector = {
         id: string;
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
-        service: ConnectorService;
         name: string;
+        descritpion?: string | undefined;
+        resourceName: string;
+        extractor?: string | undefined;
         topics?: Array<string> | undefined;
+        service: ConnectorService;
+        active?: boolean | undefined;
         status: ConnectorStatus;
-        secretCredentials?: Record<string, any> | string | undefined;
-        source?: string | undefined;
+        secretCredentials?: string | undefined;
+        dataSource?: string | undefined;
         transformations?:
           | {
               nextToken?: string | undefined;
@@ -1444,12 +1311,16 @@ export type UpdateConnector = {
                           id: string;
                           createdAt?: any | undefined;
                           updatedAt?: any | undefined;
-                          service: ConnectorService;
                           name: string;
+                          descritpion?: string | undefined;
+                          resourceName: string;
+                          extractor?: string | undefined;
                           topics?: Array<string> | undefined;
+                          service: ConnectorService;
+                          active?: boolean | undefined;
                           status: ConnectorStatus;
-                          secretCredentials?: Record<string, any> | string | undefined;
-                          source?: string | undefined;
+                          secretCredentials?: string | undefined;
+                          dataSource?: string | undefined;
                         }
                       | undefined;
                   }
@@ -1472,12 +1343,16 @@ export type DeleteConnector = {
         id: string;
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
-        service: ConnectorService;
         name: string;
+        descritpion?: string | undefined;
+        resourceName: string;
+        extractor?: string | undefined;
         topics?: Array<string> | undefined;
+        service: ConnectorService;
+        active?: boolean | undefined;
         status: ConnectorStatus;
-        secretCredentials?: Record<string, any> | string | undefined;
-        source?: string | undefined;
+        secretCredentials?: string | undefined;
+        dataSource?: string | undefined;
         transformations?:
           | {
               nextToken?: string | undefined;
@@ -1497,12 +1372,16 @@ export type DeleteConnector = {
                           id: string;
                           createdAt?: any | undefined;
                           updatedAt?: any | undefined;
-                          service: ConnectorService;
                           name: string;
+                          descritpion?: string | undefined;
+                          resourceName: string;
+                          extractor?: string | undefined;
                           topics?: Array<string> | undefined;
+                          service: ConnectorService;
+                          active?: boolean | undefined;
                           status: ConnectorStatus;
-                          secretCredentials?: Record<string, any> | string | undefined;
-                          source?: string | undefined;
+                          secretCredentials?: string | undefined;
+                          dataSource?: string | undefined;
                         }
                       | undefined;
                   }
@@ -1536,12 +1415,16 @@ export type CreateTransformation = {
               id: string;
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
-              service: ConnectorService;
               name: string;
+              descritpion?: string | undefined;
+              resourceName: string;
+              extractor?: string | undefined;
               topics?: Array<string> | undefined;
+              service: ConnectorService;
+              active?: boolean | undefined;
               status: ConnectorStatus;
-              secretCredentials?: Record<string, any> | string | undefined;
-              source?: string | undefined;
+              secretCredentials?: string | undefined;
+              dataSource?: string | undefined;
               transformations?:
                 | {
                     nextToken?: string | undefined;
@@ -1589,12 +1472,16 @@ export type UpdateTransformation = {
               id: string;
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
-              service: ConnectorService;
               name: string;
+              descritpion?: string | undefined;
+              resourceName: string;
+              extractor?: string | undefined;
               topics?: Array<string> | undefined;
+              service: ConnectorService;
+              active?: boolean | undefined;
               status: ConnectorStatus;
-              secretCredentials?: Record<string, any> | string | undefined;
-              source?: string | undefined;
+              secretCredentials?: string | undefined;
+              dataSource?: string | undefined;
               transformations?:
                 | {
                     nextToken?: string | undefined;
@@ -1642,12 +1529,16 @@ export type DeleteTransformation = {
               id: string;
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
-              service: ConnectorService;
               name: string;
+              descritpion?: string | undefined;
+              resourceName: string;
+              extractor?: string | undefined;
               topics?: Array<string> | undefined;
+              service: ConnectorService;
+              active?: boolean | undefined;
               status: ConnectorStatus;
-              secretCredentials?: Record<string, any> | string | undefined;
-              source?: string | undefined;
+              secretCredentials?: string | undefined;
+              dataSource?: string | undefined;
               transformations?:
                 | {
                     nextToken?: string | undefined;
@@ -1976,6 +1867,185 @@ export type RunPerspectiveVariables = Exact<{
 
 export type RunPerspective = { runPerspective?: { records: Record<string, any> | string } | undefined };
 
+export type RunConnectorVariables = Exact<{
+  input: RunConnectorInput;
+}>;
+
+export type RunConnector = { runConnector?: Record<string, any> | string | undefined };
+
+export type CreateConnectorCredentialsVariables = Exact<{
+  input: CreateConnectorCredentialsInput;
+}>;
+
+export type CreateConnectorCredentials = {
+  createConnectorCredentials?:
+    | {
+        id: string;
+        plainCredentials?: Record<string, any> | string | undefined;
+        secretCredentials?: string | undefined;
+      }
+    | undefined;
+};
+
+export type UpdateConnectorCredentialsVariables = Exact<{
+  input: UpdateConnectorCredentialsInput;
+}>;
+
+export type UpdateConnectorCredentials = {
+  updateConnectorCredentials?:
+    | {
+        id: string;
+        plainCredentials?: Record<string, any> | string | undefined;
+        secretCredentials?: string | undefined;
+      }
+    | undefined;
+};
+
+export type DeleteConnectorCredentialsVariables = Exact<{
+  input: DeleteConnectorCredentialsInput;
+}>;
+
+export type DeleteConnectorCredentials = {
+  deleteConnectorCredentials?:
+    | {
+        id: string;
+        plainCredentials?: Record<string, any> | string | undefined;
+        secretCredentials?: string | undefined;
+      }
+    | undefined;
+};
+
+export type CreateNodeVariables = Exact<{
+  input: CreateNodeInput;
+}>;
+
+export type CreateNode = {
+  createNode?:
+    | {
+        node: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
+        relationships?:
+          | Array<{
+              node: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
+              relationship: {
+                identity: string;
+                type: string;
+                start: string;
+                end: string;
+                properties: Record<string, any> | string;
+              };
+            }>
+          | undefined;
+      }
+    | undefined;
+};
+
+export type UpdateNodeVariables = Exact<{
+  input: UpdateNodeInput;
+}>;
+
+export type UpdateNode = {
+  updateNode?:
+    | {
+        node: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
+        relationships?:
+          | Array<{
+              node: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
+              relationship: {
+                identity: string;
+                type: string;
+                start: string;
+                end: string;
+                properties: Record<string, any> | string;
+              };
+            }>
+          | undefined;
+      }
+    | undefined;
+};
+
+export type DeleteNodeVariables = Exact<{
+  input: DeleteNodeInput;
+}>;
+
+export type DeleteNode = {
+  deleteNode?:
+    | {
+        nodes?:
+          | Array<{ identity: string; labels: Array<string>; properties: Record<string, any> | string }>
+          | undefined;
+        relationships?:
+          | Array<{
+              identity: string;
+              type: string;
+              start: string;
+              end: string;
+              properties: Record<string, any> | string;
+            }>
+          | undefined;
+      }
+    | undefined;
+};
+
+export type CreateRelationshipVariables = Exact<{
+  input: CreateRelationshipInput;
+}>;
+
+export type CreateRelationship = {
+  createRelationship?:
+    | {
+        start: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
+        end: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
+        relationship: {
+          identity: string;
+          type: string;
+          start: string;
+          end: string;
+          properties: Record<string, any> | string;
+        };
+      }
+    | undefined;
+};
+
+export type UpdateRelationshipVariables = Exact<{
+  input: UpdateRelationshipInput;
+}>;
+
+export type UpdateRelationship = {
+  updateRelationship?:
+    | {
+        start: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
+        end: { identity: string; labels: Array<string>; properties: Record<string, any> | string };
+        relationship: {
+          identity: string;
+          type: string;
+          start: string;
+          end: string;
+          properties: Record<string, any> | string;
+        };
+      }
+    | undefined;
+};
+
+export type DeleteRelationshipVariables = Exact<{
+  input: DeleteRelationshipInput;
+}>;
+
+export type DeleteRelationship = {
+  deleteRelationship?:
+    | {
+        relationships?:
+          | Array<{
+              identity: string;
+              type: string;
+              start: string;
+              end: string;
+              properties: Record<string, any> | string;
+            }>
+          | undefined;
+      }
+    | undefined;
+};
+
 export type CreateUserVariables = Exact<{
   input: CreateUserInput;
 }>;
@@ -1987,6 +2057,8 @@ export type CreateUser = {
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
         attributes: Record<string, any> | string;
+        status?: UserStatus | undefined;
+        enabled?: boolean | undefined;
       }
     | undefined;
 };
@@ -2002,6 +2074,8 @@ export type UpdateUser = {
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
         attributes: Record<string, any> | string;
+        status?: UserStatus | undefined;
+        enabled?: boolean | undefined;
       }
     | undefined;
 };
@@ -2017,6 +2091,8 @@ export type DeleteUser = {
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
         attributes: Record<string, any> | string;
+        status?: UserStatus | undefined;
+        enabled?: boolean | undefined;
       }
     | undefined;
 };
@@ -2049,31 +2125,6 @@ export type CustomTest = {
     | undefined;
 };
 
-export type GetConnectorManifestVariables = Exact<{
-  query: QueryGetConnectorManifestQueryInput;
-}>;
-
-export type GetConnectorManifest = {
-  getConnectorManifest?:
-    | {
-        version?: string | undefined;
-        service?: ConnectorService | undefined;
-        topics?: Array<string> | undefined;
-        credentials?:
-          | Array<{ field: string; type: ConnectorCredentialsFieldType; pattern?: string | undefined }>
-          | undefined;
-        authorization?:
-          | {
-              type: ConnectorAuthorizationType;
-              authUrl?: string | undefined;
-              authParams?: Array<string> | undefined;
-              callbackParams?: Array<string> | undefined;
-            }
-          | undefined;
-      }
-    | undefined;
-};
-
 export type GetConnectorVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -2084,12 +2135,16 @@ export type GetConnector = {
         id: string;
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
-        service: ConnectorService;
         name: string;
+        descritpion?: string | undefined;
+        resourceName: string;
+        extractor?: string | undefined;
         topics?: Array<string> | undefined;
+        service: ConnectorService;
+        active?: boolean | undefined;
         status: ConnectorStatus;
-        secretCredentials?: Record<string, any> | string | undefined;
-        source?: string | undefined;
+        secretCredentials?: string | undefined;
+        dataSource?: string | undefined;
         transformations?:
           | {
               nextToken?: string | undefined;
@@ -2109,12 +2164,16 @@ export type GetConnector = {
                           id: string;
                           createdAt?: any | undefined;
                           updatedAt?: any | undefined;
-                          service: ConnectorService;
                           name: string;
+                          descritpion?: string | undefined;
+                          resourceName: string;
+                          extractor?: string | undefined;
                           topics?: Array<string> | undefined;
+                          service: ConnectorService;
+                          active?: boolean | undefined;
                           status: ConnectorStatus;
-                          secretCredentials?: Record<string, any> | string | undefined;
-                          source?: string | undefined;
+                          secretCredentials?: string | undefined;
+                          dataSource?: string | undefined;
                         }
                       | undefined;
                   }
@@ -2141,12 +2200,16 @@ export type ListConnectors = {
               id: string;
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
-              service: ConnectorService;
               name: string;
+              descritpion?: string | undefined;
+              resourceName: string;
+              extractor?: string | undefined;
               topics?: Array<string> | undefined;
+              service: ConnectorService;
+              active?: boolean | undefined;
               status: ConnectorStatus;
-              secretCredentials?: Record<string, any> | string | undefined;
-              source?: string | undefined;
+              secretCredentials?: string | undefined;
+              dataSource?: string | undefined;
               transformations?:
                 | {
                     nextToken?: string | undefined;
@@ -2173,16 +2236,17 @@ export type ListConnectors = {
     | undefined;
 };
 
-export type GetConnectorBySourceVariables = Exact<{
-  source: Scalars['String'];
+export type GetConnectorByDataSourceVariables = Exact<{
+  dataSource: Scalars['String'];
+  id?: InputMaybe<ModelIdKeyConditionInput>;
   sortDirection?: InputMaybe<ModelSortDirection>;
   filter?: InputMaybe<ModelConnectorFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 }>;
 
-export type GetConnectorBySource = {
-  getConnectorBySource?:
+export type GetConnectorByDataSource = {
+  getConnectorByDataSource?:
     | {
         nextToken?: string | undefined;
         items: Array<
@@ -2190,12 +2254,16 @@ export type GetConnectorBySource = {
               id: string;
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
-              service: ConnectorService;
               name: string;
+              descritpion?: string | undefined;
+              resourceName: string;
+              extractor?: string | undefined;
               topics?: Array<string> | undefined;
+              service: ConnectorService;
+              active?: boolean | undefined;
               status: ConnectorStatus;
-              secretCredentials?: Record<string, any> | string | undefined;
-              source?: string | undefined;
+              secretCredentials?: string | undefined;
+              dataSource?: string | undefined;
               transformations?:
                 | {
                     nextToken?: string | undefined;
@@ -2243,12 +2311,16 @@ export type GetTransformation = {
               id: string;
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
-              service: ConnectorService;
               name: string;
+              descritpion?: string | undefined;
+              resourceName: string;
+              extractor?: string | undefined;
               topics?: Array<string> | undefined;
+              service: ConnectorService;
+              active?: boolean | undefined;
               status: ConnectorStatus;
-              secretCredentials?: Record<string, any> | string | undefined;
-              source?: string | undefined;
+              secretCredentials?: string | undefined;
+              dataSource?: string | undefined;
               transformations?:
                 | {
                     nextToken?: string | undefined;
@@ -2300,12 +2372,16 @@ export type ListTransformations = {
                     id: string;
                     createdAt?: any | undefined;
                     updatedAt?: any | undefined;
-                    service: ConnectorService;
                     name: string;
+                    descritpion?: string | undefined;
+                    resourceName: string;
+                    extractor?: string | undefined;
                     topics?: Array<string> | undefined;
+                    service: ConnectorService;
+                    active?: boolean | undefined;
                     status: ConnectorStatus;
-                    secretCredentials?: Record<string, any> | string | undefined;
-                    source?: string | undefined;
+                    secretCredentials?: string | undefined;
+                    dataSource?: string | undefined;
                     transformations?: { nextToken?: string | undefined } | undefined;
                   }
                 | undefined;
@@ -2344,12 +2420,16 @@ export type GetTransformationsByConnector = {
                     id: string;
                     createdAt?: any | undefined;
                     updatedAt?: any | undefined;
-                    service: ConnectorService;
                     name: string;
+                    descritpion?: string | undefined;
+                    resourceName: string;
+                    extractor?: string | undefined;
                     topics?: Array<string> | undefined;
+                    service: ConnectorService;
+                    active?: boolean | undefined;
                     status: ConnectorStatus;
-                    secretCredentials?: Record<string, any> | string | undefined;
-                    source?: string | undefined;
+                    secretCredentials?: string | undefined;
+                    dataSource?: string | undefined;
                     transformations?: { nextToken?: string | undefined } | undefined;
                   }
                 | undefined;
@@ -2656,7 +2736,7 @@ export type GetRelationship = {
 };
 
 export type ListNodesVariables = Exact<{
-  label: Scalars['String'];
+  input: ListNodesInput;
 }>;
 
 export type ListNodes = {
@@ -2694,6 +2774,8 @@ export type GetUser = {
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
         attributes: Record<string, any> | string;
+        status?: UserStatus | undefined;
+        enabled?: boolean | undefined;
       }
     | undefined;
 };
@@ -2712,6 +2794,8 @@ export type FindUsers = {
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
               attributes: Record<string, any> | string;
+              status?: UserStatus | undefined;
+              enabled?: boolean | undefined;
             }
           | undefined
         >;
@@ -2733,6 +2817,8 @@ export type ListUsers = {
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
               attributes: Record<string, any> | string;
+              status?: UserStatus | undefined;
+              enabled?: boolean | undefined;
             }
           | undefined
         >;
@@ -2745,8 +2831,20 @@ export type GetConnectorCredentialsVariables = Exact<{
 }>;
 
 export type GetConnectorCredentials = {
-  getConnectorCredentials?: { id: string; plainCredentials: Record<string, any> | string } | undefined;
+  getConnectorCredentials?:
+    | {
+        id: string;
+        plainCredentials?: Record<string, any> | string | undefined;
+        secretCredentials?: string | undefined;
+      }
+    | undefined;
 };
+
+export type GetManifestVariables = Exact<{
+  service: ConnectorService;
+}>;
+
+export type GetManifest = { getManifest?: Record<string, any> | string | undefined };
 
 export const EmptyMutationDocument = `
     mutation EmptyMutation {
@@ -2823,1064 +2921,22 @@ export const useEmptyMutation = <TError = undefined, TContext = unknown>(
     options,
   );
 
-export const RunConnectorDocument = `
-    mutation RunConnector($input: RunConnectorInput!) {
-  runConnector(input: $input)
-}
-    `;
-
-/**
- * Key maker function for `RunConnector`.
- */
-export const RunConnectorKeys = () => ['RunConnector'];
-
-/**
- * Input transformer function for `RunConnector`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `RunConnectorVariables` - The original variables
- * @returns `RunConnectorVariables` - The transformed variables
- */
-export const RunConnectorInputFn = (variables: RunConnectorVariables) => variables as RunConnectorVariables;
-
-/**
- * Output transformer function for `RunConnector`.
- * It extracts the `runConnector` field from the result and transforms it into a `Scalars['AWSJSON']` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data RunConnector - The data returned from the GraphQL server
- * @returns Scalars['AWSJSON'] - The transformed data
- */
-export const RunConnectorOutputFn = ({ runConnector }: RunConnector) => runConnector as Scalars['AWSJSON'];
-
-/**
- * Fetcher function for `RunConnector`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `RunConnectorOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const RunConnectorFetcher = (
-  variables: RunConnectorVariables,
-  options?: RequestInit['headers'],
-  outputFn = RunConnectorOutputFn,
-  inputFn = RunConnectorInputFn,
-) =>
-  fetchWithAmplify<RunConnector, RunConnectorVariables, Scalars['AWSJSON'], RunConnectorVariables>(
-    RunConnectorDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `RunConnector`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const runConnector = (variables: RunConnectorVariables) => RunConnectorFetcher(variables)();
-
-export const useRunConnector = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Scalars['AWSJSON'] | undefined, TError, RunConnectorVariables, TContext>,
-) =>
-  useMutation<Scalars['AWSJSON'] | undefined, TError, RunConnectorVariables, TContext>(
-    ['RunConnector'],
-    (variables: RunConnectorVariables) => RunConnectorFetcher(variables)(),
-    options,
-  );
-
-export const CreateConnectorCredentialsDocument = `
-    mutation CreateConnectorCredentials($input: CreateConnectorCredentialsInput!) {
-  createConnectorCredentials(input: $input) {
-    id
-    plainCredentials
-  }
-}
-    `;
-
-/**
- * Key maker function for `CreateConnectorCredentials`.
- */
-export const CreateConnectorCredentialsKeys = () => ['CreateConnectorCredentials'];
-
-/**
- * Input transformer function for `CreateConnectorCredentials`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `CreateConnectorCredentialsVariables` - The original variables
- * @returns `CreateConnectorCredentialsVariables` - The transformed variables
- */
-export const CreateConnectorCredentialsInputFn = (variables: CreateConnectorCredentialsVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      plainCredentials:
-        variables.input.plainCredentials &&
-        (JSON.stringify(variables.input.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as CreateConnectorCredentialsVariables);
-
-/**
- * Output transformer function for `CreateConnectorCredentials`.
- * It extracts the `createConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data CreateConnectorCredentials - The data returned from the GraphQL server
- * @returns ConnectorCredentials - The transformed data
- */
-export const CreateConnectorCredentialsOutputFn = ({ createConnectorCredentials }: CreateConnectorCredentials) =>
-  createConnectorCredentials &&
-  ({
-    ...createConnectorCredentials,
-    plainCredentials:
-      createConnectorCredentials.plainCredentials &&
-      (JSON.parse(createConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as ConnectorCredentials);
-
-/**
- * Fetcher function for `CreateConnectorCredentials`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `CreateConnectorCredentialsOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const CreateConnectorCredentialsFetcher = (
-  variables: CreateConnectorCredentialsVariables,
-  options?: RequestInit['headers'],
-  outputFn = CreateConnectorCredentialsOutputFn,
-  inputFn = CreateConnectorCredentialsInputFn,
-) =>
-  fetchWithAmplify<
-    CreateConnectorCredentials,
-    CreateConnectorCredentialsVariables,
-    ConnectorCredentials,
-    CreateConnectorCredentialsVariables
-  >(CreateConnectorCredentialsDocument, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `CreateConnectorCredentials`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createConnectorCredentials = (variables: CreateConnectorCredentialsVariables) =>
-  CreateConnectorCredentialsFetcher(variables)();
-
-export const useCreateConnectorCredentials = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, CreateConnectorCredentialsVariables, TContext>,
-) =>
-  useMutation<ConnectorCredentials | undefined, TError, CreateConnectorCredentialsVariables, TContext>(
-    ['CreateConnectorCredentials'],
-    (variables: CreateConnectorCredentialsVariables) => CreateConnectorCredentialsFetcher(variables)(),
-    options,
-  );
-
-export const UpdateConnectorCredentialsDocument = `
-    mutation UpdateConnectorCredentials($input: UpdateConnectorCredentialsInput!) {
-  updateConnectorCredentials(input: $input) {
-    id
-    plainCredentials
-  }
-}
-    `;
-
-/**
- * Key maker function for `UpdateConnectorCredentials`.
- */
-export const UpdateConnectorCredentialsKeys = () => ['UpdateConnectorCredentials'];
-
-/**
- * Input transformer function for `UpdateConnectorCredentials`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `UpdateConnectorCredentialsVariables` - The original variables
- * @returns `UpdateConnectorCredentialsVariables` - The transformed variables
- */
-export const UpdateConnectorCredentialsInputFn = (variables: UpdateConnectorCredentialsVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      plainCredentials:
-        variables.input.plainCredentials &&
-        (JSON.stringify(variables.input.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as UpdateConnectorCredentialsVariables);
-
-/**
- * Output transformer function for `UpdateConnectorCredentials`.
- * It extracts the `updateConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data UpdateConnectorCredentials - The data returned from the GraphQL server
- * @returns ConnectorCredentials - The transformed data
- */
-export const UpdateConnectorCredentialsOutputFn = ({ updateConnectorCredentials }: UpdateConnectorCredentials) =>
-  updateConnectorCredentials &&
-  ({
-    ...updateConnectorCredentials,
-    plainCredentials:
-      updateConnectorCredentials.plainCredentials &&
-      (JSON.parse(updateConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as ConnectorCredentials);
-
-/**
- * Fetcher function for `UpdateConnectorCredentials`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `UpdateConnectorCredentialsOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const UpdateConnectorCredentialsFetcher = (
-  variables: UpdateConnectorCredentialsVariables,
-  options?: RequestInit['headers'],
-  outputFn = UpdateConnectorCredentialsOutputFn,
-  inputFn = UpdateConnectorCredentialsInputFn,
-) =>
-  fetchWithAmplify<
-    UpdateConnectorCredentials,
-    UpdateConnectorCredentialsVariables,
-    ConnectorCredentials,
-    UpdateConnectorCredentialsVariables
-  >(UpdateConnectorCredentialsDocument, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `UpdateConnectorCredentials`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateConnectorCredentials = (variables: UpdateConnectorCredentialsVariables) =>
-  UpdateConnectorCredentialsFetcher(variables)();
-
-export const useUpdateConnectorCredentials = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, UpdateConnectorCredentialsVariables, TContext>,
-) =>
-  useMutation<ConnectorCredentials | undefined, TError, UpdateConnectorCredentialsVariables, TContext>(
-    ['UpdateConnectorCredentials'],
-    (variables: UpdateConnectorCredentialsVariables) => UpdateConnectorCredentialsFetcher(variables)(),
-    options,
-  );
-
-export const DeleteConnectorCredentialsDocument = `
-    mutation DeleteConnectorCredentials($input: DeleteConnectorCredentialsInput!) {
-  deleteConnectorCredentials(input: $input) {
-    id
-    plainCredentials
-  }
-}
-    `;
-
-/**
- * Key maker function for `DeleteConnectorCredentials`.
- */
-export const DeleteConnectorCredentialsKeys = () => ['DeleteConnectorCredentials'];
-
-/**
- * Input transformer function for `DeleteConnectorCredentials`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `DeleteConnectorCredentialsVariables` - The original variables
- * @returns `DeleteConnectorCredentialsVariables` - The transformed variables
- */
-export const DeleteConnectorCredentialsInputFn = (variables: DeleteConnectorCredentialsVariables) =>
-  variables as DeleteConnectorCredentialsVariables;
-
-/**
- * Output transformer function for `DeleteConnectorCredentials`.
- * It extracts the `deleteConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data DeleteConnectorCredentials - The data returned from the GraphQL server
- * @returns ConnectorCredentials - The transformed data
- */
-export const DeleteConnectorCredentialsOutputFn = ({ deleteConnectorCredentials }: DeleteConnectorCredentials) =>
-  deleteConnectorCredentials &&
-  ({
-    ...deleteConnectorCredentials,
-    plainCredentials:
-      deleteConnectorCredentials.plainCredentials &&
-      (JSON.parse(deleteConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as ConnectorCredentials);
-
-/**
- * Fetcher function for `DeleteConnectorCredentials`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `DeleteConnectorCredentialsOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const DeleteConnectorCredentialsFetcher = (
-  variables: DeleteConnectorCredentialsVariables,
-  options?: RequestInit['headers'],
-  outputFn = DeleteConnectorCredentialsOutputFn,
-  inputFn = DeleteConnectorCredentialsInputFn,
-) =>
-  fetchWithAmplify<
-    DeleteConnectorCredentials,
-    DeleteConnectorCredentialsVariables,
-    ConnectorCredentials,
-    DeleteConnectorCredentialsVariables
-  >(DeleteConnectorCredentialsDocument, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `DeleteConnectorCredentials`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteConnectorCredentials = (variables: DeleteConnectorCredentialsVariables) =>
-  DeleteConnectorCredentialsFetcher(variables)();
-
-export const useDeleteConnectorCredentials = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, DeleteConnectorCredentialsVariables, TContext>,
-) =>
-  useMutation<ConnectorCredentials | undefined, TError, DeleteConnectorCredentialsVariables, TContext>(
-    ['DeleteConnectorCredentials'],
-    (variables: DeleteConnectorCredentialsVariables) => DeleteConnectorCredentialsFetcher(variables)(),
-    options,
-  );
-
-export const CreateNodeDocument = `
-    mutation CreateNode($input: CreateNodeInput!) {
-  createNode(input: $input) {
-    node {
-      identity
-      labels
-      properties
-    }
-    relationships {
-      node {
-        identity
-        labels
-        properties
-      }
-      relationship {
-        identity
-        type
-        start
-        end
-        properties
-      }
-    }
-  }
-}
-    `;
-
-/**
- * Key maker function for `CreateNode`.
- */
-export const CreateNodeKeys = () => ['CreateNode'];
-
-/**
- * Input transformer function for `CreateNode`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `CreateNodeVariables` - The original variables
- * @returns `CreateNodeVariables` - The transformed variables
- */
-export const CreateNodeInputFn = (variables: CreateNodeVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      properties:
-        variables.input.properties &&
-        (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as CreateNodeVariables);
-
-/**
- * Output transformer function for `CreateNode`.
- * It extracts the `createNode` field from the result and transforms it into a `NodeGraphRecord` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data CreateNode - The data returned from the GraphQL server
- * @returns NodeGraphRecord - The transformed data
- */
-export const CreateNodeOutputFn = ({ createNode }: CreateNode) =>
-  createNode &&
-  ({
-    ...createNode,
-    node: {
-      ...createNode.node,
-      properties:
-        createNode.node?.properties &&
-        (JSON.parse(createNode.node?.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-    relationships: createNode.relationships?.map((relationship) => ({
-      ...relationship,
-      node: {
-        ...relationship?.node,
-        properties:
-          relationship?.node?.properties &&
-          (JSON.parse(relationship?.node?.properties as any) as unknown as Scalars['AWSJSON']),
-      },
-      relationship: {
-        ...relationship?.relationship,
-        properties:
-          relationship?.relationship?.properties &&
-          (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
-      },
-    })),
-  } as NodeGraphRecord);
-
-/**
- * Fetcher function for `CreateNode`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `CreateNodeOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const CreateNodeFetcher = (
-  variables: CreateNodeVariables,
-  options?: RequestInit['headers'],
-  outputFn = CreateNodeOutputFn,
-  inputFn = CreateNodeInputFn,
-) =>
-  fetchWithAmplify<CreateNode, CreateNodeVariables, NodeGraphRecord, CreateNodeVariables>(
-    CreateNodeDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `CreateNode`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createNode = (variables: CreateNodeVariables) => CreateNodeFetcher(variables)();
-
-export const useCreateNode = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<NodeGraphRecord | undefined, TError, CreateNodeVariables, TContext>,
-) =>
-  useMutation<NodeGraphRecord | undefined, TError, CreateNodeVariables, TContext>(
-    ['CreateNode'],
-    (variables: CreateNodeVariables) => CreateNodeFetcher(variables)(),
-    options,
-  );
-
-export const UpdateNodeDocument = `
-    mutation UpdateNode($input: UpdateNodeInput!) {
-  updateNode(input: $input) {
-    node {
-      identity
-      labels
-      properties
-    }
-    relationships {
-      node {
-        identity
-        labels
-        properties
-      }
-      relationship {
-        identity
-        type
-        start
-        end
-        properties
-      }
-    }
-  }
-}
-    `;
-
-/**
- * Key maker function for `UpdateNode`.
- */
-export const UpdateNodeKeys = () => ['UpdateNode'];
-
-/**
- * Input transformer function for `UpdateNode`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `UpdateNodeVariables` - The original variables
- * @returns `UpdateNodeVariables` - The transformed variables
- */
-export const UpdateNodeInputFn = (variables: UpdateNodeVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      properties:
-        variables.input.properties &&
-        (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as UpdateNodeVariables);
-
-/**
- * Output transformer function for `UpdateNode`.
- * It extracts the `updateNode` field from the result and transforms it into a `NodeGraphRecord` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data UpdateNode - The data returned from the GraphQL server
- * @returns NodeGraphRecord - The transformed data
- */
-export const UpdateNodeOutputFn = ({ updateNode }: UpdateNode) =>
-  updateNode &&
-  ({
-    ...updateNode,
-    node: {
-      ...updateNode.node,
-      properties:
-        updateNode.node?.properties &&
-        (JSON.parse(updateNode.node?.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-    relationships: updateNode.relationships?.map((relationship) => ({
-      ...relationship,
-      node: {
-        ...relationship?.node,
-        properties:
-          relationship?.node?.properties &&
-          (JSON.parse(relationship?.node?.properties as any) as unknown as Scalars['AWSJSON']),
-      },
-      relationship: {
-        ...relationship?.relationship,
-        properties:
-          relationship?.relationship?.properties &&
-          (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
-      },
-    })),
-  } as NodeGraphRecord);
-
-/**
- * Fetcher function for `UpdateNode`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `UpdateNodeOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const UpdateNodeFetcher = (
-  variables: UpdateNodeVariables,
-  options?: RequestInit['headers'],
-  outputFn = UpdateNodeOutputFn,
-  inputFn = UpdateNodeInputFn,
-) =>
-  fetchWithAmplify<UpdateNode, UpdateNodeVariables, NodeGraphRecord, UpdateNodeVariables>(
-    UpdateNodeDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `UpdateNode`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateNode = (variables: UpdateNodeVariables) => UpdateNodeFetcher(variables)();
-
-export const useUpdateNode = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<NodeGraphRecord | undefined, TError, UpdateNodeVariables, TContext>,
-) =>
-  useMutation<NodeGraphRecord | undefined, TError, UpdateNodeVariables, TContext>(
-    ['UpdateNode'],
-    (variables: UpdateNodeVariables) => UpdateNodeFetcher(variables)(),
-    options,
-  );
-
-export const DeleteNodeDocument = `
-    mutation DeleteNode($input: DeleteNodeInput!) {
-  deleteNode(input: $input) {
-    nodes {
-      identity
-      labels
-      properties
-    }
-    relationships {
-      identity
-      type
-      start
-      end
-      properties
-    }
-  }
-}
-    `;
-
-/**
- * Key maker function for `DeleteNode`.
- */
-export const DeleteNodeKeys = () => ['DeleteNode'];
-
-/**
- * Input transformer function for `DeleteNode`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `DeleteNodeVariables` - The original variables
- * @returns `DeleteNodeVariables` - The transformed variables
- */
-export const DeleteNodeInputFn = (variables: DeleteNodeVariables) => variables as DeleteNodeVariables;
-
-/**
- * Output transformer function for `DeleteNode`.
- * It extracts the `deleteNode` field from the result and transforms it into a `DeleteNodeRecord` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data DeleteNode - The data returned from the GraphQL server
- * @returns DeleteNodeRecord - The transformed data
- */
-export const DeleteNodeOutputFn = ({ deleteNode }: DeleteNode) =>
-  deleteNode &&
-  ({
-    ...deleteNode,
-    nodes: deleteNode.nodes?.map((node) => ({
-      ...node,
-      properties: node?.properties && (JSON.parse(node?.properties as any) as unknown as Scalars['AWSJSON']),
-    })),
-    relationships: deleteNode.relationships?.map((relationship) => ({
-      ...relationship,
-      properties:
-        relationship?.properties && (JSON.parse(relationship?.properties as any) as unknown as Scalars['AWSJSON']),
-    })),
-  } as DeleteNodeRecord);
-
-/**
- * Fetcher function for `DeleteNode`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `DeleteNodeOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const DeleteNodeFetcher = (
-  variables: DeleteNodeVariables,
-  options?: RequestInit['headers'],
-  outputFn = DeleteNodeOutputFn,
-  inputFn = DeleteNodeInputFn,
-) =>
-  fetchWithAmplify<DeleteNode, DeleteNodeVariables, DeleteNodeRecord, DeleteNodeVariables>(
-    DeleteNodeDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `DeleteNode`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteNode = (variables: DeleteNodeVariables) => DeleteNodeFetcher(variables)();
-
-export const useDeleteNode = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<DeleteNodeRecord | undefined, TError, DeleteNodeVariables, TContext>,
-) =>
-  useMutation<DeleteNodeRecord | undefined, TError, DeleteNodeVariables, TContext>(
-    ['DeleteNode'],
-    (variables: DeleteNodeVariables) => DeleteNodeFetcher(variables)(),
-    options,
-  );
-
-export const CreateRelationshipDocument = `
-    mutation CreateRelationship($input: CreateRelationshipInput!) {
-  createRelationship(input: $input) {
-    start {
-      identity
-      labels
-      properties
-    }
-    end {
-      identity
-      labels
-      properties
-    }
-    relationship {
-      identity
-      type
-      start
-      end
-      properties
-    }
-  }
-}
-    `;
-
-/**
- * Key maker function for `CreateRelationship`.
- */
-export const CreateRelationshipKeys = () => ['CreateRelationship'];
-
-/**
- * Input transformer function for `CreateRelationship`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `CreateRelationshipVariables` - The original variables
- * @returns `CreateRelationshipVariables` - The transformed variables
- */
-export const CreateRelationshipInputFn = (variables: CreateRelationshipVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      properties:
-        variables.input.properties &&
-        (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as CreateRelationshipVariables);
-
-/**
- * Output transformer function for `CreateRelationship`.
- * It extracts the `createRelationship` field from the result and transforms it into a `RelationshipGraphRecord` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data CreateRelationship - The data returned from the GraphQL server
- * @returns RelationshipGraphRecord - The transformed data
- */
-export const CreateRelationshipOutputFn = ({ createRelationship }: CreateRelationship) =>
-  createRelationship &&
-  ({
-    ...createRelationship,
-    end: {
-      ...createRelationship.end,
-      properties:
-        createRelationship.end?.properties &&
-        (JSON.parse(createRelationship.end?.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-    relationship: {
-      ...createRelationship.relationship,
-      properties:
-        createRelationship.relationship?.properties &&
-        (JSON.parse(createRelationship.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-    start: {
-      ...createRelationship.start,
-      properties:
-        createRelationship.start?.properties &&
-        (JSON.parse(createRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as RelationshipGraphRecord);
-
-/**
- * Fetcher function for `CreateRelationship`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `CreateRelationshipOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const CreateRelationshipFetcher = (
-  variables: CreateRelationshipVariables,
-  options?: RequestInit['headers'],
-  outputFn = CreateRelationshipOutputFn,
-  inputFn = CreateRelationshipInputFn,
-) =>
-  fetchWithAmplify<
-    CreateRelationship,
-    CreateRelationshipVariables,
-    RelationshipGraphRecord,
-    CreateRelationshipVariables
-  >(CreateRelationshipDocument, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `CreateRelationship`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createRelationship = (variables: CreateRelationshipVariables) => CreateRelationshipFetcher(variables)();
-
-export const useCreateRelationship = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<RelationshipGraphRecord | undefined, TError, CreateRelationshipVariables, TContext>,
-) =>
-  useMutation<RelationshipGraphRecord | undefined, TError, CreateRelationshipVariables, TContext>(
-    ['CreateRelationship'],
-    (variables: CreateRelationshipVariables) => CreateRelationshipFetcher(variables)(),
-    options,
-  );
-
-export const UpdateRelationshipDocument = `
-    mutation UpdateRelationship($input: UpdateRelationshipInput!) {
-  updateRelationship(input: $input) {
-    start {
-      identity
-      labels
-      properties
-    }
-    end {
-      identity
-      labels
-      properties
-    }
-    relationship {
-      identity
-      type
-      start
-      end
-      properties
-    }
-  }
-}
-    `;
-
-/**
- * Key maker function for `UpdateRelationship`.
- */
-export const UpdateRelationshipKeys = () => ['UpdateRelationship'];
-
-/**
- * Input transformer function for `UpdateRelationship`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `UpdateRelationshipVariables` - The original variables
- * @returns `UpdateRelationshipVariables` - The transformed variables
- */
-export const UpdateRelationshipInputFn = (variables: UpdateRelationshipVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      properties:
-        variables.input.properties &&
-        (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as UpdateRelationshipVariables);
-
-/**
- * Output transformer function for `UpdateRelationship`.
- * It extracts the `updateRelationship` field from the result and transforms it into a `RelationshipGraphRecord` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data UpdateRelationship - The data returned from the GraphQL server
- * @returns RelationshipGraphRecord - The transformed data
- */
-export const UpdateRelationshipOutputFn = ({ updateRelationship }: UpdateRelationship) =>
-  updateRelationship &&
-  ({
-    ...updateRelationship,
-    end: {
-      ...updateRelationship.end,
-      properties:
-        updateRelationship.end?.properties &&
-        (JSON.parse(updateRelationship.end?.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-    relationship: {
-      ...updateRelationship.relationship,
-      properties:
-        updateRelationship.relationship?.properties &&
-        (JSON.parse(updateRelationship.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-    start: {
-      ...updateRelationship.start,
-      properties:
-        updateRelationship.start?.properties &&
-        (JSON.parse(updateRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as RelationshipGraphRecord);
-
-/**
- * Fetcher function for `UpdateRelationship`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `UpdateRelationshipOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const UpdateRelationshipFetcher = (
-  variables: UpdateRelationshipVariables,
-  options?: RequestInit['headers'],
-  outputFn = UpdateRelationshipOutputFn,
-  inputFn = UpdateRelationshipInputFn,
-) =>
-  fetchWithAmplify<
-    UpdateRelationship,
-    UpdateRelationshipVariables,
-    RelationshipGraphRecord,
-    UpdateRelationshipVariables
-  >(UpdateRelationshipDocument, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `UpdateRelationship`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateRelationship = (variables: UpdateRelationshipVariables) => UpdateRelationshipFetcher(variables)();
-
-export const useUpdateRelationship = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<RelationshipGraphRecord | undefined, TError, UpdateRelationshipVariables, TContext>,
-) =>
-  useMutation<RelationshipGraphRecord | undefined, TError, UpdateRelationshipVariables, TContext>(
-    ['UpdateRelationship'],
-    (variables: UpdateRelationshipVariables) => UpdateRelationshipFetcher(variables)(),
-    options,
-  );
-
-export const DeleteRelationshipDocument = `
-    mutation DeleteRelationship($input: DeleteRelationshipInput!) {
-  deleteRelationship(input: $input) {
-    relationships {
-      identity
-      type
-      start
-      end
-      properties
-    }
-  }
-}
-    `;
-
-/**
- * Key maker function for `DeleteRelationship`.
- */
-export const DeleteRelationshipKeys = () => ['DeleteRelationship'];
-
-/**
- * Input transformer function for `DeleteRelationship`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `DeleteRelationshipVariables` - The original variables
- * @returns `DeleteRelationshipVariables` - The transformed variables
- */
-export const DeleteRelationshipInputFn = (variables: DeleteRelationshipVariables) =>
-  variables as DeleteRelationshipVariables;
-
-/**
- * Output transformer function for `DeleteRelationship`.
- * It extracts the `deleteRelationship` field from the result and transforms it into a `DeleteRelationshipRecord` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data DeleteRelationship - The data returned from the GraphQL server
- * @returns DeleteRelationshipRecord - The transformed data
- */
-export const DeleteRelationshipOutputFn = ({ deleteRelationship }: DeleteRelationship) =>
-  deleteRelationship &&
-  ({
-    ...deleteRelationship,
-    relationships: deleteRelationship.relationships?.map((relationship) => ({
-      ...relationship,
-      properties:
-        relationship?.properties && (JSON.parse(relationship?.properties as any) as unknown as Scalars['AWSJSON']),
-    })),
-  } as DeleteRelationshipRecord);
-
-/**
- * Fetcher function for `DeleteRelationship`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `DeleteRelationshipOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const DeleteRelationshipFetcher = (
-  variables: DeleteRelationshipVariables,
-  options?: RequestInit['headers'],
-  outputFn = DeleteRelationshipOutputFn,
-  inputFn = DeleteRelationshipInputFn,
-) =>
-  fetchWithAmplify<
-    DeleteRelationship,
-    DeleteRelationshipVariables,
-    DeleteRelationshipRecord,
-    DeleteRelationshipVariables
-  >(DeleteRelationshipDocument, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `DeleteRelationship`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteRelationship = (variables: DeleteRelationshipVariables) => DeleteRelationshipFetcher(variables)();
-
-export const useDeleteRelationship = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<DeleteRelationshipRecord | undefined, TError, DeleteRelationshipVariables, TContext>,
-) =>
-  useMutation<DeleteRelationshipRecord | undefined, TError, DeleteRelationshipVariables, TContext>(
-    ['DeleteRelationship'],
-    (variables: DeleteRelationshipVariables) => DeleteRelationshipFetcher(variables)(),
-    options,
-  );
-
 export const CreateConnectorDocument = `
     mutation CreateConnector($input: CreateConnectorInput!, $condition: ModelConnectorConditionInput) {
   createConnector(input: $input, condition: $condition) {
     id
     createdAt
     updatedAt
-    service
     name
+    descritpion
+    resourceName
+    extractor
     topics
+    service
+    active
     status
     secretCredentials
-    source
+    dataSource
     transformations {
       items {
         id
@@ -3896,12 +2952,16 @@ export const CreateConnectorDocument = `
           id
           createdAt
           updatedAt
-          service
           name
+          descritpion
+          resourceName
+          extractor
           topics
+          service
+          active
           status
           secretCredentials
-          source
+          dataSource
         }
       }
       nextToken
@@ -3924,16 +2984,7 @@ export const CreateConnectorKeys = () => ['CreateConnector'];
  * @param variables `CreateConnectorVariables` - The original variables
  * @returns `CreateConnectorVariables` - The transformed variables
  */
-export const CreateConnectorInputFn = (variables: CreateConnectorVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      secretCredentials:
-        variables.input.secretCredentials &&
-        (JSON.stringify(variables.input.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as CreateConnectorVariables);
+export const CreateConnectorInputFn = (variables: CreateConnectorVariables) => variables as CreateConnectorVariables;
 
 /**
  * Output transformer function for `CreateConnector`.
@@ -3943,14 +2994,7 @@ export const CreateConnectorInputFn = (variables: CreateConnectorVariables) =>
  * @param data CreateConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const CreateConnectorOutputFn = ({ createConnector }: CreateConnector) =>
-  createConnector &&
-  ({
-    ...createConnector,
-    secretCredentials:
-      createConnector.secretCredentials &&
-      (JSON.parse(createConnector.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as Connector);
+export const CreateConnectorOutputFn = ({ createConnector }: CreateConnector) => createConnector as Connector;
 
 /**
  * Fetcher function for `CreateConnector`.
@@ -4001,12 +3045,16 @@ export const UpdateConnectorDocument = `
     id
     createdAt
     updatedAt
-    service
     name
+    descritpion
+    resourceName
+    extractor
     topics
+    service
+    active
     status
     secretCredentials
-    source
+    dataSource
     transformations {
       items {
         id
@@ -4022,12 +3070,16 @@ export const UpdateConnectorDocument = `
           id
           createdAt
           updatedAt
-          service
           name
+          descritpion
+          resourceName
+          extractor
           topics
+          service
+          active
           status
           secretCredentials
-          source
+          dataSource
         }
       }
       nextToken
@@ -4050,16 +3102,7 @@ export const UpdateConnectorKeys = () => ['UpdateConnector'];
  * @param variables `UpdateConnectorVariables` - The original variables
  * @returns `UpdateConnectorVariables` - The transformed variables
  */
-export const UpdateConnectorInputFn = (variables: UpdateConnectorVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      secretCredentials:
-        variables.input.secretCredentials &&
-        (JSON.stringify(variables.input.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as UpdateConnectorVariables);
+export const UpdateConnectorInputFn = (variables: UpdateConnectorVariables) => variables as UpdateConnectorVariables;
 
 /**
  * Output transformer function for `UpdateConnector`.
@@ -4069,14 +3112,7 @@ export const UpdateConnectorInputFn = (variables: UpdateConnectorVariables) =>
  * @param data UpdateConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const UpdateConnectorOutputFn = ({ updateConnector }: UpdateConnector) =>
-  updateConnector &&
-  ({
-    ...updateConnector,
-    secretCredentials:
-      updateConnector.secretCredentials &&
-      (JSON.parse(updateConnector.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as Connector);
+export const UpdateConnectorOutputFn = ({ updateConnector }: UpdateConnector) => updateConnector as Connector;
 
 /**
  * Fetcher function for `UpdateConnector`.
@@ -4127,12 +3163,16 @@ export const DeleteConnectorDocument = `
     id
     createdAt
     updatedAt
-    service
     name
+    descritpion
+    resourceName
+    extractor
     topics
+    service
+    active
     status
     secretCredentials
-    source
+    dataSource
     transformations {
       items {
         id
@@ -4148,12 +3188,16 @@ export const DeleteConnectorDocument = `
           id
           createdAt
           updatedAt
-          service
           name
+          descritpion
+          resourceName
+          extractor
           topics
+          service
+          active
           status
           secretCredentials
-          source
+          dataSource
         }
       }
       nextToken
@@ -4186,14 +3230,7 @@ export const DeleteConnectorInputFn = (variables: DeleteConnectorVariables) => v
  * @param data DeleteConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const DeleteConnectorOutputFn = ({ deleteConnector }: DeleteConnector) =>
-  deleteConnector &&
-  ({
-    ...deleteConnector,
-    secretCredentials:
-      deleteConnector.secretCredentials &&
-      (JSON.parse(deleteConnector.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as Connector);
+export const DeleteConnectorOutputFn = ({ deleteConnector }: DeleteConnector) => deleteConnector as Connector;
 
 /**
  * Fetcher function for `DeleteConnector`.
@@ -4254,12 +3291,16 @@ export const CreateTransformationDocument = `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -4305,16 +3346,7 @@ export const CreateTransformationInputFn = (variables: CreateTransformationVaria
  * @returns Transformation - The transformed data
  */
 export const CreateTransformationOutputFn = ({ createTransformation }: CreateTransformation) =>
-  createTransformation &&
-  ({
-    ...createTransformation,
-    connector: {
-      ...createTransformation.connector,
-      secretCredentials:
-        createTransformation.connector?.secretCredentials &&
-        (JSON.parse(createTransformation.connector?.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as Transformation);
+  createTransformation as Transformation;
 
 /**
  * Fetcher function for `CreateTransformation`.
@@ -4376,12 +3408,16 @@ export const UpdateTransformationDocument = `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -4427,16 +3463,7 @@ export const UpdateTransformationInputFn = (variables: UpdateTransformationVaria
  * @returns Transformation - The transformed data
  */
 export const UpdateTransformationOutputFn = ({ updateTransformation }: UpdateTransformation) =>
-  updateTransformation &&
-  ({
-    ...updateTransformation,
-    connector: {
-      ...updateTransformation.connector,
-      secretCredentials:
-        updateTransformation.connector?.secretCredentials &&
-        (JSON.parse(updateTransformation.connector?.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as Transformation);
+  updateTransformation as Transformation;
 
 /**
  * Fetcher function for `UpdateTransformation`.
@@ -4498,12 +3525,16 @@ export const DeleteTransformationDocument = `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -4549,16 +3580,7 @@ export const DeleteTransformationInputFn = (variables: DeleteTransformationVaria
  * @returns Transformation - The transformed data
  */
 export const DeleteTransformationOutputFn = ({ deleteTransformation }: DeleteTransformation) =>
-  deleteTransformation &&
-  ({
-    ...deleteTransformation,
-    connector: {
-      ...deleteTransformation.connector,
-      secretCredentials:
-        deleteTransformation.connector?.secretCredentials &&
-        (JSON.parse(deleteTransformation.connector?.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as Transformation);
+  deleteTransformation as Transformation;
 
 /**
  * Fetcher function for `DeleteTransformation`.
@@ -5700,6 +4722,1056 @@ export const useRunPerspective = <TError = undefined, TContext = unknown>(
     options,
   );
 
+export const RunConnectorDocument = `
+    mutation RunConnector($input: RunConnectorInput!) {
+  runConnector(input: $input)
+}
+    `;
+
+/**
+ * Key maker function for `RunConnector`.
+ */
+export const RunConnectorKeys = () => ['RunConnector'];
+
+/**
+ * Input transformer function for `RunConnector`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `RunConnectorVariables` - The original variables
+ * @returns `RunConnectorVariables` - The transformed variables
+ */
+export const RunConnectorInputFn = (variables: RunConnectorVariables) => variables as RunConnectorVariables;
+
+/**
+ * Output transformer function for `RunConnector`.
+ * It extracts the `runConnector` field from the result and transforms it into a `Scalars['AWSJSON']` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data RunConnector - The data returned from the GraphQL server
+ * @returns Scalars['AWSJSON'] - The transformed data
+ */
+export const RunConnectorOutputFn = ({ runConnector }: RunConnector) =>
+  JSON.parse(runConnector as any) as unknown as Scalars['AWSJSON'];
+
+/**
+ * Fetcher function for `RunConnector`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `RunConnectorOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const RunConnectorFetcher = (
+  variables: RunConnectorVariables,
+  options?: RequestInit['headers'],
+  outputFn = RunConnectorOutputFn,
+  inputFn = RunConnectorInputFn,
+) =>
+  fetchWithAmplify<RunConnector, RunConnectorVariables, Scalars['AWSJSON'], RunConnectorVariables>(
+    RunConnectorDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `RunConnector`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const runConnector = (variables: RunConnectorVariables) => RunConnectorFetcher(variables)();
+
+export const useRunConnector = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<Scalars['AWSJSON'] | undefined, TError, RunConnectorVariables, TContext>,
+) =>
+  useMutation<Scalars['AWSJSON'] | undefined, TError, RunConnectorVariables, TContext>(
+    ['RunConnector'],
+    (variables: RunConnectorVariables) => RunConnectorFetcher(variables)(),
+    options,
+  );
+
+export const CreateConnectorCredentialsDocument = `
+    mutation CreateConnectorCredentials($input: CreateConnectorCredentialsInput!) {
+  createConnectorCredentials(input: $input) {
+    id
+    plainCredentials
+    secretCredentials
+  }
+}
+    `;
+
+/**
+ * Key maker function for `CreateConnectorCredentials`.
+ */
+export const CreateConnectorCredentialsKeys = () => ['CreateConnectorCredentials'];
+
+/**
+ * Input transformer function for `CreateConnectorCredentials`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateConnectorCredentialsVariables` - The original variables
+ * @returns `CreateConnectorCredentialsVariables` - The transformed variables
+ */
+export const CreateConnectorCredentialsInputFn = (variables: CreateConnectorCredentialsVariables) =>
+  ({
+    ...variables,
+    input: {
+      ...variables.input,
+      plainCredentials:
+        variables.input.plainCredentials &&
+        (JSON.stringify(variables.input.plainCredentials as any) as unknown as Scalars['AWSJSON']),
+    },
+  } as CreateConnectorCredentialsVariables);
+
+/**
+ * Output transformer function for `CreateConnectorCredentials`.
+ * It extracts the `createConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data CreateConnectorCredentials - The data returned from the GraphQL server
+ * @returns ConnectorCredentials - The transformed data
+ */
+export const CreateConnectorCredentialsOutputFn = ({ createConnectorCredentials }: CreateConnectorCredentials) =>
+  createConnectorCredentials &&
+  ({
+    ...createConnectorCredentials,
+    plainCredentials:
+      createConnectorCredentials.plainCredentials &&
+      (JSON.parse(createConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
+  } as ConnectorCredentials);
+
+/**
+ * Fetcher function for `CreateConnectorCredentials`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `CreateConnectorCredentialsOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const CreateConnectorCredentialsFetcher = (
+  variables: CreateConnectorCredentialsVariables,
+  options?: RequestInit['headers'],
+  outputFn = CreateConnectorCredentialsOutputFn,
+  inputFn = CreateConnectorCredentialsInputFn,
+) =>
+  fetchWithAmplify<
+    CreateConnectorCredentials,
+    CreateConnectorCredentialsVariables,
+    ConnectorCredentials,
+    CreateConnectorCredentialsVariables
+  >(CreateConnectorCredentialsDocument, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `CreateConnectorCredentials`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createConnectorCredentials = (variables: CreateConnectorCredentialsVariables) =>
+  CreateConnectorCredentialsFetcher(variables)();
+
+export const useCreateConnectorCredentials = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, CreateConnectorCredentialsVariables, TContext>,
+) =>
+  useMutation<ConnectorCredentials | undefined, TError, CreateConnectorCredentialsVariables, TContext>(
+    ['CreateConnectorCredentials'],
+    (variables: CreateConnectorCredentialsVariables) => CreateConnectorCredentialsFetcher(variables)(),
+    options,
+  );
+
+export const UpdateConnectorCredentialsDocument = `
+    mutation UpdateConnectorCredentials($input: UpdateConnectorCredentialsInput!) {
+  updateConnectorCredentials(input: $input) {
+    id
+    plainCredentials
+    secretCredentials
+  }
+}
+    `;
+
+/**
+ * Key maker function for `UpdateConnectorCredentials`.
+ */
+export const UpdateConnectorCredentialsKeys = () => ['UpdateConnectorCredentials'];
+
+/**
+ * Input transformer function for `UpdateConnectorCredentials`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateConnectorCredentialsVariables` - The original variables
+ * @returns `UpdateConnectorCredentialsVariables` - The transformed variables
+ */
+export const UpdateConnectorCredentialsInputFn = (variables: UpdateConnectorCredentialsVariables) =>
+  ({
+    ...variables,
+    input: {
+      ...variables.input,
+      plainCredentials:
+        variables.input.plainCredentials &&
+        (JSON.stringify(variables.input.plainCredentials as any) as unknown as Scalars['AWSJSON']),
+    },
+  } as UpdateConnectorCredentialsVariables);
+
+/**
+ * Output transformer function for `UpdateConnectorCredentials`.
+ * It extracts the `updateConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data UpdateConnectorCredentials - The data returned from the GraphQL server
+ * @returns ConnectorCredentials - The transformed data
+ */
+export const UpdateConnectorCredentialsOutputFn = ({ updateConnectorCredentials }: UpdateConnectorCredentials) =>
+  updateConnectorCredentials &&
+  ({
+    ...updateConnectorCredentials,
+    plainCredentials:
+      updateConnectorCredentials.plainCredentials &&
+      (JSON.parse(updateConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
+  } as ConnectorCredentials);
+
+/**
+ * Fetcher function for `UpdateConnectorCredentials`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `UpdateConnectorCredentialsOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const UpdateConnectorCredentialsFetcher = (
+  variables: UpdateConnectorCredentialsVariables,
+  options?: RequestInit['headers'],
+  outputFn = UpdateConnectorCredentialsOutputFn,
+  inputFn = UpdateConnectorCredentialsInputFn,
+) =>
+  fetchWithAmplify<
+    UpdateConnectorCredentials,
+    UpdateConnectorCredentialsVariables,
+    ConnectorCredentials,
+    UpdateConnectorCredentialsVariables
+  >(UpdateConnectorCredentialsDocument, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `UpdateConnectorCredentials`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateConnectorCredentials = (variables: UpdateConnectorCredentialsVariables) =>
+  UpdateConnectorCredentialsFetcher(variables)();
+
+export const useUpdateConnectorCredentials = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, UpdateConnectorCredentialsVariables, TContext>,
+) =>
+  useMutation<ConnectorCredentials | undefined, TError, UpdateConnectorCredentialsVariables, TContext>(
+    ['UpdateConnectorCredentials'],
+    (variables: UpdateConnectorCredentialsVariables) => UpdateConnectorCredentialsFetcher(variables)(),
+    options,
+  );
+
+export const DeleteConnectorCredentialsDocument = `
+    mutation DeleteConnectorCredentials($input: DeleteConnectorCredentialsInput!) {
+  deleteConnectorCredentials(input: $input) {
+    id
+    plainCredentials
+    secretCredentials
+  }
+}
+    `;
+
+/**
+ * Key maker function for `DeleteConnectorCredentials`.
+ */
+export const DeleteConnectorCredentialsKeys = () => ['DeleteConnectorCredentials'];
+
+/**
+ * Input transformer function for `DeleteConnectorCredentials`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteConnectorCredentialsVariables` - The original variables
+ * @returns `DeleteConnectorCredentialsVariables` - The transformed variables
+ */
+export const DeleteConnectorCredentialsInputFn = (variables: DeleteConnectorCredentialsVariables) =>
+  variables as DeleteConnectorCredentialsVariables;
+
+/**
+ * Output transformer function for `DeleteConnectorCredentials`.
+ * It extracts the `deleteConnectorCredentials` field from the result and transforms it into a `ConnectorCredentials` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data DeleteConnectorCredentials - The data returned from the GraphQL server
+ * @returns ConnectorCredentials - The transformed data
+ */
+export const DeleteConnectorCredentialsOutputFn = ({ deleteConnectorCredentials }: DeleteConnectorCredentials) =>
+  deleteConnectorCredentials &&
+  ({
+    ...deleteConnectorCredentials,
+    plainCredentials:
+      deleteConnectorCredentials.plainCredentials &&
+      (JSON.parse(deleteConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
+  } as ConnectorCredentials);
+
+/**
+ * Fetcher function for `DeleteConnectorCredentials`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `DeleteConnectorCredentialsOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const DeleteConnectorCredentialsFetcher = (
+  variables: DeleteConnectorCredentialsVariables,
+  options?: RequestInit['headers'],
+  outputFn = DeleteConnectorCredentialsOutputFn,
+  inputFn = DeleteConnectorCredentialsInputFn,
+) =>
+  fetchWithAmplify<
+    DeleteConnectorCredentials,
+    DeleteConnectorCredentialsVariables,
+    ConnectorCredentials,
+    DeleteConnectorCredentialsVariables
+  >(DeleteConnectorCredentialsDocument, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `DeleteConnectorCredentials`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteConnectorCredentials = (variables: DeleteConnectorCredentialsVariables) =>
+  DeleteConnectorCredentialsFetcher(variables)();
+
+export const useDeleteConnectorCredentials = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, DeleteConnectorCredentialsVariables, TContext>,
+) =>
+  useMutation<ConnectorCredentials | undefined, TError, DeleteConnectorCredentialsVariables, TContext>(
+    ['DeleteConnectorCredentials'],
+    (variables: DeleteConnectorCredentialsVariables) => DeleteConnectorCredentialsFetcher(variables)(),
+    options,
+  );
+
+export const CreateNodeDocument = `
+    mutation CreateNode($input: CreateNodeInput!) {
+  createNode(input: $input) {
+    node {
+      identity
+      labels
+      properties
+    }
+    relationships {
+      node {
+        identity
+        labels
+        properties
+      }
+      relationship {
+        identity
+        type
+        start
+        end
+        properties
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * Key maker function for `CreateNode`.
+ */
+export const CreateNodeKeys = () => ['CreateNode'];
+
+/**
+ * Input transformer function for `CreateNode`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateNodeVariables` - The original variables
+ * @returns `CreateNodeVariables` - The transformed variables
+ */
+export const CreateNodeInputFn = (variables: CreateNodeVariables) =>
+  ({
+    ...variables,
+    input: {
+      ...variables.input,
+      properties:
+        variables.input.properties &&
+        (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+  } as CreateNodeVariables);
+
+/**
+ * Output transformer function for `CreateNode`.
+ * It extracts the `createNode` field from the result and transforms it into a `GraphNodeRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data CreateNode - The data returned from the GraphQL server
+ * @returns GraphNodeRecord - The transformed data
+ */
+export const CreateNodeOutputFn = ({ createNode }: CreateNode) =>
+  createNode &&
+  ({
+    ...createNode,
+    node: {
+      ...createNode.node,
+      properties:
+        createNode.node?.properties &&
+        (JSON.parse(createNode.node?.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+    relationships: createNode.relationships?.map((relationship) => ({
+      ...relationship,
+      node: {
+        ...relationship?.node,
+        properties:
+          relationship?.node?.properties &&
+          (JSON.parse(relationship?.node?.properties as any) as unknown as Scalars['AWSJSON']),
+      },
+      relationship: {
+        ...relationship?.relationship,
+        properties:
+          relationship?.relationship?.properties &&
+          (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
+      },
+    })),
+  } as GraphNodeRecord);
+
+/**
+ * Fetcher function for `CreateNode`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `CreateNodeOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const CreateNodeFetcher = (
+  variables: CreateNodeVariables,
+  options?: RequestInit['headers'],
+  outputFn = CreateNodeOutputFn,
+  inputFn = CreateNodeInputFn,
+) =>
+  fetchWithAmplify<CreateNode, CreateNodeVariables, GraphNodeRecord, CreateNodeVariables>(
+    CreateNodeDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `CreateNode`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createNode = (variables: CreateNodeVariables) => CreateNodeFetcher(variables)();
+
+export const useCreateNode = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<GraphNodeRecord | undefined, TError, CreateNodeVariables, TContext>,
+) =>
+  useMutation<GraphNodeRecord | undefined, TError, CreateNodeVariables, TContext>(
+    ['CreateNode'],
+    (variables: CreateNodeVariables) => CreateNodeFetcher(variables)(),
+    options,
+  );
+
+export const UpdateNodeDocument = `
+    mutation UpdateNode($input: UpdateNodeInput!) {
+  updateNode(input: $input) {
+    node {
+      identity
+      labels
+      properties
+    }
+    relationships {
+      node {
+        identity
+        labels
+        properties
+      }
+      relationship {
+        identity
+        type
+        start
+        end
+        properties
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * Key maker function for `UpdateNode`.
+ */
+export const UpdateNodeKeys = () => ['UpdateNode'];
+
+/**
+ * Input transformer function for `UpdateNode`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateNodeVariables` - The original variables
+ * @returns `UpdateNodeVariables` - The transformed variables
+ */
+export const UpdateNodeInputFn = (variables: UpdateNodeVariables) =>
+  ({
+    ...variables,
+    input: {
+      ...variables.input,
+      properties:
+        variables.input.properties &&
+        (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+  } as UpdateNodeVariables);
+
+/**
+ * Output transformer function for `UpdateNode`.
+ * It extracts the `updateNode` field from the result and transforms it into a `GraphNodeRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data UpdateNode - The data returned from the GraphQL server
+ * @returns GraphNodeRecord - The transformed data
+ */
+export const UpdateNodeOutputFn = ({ updateNode }: UpdateNode) =>
+  updateNode &&
+  ({
+    ...updateNode,
+    node: {
+      ...updateNode.node,
+      properties:
+        updateNode.node?.properties &&
+        (JSON.parse(updateNode.node?.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+    relationships: updateNode.relationships?.map((relationship) => ({
+      ...relationship,
+      node: {
+        ...relationship?.node,
+        properties:
+          relationship?.node?.properties &&
+          (JSON.parse(relationship?.node?.properties as any) as unknown as Scalars['AWSJSON']),
+      },
+      relationship: {
+        ...relationship?.relationship,
+        properties:
+          relationship?.relationship?.properties &&
+          (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
+      },
+    })),
+  } as GraphNodeRecord);
+
+/**
+ * Fetcher function for `UpdateNode`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `UpdateNodeOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const UpdateNodeFetcher = (
+  variables: UpdateNodeVariables,
+  options?: RequestInit['headers'],
+  outputFn = UpdateNodeOutputFn,
+  inputFn = UpdateNodeInputFn,
+) =>
+  fetchWithAmplify<UpdateNode, UpdateNodeVariables, GraphNodeRecord, UpdateNodeVariables>(
+    UpdateNodeDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `UpdateNode`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateNode = (variables: UpdateNodeVariables) => UpdateNodeFetcher(variables)();
+
+export const useUpdateNode = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<GraphNodeRecord | undefined, TError, UpdateNodeVariables, TContext>,
+) =>
+  useMutation<GraphNodeRecord | undefined, TError, UpdateNodeVariables, TContext>(
+    ['UpdateNode'],
+    (variables: UpdateNodeVariables) => UpdateNodeFetcher(variables)(),
+    options,
+  );
+
+export const DeleteNodeDocument = `
+    mutation DeleteNode($input: DeleteNodeInput!) {
+  deleteNode(input: $input) {
+    nodes {
+      identity
+      labels
+      properties
+    }
+    relationships {
+      identity
+      type
+      start
+      end
+      properties
+    }
+  }
+}
+    `;
+
+/**
+ * Key maker function for `DeleteNode`.
+ */
+export const DeleteNodeKeys = () => ['DeleteNode'];
+
+/**
+ * Input transformer function for `DeleteNode`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteNodeVariables` - The original variables
+ * @returns `DeleteNodeVariables` - The transformed variables
+ */
+export const DeleteNodeInputFn = (variables: DeleteNodeVariables) => variables as DeleteNodeVariables;
+
+/**
+ * Output transformer function for `DeleteNode`.
+ * It extracts the `deleteNode` field from the result and transforms it into a `DeleteNodeRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data DeleteNode - The data returned from the GraphQL server
+ * @returns DeleteNodeRecord - The transformed data
+ */
+export const DeleteNodeOutputFn = ({ deleteNode }: DeleteNode) =>
+  deleteNode &&
+  ({
+    ...deleteNode,
+    nodes: deleteNode.nodes?.map((node) => ({
+      ...node,
+      properties: node?.properties && (JSON.parse(node?.properties as any) as unknown as Scalars['AWSJSON']),
+    })),
+    relationships: deleteNode.relationships?.map((relationship) => ({
+      ...relationship,
+      properties:
+        relationship?.properties && (JSON.parse(relationship?.properties as any) as unknown as Scalars['AWSJSON']),
+    })),
+  } as DeleteNodeRecord);
+
+/**
+ * Fetcher function for `DeleteNode`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `DeleteNodeOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const DeleteNodeFetcher = (
+  variables: DeleteNodeVariables,
+  options?: RequestInit['headers'],
+  outputFn = DeleteNodeOutputFn,
+  inputFn = DeleteNodeInputFn,
+) =>
+  fetchWithAmplify<DeleteNode, DeleteNodeVariables, DeleteNodeRecord, DeleteNodeVariables>(
+    DeleteNodeDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `DeleteNode`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteNode = (variables: DeleteNodeVariables) => DeleteNodeFetcher(variables)();
+
+export const useDeleteNode = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<DeleteNodeRecord | undefined, TError, DeleteNodeVariables, TContext>,
+) =>
+  useMutation<DeleteNodeRecord | undefined, TError, DeleteNodeVariables, TContext>(
+    ['DeleteNode'],
+    (variables: DeleteNodeVariables) => DeleteNodeFetcher(variables)(),
+    options,
+  );
+
+export const CreateRelationshipDocument = `
+    mutation CreateRelationship($input: CreateRelationshipInput!) {
+  createRelationship(input: $input) {
+    start {
+      identity
+      labels
+      properties
+    }
+    end {
+      identity
+      labels
+      properties
+    }
+    relationship {
+      identity
+      type
+      start
+      end
+      properties
+    }
+  }
+}
+    `;
+
+/**
+ * Key maker function for `CreateRelationship`.
+ */
+export const CreateRelationshipKeys = () => ['CreateRelationship'];
+
+/**
+ * Input transformer function for `CreateRelationship`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateRelationshipVariables` - The original variables
+ * @returns `CreateRelationshipVariables` - The transformed variables
+ */
+export const CreateRelationshipInputFn = (variables: CreateRelationshipVariables) =>
+  ({
+    ...variables,
+    input: {
+      ...variables.input,
+      properties:
+        variables.input.properties &&
+        (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+  } as CreateRelationshipVariables);
+
+/**
+ * Output transformer function for `CreateRelationship`.
+ * It extracts the `createRelationship` field from the result and transforms it into a `GraphRelationshipRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data CreateRelationship - The data returned from the GraphQL server
+ * @returns GraphRelationshipRecord - The transformed data
+ */
+export const CreateRelationshipOutputFn = ({ createRelationship }: CreateRelationship) =>
+  createRelationship &&
+  ({
+    ...createRelationship,
+    end: {
+      ...createRelationship.end,
+      properties:
+        createRelationship.end?.properties &&
+        (JSON.parse(createRelationship.end?.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+    relationship: {
+      ...createRelationship.relationship,
+      properties:
+        createRelationship.relationship?.properties &&
+        (JSON.parse(createRelationship.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+    start: {
+      ...createRelationship.start,
+      properties:
+        createRelationship.start?.properties &&
+        (JSON.parse(createRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+  } as GraphRelationshipRecord);
+
+/**
+ * Fetcher function for `CreateRelationship`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `CreateRelationshipOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const CreateRelationshipFetcher = (
+  variables: CreateRelationshipVariables,
+  options?: RequestInit['headers'],
+  outputFn = CreateRelationshipOutputFn,
+  inputFn = CreateRelationshipInputFn,
+) =>
+  fetchWithAmplify<
+    CreateRelationship,
+    CreateRelationshipVariables,
+    GraphRelationshipRecord,
+    CreateRelationshipVariables
+  >(CreateRelationshipDocument, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `CreateRelationship`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createRelationship = (variables: CreateRelationshipVariables) => CreateRelationshipFetcher(variables)();
+
+export const useCreateRelationship = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<GraphRelationshipRecord | undefined, TError, CreateRelationshipVariables, TContext>,
+) =>
+  useMutation<GraphRelationshipRecord | undefined, TError, CreateRelationshipVariables, TContext>(
+    ['CreateRelationship'],
+    (variables: CreateRelationshipVariables) => CreateRelationshipFetcher(variables)(),
+    options,
+  );
+
+export const UpdateRelationshipDocument = `
+    mutation UpdateRelationship($input: UpdateRelationshipInput!) {
+  updateRelationship(input: $input) {
+    start {
+      identity
+      labels
+      properties
+    }
+    end {
+      identity
+      labels
+      properties
+    }
+    relationship {
+      identity
+      type
+      start
+      end
+      properties
+    }
+  }
+}
+    `;
+
+/**
+ * Key maker function for `UpdateRelationship`.
+ */
+export const UpdateRelationshipKeys = () => ['UpdateRelationship'];
+
+/**
+ * Input transformer function for `UpdateRelationship`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `UpdateRelationshipVariables` - The original variables
+ * @returns `UpdateRelationshipVariables` - The transformed variables
+ */
+export const UpdateRelationshipInputFn = (variables: UpdateRelationshipVariables) =>
+  ({
+    ...variables,
+    input: {
+      ...variables.input,
+      properties:
+        variables.input.properties &&
+        (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+  } as UpdateRelationshipVariables);
+
+/**
+ * Output transformer function for `UpdateRelationship`.
+ * It extracts the `updateRelationship` field from the result and transforms it into a `GraphRelationshipRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data UpdateRelationship - The data returned from the GraphQL server
+ * @returns GraphRelationshipRecord - The transformed data
+ */
+export const UpdateRelationshipOutputFn = ({ updateRelationship }: UpdateRelationship) =>
+  updateRelationship &&
+  ({
+    ...updateRelationship,
+    end: {
+      ...updateRelationship.end,
+      properties:
+        updateRelationship.end?.properties &&
+        (JSON.parse(updateRelationship.end?.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+    relationship: {
+      ...updateRelationship.relationship,
+      properties:
+        updateRelationship.relationship?.properties &&
+        (JSON.parse(updateRelationship.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+    start: {
+      ...updateRelationship.start,
+      properties:
+        updateRelationship.start?.properties &&
+        (JSON.parse(updateRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
+    },
+  } as GraphRelationshipRecord);
+
+/**
+ * Fetcher function for `UpdateRelationship`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `UpdateRelationshipOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const UpdateRelationshipFetcher = (
+  variables: UpdateRelationshipVariables,
+  options?: RequestInit['headers'],
+  outputFn = UpdateRelationshipOutputFn,
+  inputFn = UpdateRelationshipInputFn,
+) =>
+  fetchWithAmplify<
+    UpdateRelationship,
+    UpdateRelationshipVariables,
+    GraphRelationshipRecord,
+    UpdateRelationshipVariables
+  >(UpdateRelationshipDocument, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `UpdateRelationship`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateRelationship = (variables: UpdateRelationshipVariables) => UpdateRelationshipFetcher(variables)();
+
+export const useUpdateRelationship = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<GraphRelationshipRecord | undefined, TError, UpdateRelationshipVariables, TContext>,
+) =>
+  useMutation<GraphRelationshipRecord | undefined, TError, UpdateRelationshipVariables, TContext>(
+    ['UpdateRelationship'],
+    (variables: UpdateRelationshipVariables) => UpdateRelationshipFetcher(variables)(),
+    options,
+  );
+
+export const DeleteRelationshipDocument = `
+    mutation DeleteRelationship($input: DeleteRelationshipInput!) {
+  deleteRelationship(input: $input) {
+    relationships {
+      identity
+      type
+      start
+      end
+      properties
+    }
+  }
+}
+    `;
+
+/**
+ * Key maker function for `DeleteRelationship`.
+ */
+export const DeleteRelationshipKeys = () => ['DeleteRelationship'];
+
+/**
+ * Input transformer function for `DeleteRelationship`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteRelationshipVariables` - The original variables
+ * @returns `DeleteRelationshipVariables` - The transformed variables
+ */
+export const DeleteRelationshipInputFn = (variables: DeleteRelationshipVariables) =>
+  variables as DeleteRelationshipVariables;
+
+/**
+ * Output transformer function for `DeleteRelationship`.
+ * It extracts the `deleteRelationship` field from the result and transforms it into a `DeleteRelationshipRecord` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data DeleteRelationship - The data returned from the GraphQL server
+ * @returns DeleteRelationshipRecord - The transformed data
+ */
+export const DeleteRelationshipOutputFn = ({ deleteRelationship }: DeleteRelationship) =>
+  deleteRelationship &&
+  ({
+    ...deleteRelationship,
+    relationships: deleteRelationship.relationships?.map((relationship) => ({
+      ...relationship,
+      properties:
+        relationship?.properties && (JSON.parse(relationship?.properties as any) as unknown as Scalars['AWSJSON']),
+    })),
+  } as DeleteRelationshipRecord);
+
+/**
+ * Fetcher function for `DeleteRelationship`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `DeleteRelationshipOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const DeleteRelationshipFetcher = (
+  variables: DeleteRelationshipVariables,
+  options?: RequestInit['headers'],
+  outputFn = DeleteRelationshipOutputFn,
+  inputFn = DeleteRelationshipInputFn,
+) =>
+  fetchWithAmplify<
+    DeleteRelationship,
+    DeleteRelationshipVariables,
+    DeleteRelationshipRecord,
+    DeleteRelationshipVariables
+  >(DeleteRelationshipDocument, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `DeleteRelationship`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteRelationship = (variables: DeleteRelationshipVariables) => DeleteRelationshipFetcher(variables)();
+
+export const useDeleteRelationship = <TError = undefined, TContext = unknown>(
+  options?: UseMutationOptions<DeleteRelationshipRecord | undefined, TError, DeleteRelationshipVariables, TContext>,
+) =>
+  useMutation<DeleteRelationshipRecord | undefined, TError, DeleteRelationshipVariables, TContext>(
+    ['DeleteRelationship'],
+    (variables: DeleteRelationshipVariables) => DeleteRelationshipFetcher(variables)(),
+    options,
+  );
+
 export const CreateUserDocument = `
     mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
@@ -5707,6 +5779,8 @@ export const CreateUserDocument = `
     createdAt
     updatedAt
     attributes
+    status
+    enabled
   }
 }
     `;
@@ -5792,6 +5866,8 @@ export const UpdateUserDocument = `
     createdAt
     updatedAt
     attributes
+    status
+    enabled
   }
 }
     `;
@@ -5877,6 +5953,8 @@ export const DeleteUserDocument = `
     createdAt
     updatedAt
     attributes
+    status
+    enabled
   }
 }
     `;
@@ -6193,116 +6271,22 @@ export const useCustomTest = <TData = Test | undefined, TError = undefined>(
 
 useCustomTest.getKey = CustomTestKeys;
 
-export const GetConnectorManifestDocument = `
-    query GetConnectorManifest($query: QueryGetConnectorManifestQueryInput!) {
-  getConnectorManifest(query: $query) {
-    version
-    service
-    credentials {
-      field
-      type
-      pattern
-    }
-    authorization {
-      type
-      authUrl
-      authParams
-      callbackParams
-    }
-    topics
-  }
-}
-    `;
-
-/**
- * Key maker function for `GetConnectorManifest`.
- */
-export const GetConnectorManifestKeys = (variables: GetConnectorManifestVariables) => [
-  'GetConnectorManifest',
-  variables,
-];
-
-/**
- * Input transformer function for `GetConnectorManifest`.
- * It transforms the fields of the variables into JSON strings.
- * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
- * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
- *
- * @param variables `GetConnectorManifestVariables` - The original variables
- * @returns `GetConnectorManifestVariables` - The transformed variables
- */
-export const GetConnectorManifestInputFn = (variables: GetConnectorManifestVariables) =>
-  variables as GetConnectorManifestVariables;
-
-/**
- * Output transformer function for `GetConnectorManifest`.
- * It extracts the `getConnectorManifest` field from the result and transforms it into a `ConnectorManifest` object.
- * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
- * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data GetConnectorManifest - The data returned from the GraphQL server
- * @returns ConnectorManifest - The transformed data
- */
-export const GetConnectorManifestOutputFn = ({ getConnectorManifest }: GetConnectorManifest) =>
-  getConnectorManifest as ConnectorManifest;
-
-/**
- * Fetcher function for `GetConnectorManifest`.
- * It invokes the base fetcher function with the operation-specific input and output transformer functions.
- * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
- * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
- *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `GetConnectorManifestOutput` functions.
- * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
- * @param variables - The variables to pass to the GraphQL operation.
- * @param options - The options to pass to the GraphQL operation.
- * @param outputFn - The output transformer function.
- * @param inputFn - The input transformer function.
- * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
- */
-export const GetConnectorManifestFetcher = (
-  variables: GetConnectorManifestVariables,
-  options?: RequestInit['headers'],
-  outputFn = GetConnectorManifestOutputFn,
-  inputFn = GetConnectorManifestInputFn,
-) =>
-  fetchWithAmplify<
-    GetConnectorManifest,
-    GetConnectorManifestVariables,
-    ConnectorManifest,
-    GetConnectorManifestVariables
-  >(GetConnectorManifestDocument, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `GetConnectorManifest`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getConnectorManifest = (variables: GetConnectorManifestVariables) =>
-  GetConnectorManifestFetcher(variables)();
-
-export const useGetConnectorManifest = <TData = ConnectorManifest | undefined, TError = undefined>(
-  variables: GetConnectorManifestVariables,
-  options?: UseQueryOptions<ConnectorManifest | undefined, TError, TData>,
-) =>
-  useQuery<ConnectorManifest | undefined, TError, TData>(
-    ['GetConnectorManifest', variables],
-    GetConnectorManifestFetcher(variables),
-    options,
-  );
-
-useGetConnectorManifest.getKey = GetConnectorManifestKeys;
-
 export const GetConnectorDocument = `
     query GetConnector($id: ID!) {
   getConnector(id: $id) {
     id
     createdAt
     updatedAt
-    service
     name
+    descritpion
+    resourceName
+    extractor
     topics
+    service
+    active
     status
     secretCredentials
-    source
+    dataSource
     transformations {
       items {
         id
@@ -6318,12 +6302,16 @@ export const GetConnectorDocument = `
           id
           createdAt
           updatedAt
-          service
           name
+          descritpion
+          resourceName
+          extractor
           topics
+          service
+          active
           status
           secretCredentials
-          source
+          dataSource
         }
       }
       nextToken
@@ -6356,14 +6344,7 @@ export const GetConnectorInputFn = (variables: GetConnectorVariables) => variabl
  * @param data GetConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const GetConnectorOutputFn = ({ getConnector }: GetConnector) =>
-  getConnector &&
-  ({
-    ...getConnector,
-    secretCredentials:
-      getConnector.secretCredentials &&
-      (JSON.parse(getConnector.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as Connector);
+export const GetConnectorOutputFn = ({ getConnector }: GetConnector) => getConnector as Connector;
 
 /**
  * Fetcher function for `GetConnector`.
@@ -6414,12 +6395,16 @@ export const ListConnectorsDocument = `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -6466,15 +6451,7 @@ export const ListConnectorsInputFn = (variables?: ListConnectorsVariables) => va
  * @returns ModelConnectorConnection - The transformed data
  */
 export const ListConnectorsOutputFn = ({ listConnectors }: ListConnectors) =>
-  listConnectors &&
-  ({
-    ...listConnectors,
-    items: listConnectors.items?.map((item) => ({
-      ...item,
-      secretCredentials:
-        item?.secretCredentials && (JSON.parse(item?.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-    })),
-  } as ModelConnectorConnection);
+  listConnectors as ModelConnectorConnection;
 
 /**
  * Fetcher function for `ListConnectors`.
@@ -6522,10 +6499,11 @@ export const useListConnectors = <TData = ModelConnectorConnection | undefined, 
 
 useListConnectors.getKey = ListConnectorsKeys;
 
-export const GetConnectorBySourceDocument = `
-    query GetConnectorBySource($source: String!, $sortDirection: ModelSortDirection, $filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
-  getConnectorBySource(
-    source: $source
+export const GetConnectorByDataSourceDocument = `
+    query GetConnectorByDataSource($dataSource: String!, $id: ModelIDKeyConditionInput, $sortDirection: ModelSortDirection, $filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
+  getConnectorByDataSource(
+    dataSource: $dataSource
+    id: $id
     sortDirection: $sortDirection
     filter: $filter
     limit: $limit
@@ -6535,12 +6513,16 @@ export const GetConnectorBySourceDocument = `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -6562,51 +6544,43 @@ export const GetConnectorBySourceDocument = `
     `;
 
 /**
- * Key maker function for `GetConnectorBySource`.
+ * Key maker function for `GetConnectorByDataSource`.
  */
-export const GetConnectorBySourceKeys = (variables: GetConnectorBySourceVariables) => [
-  'GetConnectorBySource',
+export const GetConnectorByDataSourceKeys = (variables: GetConnectorByDataSourceVariables) => [
+  'GetConnectorByDataSource',
   variables,
 ];
 
 /**
- * Input transformer function for `GetConnectorBySource`.
+ * Input transformer function for `GetConnectorByDataSource`.
  * It transforms the fields of the variables into JSON strings.
  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
  * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
  *
- * @param variables `GetConnectorBySourceVariables` - The original variables
- * @returns `GetConnectorBySourceVariables` - The transformed variables
+ * @param variables `GetConnectorByDataSourceVariables` - The original variables
+ * @returns `GetConnectorByDataSourceVariables` - The transformed variables
  */
-export const GetConnectorBySourceInputFn = (variables: GetConnectorBySourceVariables) =>
-  variables as GetConnectorBySourceVariables;
+export const GetConnectorByDataSourceInputFn = (variables: GetConnectorByDataSourceVariables) =>
+  variables as GetConnectorByDataSourceVariables;
 
 /**
- * Output transformer function for `GetConnectorBySource`.
- * It extracts the `getConnectorBySource` field from the result and transforms it into a `ModelConnectorConnection` object.
+ * Output transformer function for `GetConnectorByDataSource`.
+ * It extracts the `getConnectorByDataSource` field from the result and transforms it into a `ModelConnectorConnection` object.
  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
  * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data GetConnectorBySource - The data returned from the GraphQL server
+ * @param data GetConnectorByDataSource - The data returned from the GraphQL server
  * @returns ModelConnectorConnection - The transformed data
  */
-export const GetConnectorBySourceOutputFn = ({ getConnectorBySource }: GetConnectorBySource) =>
-  getConnectorBySource &&
-  ({
-    ...getConnectorBySource,
-    items: getConnectorBySource.items?.map((item) => ({
-      ...item,
-      secretCredentials:
-        item?.secretCredentials && (JSON.parse(item?.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-    })),
-  } as ModelConnectorConnection);
+export const GetConnectorByDataSourceOutputFn = ({ getConnectorByDataSource }: GetConnectorByDataSource) =>
+  getConnectorByDataSource as ModelConnectorConnection;
 
 /**
- * Fetcher function for `GetConnectorBySource`.
+ * Fetcher function for `GetConnectorByDataSource`.
  * It invokes the base fetcher function with the operation-specific input and output transformer functions.
  * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
  * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  *
- * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `GetConnectorBySourceOutput` functions.
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `GetConnectorByDataSourceOutput` functions.
  * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
  * @param variables - The variables to pass to the GraphQL operation.
  * @param options - The options to pass to the GraphQL operation.
@@ -6614,37 +6588,37 @@ export const GetConnectorBySourceOutputFn = ({ getConnectorBySource }: GetConnec
  * @param inputFn - The input transformer function.
  * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
-export const GetConnectorBySourceFetcher = (
-  variables: GetConnectorBySourceVariables,
+export const GetConnectorByDataSourceFetcher = (
+  variables: GetConnectorByDataSourceVariables,
   options?: RequestInit['headers'],
-  outputFn = GetConnectorBySourceOutputFn,
-  inputFn = GetConnectorBySourceInputFn,
+  outputFn = GetConnectorByDataSourceOutputFn,
+  inputFn = GetConnectorByDataSourceInputFn,
 ) =>
   fetchWithAmplify<
-    GetConnectorBySource,
-    GetConnectorBySourceVariables,
+    GetConnectorByDataSource,
+    GetConnectorByDataSourceVariables,
     ModelConnectorConnection,
-    GetConnectorBySourceVariables
-  >(GetConnectorBySourceDocument, variables, options, outputFn, inputFn);
+    GetConnectorByDataSourceVariables
+  >(GetConnectorByDataSourceDocument, variables, options, outputFn, inputFn);
 
 /**
- * GraphQL request function for `GetConnectorBySource`.
+ * GraphQL request function for `GetConnectorByDataSource`.
  * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
  */
-export const getConnectorBySource = (variables: GetConnectorBySourceVariables) =>
-  GetConnectorBySourceFetcher(variables)();
+export const getConnectorByDataSource = (variables: GetConnectorByDataSourceVariables) =>
+  GetConnectorByDataSourceFetcher(variables)();
 
-export const useGetConnectorBySource = <TData = ModelConnectorConnection | undefined, TError = undefined>(
-  variables: GetConnectorBySourceVariables,
+export const useGetConnectorByDataSource = <TData = ModelConnectorConnection | undefined, TError = undefined>(
+  variables: GetConnectorByDataSourceVariables,
   options?: UseQueryOptions<ModelConnectorConnection | undefined, TError, TData>,
 ) =>
   useQuery<ModelConnectorConnection | undefined, TError, TData>(
-    ['GetConnectorBySource', variables],
-    GetConnectorBySourceFetcher(variables),
+    ['GetConnectorByDataSource', variables],
+    GetConnectorByDataSourceFetcher(variables),
     options,
   );
 
-useGetConnectorBySource.getKey = GetConnectorBySourceKeys;
+useGetConnectorByDataSource.getKey = GetConnectorByDataSourceKeys;
 
 export const GetTransformationDocument = `
     query GetTransformation($id: ID!) {
@@ -6662,12 +6636,16 @@ export const GetTransformationDocument = `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -6713,16 +6691,7 @@ export const GetTransformationInputFn = (variables: GetTransformationVariables) 
  * @returns Transformation - The transformed data
  */
 export const GetTransformationOutputFn = ({ getTransformation }: GetTransformation) =>
-  getTransformation &&
-  ({
-    ...getTransformation,
-    connector: {
-      ...getTransformation.connector,
-      secretCredentials:
-        getTransformation.connector?.secretCredentials &&
-        (JSON.parse(getTransformation.connector?.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as Transformation);
+  getTransformation as Transformation;
 
 /**
  * Fetcher function for `GetTransformation`.
@@ -6787,12 +6756,16 @@ export const ListTransformationsDocument = `
         id
         createdAt
         updatedAt
-        service
         name
+        descritpion
+        resourceName
+        extractor
         topics
+        service
+        active
         status
         secretCredentials
-        source
+        dataSource
         transformations {
           nextToken
         }
@@ -6830,19 +6803,7 @@ export const ListTransformationsInputFn = (variables?: ListTransformationsVariab
  * @returns ModelTransformationConnection - The transformed data
  */
 export const ListTransformationsOutputFn = ({ listTransformations }: ListTransformations) =>
-  listTransformations &&
-  ({
-    ...listTransformations,
-    items: listTransformations.items?.map((item) => ({
-      ...item,
-      connector: {
-        ...item?.connector,
-        secretCredentials:
-          item?.connector?.secretCredentials &&
-          (JSON.parse(item?.connector?.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-      },
-    })),
-  } as ModelTransformationConnection);
+  listTransformations as ModelTransformationConnection;
 
 /**
  * Fetcher function for `ListTransformations`.
@@ -6913,12 +6874,16 @@ export const GetTransformationsByConnectorDocument = `
         id
         createdAt
         updatedAt
-        service
         name
+        descritpion
+        resourceName
+        extractor
         topics
+        service
+        active
         status
         secretCredentials
-        source
+        dataSource
         transformations {
           nextToken
         }
@@ -6959,20 +6924,7 @@ export const GetTransformationsByConnectorInputFn = (variables: GetTransformatio
  */
 export const GetTransformationsByConnectorOutputFn = ({
   getTransformationsByConnector,
-}: GetTransformationsByConnector) =>
-  getTransformationsByConnector &&
-  ({
-    ...getTransformationsByConnector,
-    items: getTransformationsByConnector.items?.map((item) => ({
-      ...item,
-      connector: {
-        ...item?.connector,
-        secretCredentials:
-          item?.connector?.secretCredentials &&
-          (JSON.parse(item?.connector?.secretCredentials as any) as unknown as Scalars['AWSJSON']),
-      },
-    })),
-  } as ModelTransformationConnection);
+}: GetTransformationsByConnector) => getTransformationsByConnector as ModelTransformationConnection;
 
 /**
  * Fetcher function for `GetTransformationsByConnector`.
@@ -7922,11 +7874,11 @@ export const GetNodeInputFn = (variables: GetNodeVariables) => variables as GetN
 
 /**
  * Output transformer function for `GetNode`.
- * It extracts the `getNode` field from the result and transforms it into a `NodeGraphRecord` object.
+ * It extracts the `getNode` field from the result and transforms it into a `GraphNodeRecord` object.
  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
  * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetNode - The data returned from the GraphQL server
- * @returns NodeGraphRecord - The transformed data
+ * @returns GraphNodeRecord - The transformed data
  */
 export const GetNodeOutputFn = ({ getNode }: GetNode) =>
   getNode &&
@@ -7952,7 +7904,7 @@ export const GetNodeOutputFn = ({ getNode }: GetNode) =>
           (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as NodeGraphRecord);
+  } as GraphNodeRecord);
 
 /**
  * Fetcher function for `GetNode`.
@@ -7974,7 +7926,7 @@ export const GetNodeFetcher = (
   outputFn = GetNodeOutputFn,
   inputFn = GetNodeInputFn,
 ) =>
-  fetchWithAmplify<GetNode, GetNodeVariables, NodeGraphRecord, GetNodeVariables>(
+  fetchWithAmplify<GetNode, GetNodeVariables, GraphNodeRecord, GetNodeVariables>(
     GetNodeDocument,
     variables,
     options,
@@ -7988,10 +7940,10 @@ export const GetNodeFetcher = (
  */
 export const getNode = (variables: GetNodeVariables) => GetNodeFetcher(variables)();
 
-export const useGetNode = <TData = NodeGraphRecord | undefined, TError = undefined>(
+export const useGetNode = <TData = GraphNodeRecord | undefined, TError = undefined>(
   variables: GetNodeVariables,
-  options?: UseQueryOptions<NodeGraphRecord | undefined, TError, TData>,
-) => useQuery<NodeGraphRecord | undefined, TError, TData>(['GetNode', variables], GetNodeFetcher(variables), options);
+  options?: UseQueryOptions<GraphNodeRecord | undefined, TError, TData>,
+) => useQuery<GraphNodeRecord | undefined, TError, TData>(['GetNode', variables], GetNodeFetcher(variables), options);
 
 useGetNode.getKey = GetNodeKeys;
 
@@ -8037,11 +7989,11 @@ export const GetRelationshipInputFn = (variables: GetRelationshipVariables) => v
 
 /**
  * Output transformer function for `GetRelationship`.
- * It extracts the `getRelationship` field from the result and transforms it into a `RelationshipGraphRecord` object.
+ * It extracts the `getRelationship` field from the result and transforms it into a `GraphRelationshipRecord` object.
  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
  * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data GetRelationship - The data returned from the GraphQL server
- * @returns RelationshipGraphRecord - The transformed data
+ * @returns GraphRelationshipRecord - The transformed data
  */
 export const GetRelationshipOutputFn = ({ getRelationship }: GetRelationship) =>
   getRelationship &&
@@ -8065,7 +8017,7 @@ export const GetRelationshipOutputFn = ({ getRelationship }: GetRelationship) =>
         getRelationship.start?.properties &&
         (JSON.parse(getRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as RelationshipGraphRecord);
+  } as GraphRelationshipRecord);
 
 /**
  * Fetcher function for `GetRelationship`.
@@ -8087,7 +8039,7 @@ export const GetRelationshipFetcher = (
   outputFn = GetRelationshipOutputFn,
   inputFn = GetRelationshipInputFn,
 ) =>
-  fetchWithAmplify<GetRelationship, GetRelationshipVariables, RelationshipGraphRecord, GetRelationshipVariables>(
+  fetchWithAmplify<GetRelationship, GetRelationshipVariables, GraphRelationshipRecord, GetRelationshipVariables>(
     GetRelationshipDocument,
     variables,
     options,
@@ -8101,11 +8053,11 @@ export const GetRelationshipFetcher = (
  */
 export const getRelationship = (variables: GetRelationshipVariables) => GetRelationshipFetcher(variables)();
 
-export const useGetRelationship = <TData = RelationshipGraphRecord | undefined, TError = undefined>(
+export const useGetRelationship = <TData = GraphRelationshipRecord | undefined, TError = undefined>(
   variables: GetRelationshipVariables,
-  options?: UseQueryOptions<RelationshipGraphRecord | undefined, TError, TData>,
+  options?: UseQueryOptions<GraphRelationshipRecord | undefined, TError, TData>,
 ) =>
-  useQuery<RelationshipGraphRecord | undefined, TError, TData>(
+  useQuery<GraphRelationshipRecord | undefined, TError, TData>(
     ['GetRelationship', variables],
     GetRelationshipFetcher(variables),
     options,
@@ -8114,8 +8066,8 @@ export const useGetRelationship = <TData = RelationshipGraphRecord | undefined, 
 useGetRelationship.getKey = GetRelationshipKeys;
 
 export const ListNodesDocument = `
-    query ListNodes($label: String!) {
-  listNodes(label: $label) {
+    query ListNodes($input: ListNodesInput!) {
+  listNodes(input: $input) {
     records {
       node {
         identity
@@ -8159,11 +8111,11 @@ export const ListNodesInputFn = (variables: ListNodesVariables) => variables as 
 
 /**
  * Output transformer function for `ListNodes`.
- * It extracts the `listNodes` field from the result and transforms it into a `NodesGraphRecord` object.
+ * It extracts the `listNodes` field from the result and transforms it into a `GraphNodeRecords` object.
  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
  * If the object does not conatain any JSON fields, it will return the orignal object.
  * @param data ListNodes - The data returned from the GraphQL server
- * @returns NodesGraphRecord - The transformed data
+ * @returns GraphNodeRecords - The transformed data
  */
 export const ListNodesOutputFn = ({ listNodes }: ListNodes) =>
   listNodes &&
@@ -8192,7 +8144,7 @@ export const ListNodesOutputFn = ({ listNodes }: ListNodes) =>
         },
       })),
     })),
-  } as NodesGraphRecord);
+  } as GraphNodeRecords);
 
 /**
  * Fetcher function for `ListNodes`.
@@ -8214,7 +8166,7 @@ export const ListNodesFetcher = (
   outputFn = ListNodesOutputFn,
   inputFn = ListNodesInputFn,
 ) =>
-  fetchWithAmplify<ListNodes, ListNodesVariables, NodesGraphRecord, ListNodesVariables>(
+  fetchWithAmplify<ListNodes, ListNodesVariables, GraphNodeRecords, ListNodesVariables>(
     ListNodesDocument,
     variables,
     options,
@@ -8228,11 +8180,11 @@ export const ListNodesFetcher = (
  */
 export const listNodes = (variables: ListNodesVariables) => ListNodesFetcher(variables)();
 
-export const useListNodes = <TData = NodesGraphRecord | undefined, TError = undefined>(
+export const useListNodes = <TData = GraphNodeRecords | undefined, TError = undefined>(
   variables: ListNodesVariables,
-  options?: UseQueryOptions<NodesGraphRecord | undefined, TError, TData>,
+  options?: UseQueryOptions<GraphNodeRecords | undefined, TError, TData>,
 ) =>
-  useQuery<NodesGraphRecord | undefined, TError, TData>(['ListNodes', variables], ListNodesFetcher(variables), options);
+  useQuery<GraphNodeRecords | undefined, TError, TData>(['ListNodes', variables], ListNodesFetcher(variables), options);
 
 useListNodes.getKey = ListNodesKeys;
 
@@ -8243,6 +8195,8 @@ export const GetUserDocument = `
     createdAt
     updatedAt
     attributes
+    status
+    enabled
   }
 }
     `;
@@ -8327,6 +8281,8 @@ export const FindUsersDocument = `
       createdAt
       updatedAt
       attributes
+      status
+      enabled
     }
     nextToken
   }
@@ -8417,6 +8373,8 @@ export const ListUsersDocument = `
       createdAt
       updatedAt
       attributes
+      status
+      enabled
     }
     nextToken
   }
@@ -8509,6 +8467,7 @@ export const GetConnectorCredentialsDocument = `
   getConnectorCredentials(id: $id) {
     id
     plainCredentials
+    secretCredentials
   }
 }
     `;
@@ -8595,3 +8554,82 @@ export const useGetConnectorCredentials = <TData = ConnectorCredentials | undefi
   );
 
 useGetConnectorCredentials.getKey = GetConnectorCredentialsKeys;
+
+export const GetManifestDocument = `
+    query GetManifest($service: ConnectorService!) {
+  getManifest(service: $service)
+}
+    `;
+
+/**
+ * Key maker function for `GetManifest`.
+ */
+export const GetManifestKeys = (variables: GetManifestVariables) => ['GetManifest', variables];
+
+/**
+ * Input transformer function for `GetManifest`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `GetManifestVariables` - The original variables
+ * @returns `GetManifestVariables` - The transformed variables
+ */
+export const GetManifestInputFn = (variables: GetManifestVariables) => variables as GetManifestVariables;
+
+/**
+ * Output transformer function for `GetManifest`.
+ * It extracts the `getManifest` field from the result and transforms it into a `Scalars['AWSJSON']` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data GetManifest - The data returned from the GraphQL server
+ * @returns Scalars['AWSJSON'] - The transformed data
+ */
+export const GetManifestOutputFn = ({ getManifest }: GetManifest) =>
+  JSON.parse(getManifest as any) as unknown as Scalars['AWSJSON'];
+
+/**
+ * Fetcher function for `GetManifest`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `{operationName}Input` and `GetManifestOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const GetManifestFetcher = (
+  variables: GetManifestVariables,
+  options?: RequestInit['headers'],
+  outputFn = GetManifestOutputFn,
+  inputFn = GetManifestInputFn,
+) =>
+  fetchWithAmplify<GetManifest, GetManifestVariables, Scalars['AWSJSON'], GetManifestVariables>(
+    GetManifestDocument,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `GetManifest`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getManifest = (variables: GetManifestVariables) => GetManifestFetcher(variables)();
+
+export const useGetManifest = <TData = Scalars['AWSJSON'] | undefined, TError = undefined>(
+  variables: GetManifestVariables,
+  options?: UseQueryOptions<Scalars['AWSJSON'] | undefined, TError, TData>,
+) =>
+  useQuery<Scalars['AWSJSON'] | undefined, TError, TData>(
+    ['GetManifest', variables],
+    GetManifestFetcher(variables),
+    options,
+  );
+
+useGetManifest.getKey = GetManifestKeys;

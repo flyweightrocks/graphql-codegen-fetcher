@@ -6,14 +6,19 @@ type Connector @model(subscriptions: null)
   id: ID!
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
-  service: ConnectorService!
   name: String!
-  topics: [String!]
-  status: ConnectorStatus!
-  secretCredentials: AWSJSON # result from secretsmanager or any other JSON
-  source: String @index(name: "connectorBySource", queryField: "getConnectorBySource") # TODO:rename to bySource
-  transformations: [Transformation] @hasMany(indexName: "byConnector", fields: ["id"])
+  descritpion: String
+  # TODO resources feld einfügen mit eigener defintion und feldern für extractor, database, ggf credentials
+  resourceName: String! # Connector Resource Name, e.g. "nebula-connector-shopify-dev"
+  extractor: String # Extractor ARN, e.g. ARN of Lambda or StepFunction (maybe an URL later on)
   #TODO: database name
+  topics: [String!]
+  service: ConnectorService!
+  active: Boolean
+  status: ConnectorStatus!
+  secretCredentials: String # Secret ARN of the credentials
+  dataSource: String @index(name: "byDataSource", queryField: "getConnectorByDataSource", sortKeyFields: ["id"])
+  transformations: [Transformation] @hasMany(indexName: "byConnector", fields: ["id"])
 }
 
 type Transformation @model(subscriptions: null)
@@ -38,6 +43,8 @@ enum ConnectorService {
   SHOPIFY
 }
 
+# TODO status genauer defineren AUTHORIZED, UNAUTHORIZED, DEPRECATED, etc.
+# und dann ein zweites Feld für Active, Inactive einführen
 enum ConnectorStatus {
   ACTIVE
   INACTIVE
@@ -64,48 +71,13 @@ input RunConnectorParameterInput {
   value: String
 }
 
-type ConnectorManifest {
-  version: String
-  service: ConnectorService
-  credentials: [ConnectorCredentialsField!]
-  authorization: ConnectorAuthorization
-  topics: [String!]
-}
-
-type ConnectorCredentialsField {
-  field: String!
-  type: ConnectorCredentialsFieldType!
-  pattern: String
-}
-
-enum ConnectorCredentialsFieldType {
-  DOMAIN
-  ACCESS_TOKEN
-}
-
-type ConnectorAuthorization {
-  type: ConnectorAuthorizationType!
-  authUrl: String
-  authParams: [String!]
-  callbackParams: [String!]
-}
-
-enum ConnectorAuthorizationType {
-  OAUTH
-}
-
 # TODO pipelineResolver mit Cerdentials automatich speichern und lesen
 # die authorizatiuon muss dann später für Connector gemacht werden statt auf Credentials spearat
-type ConnectorCredentials {
+type ConnectorCredentials @aws_cognito_user_pools @aws_api_key @aws_iam {
   id: ID!
-  plainCredentials: AWSJSON! # key-value-pairs
+  plainCredentials: AWSJSON # key-value-pairs
+  secretCredentials: String
 }
-
-# # TODO delete
-# input SaveConnectorCredentialsInput {
-#   id: ID!
-#   plainCredentials: AWSJSON! # key-value-pairs
-# }
 
 input CreateConnectorCredentialsInput {
   id: ID!

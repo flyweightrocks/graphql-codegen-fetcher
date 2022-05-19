@@ -11,6 +11,7 @@ export function generateOutputTransformer(
   output: OperationField,
 ) {
   const hasJson = hasJsonFields(output.fields);
+  const returnsJson = isJsonType(output.typeName);
 
   const comment = `\n/**
   * Output transformer function for \`${operationName}\`.
@@ -30,6 +31,8 @@ export function generateOutputTransformer(
           `${output.fieldName}`,
           'parse',
         ).join('\n')} }) as ${output.typeName}`
+      : returnsJson
+      ? `JSON.parse(${output.fieldName} as any) as unknown as ${output.typeName}`
       : `${output.fieldName} as ${output.typeName}`
   };`;
 
@@ -135,9 +138,11 @@ const hasJsonFields = (fields?: OperationFieldMap): boolean => {
         if (fieldValue && typeof fieldValue === 'object') {
           return hasJsonFields(fieldValue);
         } else {
-          return fieldValue === 'AWSJSON';
+          return isJsonType(fieldValue);
         }
       })
       .filter(Boolean).length > 0
   );
 };
+
+const isJsonType = (type: string): boolean => type === 'AWSJSON' || type === `Scalars['AWSJSON']`;

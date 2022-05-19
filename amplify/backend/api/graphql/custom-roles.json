@@ -1,5 +1,8 @@
 {
   "adminRoleNames": [
-    "nebula-api-dev-eu-west-1-lambdaRole"
+    "nebula-api-dev-eu-west-1-lambdaRole",
+    "nebula-api-ci-eu-west-1-lambdaRole",
+    "nebula-connector-master-dev-eu-west-1-lambdaRole",
+    "nebula-connector-master-ci-eu-west-1-lambdaRole"
   ]
 }

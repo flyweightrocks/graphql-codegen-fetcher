@@ -1,10 +1,10 @@
-type GraphNode @aws_cognito_user_pools @aws_api_key {
+type GraphNode @aws_cognito_user_pools @aws_api_key @aws_iam {
   identity: ID!
   labels: [String!]!
   properties: AWSJSON!
 }
 
-type GraphRelationship @aws_cognito_user_pools @aws_api_key {
+type GraphRelationship @aws_cognito_user_pools @aws_api_key @aws_iam {
   identity: ID!
   type: String!
   start: String!
@@ -12,32 +12,33 @@ type GraphRelationship @aws_cognito_user_pools @aws_api_key {
   properties: AWSJSON!
 }
 
-type GraphNodeRelationship @aws_cognito_user_pools @aws_api_key {
+type GraphNodeRelationship @aws_cognito_user_pools @aws_api_key @aws_iam {
   node: GraphNode!
   relationship: GraphRelationship!
 }
 
-type RelationshipGraphRecord @aws_cognito_user_pools @aws_api_key {
+type GraphRelationshipRecord @aws_cognito_user_pools @aws_api_key @aws_iam {
   start: GraphNode!
   end: GraphNode!
   relationship: GraphRelationship!
 }
 
-type NodeGraphRecord @aws_cognito_user_pools @aws_api_key {
+type GraphNodeRecord @aws_cognito_user_pools @aws_api_key @aws_iam {
   node: GraphNode!
   relationships: [GraphNodeRelationship!]
 }
 
-type NodesGraphRecord @aws_cognito_user_pools @aws_api_key {
-  records: [NodeGraphRecord!]
+# TODO
+type GraphNodeRecords @aws_cognito_user_pools @aws_api_key @aws_iam {
+  records: [GraphNodeRecord!]
 }
 
-type DeleteNodeRecord @aws_cognito_user_pools @aws_api_key {
+type DeleteNodeRecord @aws_cognito_user_pools @aws_api_key @aws_iam {
   nodes: [GraphNode!]
   relationships: [GraphRelationship!]
 }
 
-type DeleteRelationshipRecord @aws_cognito_user_pools @aws_api_key {
+type DeleteRelationshipRecord @aws_cognito_user_pools @aws_api_key @aws_iam {
   relationships: [GraphRelationship!]
 }
 
@@ -71,11 +72,11 @@ input DeleteRelationshipInput {
   identities: [ID!]!
 }
 
-type SearchGraphResult @aws_cognito_user_pools @aws_api_key {
+type SearchGraphResult @aws_cognito_user_pools @aws_api_key @aws_iam {
   records: [SearchGraphRecord!]
 }
 
-type SearchGraphRecord @aws_cognito_user_pools @aws_api_key {
+type SearchGraphRecord @aws_cognito_user_pools @aws_api_key @aws_iam {
   node: GraphNode!
   score: String!
 }
@@ -84,4 +85,9 @@ input SearchGraphInput {
   term: String!
   schemaID: ID!
   labels: [String!]
+}
+
+input ListNodesInput {
+  identities: [ID!]!
+  limit: Int
 }

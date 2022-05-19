@@ -51,8 +51,8 @@ coverage
 
 # production
 build
-# dist
-# lib
+dist
+lib
 
 # Amplify
 # https://docs.amplify.aws/cli/reference/files/#amplifyconfig

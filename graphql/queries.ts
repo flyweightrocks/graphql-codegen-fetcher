@@ -25,38 +25,22 @@ export const customTest = /* GraphQL */ `
     }
   }
 `;
-export const getConnectorManifest = /* GraphQL */ `
-  query GetConnectorManifest($query: QueryGetConnectorManifestQueryInput!) {
-    getConnectorManifest(query: $query) {
-      version
-      service
-      credentials {
-        field
-        type
-        pattern
-      }
-      authorization {
-        type
-        authUrl
-        authParams
-        callbackParams
-      }
-      topics
-    }
-  }
-`;
 export const getConnector = /* GraphQL */ `
   query GetConnector($id: ID!) {
     getConnector(id: $id) {
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -72,12 +56,16 @@ export const getConnector = /* GraphQL */ `
             id
             createdAt
             updatedAt
-            service
             name
+            descritpion
+            resourceName
+            extractor
             topics
+            service
+            active
             status
             secretCredentials
-            source
+            dataSource
           }
         }
         nextToken
@@ -96,12 +84,16 @@ export const listConnectors = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        service
         name
+        descritpion
+        resourceName
+        extractor
         topics
+        service
+        active
         status
         secretCredentials
-        source
+        dataSource
         transformations {
           items {
             id
@@ -121,16 +113,18 @@ export const listConnectors = /* GraphQL */ `
     }
   }
 `;
-export const getConnectorBySource = /* GraphQL */ `
-  query GetConnectorBySource(
-    $source: String!
+export const getConnectorByDataSource = /* GraphQL */ `
+  query GetConnectorByDataSource(
+    $dataSource: String!
+    $id: ModelIDKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelConnectorFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    getConnectorBySource(
-      source: $source
+    getConnectorByDataSource(
+      dataSource: $dataSource
+      id: $id
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
@@ -140,12 +134,16 @@ export const getConnectorBySource = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        service
         name
+        descritpion
+        resourceName
+        extractor
         topics
+        service
+        active
         status
         secretCredentials
-        source
+        dataSource
         transformations {
           items {
             id
@@ -181,12 +179,16 @@ export const getTransformation = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        service
         name
+        descritpion
+        resourceName
+        extractor
         topics
+        service
+        active
         status
         secretCredentials
-        source
+        dataSource
         transformations {
           items {
             id
@@ -226,12 +228,16 @@ export const listTransformations = /* GraphQL */ `
           id
           createdAt
           updatedAt
-          service
           name
+          descritpion
+          resourceName
+          extractor
           topics
+          service
+          active
           status
           secretCredentials
-          source
+          dataSource
           transformations {
             nextToken
           }
@@ -270,12 +276,16 @@ export const getTransformationsByConnector = /* GraphQL */ `
           id
           createdAt
           updatedAt
-          service
           name
+          descritpion
+          resourceName
+          extractor
           topics
+          service
+          active
           status
           secretCredentials
-          source
+          dataSource
           transformations {
             nextToken
           }
@@ -542,8 +552,8 @@ export const getRelationship = /* GraphQL */ `
   }
 `;
 export const listNodes = /* GraphQL */ `
-  query ListNodes($label: String!) {
-    listNodes(label: $label) {
+  query ListNodes($input: ListNodesInput!) {
+    listNodes(input: $input) {
       records {
         node {
           identity
@@ -575,6 +585,8 @@ export const getUser = /* GraphQL */ `
       createdAt
       updatedAt
       attributes
+      status
+      enabled
     }
   }
 `;
@@ -586,6 +598,8 @@ export const findUsers = /* GraphQL */ `
         createdAt
         updatedAt
         attributes
+        status
+        enabled
       }
       nextToken
     }
@@ -599,6 +613,8 @@ export const listUsers = /* GraphQL */ `
         createdAt
         updatedAt
         attributes
+        status
+        enabled
       }
       nextToken
     }
@@ -609,6 +625,12 @@ export const getConnectorCredentials = /* GraphQL */ `
     getConnectorCredentials(id: $id) {
       id
       plainCredentials
+      secretCredentials
     }
+  }
+`;
+export const getManifest = /* GraphQL */ `
+  query GetManifest($service: ConnectorService!) {
+    getManifest(service: $service)
   }
 `;

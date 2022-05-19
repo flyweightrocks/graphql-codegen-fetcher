@@ -6,35 +6,43 @@ type Query {
 
   # Search graph
   searchGraph(input: SearchGraphInput!): SearchGraphResult
-    @function(name: "nebula-api-${env}-resolver")
+    @function(name: "nebula-api-${env}-graphResolver")
     @auth(rules: [
       { allow: public },
       { allow: private },
     ])
 
   # Get single node by identity
-  getNode(identity: ID!): NodeGraphRecord
-    @function(name: "nebula-api-${env}-resolver")
+  getNode(identity: ID!): GraphNodeRecord
+    @function(name: "nebula-api-${env}-graphResolver")
     @auth(rules: [
       { allow: public },
       { allow: private },
     ])
 
   # Get single relationship by identity
-  getRelationship(identity: ID!): RelationshipGraphRecord
-    @function(name: "nebula-api-${env}-resolver")
+  getRelationship(identity: ID!): GraphRelationshipRecord
+    @function(name: "nebula-api-${env}-graphResolver")
     @auth(rules: [
       { allow: public },
       { allow: private },
     ])
 
   # List all nodes by label
-  listNodes(label: String!): NodesGraphRecord
-    @function(name: "nebula-api-${env}-resolver")
+  listNodes(input: ListNodesInput!): GraphNodeRecords
+    @function(name: "nebula-api-${env}-graphResolver")
     @auth(rules: [
       { allow: public },
       { allow: private },
     ])
+
+  # # List relationships by ID
+  # listRelationships(input: ListRelationshipsInput!): RelationshipsGraphRecord
+  #   @function(name: "nebula-api-${env}-graphResolver")
+  #   @auth(rules: [
+  #     { allow: public },
+  #     { allow: private },
+  #   ])
 
   # Users
   # --------------------------------------------------------------------------------------------
@@ -62,14 +70,26 @@ type Query {
       { allow: private },
     ])
 
-
-  # Connector Manifest
-  # TODO funktioniert nicht mit API gateway urls: https://github.com/aws-amplify/amplify-js/issues/9330
-  getConnectorManifest(service: ConnectorService!): ConnectorManifest
-    @http(url: "https://nebula-connector-shopify-dev-meta.s3.eu-west-1.amazonaws.com/manifest.json") # param :service will be replaced automatically
-
   # Connector Credentials
   getConnectorCredentials(id: ID!): ConnectorCredentials
+    @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
+
+  # Manifest
+  # TODO funktioniert nicht mit API gateway urls: https://github.com/aws-amplify/amplify-js/issues/9330
+  # @http(url: "https://nebula-connector-shopify-dev-meta.s3.eu-west-1.amazonaws.com/manifest.json") # param :service will be replaced automatically
+  # TODO ggf. von service zu resource ändern wenn wir das Manifest für anderen arten wiedervwenden, z.b. Apps
+  # getManifest(service: ConnectorService!): Manifest
+  #   @function(name: "nebula-api-${env}-resolver")
+  #   @auth(rules: [
+  #     { allow: public },
+  #     { allow: private },
+  #   ])
+
+  getManifest(service: ConnectorService!): AWSJSON
     @function(name: "nebula-api-${env}-resolver")
     @auth(rules: [
       { allow: public },
@@ -79,6 +99,7 @@ type Query {
   customTest(id: ID!): Test
 }
 
+# TODO remove public auth rules
 type Mutation {
   emptyMutation: Int
 
@@ -91,28 +112,69 @@ type Mutation {
 
   runConnector(input: RunConnectorInput!): AWSJSON
     @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
 
   # Connector Credentials
   createConnectorCredentials(input: CreateConnectorCredentialsInput!): ConnectorCredentials
     @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
   updateConnectorCredentials(input: UpdateConnectorCredentialsInput!): ConnectorCredentials
     @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
   deleteConnectorCredentials(input: DeleteConnectorCredentialsInput!): ConnectorCredentials
     @function(name: "nebula-api-${env}-resolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
+
   # Node
-  createNode(input: CreateNodeInput!): NodeGraphRecord
-    @function(name: "nebula-api-${env}-resolver")
-  updateNode(input: UpdateNodeInput!): NodeGraphRecord
-    @function(name: "nebula-api-${env}-resolver")
+  createNode(input: CreateNodeInput!): GraphNodeRecord
+    @function(name: "nebula-api-${env}-graphResolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
+  updateNode(input: UpdateNodeInput!): GraphNodeRecord
+    @function(name: "nebula-api-${env}-graphResolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
   deleteNode(input: DeleteNodeInput!): DeleteNodeRecord
-    @function(name: "nebula-api-${env}-resolver")
+    @function(name: "nebula-api-${env}-graphResolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
   # Relationship
-  createRelationship(input: CreateRelationshipInput!): RelationshipGraphRecord
-    @function(name: "nebula-api-${env}-resolver")
-  updateRelationship(input: UpdateRelationshipInput!): RelationshipGraphRecord
-    @function(name: "nebula-api-${env}-resolver")
+  createRelationship(input: CreateRelationshipInput!): GraphRelationshipRecord
+    @function(name: "nebula-api-${env}-graphResolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
+  updateRelationship(input: UpdateRelationshipInput!): GraphRelationshipRecord
+    @function(name: "nebula-api-${env}-graphResolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
   deleteRelationship(input: DeleteRelationshipInput!): DeleteRelationshipRecord
-    @function(name: "nebula-api-${env}-resolver")
+    @function(name: "nebula-api-${env}-graphResolver")
+    @auth(rules: [
+      { allow: public },
+      { allow: private },
+    ])
 
   # # Organization
   # createOrganization(input: CreateOrganizationInput!): Organization

@@ -65,5 +65,12 @@
       "dependsOn": []
     }
   },
-  "custom": {}
+  "custom": {},
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "providerPlugin": "awscloudformation",
+      "type": "manual"
+    }
+  }
 }

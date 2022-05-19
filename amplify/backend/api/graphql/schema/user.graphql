@@ -42,6 +42,8 @@ type CognitoUser @aws_cognito_user_pools @aws_api_key {
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
   attributes: AWSJSON!
+  status: UserStatus
+  enabled: Boolean
 }
 
 type CognitoUserList @aws_cognito_user_pools @aws_api_key {
@@ -59,9 +61,20 @@ input CreateUserInput {
 }
 
 input UpdateUserInput {
+  username: ID!
   email: String!
 }
 
 input DeleteUserInput {
   username: ID!
+}
+
+enum UserStatus {
+  ARCHIVED
+  COMPROMISED
+  CONFIRMED
+  FORCE_CHANGE_PASSWORD
+  RESET_REQUIRED
+  UNCONFIRMED
+  UNKNOWN
 }

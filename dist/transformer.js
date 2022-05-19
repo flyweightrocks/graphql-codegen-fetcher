@@ -4,6 +4,7 @@ exports.generateInputTransformer = exports.generateOutputTransformer = void 0;
 const variables_generator_1 = require("./variables-generator");
 function generateOutputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, output) {
     const hasJson = hasJsonFields(output.fields);
+    const returnsJson = isJsonType(output.typeName);
     const comment = `\n/**
   * Output transformer function for \`${operationName}\`.
   * It extracts the \`${output.fieldName}\` field from the result and transforms it into a \`${output.typeName}\` object.
@@ -14,7 +15,9 @@ function generateOutputTransformer(node, operationName, operationVariablesTypes,
   */`;
     const implementation = `export const ${operationName}OutputFn = ({ ${output.fieldName} }: ${operationResultType}) => ${hasJson
         ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(output.fields, `${output.fieldName}`, 'parse').join('\n')} }) as ${output.typeName}`
-        : `${output.fieldName} as ${output.typeName}`};`;
+        : returnsJson
+            ? `JSON.parse(${output.fieldName} as any) as unknown as ${output.typeName}`
+            : `${output.fieldName} as ${output.typeName}`};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateOutputTransformer = generateOutputTransformer;
@@ -77,9 +80,10 @@ const hasJsonFields = (fields) => {
             return hasJsonFields(fieldValue);
         }
         else {
-            return fieldValue === 'AWSJSON';
+            return isJsonType(fieldValue);
         }
     })
         .filter(Boolean).length > 0);
 };
+const isJsonType = (type) => type === 'AWSJSON' || type === `Scalars['AWSJSON']`;
 //# sourceMappingURL=transformer.js.map

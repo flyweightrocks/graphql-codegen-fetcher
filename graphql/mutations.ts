@@ -7,168 +7,6 @@ export const emptyMutation = /* GraphQL */ `
     emptyMutation
   }
 `;
-export const runConnector = /* GraphQL */ `
-  mutation RunConnector($input: RunConnectorInput!) {
-    runConnector(input: $input)
-  }
-`;
-export const createConnectorCredentials = /* GraphQL */ `
-  mutation CreateConnectorCredentials(
-    $input: CreateConnectorCredentialsInput!
-  ) {
-    createConnectorCredentials(input: $input) {
-      id
-      plainCredentials
-    }
-  }
-`;
-export const updateConnectorCredentials = /* GraphQL */ `
-  mutation UpdateConnectorCredentials(
-    $input: UpdateConnectorCredentialsInput!
-  ) {
-    updateConnectorCredentials(input: $input) {
-      id
-      plainCredentials
-    }
-  }
-`;
-export const deleteConnectorCredentials = /* GraphQL */ `
-  mutation DeleteConnectorCredentials(
-    $input: DeleteConnectorCredentialsInput!
-  ) {
-    deleteConnectorCredentials(input: $input) {
-      id
-      plainCredentials
-    }
-  }
-`;
-export const createNode = /* GraphQL */ `
-  mutation CreateNode($input: CreateNodeInput!) {
-    createNode(input: $input) {
-      node {
-        identity
-        labels
-        properties
-      }
-      relationships {
-        node {
-          identity
-          labels
-          properties
-        }
-        relationship {
-          identity
-          type
-          start
-          end
-          properties
-        }
-      }
-    }
-  }
-`;
-export const updateNode = /* GraphQL */ `
-  mutation UpdateNode($input: UpdateNodeInput!) {
-    updateNode(input: $input) {
-      node {
-        identity
-        labels
-        properties
-      }
-      relationships {
-        node {
-          identity
-          labels
-          properties
-        }
-        relationship {
-          identity
-          type
-          start
-          end
-          properties
-        }
-      }
-    }
-  }
-`;
-export const deleteNode = /* GraphQL */ `
-  mutation DeleteNode($input: DeleteNodeInput!) {
-    deleteNode(input: $input) {
-      nodes {
-        identity
-        labels
-        properties
-      }
-      relationships {
-        identity
-        type
-        start
-        end
-        properties
-      }
-    }
-  }
-`;
-export const createRelationship = /* GraphQL */ `
-  mutation CreateRelationship($input: CreateRelationshipInput!) {
-    createRelationship(input: $input) {
-      start {
-        identity
-        labels
-        properties
-      }
-      end {
-        identity
-        labels
-        properties
-      }
-      relationship {
-        identity
-        type
-        start
-        end
-        properties
-      }
-    }
-  }
-`;
-export const updateRelationship = /* GraphQL */ `
-  mutation UpdateRelationship($input: UpdateRelationshipInput!) {
-    updateRelationship(input: $input) {
-      start {
-        identity
-        labels
-        properties
-      }
-      end {
-        identity
-        labels
-        properties
-      }
-      relationship {
-        identity
-        type
-        start
-        end
-        properties
-      }
-    }
-  }
-`;
-export const deleteRelationship = /* GraphQL */ `
-  mutation DeleteRelationship($input: DeleteRelationshipInput!) {
-    deleteRelationship(input: $input) {
-      relationships {
-        identity
-        type
-        start
-        end
-        properties
-      }
-    }
-  }
-`;
 export const createConnector = /* GraphQL */ `
   mutation CreateConnector(
     $input: CreateConnectorInput!
@@ -178,12 +16,16 @@ export const createConnector = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -199,12 +41,16 @@ export const createConnector = /* GraphQL */ `
             id
             createdAt
             updatedAt
-            service
             name
+            descritpion
+            resourceName
+            extractor
             topics
+            service
+            active
             status
             secretCredentials
-            source
+            dataSource
           }
         }
         nextToken
@@ -221,12 +67,16 @@ export const updateConnector = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -242,12 +92,16 @@ export const updateConnector = /* GraphQL */ `
             id
             createdAt
             updatedAt
-            service
             name
+            descritpion
+            resourceName
+            extractor
             topics
+            service
+            active
             status
             secretCredentials
-            source
+            dataSource
           }
         }
         nextToken
@@ -264,12 +118,16 @@ export const deleteConnector = /* GraphQL */ `
       id
       createdAt
       updatedAt
-      service
       name
+      descritpion
+      resourceName
+      extractor
       topics
+      service
+      active
       status
       secretCredentials
-      source
+      dataSource
       transformations {
         items {
           id
@@ -285,12 +143,16 @@ export const deleteConnector = /* GraphQL */ `
             id
             createdAt
             updatedAt
-            service
             name
+            descritpion
+            resourceName
+            extractor
             topics
+            service
+            active
             status
             secretCredentials
-            source
+            dataSource
           }
         }
         nextToken
@@ -317,12 +179,16 @@ export const createTransformation = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        service
         name
+        descritpion
+        resourceName
+        extractor
         topics
+        service
+        active
         status
         secretCredentials
-        source
+        dataSource
         transformations {
           items {
             id
@@ -360,12 +226,16 @@ export const updateTransformation = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        service
         name
+        descritpion
+        resourceName
+        extractor
         topics
+        service
+        active
         status
         secretCredentials
-        source
+        dataSource
         transformations {
           items {
             id
@@ -403,12 +273,16 @@ export const deleteTransformation = /* GraphQL */ `
         id
         createdAt
         updatedAt
-        service
         name
+        descritpion
+        resourceName
+        extractor
         topics
+        service
+        active
         status
         secretCredentials
-        source
+        dataSource
         transformations {
           items {
             id
@@ -704,6 +578,171 @@ export const runPerspective = /* GraphQL */ `
     }
   }
 `;
+export const runConnector = /* GraphQL */ `
+  mutation RunConnector($input: RunConnectorInput!) {
+    runConnector(input: $input)
+  }
+`;
+export const createConnectorCredentials = /* GraphQL */ `
+  mutation CreateConnectorCredentials(
+    $input: CreateConnectorCredentialsInput!
+  ) {
+    createConnectorCredentials(input: $input) {
+      id
+      plainCredentials
+      secretCredentials
+    }
+  }
+`;
+export const updateConnectorCredentials = /* GraphQL */ `
+  mutation UpdateConnectorCredentials(
+    $input: UpdateConnectorCredentialsInput!
+  ) {
+    updateConnectorCredentials(input: $input) {
+      id
+      plainCredentials
+      secretCredentials
+    }
+  }
+`;
+export const deleteConnectorCredentials = /* GraphQL */ `
+  mutation DeleteConnectorCredentials(
+    $input: DeleteConnectorCredentialsInput!
+  ) {
+    deleteConnectorCredentials(input: $input) {
+      id
+      plainCredentials
+      secretCredentials
+    }
+  }
+`;
+export const createNode = /* GraphQL */ `
+  mutation CreateNode($input: CreateNodeInput!) {
+    createNode(input: $input) {
+      node {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        node {
+          identity
+          labels
+          properties
+        }
+        relationship {
+          identity
+          type
+          start
+          end
+          properties
+        }
+      }
+    }
+  }
+`;
+export const updateNode = /* GraphQL */ `
+  mutation UpdateNode($input: UpdateNodeInput!) {
+    updateNode(input: $input) {
+      node {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        node {
+          identity
+          labels
+          properties
+        }
+        relationship {
+          identity
+          type
+          start
+          end
+          properties
+        }
+      }
+    }
+  }
+`;
+export const deleteNode = /* GraphQL */ `
+  mutation DeleteNode($input: DeleteNodeInput!) {
+    deleteNode(input: $input) {
+      nodes {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        identity
+        type
+        start
+        end
+        properties
+      }
+    }
+  }
+`;
+export const createRelationship = /* GraphQL */ `
+  mutation CreateRelationship($input: CreateRelationshipInput!) {
+    createRelationship(input: $input) {
+      start {
+        identity
+        labels
+        properties
+      }
+      end {
+        identity
+        labels
+        properties
+      }
+      relationship {
+        identity
+        type
+        start
+        end
+        properties
+      }
+    }
+  }
+`;
+export const updateRelationship = /* GraphQL */ `
+  mutation UpdateRelationship($input: UpdateRelationshipInput!) {
+    updateRelationship(input: $input) {
+      start {
+        identity
+        labels
+        properties
+      }
+      end {
+        identity
+        labels
+        properties
+      }
+      relationship {
+        identity
+        type
+        start
+        end
+        properties
+      }
+    }
+  }
+`;
+export const deleteRelationship = /* GraphQL */ `
+  mutation DeleteRelationship($input: DeleteRelationshipInput!) {
+    deleteRelationship(input: $input) {
+      relationships {
+        identity
+        type
+        start
+        end
+        properties
+      }
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser($input: CreateUserInput!) {
     createUser(input: $input) {
@@ -711,6 +750,8 @@ export const createUser = /* GraphQL */ `
       createdAt
       updatedAt
       attributes
+      status
+      enabled
     }
   }
 `;
@@ -721,6 +762,8 @@ export const updateUser = /* GraphQL */ `
       createdAt
       updatedAt
       attributes
+      status
+      enabled
     }
   }
 `;
@@ -731,6 +774,8 @@ export const deleteUser = /* GraphQL */ `
       createdAt
       updatedAt
       attributes
+      status
+      enabled
     }
   }
 `;
