@@ -30,7 +30,7 @@ export function generateOutputTransformer(
           output.fields,
           `${output.fieldName}`,
           'parse',
-        ).join('\n')} }) as ${output.typeName}`
+        ).join('\n')} }) as TOutput`
       : returnsJson
       ? `JSON.parse(${output.fieldName} as any) as unknown as TOutput`
       : `${output.fieldName} as TOutput`
