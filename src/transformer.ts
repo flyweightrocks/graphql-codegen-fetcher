@@ -22,7 +22,7 @@ export function generateOutputTransformer(
   * @returns ${output.typeName} - The transformed data
   */`;
 
-  const implementation = `export const ${operationName}OutputFn = ({ ${
+  const implementation = `export const ${operationName}OutputFn = <TOutput = ${output.typeName}>({ ${
     output.fieldName
   } }: ${operationResultType}) => ${
     hasJson
@@ -33,7 +33,7 @@ export function generateOutputTransformer(
         ).join('\n')} }) as ${output.typeName}`
       : returnsJson
       ? `JSON.parse(${output.fieldName} as any) as unknown as ${output.typeName}`
-      : `${output.fieldName} as ${output.typeName}`
+      : `${output.fieldName} as TOutput`
   };`;
 
   return `\n${comment}\n${implementation}`;
@@ -60,7 +60,7 @@ export function generateInputTransformer(
   * @returns \`${operationVariablesTypes}\` - The transformed variables
   */`;
 
-  const implementation = `export const ${operationName}InputFn = (${signature}) => ${
+  const implementation = `export const ${operationName}InputFn = <TInput = ${operationVariablesTypes}>(${signature}) => ${
     hasJson
       ? `({...variables, ${inputVariables
           .filter((variable) => hasJsonFields(variable.fields))
@@ -73,7 +73,7 @@ export function generateInputTransformer(
               )} },`,
           )
           .join('\n')} }) as ${operationVariablesTypes}`
-      : `variables as ${operationVariablesTypes}`
+      : `variables as TInput`
   };`;
   return `\n${comment}\n${implementation}`;
 }

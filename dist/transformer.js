@@ -13,11 +13,11 @@ function generateOutputTransformer(node, operationName, operationVariablesTypes,
   * @param data ${operationResultType} - The data returned from the GraphQL server
   * @returns ${output.typeName} - The transformed data
   */`;
-    const implementation = `export const ${operationName}OutputFn = ({ ${output.fieldName} }: ${operationResultType}) => ${hasJson
+    const implementation = `export const ${operationName}OutputFn = <TOutput = ${output.typeName}>({ ${output.fieldName} }: ${operationResultType}) => ${hasJson
         ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(output.fields, `${output.fieldName}`, 'parse').join('\n')} }) as ${output.typeName}`
         : returnsJson
             ? `JSON.parse(${output.fieldName} as any) as unknown as ${output.typeName}`
-            : `${output.fieldName} as ${output.typeName}`};`;
+            : `${output.fieldName} as TOutput`};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateOutputTransformer = generateOutputTransformer;
@@ -33,12 +33,12 @@ function generateInputTransformer(node, operationName, operationVariablesTypes, 
   * @param variables \`${operationVariablesTypes}\` - The original variables
   * @returns \`${operationVariablesTypes}\` - The transformed variables
   */`;
-    const implementation = `export const ${operationName}InputFn = (${signature}) => ${hasJson
+    const implementation = `export const ${operationName}InputFn = <TInput = ${operationVariablesTypes}>(${signature}) => ${hasJson
         ? `({...variables, ${inputVariables
             .filter((variable) => hasJsonFields(variable.fields))
             .map((variable) => `${variable.fieldName}: { ...variables.${variable.fieldName}, ${transformJsonFields(variable.fields || {}, `variables.${variable.fieldName}`, 'stringify')} },`)
             .join('\n')} }) as ${operationVariablesTypes}`
-        : `variables as ${operationVariablesTypes}`};`;
+        : `variables as TInput`};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateInputTransformer = generateInputTransformer;

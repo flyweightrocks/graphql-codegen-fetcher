@@ -14,7 +14,7 @@ class CustomMapperFetcher {
         this._isReactHook = !!customFetcher.isReactHook;
     }
     getFetcherFnGenerics(operationResultType, operationVariablesTypes, outputResultType, inputVariablesType) {
-        return `${this._mapper.type}<${operationResultType}, ${operationVariablesTypes}, ${outputResultType}, ${inputVariablesType}>`;
+        return `${this._mapper.type}<${operationResultType}, ${operationVariablesTypes}, TOutput, TInput>`;
     }
     getFetcherName(operationName) {
         return `${operationName}Fetcher`;
@@ -118,7 +118,7 @@ class CustomMapperFetcher {
     * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
     * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
     * 
-    * The input and output transformer functions are optional arguments and default to the generated \`{operationName}Input\` and \`${operationName}Output\` functions.    
+    * The input and output transformer functions are optional arguments and default to the generated \`${operationName}Input\` and \`${operationName}Output\` functions.    
     * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
     * @param variables - The variables to pass to the GraphQL operation.
     * @param options - The options to pass to the GraphQL operation.
@@ -126,7 +126,7 @@ class CustomMapperFetcher {
     * @param inputFn - The input transformer function.
     * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
     */`;
-        const implementation = `export const ${this.getFetcherName(operationName)} = (${variables}, options?: RequestInit['headers'], outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${impl};`;
+        const implementation = `export const ${this.getFetcherName(operationName)} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${impl};`;
         return `\n${comment}\n${implementation}\n`;
     }
     generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables) {

@@ -25,7 +25,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
     outputResultType: string,
     inputVariablesType: string,
   ): string {
-    return `${this._mapper.type}<${operationResultType}, ${operationVariablesTypes}, ${outputResultType}, ${inputVariablesType}>`;
+    return `${this._mapper.type}<${operationResultType}, ${operationVariablesTypes}, TOutput, TInput>`;
   }
 
   private getFetcherName(operationName: string): string {
@@ -219,7 +219,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
 
     const implementation = `export const ${this.getFetcherName(
       operationName,
-    )} = (${variables}, options?: RequestInit['headers'], outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${impl};`;
+    )} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${impl};`;
     return `\n${comment}\n${implementation}\n`;
   }
 
