@@ -4700,7 +4700,7 @@ export const RunPerspectiveOutputFn = <TOutput = RunPerspectiveResult>({ runPers
   ({
     ...runPerspective,
     records: runPerspective.records && (JSON.parse(runPerspective.records as any) as unknown as Scalars['AWSJSON']),
-  } as RunPerspectiveResult);
+  } as TOutput);
 
 /**
  * Fetcher function for `RunPerspective`.
@@ -4777,7 +4777,7 @@ export const RunConnectorInputFn = <TInput = RunConnectorVariables>(variables: R
  * @returns Scalars['AWSJSON'] - The transformed data
  */
 export const RunConnectorOutputFn = <TOutput = Scalars['AWSJSON']>({ runConnector }: RunConnector) =>
-  JSON.parse(runConnector as any) as unknown as Scalars['AWSJSON'];
+  JSON.parse(runConnector as any) as unknown as TOutput;
 
 /**
  * Fetcher function for `RunConnector`.
@@ -4857,7 +4857,7 @@ export const CreateConnectorCredentialsInputFn = <TInput = CreateConnectorCreden
         variables.input.plainCredentials &&
         (JSON.stringify(variables.input.plainCredentials as any) as unknown as Scalars['AWSJSON']),
     },
-  } as CreateConnectorCredentialsVariables);
+  } as TInput);
 
 /**
  * Output transformer function for `CreateConnectorCredentials`.
@@ -4876,7 +4876,7 @@ export const CreateConnectorCredentialsOutputFn = <TOutput = ConnectorCredential
     plainCredentials:
       createConnectorCredentials.plainCredentials &&
       (JSON.parse(createConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as ConnectorCredentials);
+  } as TOutput);
 
 /**
  * Fetcher function for `CreateConnectorCredentials`.
@@ -4960,7 +4960,7 @@ export const UpdateConnectorCredentialsInputFn = <TInput = UpdateConnectorCreden
         variables.input.plainCredentials &&
         (JSON.stringify(variables.input.plainCredentials as any) as unknown as Scalars['AWSJSON']),
     },
-  } as UpdateConnectorCredentialsVariables);
+  } as TInput);
 
 /**
  * Output transformer function for `UpdateConnectorCredentials`.
@@ -4979,7 +4979,7 @@ export const UpdateConnectorCredentialsOutputFn = <TOutput = ConnectorCredential
     plainCredentials:
       updateConnectorCredentials.plainCredentials &&
       (JSON.parse(updateConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as ConnectorCredentials);
+  } as TOutput);
 
 /**
  * Fetcher function for `UpdateConnectorCredentials`.
@@ -5073,7 +5073,7 @@ export const DeleteConnectorCredentialsOutputFn = <TOutput = ConnectorCredential
     plainCredentials:
       deleteConnectorCredentials.plainCredentials &&
       (JSON.parse(deleteConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as ConnectorCredentials);
+  } as TOutput);
 
 /**
  * Fetcher function for `DeleteConnectorCredentials`.
@@ -5171,7 +5171,7 @@ export const CreateNodeInputFn = <TInput = CreateNodeVariables>(variables: Creat
         variables.input.properties &&
         (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as CreateNodeVariables);
+  } as TInput);
 
 /**
  * Output transformer function for `CreateNode`.
@@ -5206,7 +5206,7 @@ export const CreateNodeOutputFn = <TOutput = GraphNodeRecord>({ createNode }: Cr
           (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as GraphNodeRecord);
+  } as TOutput);
 
 /**
  * Fetcher function for `CreateNode`.
@@ -5300,7 +5300,7 @@ export const UpdateNodeInputFn = <TInput = UpdateNodeVariables>(variables: Updat
         variables.input.properties &&
         (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as UpdateNodeVariables);
+  } as TInput);
 
 /**
  * Output transformer function for `UpdateNode`.
@@ -5335,7 +5335,7 @@ export const UpdateNodeOutputFn = <TOutput = GraphNodeRecord>({ updateNode }: Up
           (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as GraphNodeRecord);
+  } as TOutput);
 
 /**
  * Fetcher function for `UpdateNode`.
@@ -5436,7 +5436,7 @@ export const DeleteNodeOutputFn = <TOutput = DeleteNodeRecord>({ deleteNode }: D
       properties:
         relationship?.properties && (JSON.parse(relationship?.properties as any) as unknown as Scalars['AWSJSON']),
     })),
-  } as DeleteNodeRecord);
+  } as TOutput);
 
 /**
  * Fetcher function for `DeleteNode`.
@@ -5530,7 +5530,7 @@ export const CreateRelationshipInputFn = <TInput = CreateRelationshipVariables>(
         variables.input.properties &&
         (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as CreateRelationshipVariables);
+  } as TInput);
 
 /**
  * Output transformer function for `CreateRelationship`.
@@ -5564,7 +5564,7 @@ export const CreateRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({
         createRelationship.start?.properties &&
         (JSON.parse(createRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as GraphRelationshipRecord);
+  } as TOutput);
 
 /**
  * Fetcher function for `CreateRelationship`.
@@ -5658,7 +5658,7 @@ export const UpdateRelationshipInputFn = <TInput = UpdateRelationshipVariables>(
         variables.input.properties &&
         (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as UpdateRelationshipVariables);
+  } as TInput);
 
 /**
  * Output transformer function for `UpdateRelationship`.
@@ -5692,7 +5692,7 @@ export const UpdateRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({
         updateRelationship.start?.properties &&
         (JSON.parse(updateRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as GraphRelationshipRecord);
+  } as TOutput);
 
 /**
  * Fetcher function for `UpdateRelationship`.
@@ -5788,7 +5788,7 @@ export const DeleteRelationshipOutputFn = <TOutput = DeleteRelationshipRecord>({
       properties:
         relationship?.properties && (JSON.parse(relationship?.properties as any) as unknown as Scalars['AWSJSON']),
     })),
-  } as DeleteRelationshipRecord);
+  } as TOutput);
 
 /**
  * Fetcher function for `DeleteRelationship`.
@@ -5875,7 +5875,7 @@ export const CreateUserOutputFn = <TOutput = CognitoUser>({ createUser }: Create
   ({
     ...createUser,
     attributes: createUser.attributes && (JSON.parse(createUser.attributes as any) as unknown as Scalars['AWSJSON']),
-  } as CognitoUser);
+  } as TOutput);
 
 /**
  * Fetcher function for `CreateUser`.
@@ -5962,7 +5962,7 @@ export const UpdateUserOutputFn = <TOutput = CognitoUser>({ updateUser }: Update
   ({
     ...updateUser,
     attributes: updateUser.attributes && (JSON.parse(updateUser.attributes as any) as unknown as Scalars['AWSJSON']),
-  } as CognitoUser);
+  } as TOutput);
 
 /**
  * Fetcher function for `UpdateUser`.
@@ -6049,7 +6049,7 @@ export const DeleteUserOutputFn = <TOutput = CognitoUser>({ deleteUser }: Delete
   ({
     ...deleteUser,
     attributes: deleteUser.attributes && (JSON.parse(deleteUser.attributes as any) as unknown as Scalars['AWSJSON']),
-  } as CognitoUser);
+  } as TOutput);
 
 /**
  * Fetcher function for `DeleteUser`.
@@ -7859,7 +7859,7 @@ export const SearchGraphOutputFn = <TOutput = SearchGraphResult>({ searchGraph }
           record?.node?.properties && (JSON.parse(record?.node?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as SearchGraphResult);
+  } as TOutput);
 
 /**
  * Fetcher function for `SearchGraph`.
@@ -7981,7 +7981,7 @@ export const GetNodeOutputFn = <TOutput = GraphNodeRecord>({ getNode }: GetNode)
           (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as GraphNodeRecord);
+  } as TOutput);
 
 /**
  * Fetcher function for `GetNode`.
@@ -8089,7 +8089,7 @@ export const GetRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({ get
         getRelationship.start?.properties &&
         (JSON.parse(getRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as GraphRelationshipRecord);
+  } as TOutput);
 
 /**
  * Fetcher function for `GetRelationship`.
@@ -8216,7 +8216,7 @@ export const ListNodesOutputFn = <TOutput = GraphNodeRecords>({ listNodes }: Lis
         },
       })),
     })),
-  } as GraphNodeRecords);
+  } as TOutput);
 
 /**
  * Fetcher function for `ListNodes`.
@@ -8302,7 +8302,7 @@ export const GetUserOutputFn = <TOutput = CognitoUser>({ getUser }: GetUser) =>
   ({
     ...getUser,
     attributes: getUser.attributes && (JSON.parse(getUser.attributes as any) as unknown as Scalars['AWSJSON']),
-  } as CognitoUser);
+  } as TOutput);
 
 /**
  * Fetcher function for `GetUser`.
@@ -8387,7 +8387,7 @@ export const FindUsersOutputFn = <TOutput = CognitoUserList>({ findUsers }: Find
       ...item,
       attributes: item?.attributes && (JSON.parse(item?.attributes as any) as unknown as Scalars['AWSJSON']),
     })),
-  } as CognitoUserList);
+  } as TOutput);
 
 /**
  * Fetcher function for `FindUsers`.
@@ -8480,7 +8480,7 @@ export const ListUsersOutputFn = <TOutput = CognitoUserList>({ listUsers }: List
       ...item,
       attributes: item?.attributes && (JSON.parse(item?.attributes as any) as unknown as Scalars['AWSJSON']),
     })),
-  } as CognitoUserList);
+  } as TOutput);
 
 /**
  * Fetcher function for `ListUsers`.
@@ -8576,7 +8576,7 @@ export const GetConnectorCredentialsOutputFn = <TOutput = ConnectorCredentials>(
     plainCredentials:
       getConnectorCredentials.plainCredentials &&
       (JSON.parse(getConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as ConnectorCredentials);
+  } as TOutput);
 
 /**
  * Fetcher function for `GetConnectorCredentials`.
@@ -8660,7 +8660,7 @@ export const GetManifestInputFn = <TInput = GetManifestVariables>(variables: Get
  * @returns Scalars['AWSJSON'] - The transformed data
  */
 export const GetManifestOutputFn = <TOutput = Scalars['AWSJSON']>({ getManifest }: GetManifest) =>
-  JSON.parse(getManifest as any) as unknown as Scalars['AWSJSON'];
+  JSON.parse(getManifest as any) as unknown as TOutput;
 
 /**
  * Fetcher function for `GetManifest`.
