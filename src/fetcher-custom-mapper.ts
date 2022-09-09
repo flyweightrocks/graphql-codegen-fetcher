@@ -208,7 +208,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
     * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
     * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
     * 
-    * The input and output transformer functions are optional arguments and default to the generated \`{operationName}Input\` and \`${operationName}Output\` functions.    
+    * The input and output transformer functions are optional arguments and default to the generated \`${operationName}Input\` and \`${operationName}Output\` functions.    
     * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
     * @param variables - The variables to pass to the GraphQL operation.
     * @param options - The options to pass to the GraphQL operation.
