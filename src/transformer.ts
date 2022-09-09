@@ -32,7 +32,7 @@ export function generateOutputTransformer(
           'parse',
         ).join('\n')} }) as ${output.typeName}`
       : returnsJson
-      ? `JSON.parse(${output.fieldName} as any) as unknown as ${output.typeName}`
+      ? `JSON.parse(${output.fieldName} as any) as unknown as TOutput`
       : `${output.fieldName} as TOutput`
   };`;
 
@@ -72,7 +72,7 @@ export function generateInputTransformer(
                 'stringify',
               )} },`,
           )
-          .join('\n')} }) as ${operationVariablesTypes}`
+          .join('\n')} }) as TInput`
       : `variables as TInput`
   };`;
   return `\n${comment}\n${implementation}`;
