@@ -14,10 +14,10 @@ function generateOutputTransformer(node, operationName, operationVariablesTypes,
   * @returns ${output.typeName} - The transformed data
   */`;
     const implementation = `export const ${operationName}OutputFn = <TOutput = ${output.typeName}>({ ${output.fieldName} }: ${operationResultType}) => ${hasJson
-        ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(output.fields, `${output.fieldName}`, 'parse').join('\n')} }) as TOutput`
+        ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(output.fields, `${output.fieldName}`, 'parse').join('\n')} }) as unknown as TOutput`
         : returnsJson
             ? `JSON.parse(${output.fieldName} as any) as unknown as TOutput`
-            : `${output.fieldName} as TOutput`};`;
+            : `${output.fieldName} as unknown as TOutput`};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateOutputTransformer = generateOutputTransformer;
@@ -37,8 +37,8 @@ function generateInputTransformer(node, operationName, operationVariablesTypes, 
         ? `({...variables, ${inputVariables
             .filter((variable) => hasJsonFields(variable.fields))
             .map((variable) => `${variable.fieldName}: { ...variables.${variable.fieldName}, ${transformJsonFields(variable.fields || {}, `variables.${variable.fieldName}`, 'stringify')} },`)
-            .join('\n')} }) as TInput`
-        : `variables as TInput`};`;
+            .join('\n')} }) as unknown as TInput`
+        : `variables as unknown as TInput`};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateInputTransformer = generateInputTransformer;
