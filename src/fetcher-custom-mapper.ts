@@ -119,7 +119,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
       outputResultType,
       inputVariablesType,
     );
-    const impl = this._isReactHook
+    const queryFetcher = this._isReactHook
       ? `${typedFetcher}(${documentVariableName}).bind(null, variables)`
       : `${this.getFetcherName(operationName)}(variables)`;
 
@@ -132,7 +132,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
     ) =>
     ${hookConfig.query.hook}<${outputResultType} | undefined , TError, TData>(
       ${generateQueryKey(node, hasRequiredVariables)},
-      ${impl},
+      ${queryFetcher},
       options
     );\n`;
   }
@@ -161,7 +161,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
       outputResultType,
       inputVariablesType,
     );
-    const impl = this._isReactHook
+    const mutationFetcher = this._isReactHook
       ? `${typedFetcher}(${documentVariableName})`
       : `(${variables}) => ${this.getFetcherName(operationName)}(variables)()`;
 
@@ -171,7 +171,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
     >(${options}) =>
     ${hookConfig.mutation.hook}<${outputResultType} | undefined, TError, ${inputVariablesType}, TContext>(
       ${generateMutationKey(node)},
-      ${impl},
+      ${mutationFetcher},
       options
     );\n`;
   }
@@ -200,7 +200,7 @@ export class CustomMapperFetcher implements FetcherRenderer {
       outputResultType,
       inputVariablesType,
     );
-    const impl = `${typedFetcher}(${documentVariableName}, variables, options, outputFn, inputFn)`;
+    const invokeFetcher = `${typedFetcher}(document, variables, options, outputFn, inputFn)`;
 
     const comment = `\n/**
     * Fetcher function for \`${operationName}\`.
@@ -219,7 +219,8 @@ export class CustomMapperFetcher implements FetcherRenderer {
 
     const implementation = `export const ${this.getFetcherName(
       operationName,
-    )} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${impl};`;
+    )} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], document = ${documentVariableName}, outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${invokeFetcher};`;
+
     return `\n${comment}\n${implementation}\n`;
   }
 

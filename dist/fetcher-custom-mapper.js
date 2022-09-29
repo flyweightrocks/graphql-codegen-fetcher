@@ -66,7 +66,7 @@ class CustomMapperFetcher {
         this.visitor.reactQueryVisitor.reactQueryOptionsIdentifiersInUse.add(hookConfig.query.options);
         const options = `options?: ${hookConfig.query.options}<${outputResultType} | undefined, TError, TData>`;
         const typedFetcher = this.getFetcherFnGenerics(operationResultType, operationVariablesTypes, outputResultType, inputVariablesType);
-        const impl = this._isReactHook
+        const queryFetcher = this._isReactHook
             ? `${typedFetcher}(${documentVariableName}).bind(null, variables)`
             : `${this.getFetcherName(operationName)}(variables)`;
         return `\nexport const use${operationName} = <
@@ -78,7 +78,7 @@ class CustomMapperFetcher {
     ) =>
     ${hookConfig.query.hook}<${outputResultType} | undefined , TError, TData>(
       ${(0, variables_generator_1.generateQueryKey)(node, hasRequiredVariables)},
-      ${impl},
+      ${queryFetcher},
       options
     );\n`;
     }
@@ -91,7 +91,7 @@ class CustomMapperFetcher {
         this.visitor.reactQueryVisitor.reactQueryOptionsIdentifiersInUse.add(hookConfig.mutation.options);
         const options = `options?: ${hookConfig.mutation.options}<${outputResultType} | undefined, TError, ${inputVariablesType}, TContext>`;
         const typedFetcher = this.getFetcherFnGenerics(operationResultType, operationVariablesTypes, outputResultType, inputVariablesType);
-        const impl = this._isReactHook
+        const mutationFetcher = this._isReactHook
             ? `${typedFetcher}(${documentVariableName})`
             : `(${variables}) => ${this.getFetcherName(operationName)}(variables)()`;
         return `\nexport const use${operationName} = <
@@ -100,7 +100,7 @@ class CustomMapperFetcher {
     >(${options}) =>
     ${hookConfig.mutation.hook}<${outputResultType} | undefined, TError, ${inputVariablesType}, TContext>(
       ${(0, variables_generator_1.generateMutationKey)(node)},
-      ${impl},
+      ${mutationFetcher},
       options
     );\n`;
     }
@@ -111,7 +111,7 @@ class CustomMapperFetcher {
         const outputResultType = this.visitor.outputResultTypes[operationName];
         const inputVariablesType = operationVariablesTypes;
         const typedFetcher = this.getFetcherFnGenerics(operationResultType, operationVariablesTypes, outputResultType, inputVariablesType);
-        const impl = `${typedFetcher}(${documentVariableName}, variables, options, outputFn, inputFn)`;
+        const invokeFetcher = `${typedFetcher}(document, variables, options, outputFn, inputFn)`;
         const comment = `\n/**
     * Fetcher function for \`${operationName}\`.
     * It invokes the base fetcher function with the operation-specific input and output transformer functions.
@@ -126,7 +126,7 @@ class CustomMapperFetcher {
     * @param inputFn - The input transformer function.
     * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
     */`;
-        const implementation = `export const ${this.getFetcherName(operationName)} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${impl};`;
+        const implementation = `export const ${this.getFetcherName(operationName)} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], document = ${documentVariableName}, outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${invokeFetcher};`;
         return `\n${comment}\n${implementation}\n`;
     }
     generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables) {

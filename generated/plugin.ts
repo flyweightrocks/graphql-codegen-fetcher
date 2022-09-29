@@ -2867,7 +2867,7 @@ export const EmptyMutationKeys = () => ['EmptyMutation'];
  * @returns `EmptyMutationVariables` - The transformed variables
  */
 export const EmptyMutationInputFn = <TInput = EmptyMutationVariables>(variables?: EmptyMutationVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `EmptyMutation`.
@@ -2878,7 +2878,7 @@ export const EmptyMutationInputFn = <TInput = EmptyMutationVariables>(variables?
  * @returns Scalars['Int'] - The transformed data
  */
 export const EmptyMutationOutputFn = <TOutput = Scalars['Int']>({ emptyMutation }: EmptyMutation) =>
-  emptyMutation as TOutput;
+  emptyMutation as unknown as TOutput;
 
 /**
  * Fetcher function for `EmptyMutation`.
@@ -2897,11 +2897,12 @@ export const EmptyMutationOutputFn = <TOutput = Scalars['Int']>({ emptyMutation 
 export const EmptyMutationFetcher = <TOutput = Scalars['Int'], TInput = EmptyMutationVariables>(
   variables?: EmptyMutationVariables,
   options?: RequestInit['headers'],
+  document = EmptyMutationDocument,
   outputFn = EmptyMutationOutputFn,
   inputFn = EmptyMutationInputFn,
 ) =>
   fetchWithAmplify<EmptyMutation, EmptyMutationVariables, TOutput, TInput>(
-    EmptyMutationDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -2987,7 +2988,7 @@ export const CreateConnectorKeys = () => ['CreateConnector'];
  * @returns `CreateConnectorVariables` - The transformed variables
  */
 export const CreateConnectorInputFn = <TInput = CreateConnectorVariables>(variables: CreateConnectorVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `CreateConnector`.
@@ -2998,7 +2999,7 @@ export const CreateConnectorInputFn = <TInput = CreateConnectorVariables>(variab
  * @returns Connector - The transformed data
  */
 export const CreateConnectorOutputFn = <TOutput = Connector>({ createConnector }: CreateConnector) =>
-  createConnector as TOutput;
+  createConnector as unknown as TOutput;
 
 /**
  * Fetcher function for `CreateConnector`.
@@ -3017,11 +3018,12 @@ export const CreateConnectorOutputFn = <TOutput = Connector>({ createConnector }
 export const CreateConnectorFetcher = <TOutput = Connector, TInput = CreateConnectorVariables>(
   variables: CreateConnectorVariables,
   options?: RequestInit['headers'],
+  document = CreateConnectorDocument,
   outputFn = CreateConnectorOutputFn,
   inputFn = CreateConnectorInputFn,
 ) =>
   fetchWithAmplify<CreateConnector, CreateConnectorVariables, TOutput, TInput>(
-    CreateConnectorDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3107,7 +3109,7 @@ export const UpdateConnectorKeys = () => ['UpdateConnector'];
  * @returns `UpdateConnectorVariables` - The transformed variables
  */
 export const UpdateConnectorInputFn = <TInput = UpdateConnectorVariables>(variables: UpdateConnectorVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `UpdateConnector`.
@@ -3118,7 +3120,7 @@ export const UpdateConnectorInputFn = <TInput = UpdateConnectorVariables>(variab
  * @returns Connector - The transformed data
  */
 export const UpdateConnectorOutputFn = <TOutput = Connector>({ updateConnector }: UpdateConnector) =>
-  updateConnector as TOutput;
+  updateConnector as unknown as TOutput;
 
 /**
  * Fetcher function for `UpdateConnector`.
@@ -3137,11 +3139,12 @@ export const UpdateConnectorOutputFn = <TOutput = Connector>({ updateConnector }
 export const UpdateConnectorFetcher = <TOutput = Connector, TInput = UpdateConnectorVariables>(
   variables: UpdateConnectorVariables,
   options?: RequestInit['headers'],
+  document = UpdateConnectorDocument,
   outputFn = UpdateConnectorOutputFn,
   inputFn = UpdateConnectorInputFn,
 ) =>
   fetchWithAmplify<UpdateConnector, UpdateConnectorVariables, TOutput, TInput>(
-    UpdateConnectorDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3227,7 +3230,7 @@ export const DeleteConnectorKeys = () => ['DeleteConnector'];
  * @returns `DeleteConnectorVariables` - The transformed variables
  */
 export const DeleteConnectorInputFn = <TInput = DeleteConnectorVariables>(variables: DeleteConnectorVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeleteConnector`.
@@ -3238,7 +3241,7 @@ export const DeleteConnectorInputFn = <TInput = DeleteConnectorVariables>(variab
  * @returns Connector - The transformed data
  */
 export const DeleteConnectorOutputFn = <TOutput = Connector>({ deleteConnector }: DeleteConnector) =>
-  deleteConnector as TOutput;
+  deleteConnector as unknown as TOutput;
 
 /**
  * Fetcher function for `DeleteConnector`.
@@ -3257,11 +3260,12 @@ export const DeleteConnectorOutputFn = <TOutput = Connector>({ deleteConnector }
 export const DeleteConnectorFetcher = <TOutput = Connector, TInput = DeleteConnectorVariables>(
   variables: DeleteConnectorVariables,
   options?: RequestInit['headers'],
+  document = DeleteConnectorDocument,
   outputFn = DeleteConnectorOutputFn,
   inputFn = DeleteConnectorInputFn,
 ) =>
   fetchWithAmplify<DeleteConnector, DeleteConnectorVariables, TOutput, TInput>(
-    DeleteConnectorDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3344,7 +3348,7 @@ export const CreateTransformationKeys = () => ['CreateTransformation'];
  */
 export const CreateTransformationInputFn = <TInput = CreateTransformationVariables>(
   variables: CreateTransformationVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `CreateTransformation`.
@@ -3356,7 +3360,7 @@ export const CreateTransformationInputFn = <TInput = CreateTransformationVariabl
  */
 export const CreateTransformationOutputFn = <TOutput = Transformation>({
   createTransformation,
-}: CreateTransformation) => createTransformation as TOutput;
+}: CreateTransformation) => createTransformation as unknown as TOutput;
 
 /**
  * Fetcher function for `CreateTransformation`.
@@ -3375,11 +3379,12 @@ export const CreateTransformationOutputFn = <TOutput = Transformation>({
 export const CreateTransformationFetcher = <TOutput = Transformation, TInput = CreateTransformationVariables>(
   variables: CreateTransformationVariables,
   options?: RequestInit['headers'],
+  document = CreateTransformationDocument,
   outputFn = CreateTransformationOutputFn,
   inputFn = CreateTransformationInputFn,
 ) =>
   fetchWithAmplify<CreateTransformation, CreateTransformationVariables, TOutput, TInput>(
-    CreateTransformationDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3463,7 +3468,7 @@ export const UpdateTransformationKeys = () => ['UpdateTransformation'];
  */
 export const UpdateTransformationInputFn = <TInput = UpdateTransformationVariables>(
   variables: UpdateTransformationVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `UpdateTransformation`.
@@ -3475,7 +3480,7 @@ export const UpdateTransformationInputFn = <TInput = UpdateTransformationVariabl
  */
 export const UpdateTransformationOutputFn = <TOutput = Transformation>({
   updateTransformation,
-}: UpdateTransformation) => updateTransformation as TOutput;
+}: UpdateTransformation) => updateTransformation as unknown as TOutput;
 
 /**
  * Fetcher function for `UpdateTransformation`.
@@ -3494,11 +3499,12 @@ export const UpdateTransformationOutputFn = <TOutput = Transformation>({
 export const UpdateTransformationFetcher = <TOutput = Transformation, TInput = UpdateTransformationVariables>(
   variables: UpdateTransformationVariables,
   options?: RequestInit['headers'],
+  document = UpdateTransformationDocument,
   outputFn = UpdateTransformationOutputFn,
   inputFn = UpdateTransformationInputFn,
 ) =>
   fetchWithAmplify<UpdateTransformation, UpdateTransformationVariables, TOutput, TInput>(
-    UpdateTransformationDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3582,7 +3588,7 @@ export const DeleteTransformationKeys = () => ['DeleteTransformation'];
  */
 export const DeleteTransformationInputFn = <TInput = DeleteTransformationVariables>(
   variables: DeleteTransformationVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeleteTransformation`.
@@ -3594,7 +3600,7 @@ export const DeleteTransformationInputFn = <TInput = DeleteTransformationVariabl
  */
 export const DeleteTransformationOutputFn = <TOutput = Transformation>({
   deleteTransformation,
-}: DeleteTransformation) => deleteTransformation as TOutput;
+}: DeleteTransformation) => deleteTransformation as unknown as TOutput;
 
 /**
  * Fetcher function for `DeleteTransformation`.
@@ -3613,11 +3619,12 @@ export const DeleteTransformationOutputFn = <TOutput = Transformation>({
 export const DeleteTransformationFetcher = <TOutput = Transformation, TInput = DeleteTransformationVariables>(
   variables: DeleteTransformationVariables,
   options?: RequestInit['headers'],
+  document = DeleteTransformationDocument,
   outputFn = DeleteTransformationOutputFn,
   inputFn = DeleteTransformationInputFn,
 ) =>
   fetchWithAmplify<DeleteTransformation, DeleteTransformationVariables, TOutput, TInput>(
-    DeleteTransformationDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3678,7 +3685,7 @@ export const CreatePerspectiveKeys = () => ['CreatePerspective'];
  * @returns `CreatePerspectiveVariables` - The transformed variables
  */
 export const CreatePerspectiveInputFn = <TInput = CreatePerspectiveVariables>(variables: CreatePerspectiveVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `CreatePerspective`.
@@ -3689,7 +3696,7 @@ export const CreatePerspectiveInputFn = <TInput = CreatePerspectiveVariables>(va
  * @returns Perspective - The transformed data
  */
 export const CreatePerspectiveOutputFn = <TOutput = Perspective>({ createPerspective }: CreatePerspective) =>
-  createPerspective as TOutput;
+  createPerspective as unknown as TOutput;
 
 /**
  * Fetcher function for `CreatePerspective`.
@@ -3708,11 +3715,12 @@ export const CreatePerspectiveOutputFn = <TOutput = Perspective>({ createPerspec
 export const CreatePerspectiveFetcher = <TOutput = Perspective, TInput = CreatePerspectiveVariables>(
   variables: CreatePerspectiveVariables,
   options?: RequestInit['headers'],
+  document = CreatePerspectiveDocument,
   outputFn = CreatePerspectiveOutputFn,
   inputFn = CreatePerspectiveInputFn,
 ) =>
   fetchWithAmplify<CreatePerspective, CreatePerspectiveVariables, TOutput, TInput>(
-    CreatePerspectiveDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3772,7 +3780,7 @@ export const UpdatePerspectiveKeys = () => ['UpdatePerspective'];
  * @returns `UpdatePerspectiveVariables` - The transformed variables
  */
 export const UpdatePerspectiveInputFn = <TInput = UpdatePerspectiveVariables>(variables: UpdatePerspectiveVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `UpdatePerspective`.
@@ -3783,7 +3791,7 @@ export const UpdatePerspectiveInputFn = <TInput = UpdatePerspectiveVariables>(va
  * @returns Perspective - The transformed data
  */
 export const UpdatePerspectiveOutputFn = <TOutput = Perspective>({ updatePerspective }: UpdatePerspective) =>
-  updatePerspective as TOutput;
+  updatePerspective as unknown as TOutput;
 
 /**
  * Fetcher function for `UpdatePerspective`.
@@ -3802,11 +3810,12 @@ export const UpdatePerspectiveOutputFn = <TOutput = Perspective>({ updatePerspec
 export const UpdatePerspectiveFetcher = <TOutput = Perspective, TInput = UpdatePerspectiveVariables>(
   variables: UpdatePerspectiveVariables,
   options?: RequestInit['headers'],
+  document = UpdatePerspectiveDocument,
   outputFn = UpdatePerspectiveOutputFn,
   inputFn = UpdatePerspectiveInputFn,
 ) =>
   fetchWithAmplify<UpdatePerspective, UpdatePerspectiveVariables, TOutput, TInput>(
-    UpdatePerspectiveDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3866,7 +3875,7 @@ export const DeletePerspectiveKeys = () => ['DeletePerspective'];
  * @returns `DeletePerspectiveVariables` - The transformed variables
  */
 export const DeletePerspectiveInputFn = <TInput = DeletePerspectiveVariables>(variables: DeletePerspectiveVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeletePerspective`.
@@ -3877,7 +3886,7 @@ export const DeletePerspectiveInputFn = <TInput = DeletePerspectiveVariables>(va
  * @returns Perspective - The transformed data
  */
 export const DeletePerspectiveOutputFn = <TOutput = Perspective>({ deletePerspective }: DeletePerspective) =>
-  deletePerspective as TOutput;
+  deletePerspective as unknown as TOutput;
 
 /**
  * Fetcher function for `DeletePerspective`.
@@ -3896,11 +3905,12 @@ export const DeletePerspectiveOutputFn = <TOutput = Perspective>({ deletePerspec
 export const DeletePerspectiveFetcher = <TOutput = Perspective, TInput = DeletePerspectiveVariables>(
   variables: DeletePerspectiveVariables,
   options?: RequestInit['headers'],
+  document = DeletePerspectiveDocument,
   outputFn = DeletePerspectiveOutputFn,
   inputFn = DeletePerspectiveInputFn,
 ) =>
   fetchWithAmplify<DeletePerspective, DeletePerspectiveVariables, TOutput, TInput>(
-    DeletePerspectiveDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -3974,7 +3984,7 @@ export const CreateSchemaKeys = () => ['CreateSchema'];
  * @returns `CreateSchemaVariables` - The transformed variables
  */
 export const CreateSchemaInputFn = <TInput = CreateSchemaVariables>(variables: CreateSchemaVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `CreateSchema`.
@@ -3984,7 +3994,8 @@ export const CreateSchemaInputFn = <TInput = CreateSchemaVariables>(variables: C
  * @param data CreateSchema - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
-export const CreateSchemaOutputFn = <TOutput = Schema>({ createSchema }: CreateSchema) => createSchema as TOutput;
+export const CreateSchemaOutputFn = <TOutput = Schema>({ createSchema }: CreateSchema) =>
+  createSchema as unknown as TOutput;
 
 /**
  * Fetcher function for `CreateSchema`.
@@ -4003,11 +4014,12 @@ export const CreateSchemaOutputFn = <TOutput = Schema>({ createSchema }: CreateS
 export const CreateSchemaFetcher = <TOutput = Schema, TInput = CreateSchemaVariables>(
   variables: CreateSchemaVariables,
   options?: RequestInit['headers'],
+  document = CreateSchemaDocument,
   outputFn = CreateSchemaOutputFn,
   inputFn = CreateSchemaInputFn,
 ) =>
   fetchWithAmplify<CreateSchema, CreateSchemaVariables, TOutput, TInput>(
-    CreateSchemaDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -4081,7 +4093,7 @@ export const UpdateSchemaKeys = () => ['UpdateSchema'];
  * @returns `UpdateSchemaVariables` - The transformed variables
  */
 export const UpdateSchemaInputFn = <TInput = UpdateSchemaVariables>(variables: UpdateSchemaVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `UpdateSchema`.
@@ -4091,7 +4103,8 @@ export const UpdateSchemaInputFn = <TInput = UpdateSchemaVariables>(variables: U
  * @param data UpdateSchema - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
-export const UpdateSchemaOutputFn = <TOutput = Schema>({ updateSchema }: UpdateSchema) => updateSchema as TOutput;
+export const UpdateSchemaOutputFn = <TOutput = Schema>({ updateSchema }: UpdateSchema) =>
+  updateSchema as unknown as TOutput;
 
 /**
  * Fetcher function for `UpdateSchema`.
@@ -4110,11 +4123,12 @@ export const UpdateSchemaOutputFn = <TOutput = Schema>({ updateSchema }: UpdateS
 export const UpdateSchemaFetcher = <TOutput = Schema, TInput = UpdateSchemaVariables>(
   variables: UpdateSchemaVariables,
   options?: RequestInit['headers'],
+  document = UpdateSchemaDocument,
   outputFn = UpdateSchemaOutputFn,
   inputFn = UpdateSchemaInputFn,
 ) =>
   fetchWithAmplify<UpdateSchema, UpdateSchemaVariables, TOutput, TInput>(
-    UpdateSchemaDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -4188,7 +4202,7 @@ export const DeleteSchemaKeys = () => ['DeleteSchema'];
  * @returns `DeleteSchemaVariables` - The transformed variables
  */
 export const DeleteSchemaInputFn = <TInput = DeleteSchemaVariables>(variables: DeleteSchemaVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeleteSchema`.
@@ -4198,7 +4212,8 @@ export const DeleteSchemaInputFn = <TInput = DeleteSchemaVariables>(variables: D
  * @param data DeleteSchema - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
-export const DeleteSchemaOutputFn = <TOutput = Schema>({ deleteSchema }: DeleteSchema) => deleteSchema as TOutput;
+export const DeleteSchemaOutputFn = <TOutput = Schema>({ deleteSchema }: DeleteSchema) =>
+  deleteSchema as unknown as TOutput;
 
 /**
  * Fetcher function for `DeleteSchema`.
@@ -4217,11 +4232,12 @@ export const DeleteSchemaOutputFn = <TOutput = Schema>({ deleteSchema }: DeleteS
 export const DeleteSchemaFetcher = <TOutput = Schema, TInput = DeleteSchemaVariables>(
   variables: DeleteSchemaVariables,
   options?: RequestInit['headers'],
+  document = DeleteSchemaDocument,
   outputFn = DeleteSchemaOutputFn,
   inputFn = DeleteSchemaInputFn,
 ) =>
   fetchWithAmplify<DeleteSchema, DeleteSchemaVariables, TOutput, TInput>(
-    DeleteSchemaDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -4271,7 +4287,8 @@ export const CreateTestKeys = () => ['CreateTest'];
  * @param variables `CreateTestVariables` - The original variables
  * @returns `CreateTestVariables` - The transformed variables
  */
-export const CreateTestInputFn = <TInput = CreateTestVariables>(variables: CreateTestVariables) => variables as TInput;
+export const CreateTestInputFn = <TInput = CreateTestVariables>(variables: CreateTestVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `CreateTest`.
@@ -4281,7 +4298,7 @@ export const CreateTestInputFn = <TInput = CreateTestVariables>(variables: Creat
  * @param data CreateTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const CreateTestOutputFn = <TOutput = Test>({ createTest }: CreateTest) => createTest as TOutput;
+export const CreateTestOutputFn = <TOutput = Test>({ createTest }: CreateTest) => createTest as unknown as TOutput;
 
 /**
  * Fetcher function for `CreateTest`.
@@ -4300,16 +4317,11 @@ export const CreateTestOutputFn = <TOutput = Test>({ createTest }: CreateTest) =
 export const CreateTestFetcher = <TOutput = Test, TInput = CreateTestVariables>(
   variables: CreateTestVariables,
   options?: RequestInit['headers'],
+  document = CreateTestDocument,
   outputFn = CreateTestOutputFn,
   inputFn = CreateTestInputFn,
 ) =>
-  fetchWithAmplify<CreateTest, CreateTestVariables, TOutput, TInput>(
-    CreateTestDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<CreateTest, CreateTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `CreateTest`.
@@ -4354,7 +4366,8 @@ export const UpdateTestKeys = () => ['UpdateTest'];
  * @param variables `UpdateTestVariables` - The original variables
  * @returns `UpdateTestVariables` - The transformed variables
  */
-export const UpdateTestInputFn = <TInput = UpdateTestVariables>(variables: UpdateTestVariables) => variables as TInput;
+export const UpdateTestInputFn = <TInput = UpdateTestVariables>(variables: UpdateTestVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `UpdateTest`.
@@ -4364,7 +4377,7 @@ export const UpdateTestInputFn = <TInput = UpdateTestVariables>(variables: Updat
  * @param data UpdateTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const UpdateTestOutputFn = <TOutput = Test>({ updateTest }: UpdateTest) => updateTest as TOutput;
+export const UpdateTestOutputFn = <TOutput = Test>({ updateTest }: UpdateTest) => updateTest as unknown as TOutput;
 
 /**
  * Fetcher function for `UpdateTest`.
@@ -4383,16 +4396,11 @@ export const UpdateTestOutputFn = <TOutput = Test>({ updateTest }: UpdateTest) =
 export const UpdateTestFetcher = <TOutput = Test, TInput = UpdateTestVariables>(
   variables: UpdateTestVariables,
   options?: RequestInit['headers'],
+  document = UpdateTestDocument,
   outputFn = UpdateTestOutputFn,
   inputFn = UpdateTestInputFn,
 ) =>
-  fetchWithAmplify<UpdateTest, UpdateTestVariables, TOutput, TInput>(
-    UpdateTestDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<UpdateTest, UpdateTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `UpdateTest`.
@@ -4437,7 +4445,8 @@ export const DeleteTestKeys = () => ['DeleteTest'];
  * @param variables `DeleteTestVariables` - The original variables
  * @returns `DeleteTestVariables` - The transformed variables
  */
-export const DeleteTestInputFn = <TInput = DeleteTestVariables>(variables: DeleteTestVariables) => variables as TInput;
+export const DeleteTestInputFn = <TInput = DeleteTestVariables>(variables: DeleteTestVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeleteTest`.
@@ -4447,7 +4456,7 @@ export const DeleteTestInputFn = <TInput = DeleteTestVariables>(variables: Delet
  * @param data DeleteTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const DeleteTestOutputFn = <TOutput = Test>({ deleteTest }: DeleteTest) => deleteTest as TOutput;
+export const DeleteTestOutputFn = <TOutput = Test>({ deleteTest }: DeleteTest) => deleteTest as unknown as TOutput;
 
 /**
  * Fetcher function for `DeleteTest`.
@@ -4466,16 +4475,11 @@ export const DeleteTestOutputFn = <TOutput = Test>({ deleteTest }: DeleteTest) =
 export const DeleteTestFetcher = <TOutput = Test, TInput = DeleteTestVariables>(
   variables: DeleteTestVariables,
   options?: RequestInit['headers'],
+  document = DeleteTestDocument,
   outputFn = DeleteTestOutputFn,
   inputFn = DeleteTestInputFn,
 ) =>
-  fetchWithAmplify<DeleteTest, DeleteTestVariables, TOutput, TInput>(
-    DeleteTestDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<DeleteTest, DeleteTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `DeleteTest`.
@@ -4521,7 +4525,7 @@ export const CreateOrganizationKeys = () => ['CreateOrganization'];
  */
 export const CreateOrganizationInputFn = <TInput = CreateOrganizationVariables>(
   variables: CreateOrganizationVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `CreateOrganization`.
@@ -4532,7 +4536,7 @@ export const CreateOrganizationInputFn = <TInput = CreateOrganizationVariables>(
  * @returns Organization - The transformed data
  */
 export const CreateOrganizationOutputFn = <TOutput = Organization>({ createOrganization }: CreateOrganization) =>
-  createOrganization as TOutput;
+  createOrganization as unknown as TOutput;
 
 /**
  * Fetcher function for `CreateOrganization`.
@@ -4551,11 +4555,12 @@ export const CreateOrganizationOutputFn = <TOutput = Organization>({ createOrgan
 export const CreateOrganizationFetcher = <TOutput = Organization, TInput = CreateOrganizationVariables>(
   variables: CreateOrganizationVariables,
   options?: RequestInit['headers'],
+  document = CreateOrganizationDocument,
   outputFn = CreateOrganizationOutputFn,
   inputFn = CreateOrganizationInputFn,
 ) =>
   fetchWithAmplify<CreateOrganization, CreateOrganizationVariables, TOutput, TInput>(
-    CreateOrganizationDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -4606,7 +4611,7 @@ export const UpdateOrganizationKeys = () => ['UpdateOrganization'];
  */
 export const UpdateOrganizationInputFn = <TInput = UpdateOrganizationVariables>(
   variables: UpdateOrganizationVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `UpdateOrganization`.
@@ -4617,7 +4622,7 @@ export const UpdateOrganizationInputFn = <TInput = UpdateOrganizationVariables>(
  * @returns Organization - The transformed data
  */
 export const UpdateOrganizationOutputFn = <TOutput = Organization>({ updateOrganization }: UpdateOrganization) =>
-  updateOrganization as TOutput;
+  updateOrganization as unknown as TOutput;
 
 /**
  * Fetcher function for `UpdateOrganization`.
@@ -4636,11 +4641,12 @@ export const UpdateOrganizationOutputFn = <TOutput = Organization>({ updateOrgan
 export const UpdateOrganizationFetcher = <TOutput = Organization, TInput = UpdateOrganizationVariables>(
   variables: UpdateOrganizationVariables,
   options?: RequestInit['headers'],
+  document = UpdateOrganizationDocument,
   outputFn = UpdateOrganizationOutputFn,
   inputFn = UpdateOrganizationInputFn,
 ) =>
   fetchWithAmplify<UpdateOrganization, UpdateOrganizationVariables, TOutput, TInput>(
-    UpdateOrganizationDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -4685,7 +4691,7 @@ export const RunPerspectiveKeys = () => ['RunPerspective'];
  * @returns `RunPerspectiveVariables` - The transformed variables
  */
 export const RunPerspectiveInputFn = <TInput = RunPerspectiveVariables>(variables: RunPerspectiveVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `RunPerspective`.
@@ -4700,7 +4706,7 @@ export const RunPerspectiveOutputFn = <TOutput = RunPerspectiveResult>({ runPers
   ({
     ...runPerspective,
     records: runPerspective.records && (JSON.parse(runPerspective.records as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `RunPerspective`.
@@ -4719,11 +4725,12 @@ export const RunPerspectiveOutputFn = <TOutput = RunPerspectiveResult>({ runPers
 export const RunPerspectiveFetcher = <TOutput = RunPerspectiveResult, TInput = RunPerspectiveVariables>(
   variables: RunPerspectiveVariables,
   options?: RequestInit['headers'],
+  document = RunPerspectiveDocument,
   outputFn = RunPerspectiveOutputFn,
   inputFn = RunPerspectiveInputFn,
 ) =>
   fetchWithAmplify<RunPerspective, RunPerspectiveVariables, TOutput, TInput>(
-    RunPerspectiveDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -4766,7 +4773,7 @@ export const RunConnectorKeys = () => ['RunConnector'];
  * @returns `RunConnectorVariables` - The transformed variables
  */
 export const RunConnectorInputFn = <TInput = RunConnectorVariables>(variables: RunConnectorVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `RunConnector`.
@@ -4796,11 +4803,12 @@ export const RunConnectorOutputFn = <TOutput = Scalars['AWSJSON']>({ runConnecto
 export const RunConnectorFetcher = <TOutput = Scalars['AWSJSON'], TInput = RunConnectorVariables>(
   variables: RunConnectorVariables,
   options?: RequestInit['headers'],
+  document = RunConnectorDocument,
   outputFn = RunConnectorOutputFn,
   inputFn = RunConnectorInputFn,
 ) =>
   fetchWithAmplify<RunConnector, RunConnectorVariables, TOutput, TInput>(
-    RunConnectorDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -4857,7 +4865,7 @@ export const CreateConnectorCredentialsInputFn = <TInput = CreateConnectorCreden
         variables.input.plainCredentials &&
         (JSON.stringify(variables.input.plainCredentials as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TInput);
+  } as unknown as TInput);
 
 /**
  * Output transformer function for `CreateConnectorCredentials`.
@@ -4876,7 +4884,7 @@ export const CreateConnectorCredentialsOutputFn = <TOutput = ConnectorCredential
     plainCredentials:
       createConnectorCredentials.plainCredentials &&
       (JSON.parse(createConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `CreateConnectorCredentials`.
@@ -4898,11 +4906,12 @@ export const CreateConnectorCredentialsFetcher = <
 >(
   variables: CreateConnectorCredentialsVariables,
   options?: RequestInit['headers'],
+  document = CreateConnectorCredentialsDocument,
   outputFn = CreateConnectorCredentialsOutputFn,
   inputFn = CreateConnectorCredentialsInputFn,
 ) =>
   fetchWithAmplify<CreateConnectorCredentials, CreateConnectorCredentialsVariables, TOutput, TInput>(
-    CreateConnectorCredentialsDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -4960,7 +4969,7 @@ export const UpdateConnectorCredentialsInputFn = <TInput = UpdateConnectorCreden
         variables.input.plainCredentials &&
         (JSON.stringify(variables.input.plainCredentials as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TInput);
+  } as unknown as TInput);
 
 /**
  * Output transformer function for `UpdateConnectorCredentials`.
@@ -4979,7 +4988,7 @@ export const UpdateConnectorCredentialsOutputFn = <TOutput = ConnectorCredential
     plainCredentials:
       updateConnectorCredentials.plainCredentials &&
       (JSON.parse(updateConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `UpdateConnectorCredentials`.
@@ -5001,11 +5010,12 @@ export const UpdateConnectorCredentialsFetcher = <
 >(
   variables: UpdateConnectorCredentialsVariables,
   options?: RequestInit['headers'],
+  document = UpdateConnectorCredentialsDocument,
   outputFn = UpdateConnectorCredentialsOutputFn,
   inputFn = UpdateConnectorCredentialsInputFn,
 ) =>
   fetchWithAmplify<UpdateConnectorCredentials, UpdateConnectorCredentialsVariables, TOutput, TInput>(
-    UpdateConnectorCredentialsDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -5054,7 +5064,7 @@ export const DeleteConnectorCredentialsKeys = () => ['DeleteConnectorCredentials
  */
 export const DeleteConnectorCredentialsInputFn = <TInput = DeleteConnectorCredentialsVariables>(
   variables: DeleteConnectorCredentialsVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeleteConnectorCredentials`.
@@ -5073,7 +5083,7 @@ export const DeleteConnectorCredentialsOutputFn = <TOutput = ConnectorCredential
     plainCredentials:
       deleteConnectorCredentials.plainCredentials &&
       (JSON.parse(deleteConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `DeleteConnectorCredentials`.
@@ -5095,11 +5105,12 @@ export const DeleteConnectorCredentialsFetcher = <
 >(
   variables: DeleteConnectorCredentialsVariables,
   options?: RequestInit['headers'],
+  document = DeleteConnectorCredentialsDocument,
   outputFn = DeleteConnectorCredentialsOutputFn,
   inputFn = DeleteConnectorCredentialsInputFn,
 ) =>
   fetchWithAmplify<DeleteConnectorCredentials, DeleteConnectorCredentialsVariables, TOutput, TInput>(
-    DeleteConnectorCredentialsDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -5171,7 +5182,7 @@ export const CreateNodeInputFn = <TInput = CreateNodeVariables>(variables: Creat
         variables.input.properties &&
         (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TInput);
+  } as unknown as TInput);
 
 /**
  * Output transformer function for `CreateNode`.
@@ -5206,7 +5217,7 @@ export const CreateNodeOutputFn = <TOutput = GraphNodeRecord>({ createNode }: Cr
           (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `CreateNode`.
@@ -5225,16 +5236,11 @@ export const CreateNodeOutputFn = <TOutput = GraphNodeRecord>({ createNode }: Cr
 export const CreateNodeFetcher = <TOutput = GraphNodeRecord, TInput = CreateNodeVariables>(
   variables: CreateNodeVariables,
   options?: RequestInit['headers'],
+  document = CreateNodeDocument,
   outputFn = CreateNodeOutputFn,
   inputFn = CreateNodeInputFn,
 ) =>
-  fetchWithAmplify<CreateNode, CreateNodeVariables, TOutput, TInput>(
-    CreateNodeDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<CreateNode, CreateNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `CreateNode`.
@@ -5300,7 +5306,7 @@ export const UpdateNodeInputFn = <TInput = UpdateNodeVariables>(variables: Updat
         variables.input.properties &&
         (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TInput);
+  } as unknown as TInput);
 
 /**
  * Output transformer function for `UpdateNode`.
@@ -5335,7 +5341,7 @@ export const UpdateNodeOutputFn = <TOutput = GraphNodeRecord>({ updateNode }: Up
           (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `UpdateNode`.
@@ -5354,16 +5360,11 @@ export const UpdateNodeOutputFn = <TOutput = GraphNodeRecord>({ updateNode }: Up
 export const UpdateNodeFetcher = <TOutput = GraphNodeRecord, TInput = UpdateNodeVariables>(
   variables: UpdateNodeVariables,
   options?: RequestInit['headers'],
+  document = UpdateNodeDocument,
   outputFn = UpdateNodeOutputFn,
   inputFn = UpdateNodeInputFn,
 ) =>
-  fetchWithAmplify<UpdateNode, UpdateNodeVariables, TOutput, TInput>(
-    UpdateNodeDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<UpdateNode, UpdateNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `UpdateNode`.
@@ -5413,7 +5414,8 @@ export const DeleteNodeKeys = () => ['DeleteNode'];
  * @param variables `DeleteNodeVariables` - The original variables
  * @returns `DeleteNodeVariables` - The transformed variables
  */
-export const DeleteNodeInputFn = <TInput = DeleteNodeVariables>(variables: DeleteNodeVariables) => variables as TInput;
+export const DeleteNodeInputFn = <TInput = DeleteNodeVariables>(variables: DeleteNodeVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeleteNode`.
@@ -5436,7 +5438,7 @@ export const DeleteNodeOutputFn = <TOutput = DeleteNodeRecord>({ deleteNode }: D
       properties:
         relationship?.properties && (JSON.parse(relationship?.properties as any) as unknown as Scalars['AWSJSON']),
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `DeleteNode`.
@@ -5455,16 +5457,11 @@ export const DeleteNodeOutputFn = <TOutput = DeleteNodeRecord>({ deleteNode }: D
 export const DeleteNodeFetcher = <TOutput = DeleteNodeRecord, TInput = DeleteNodeVariables>(
   variables: DeleteNodeVariables,
   options?: RequestInit['headers'],
+  document = DeleteNodeDocument,
   outputFn = DeleteNodeOutputFn,
   inputFn = DeleteNodeInputFn,
 ) =>
-  fetchWithAmplify<DeleteNode, DeleteNodeVariables, TOutput, TInput>(
-    DeleteNodeDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<DeleteNode, DeleteNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `DeleteNode`.
@@ -5530,7 +5527,7 @@ export const CreateRelationshipInputFn = <TInput = CreateRelationshipVariables>(
         variables.input.properties &&
         (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TInput);
+  } as unknown as TInput);
 
 /**
  * Output transformer function for `CreateRelationship`.
@@ -5564,7 +5561,7 @@ export const CreateRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({
         createRelationship.start?.properties &&
         (JSON.parse(createRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `CreateRelationship`.
@@ -5583,11 +5580,12 @@ export const CreateRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({
 export const CreateRelationshipFetcher = <TOutput = GraphRelationshipRecord, TInput = CreateRelationshipVariables>(
   variables: CreateRelationshipVariables,
   options?: RequestInit['headers'],
+  document = CreateRelationshipDocument,
   outputFn = CreateRelationshipOutputFn,
   inputFn = CreateRelationshipInputFn,
 ) =>
   fetchWithAmplify<CreateRelationship, CreateRelationshipVariables, TOutput, TInput>(
-    CreateRelationshipDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -5658,7 +5656,7 @@ export const UpdateRelationshipInputFn = <TInput = UpdateRelationshipVariables>(
         variables.input.properties &&
         (JSON.stringify(variables.input.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TInput);
+  } as unknown as TInput);
 
 /**
  * Output transformer function for `UpdateRelationship`.
@@ -5692,7 +5690,7 @@ export const UpdateRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({
         updateRelationship.start?.properties &&
         (JSON.parse(updateRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `UpdateRelationship`.
@@ -5711,11 +5709,12 @@ export const UpdateRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({
 export const UpdateRelationshipFetcher = <TOutput = GraphRelationshipRecord, TInput = UpdateRelationshipVariables>(
   variables: UpdateRelationshipVariables,
   options?: RequestInit['headers'],
+  document = UpdateRelationshipDocument,
   outputFn = UpdateRelationshipOutputFn,
   inputFn = UpdateRelationshipInputFn,
 ) =>
   fetchWithAmplify<UpdateRelationship, UpdateRelationshipVariables, TOutput, TInput>(
-    UpdateRelationshipDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -5767,7 +5766,7 @@ export const DeleteRelationshipKeys = () => ['DeleteRelationship'];
  */
 export const DeleteRelationshipInputFn = <TInput = DeleteRelationshipVariables>(
   variables: DeleteRelationshipVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeleteRelationship`.
@@ -5788,7 +5787,7 @@ export const DeleteRelationshipOutputFn = <TOutput = DeleteRelationshipRecord>({
       properties:
         relationship?.properties && (JSON.parse(relationship?.properties as any) as unknown as Scalars['AWSJSON']),
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `DeleteRelationship`.
@@ -5807,11 +5806,12 @@ export const DeleteRelationshipOutputFn = <TOutput = DeleteRelationshipRecord>({
 export const DeleteRelationshipFetcher = <TOutput = DeleteRelationshipRecord, TInput = DeleteRelationshipVariables>(
   variables: DeleteRelationshipVariables,
   options?: RequestInit['headers'],
+  document = DeleteRelationshipDocument,
   outputFn = DeleteRelationshipOutputFn,
   inputFn = DeleteRelationshipInputFn,
 ) =>
   fetchWithAmplify<DeleteRelationship, DeleteRelationshipVariables, TOutput, TInput>(
-    DeleteRelationshipDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -5860,7 +5860,8 @@ export const CreateUserKeys = () => ['CreateUser'];
  * @param variables `CreateUserVariables` - The original variables
  * @returns `CreateUserVariables` - The transformed variables
  */
-export const CreateUserInputFn = <TInput = CreateUserVariables>(variables: CreateUserVariables) => variables as TInput;
+export const CreateUserInputFn = <TInput = CreateUserVariables>(variables: CreateUserVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `CreateUser`.
@@ -5875,7 +5876,7 @@ export const CreateUserOutputFn = <TOutput = CognitoUser>({ createUser }: Create
   ({
     ...createUser,
     attributes: createUser.attributes && (JSON.parse(createUser.attributes as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `CreateUser`.
@@ -5894,16 +5895,11 @@ export const CreateUserOutputFn = <TOutput = CognitoUser>({ createUser }: Create
 export const CreateUserFetcher = <TOutput = CognitoUser, TInput = CreateUserVariables>(
   variables: CreateUserVariables,
   options?: RequestInit['headers'],
+  document = CreateUserDocument,
   outputFn = CreateUserOutputFn,
   inputFn = CreateUserInputFn,
 ) =>
-  fetchWithAmplify<CreateUser, CreateUserVariables, TOutput, TInput>(
-    CreateUserDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<CreateUser, CreateUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `CreateUser`.
@@ -5947,7 +5943,8 @@ export const UpdateUserKeys = () => ['UpdateUser'];
  * @param variables `UpdateUserVariables` - The original variables
  * @returns `UpdateUserVariables` - The transformed variables
  */
-export const UpdateUserInputFn = <TInput = UpdateUserVariables>(variables: UpdateUserVariables) => variables as TInput;
+export const UpdateUserInputFn = <TInput = UpdateUserVariables>(variables: UpdateUserVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `UpdateUser`.
@@ -5962,7 +5959,7 @@ export const UpdateUserOutputFn = <TOutput = CognitoUser>({ updateUser }: Update
   ({
     ...updateUser,
     attributes: updateUser.attributes && (JSON.parse(updateUser.attributes as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `UpdateUser`.
@@ -5981,16 +5978,11 @@ export const UpdateUserOutputFn = <TOutput = CognitoUser>({ updateUser }: Update
 export const UpdateUserFetcher = <TOutput = CognitoUser, TInput = UpdateUserVariables>(
   variables: UpdateUserVariables,
   options?: RequestInit['headers'],
+  document = UpdateUserDocument,
   outputFn = UpdateUserOutputFn,
   inputFn = UpdateUserInputFn,
 ) =>
-  fetchWithAmplify<UpdateUser, UpdateUserVariables, TOutput, TInput>(
-    UpdateUserDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<UpdateUser, UpdateUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `UpdateUser`.
@@ -6034,7 +6026,8 @@ export const DeleteUserKeys = () => ['DeleteUser'];
  * @param variables `DeleteUserVariables` - The original variables
  * @returns `DeleteUserVariables` - The transformed variables
  */
-export const DeleteUserInputFn = <TInput = DeleteUserVariables>(variables: DeleteUserVariables) => variables as TInput;
+export const DeleteUserInputFn = <TInput = DeleteUserVariables>(variables: DeleteUserVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `DeleteUser`.
@@ -6049,7 +6042,7 @@ export const DeleteUserOutputFn = <TOutput = CognitoUser>({ deleteUser }: Delete
   ({
     ...deleteUser,
     attributes: deleteUser.attributes && (JSON.parse(deleteUser.attributes as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `DeleteUser`.
@@ -6068,16 +6061,11 @@ export const DeleteUserOutputFn = <TOutput = CognitoUser>({ deleteUser }: Delete
 export const DeleteUserFetcher = <TOutput = CognitoUser, TInput = DeleteUserVariables>(
   variables: DeleteUserVariables,
   options?: RequestInit['headers'],
+  document = DeleteUserDocument,
   outputFn = DeleteUserOutputFn,
   inputFn = DeleteUserInputFn,
 ) =>
-  fetchWithAmplify<DeleteUser, DeleteUserVariables, TOutput, TInput>(
-    DeleteUserDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<DeleteUser, DeleteUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `DeleteUser`.
@@ -6115,7 +6103,8 @@ export const EmptyQueryKeys = (variables?: EmptyQueryVariables) =>
  * @param variables `EmptyQueryVariables` - The original variables
  * @returns `EmptyQueryVariables` - The transformed variables
  */
-export const EmptyQueryInputFn = <TInput = EmptyQueryVariables>(variables?: EmptyQueryVariables) => variables as TInput;
+export const EmptyQueryInputFn = <TInput = EmptyQueryVariables>(variables?: EmptyQueryVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `EmptyQuery`.
@@ -6125,7 +6114,8 @@ export const EmptyQueryInputFn = <TInput = EmptyQueryVariables>(variables?: Empt
  * @param data EmptyQuery - The data returned from the GraphQL server
  * @returns Scalars['String'] - The transformed data
  */
-export const EmptyQueryOutputFn = <TOutput = Scalars['String']>({ emptyQuery }: EmptyQuery) => emptyQuery as TOutput;
+export const EmptyQueryOutputFn = <TOutput = Scalars['String']>({ emptyQuery }: EmptyQuery) =>
+  emptyQuery as unknown as TOutput;
 
 /**
  * Fetcher function for `EmptyQuery`.
@@ -6144,16 +6134,11 @@ export const EmptyQueryOutputFn = <TOutput = Scalars['String']>({ emptyQuery }: 
 export const EmptyQueryFetcher = <TOutput = Scalars['String'], TInput = EmptyQueryVariables>(
   variables?: EmptyQueryVariables,
   options?: RequestInit['headers'],
+  document = EmptyQueryDocument,
   outputFn = EmptyQueryOutputFn,
   inputFn = EmptyQueryInputFn,
 ) =>
-  fetchWithAmplify<EmptyQuery, EmptyQueryVariables, TOutput, TInput>(
-    EmptyQueryDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<EmptyQuery, EmptyQueryVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `EmptyQuery`.
@@ -6193,7 +6178,7 @@ export const EchoKeys = (variables?: EchoVariables) => (variables === undefined 
  * @param variables `EchoVariables` - The original variables
  * @returns `EchoVariables` - The transformed variables
  */
-export const EchoInputFn = <TInput = EchoVariables>(variables?: EchoVariables) => variables as TInput;
+export const EchoInputFn = <TInput = EchoVariables>(variables?: EchoVariables) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `Echo`.
@@ -6203,7 +6188,7 @@ export const EchoInputFn = <TInput = EchoVariables>(variables?: EchoVariables) =
  * @param data Echo - The data returned from the GraphQL server
  * @returns Scalars['String'] - The transformed data
  */
-export const EchoOutputFn = <TOutput = Scalars['String']>({ echo }: Echo) => echo as TOutput;
+export const EchoOutputFn = <TOutput = Scalars['String']>({ echo }: Echo) => echo as unknown as TOutput;
 
 /**
  * Fetcher function for `Echo`.
@@ -6222,9 +6207,10 @@ export const EchoOutputFn = <TOutput = Scalars['String']>({ echo }: Echo) => ech
 export const EchoFetcher = <TOutput = Scalars['String'], TInput = EchoVariables>(
   variables?: EchoVariables,
   options?: RequestInit['headers'],
+  document = EchoDocument,
   outputFn = EchoOutputFn,
   inputFn = EchoInputFn,
-) => fetchWithAmplify<Echo, EchoVariables, TOutput, TInput>(EchoDocument, variables, options, outputFn, inputFn);
+) => fetchWithAmplify<Echo, EchoVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `Echo`.
@@ -6272,7 +6258,8 @@ export const CustomTestKeys = (variables: CustomTestVariables) => ['CustomTest',
  * @param variables `CustomTestVariables` - The original variables
  * @returns `CustomTestVariables` - The transformed variables
  */
-export const CustomTestInputFn = <TInput = CustomTestVariables>(variables: CustomTestVariables) => variables as TInput;
+export const CustomTestInputFn = <TInput = CustomTestVariables>(variables: CustomTestVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `CustomTest`.
@@ -6282,7 +6269,7 @@ export const CustomTestInputFn = <TInput = CustomTestVariables>(variables: Custo
  * @param data CustomTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const CustomTestOutputFn = <TOutput = Test>({ customTest }: CustomTest) => customTest as TOutput;
+export const CustomTestOutputFn = <TOutput = Test>({ customTest }: CustomTest) => customTest as unknown as TOutput;
 
 /**
  * Fetcher function for `CustomTest`.
@@ -6301,16 +6288,11 @@ export const CustomTestOutputFn = <TOutput = Test>({ customTest }: CustomTest) =
 export const CustomTestFetcher = <TOutput = Test, TInput = CustomTestVariables>(
   variables: CustomTestVariables,
   options?: RequestInit['headers'],
+  document = CustomTestDocument,
   outputFn = CustomTestOutputFn,
   inputFn = CustomTestInputFn,
 ) =>
-  fetchWithAmplify<CustomTest, CustomTestVariables, TOutput, TInput>(
-    CustomTestDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<CustomTest, CustomTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `CustomTest`.
@@ -6389,7 +6371,7 @@ export const GetConnectorKeys = (variables: GetConnectorVariables) => ['GetConne
  * @returns `GetConnectorVariables` - The transformed variables
  */
 export const GetConnectorInputFn = <TInput = GetConnectorVariables>(variables: GetConnectorVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetConnector`.
@@ -6399,7 +6381,8 @@ export const GetConnectorInputFn = <TInput = GetConnectorVariables>(variables: G
  * @param data GetConnector - The data returned from the GraphQL server
  * @returns Connector - The transformed data
  */
-export const GetConnectorOutputFn = <TOutput = Connector>({ getConnector }: GetConnector) => getConnector as TOutput;
+export const GetConnectorOutputFn = <TOutput = Connector>({ getConnector }: GetConnector) =>
+  getConnector as unknown as TOutput;
 
 /**
  * Fetcher function for `GetConnector`.
@@ -6418,11 +6401,12 @@ export const GetConnectorOutputFn = <TOutput = Connector>({ getConnector }: GetC
 export const GetConnectorFetcher = <TOutput = Connector, TInput = GetConnectorVariables>(
   variables: GetConnectorVariables,
   options?: RequestInit['headers'],
+  document = GetConnectorDocument,
   outputFn = GetConnectorOutputFn,
   inputFn = GetConnectorInputFn,
 ) =>
   fetchWithAmplify<GetConnector, GetConnectorVariables, TOutput, TInput>(
-    GetConnectorDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -6496,7 +6480,7 @@ export const ListConnectorsKeys = (variables?: ListConnectorsVariables) =>
  * @returns `ListConnectorsVariables` - The transformed variables
  */
 export const ListConnectorsInputFn = <TInput = ListConnectorsVariables>(variables?: ListConnectorsVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `ListConnectors`.
@@ -6507,7 +6491,7 @@ export const ListConnectorsInputFn = <TInput = ListConnectorsVariables>(variable
  * @returns ModelConnectorConnection - The transformed data
  */
 export const ListConnectorsOutputFn = <TOutput = ModelConnectorConnection>({ listConnectors }: ListConnectors) =>
-  listConnectors as TOutput;
+  listConnectors as unknown as TOutput;
 
 /**
  * Fetcher function for `ListConnectors`.
@@ -6526,11 +6510,12 @@ export const ListConnectorsOutputFn = <TOutput = ModelConnectorConnection>({ lis
 export const ListConnectorsFetcher = <TOutput = ModelConnectorConnection, TInput = ListConnectorsVariables>(
   variables?: ListConnectorsVariables,
   options?: RequestInit['headers'],
+  document = ListConnectorsDocument,
   outputFn = ListConnectorsOutputFn,
   inputFn = ListConnectorsInputFn,
 ) =>
   fetchWithAmplify<ListConnectors, ListConnectorsVariables, TOutput, TInput>(
-    ListConnectorsDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -6618,7 +6603,7 @@ export const GetConnectorByDataSourceKeys = (variables: GetConnectorByDataSource
  */
 export const GetConnectorByDataSourceInputFn = <TInput = GetConnectorByDataSourceVariables>(
   variables: GetConnectorByDataSourceVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetConnectorByDataSource`.
@@ -6630,7 +6615,7 @@ export const GetConnectorByDataSourceInputFn = <TInput = GetConnectorByDataSourc
  */
 export const GetConnectorByDataSourceOutputFn = <TOutput = ModelConnectorConnection>({
   getConnectorByDataSource,
-}: GetConnectorByDataSource) => getConnectorByDataSource as TOutput;
+}: GetConnectorByDataSource) => getConnectorByDataSource as unknown as TOutput;
 
 /**
  * Fetcher function for `GetConnectorByDataSource`.
@@ -6652,11 +6637,12 @@ export const GetConnectorByDataSourceFetcher = <
 >(
   variables: GetConnectorByDataSourceVariables,
   options?: RequestInit['headers'],
+  document = GetConnectorByDataSourceDocument,
   outputFn = GetConnectorByDataSourceOutputFn,
   inputFn = GetConnectorByDataSourceInputFn,
 ) =>
   fetchWithAmplify<GetConnectorByDataSource, GetConnectorByDataSourceVariables, TOutput, TInput>(
-    GetConnectorByDataSourceDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -6742,7 +6728,7 @@ export const GetTransformationKeys = (variables: GetTransformationVariables) => 
  * @returns `GetTransformationVariables` - The transformed variables
  */
 export const GetTransformationInputFn = <TInput = GetTransformationVariables>(variables: GetTransformationVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetTransformation`.
@@ -6753,7 +6739,7 @@ export const GetTransformationInputFn = <TInput = GetTransformationVariables>(va
  * @returns Transformation - The transformed data
  */
 export const GetTransformationOutputFn = <TOutput = Transformation>({ getTransformation }: GetTransformation) =>
-  getTransformation as TOutput;
+  getTransformation as unknown as TOutput;
 
 /**
  * Fetcher function for `GetTransformation`.
@@ -6772,11 +6758,12 @@ export const GetTransformationOutputFn = <TOutput = Transformation>({ getTransfo
 export const GetTransformationFetcher = <TOutput = Transformation, TInput = GetTransformationVariables>(
   variables: GetTransformationVariables,
   options?: RequestInit['headers'],
+  document = GetTransformationDocument,
   outputFn = GetTransformationOutputFn,
   inputFn = GetTransformationInputFn,
 ) =>
   fetchWithAmplify<GetTransformation, GetTransformationVariables, TOutput, TInput>(
-    GetTransformationDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -6855,7 +6842,7 @@ export const ListTransformationsKeys = (variables?: ListTransformationsVariables
  */
 export const ListTransformationsInputFn = <TInput = ListTransformationsVariables>(
   variables?: ListTransformationsVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `ListTransformations`.
@@ -6867,7 +6854,7 @@ export const ListTransformationsInputFn = <TInput = ListTransformationsVariables
  */
 export const ListTransformationsOutputFn = <TOutput = ModelTransformationConnection>({
   listTransformations,
-}: ListTransformations) => listTransformations as TOutput;
+}: ListTransformations) => listTransformations as unknown as TOutput;
 
 /**
  * Fetcher function for `ListTransformations`.
@@ -6889,11 +6876,12 @@ export const ListTransformationsFetcher = <
 >(
   variables?: ListTransformationsVariables,
   options?: RequestInit['headers'],
+  document = ListTransformationsDocument,
   outputFn = ListTransformationsOutputFn,
   inputFn = ListTransformationsInputFn,
 ) =>
   fetchWithAmplify<ListTransformations, ListTransformationsVariables, TOutput, TInput>(
-    ListTransformationsDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -6981,7 +6969,7 @@ export const GetTransformationsByConnectorKeys = (variables: GetTransformationsB
  */
 export const GetTransformationsByConnectorInputFn = <TInput = GetTransformationsByConnectorVariables>(
   variables: GetTransformationsByConnectorVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetTransformationsByConnector`.
@@ -6993,7 +6981,7 @@ export const GetTransformationsByConnectorInputFn = <TInput = GetTransformations
  */
 export const GetTransformationsByConnectorOutputFn = <TOutput = ModelTransformationConnection>({
   getTransformationsByConnector,
-}: GetTransformationsByConnector) => getTransformationsByConnector as TOutput;
+}: GetTransformationsByConnector) => getTransformationsByConnector as unknown as TOutput;
 
 /**
  * Fetcher function for `GetTransformationsByConnector`.
@@ -7015,11 +7003,12 @@ export const GetTransformationsByConnectorFetcher = <
 >(
   variables: GetTransformationsByConnectorVariables,
   options?: RequestInit['headers'],
+  document = GetTransformationsByConnectorDocument,
   outputFn = GetTransformationsByConnectorOutputFn,
   inputFn = GetTransformationsByConnectorInputFn,
 ) =>
   fetchWithAmplify<GetTransformationsByConnector, GetTransformationsByConnectorVariables, TOutput, TInput>(
-    GetTransformationsByConnectorDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -7083,7 +7072,7 @@ export const GetPerspectiveKeys = (variables: GetPerspectiveVariables) => ['GetP
  * @returns `GetPerspectiveVariables` - The transformed variables
  */
 export const GetPerspectiveInputFn = <TInput = GetPerspectiveVariables>(variables: GetPerspectiveVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetPerspective`.
@@ -7094,7 +7083,7 @@ export const GetPerspectiveInputFn = <TInput = GetPerspectiveVariables>(variable
  * @returns Perspective - The transformed data
  */
 export const GetPerspectiveOutputFn = <TOutput = Perspective>({ getPerspective }: GetPerspective) =>
-  getPerspective as TOutput;
+  getPerspective as unknown as TOutput;
 
 /**
  * Fetcher function for `GetPerspective`.
@@ -7113,11 +7102,12 @@ export const GetPerspectiveOutputFn = <TOutput = Perspective>({ getPerspective }
 export const GetPerspectiveFetcher = <TOutput = Perspective, TInput = GetPerspectiveVariables>(
   variables: GetPerspectiveVariables,
   options?: RequestInit['headers'],
+  document = GetPerspectiveDocument,
   outputFn = GetPerspectiveOutputFn,
   inputFn = GetPerspectiveInputFn,
 ) =>
   fetchWithAmplify<GetPerspective, GetPerspectiveVariables, TOutput, TInput>(
-    GetPerspectiveDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -7184,7 +7174,7 @@ export const ListPerspectivesKeys = (variables?: ListPerspectivesVariables) =>
  * @returns `ListPerspectivesVariables` - The transformed variables
  */
 export const ListPerspectivesInputFn = <TInput = ListPerspectivesVariables>(variables?: ListPerspectivesVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `ListPerspectives`.
@@ -7196,7 +7186,7 @@ export const ListPerspectivesInputFn = <TInput = ListPerspectivesVariables>(vari
  */
 export const ListPerspectivesOutputFn = <TOutput = ModelPerspectiveConnection>({
   listPerspectives,
-}: ListPerspectives) => listPerspectives as TOutput;
+}: ListPerspectives) => listPerspectives as unknown as TOutput;
 
 /**
  * Fetcher function for `ListPerspectives`.
@@ -7215,11 +7205,12 @@ export const ListPerspectivesOutputFn = <TOutput = ModelPerspectiveConnection>({
 export const ListPerspectivesFetcher = <TOutput = ModelPerspectiveConnection, TInput = ListPerspectivesVariables>(
   variables?: ListPerspectivesVariables,
   options?: RequestInit['headers'],
+  document = ListPerspectivesDocument,
   outputFn = ListPerspectivesOutputFn,
   inputFn = ListPerspectivesInputFn,
 ) =>
   fetchWithAmplify<ListPerspectives, ListPerspectivesVariables, TOutput, TInput>(
-    ListPerspectivesDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -7295,7 +7286,8 @@ export const GetSchemaKeys = (variables: GetSchemaVariables) => ['GetSchema', va
  * @param variables `GetSchemaVariables` - The original variables
  * @returns `GetSchemaVariables` - The transformed variables
  */
-export const GetSchemaInputFn = <TInput = GetSchemaVariables>(variables: GetSchemaVariables) => variables as TInput;
+export const GetSchemaInputFn = <TInput = GetSchemaVariables>(variables: GetSchemaVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetSchema`.
@@ -7305,7 +7297,7 @@ export const GetSchemaInputFn = <TInput = GetSchemaVariables>(variables: GetSche
  * @param data GetSchema - The data returned from the GraphQL server
  * @returns Schema - The transformed data
  */
-export const GetSchemaOutputFn = <TOutput = Schema>({ getSchema }: GetSchema) => getSchema as TOutput;
+export const GetSchemaOutputFn = <TOutput = Schema>({ getSchema }: GetSchema) => getSchema as unknown as TOutput;
 
 /**
  * Fetcher function for `GetSchema`.
@@ -7324,16 +7316,10 @@ export const GetSchemaOutputFn = <TOutput = Schema>({ getSchema }: GetSchema) =>
 export const GetSchemaFetcher = <TOutput = Schema, TInput = GetSchemaVariables>(
   variables: GetSchemaVariables,
   options?: RequestInit['headers'],
+  document = GetSchemaDocument,
   outputFn = GetSchemaOutputFn,
   inputFn = GetSchemaInputFn,
-) =>
-  fetchWithAmplify<GetSchema, GetSchemaVariables, TOutput, TInput>(
-    GetSchemaDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+) => fetchWithAmplify<GetSchema, GetSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `GetSchema`.
@@ -7404,7 +7390,7 @@ export const ListSchemasKeys = (variables?: ListSchemasVariables) =>
  * @returns `ListSchemasVariables` - The transformed variables
  */
 export const ListSchemasInputFn = <TInput = ListSchemasVariables>(variables?: ListSchemasVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `ListSchemas`.
@@ -7415,7 +7401,7 @@ export const ListSchemasInputFn = <TInput = ListSchemasVariables>(variables?: Li
  * @returns ModelSchemaConnection - The transformed data
  */
 export const ListSchemasOutputFn = <TOutput = ModelSchemaConnection>({ listSchemas }: ListSchemas) =>
-  listSchemas as TOutput;
+  listSchemas as unknown as TOutput;
 
 /**
  * Fetcher function for `ListSchemas`.
@@ -7434,16 +7420,11 @@ export const ListSchemasOutputFn = <TOutput = ModelSchemaConnection>({ listSchem
 export const ListSchemasFetcher = <TOutput = ModelSchemaConnection, TInput = ListSchemasVariables>(
   variables?: ListSchemasVariables,
   options?: RequestInit['headers'],
+  document = ListSchemasDocument,
   outputFn = ListSchemasOutputFn,
   inputFn = ListSchemasInputFn,
 ) =>
-  fetchWithAmplify<ListSchemas, ListSchemasVariables, TOutput, TInput>(
-    ListSchemasDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<ListSchemas, ListSchemasVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `ListSchemas`.
@@ -7491,7 +7472,8 @@ export const GetTestKeys = (variables: GetTestVariables) => ['GetTest', variable
  * @param variables `GetTestVariables` - The original variables
  * @returns `GetTestVariables` - The transformed variables
  */
-export const GetTestInputFn = <TInput = GetTestVariables>(variables: GetTestVariables) => variables as TInput;
+export const GetTestInputFn = <TInput = GetTestVariables>(variables: GetTestVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetTest`.
@@ -7501,7 +7483,7 @@ export const GetTestInputFn = <TInput = GetTestVariables>(variables: GetTestVari
  * @param data GetTest - The data returned from the GraphQL server
  * @returns Test - The transformed data
  */
-export const GetTestOutputFn = <TOutput = Test>({ getTest }: GetTest) => getTest as TOutput;
+export const GetTestOutputFn = <TOutput = Test>({ getTest }: GetTest) => getTest as unknown as TOutput;
 
 /**
  * Fetcher function for `GetTest`.
@@ -7520,10 +7502,10 @@ export const GetTestOutputFn = <TOutput = Test>({ getTest }: GetTest) => getTest
 export const GetTestFetcher = <TOutput = Test, TInput = GetTestVariables>(
   variables: GetTestVariables,
   options?: RequestInit['headers'],
+  document = GetTestDocument,
   outputFn = GetTestOutputFn,
   inputFn = GetTestInputFn,
-) =>
-  fetchWithAmplify<GetTest, GetTestVariables, TOutput, TInput>(GetTestDocument, variables, options, outputFn, inputFn);
+) => fetchWithAmplify<GetTest, GetTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `GetTest`.
@@ -7570,7 +7552,8 @@ export const ListTestsKeys = (variables?: ListTestsVariables) =>
  * @param variables `ListTestsVariables` - The original variables
  * @returns `ListTestsVariables` - The transformed variables
  */
-export const ListTestsInputFn = <TInput = ListTestsVariables>(variables?: ListTestsVariables) => variables as TInput;
+export const ListTestsInputFn = <TInput = ListTestsVariables>(variables?: ListTestsVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `ListTests`.
@@ -7580,7 +7563,8 @@ export const ListTestsInputFn = <TInput = ListTestsVariables>(variables?: ListTe
  * @param data ListTests - The data returned from the GraphQL server
  * @returns ModelTestConnection - The transformed data
  */
-export const ListTestsOutputFn = <TOutput = ModelTestConnection>({ listTests }: ListTests) => listTests as TOutput;
+export const ListTestsOutputFn = <TOutput = ModelTestConnection>({ listTests }: ListTests) =>
+  listTests as unknown as TOutput;
 
 /**
  * Fetcher function for `ListTests`.
@@ -7599,16 +7583,10 @@ export const ListTestsOutputFn = <TOutput = ModelTestConnection>({ listTests }: 
 export const ListTestsFetcher = <TOutput = ModelTestConnection, TInput = ListTestsVariables>(
   variables?: ListTestsVariables,
   options?: RequestInit['headers'],
+  document = ListTestsDocument,
   outputFn = ListTestsOutputFn,
   inputFn = ListTestsInputFn,
-) =>
-  fetchWithAmplify<ListTests, ListTestsVariables, TOutput, TInput>(
-    ListTestsDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+) => fetchWithAmplify<ListTests, ListTestsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `ListTests`.
@@ -7656,7 +7634,7 @@ export const GetOrganizationKeys = (variables: GetOrganizationVariables) => ['Ge
  * @returns `GetOrganizationVariables` - The transformed variables
  */
 export const GetOrganizationInputFn = <TInput = GetOrganizationVariables>(variables: GetOrganizationVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetOrganization`.
@@ -7667,7 +7645,7 @@ export const GetOrganizationInputFn = <TInput = GetOrganizationVariables>(variab
  * @returns Organization - The transformed data
  */
 export const GetOrganizationOutputFn = <TOutput = Organization>({ getOrganization }: GetOrganization) =>
-  getOrganization as TOutput;
+  getOrganization as unknown as TOutput;
 
 /**
  * Fetcher function for `GetOrganization`.
@@ -7686,11 +7664,12 @@ export const GetOrganizationOutputFn = <TOutput = Organization>({ getOrganizatio
 export const GetOrganizationFetcher = <TOutput = Organization, TInput = GetOrganizationVariables>(
   variables: GetOrganizationVariables,
   options?: RequestInit['headers'],
+  document = GetOrganizationDocument,
   outputFn = GetOrganizationOutputFn,
   inputFn = GetOrganizationInputFn,
 ) =>
   fetchWithAmplify<GetOrganization, GetOrganizationVariables, TOutput, TInput>(
-    GetOrganizationDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -7747,7 +7726,7 @@ export const ListOrganizationsKeys = (variables?: ListOrganizationsVariables) =>
  * @returns `ListOrganizationsVariables` - The transformed variables
  */
 export const ListOrganizationsInputFn = <TInput = ListOrganizationsVariables>(variables?: ListOrganizationsVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `ListOrganizations`.
@@ -7759,7 +7738,7 @@ export const ListOrganizationsInputFn = <TInput = ListOrganizationsVariables>(va
  */
 export const ListOrganizationsOutputFn = <TOutput = ModelOrganizationConnection>({
   listOrganizations,
-}: ListOrganizations) => listOrganizations as TOutput;
+}: ListOrganizations) => listOrganizations as unknown as TOutput;
 
 /**
  * Fetcher function for `ListOrganizations`.
@@ -7778,11 +7757,12 @@ export const ListOrganizationsOutputFn = <TOutput = ModelOrganizationConnection>
 export const ListOrganizationsFetcher = <TOutput = ModelOrganizationConnection, TInput = ListOrganizationsVariables>(
   variables?: ListOrganizationsVariables,
   options?: RequestInit['headers'],
+  document = ListOrganizationsDocument,
   outputFn = ListOrganizationsOutputFn,
   inputFn = ListOrganizationsInputFn,
 ) =>
   fetchWithAmplify<ListOrganizations, ListOrganizationsVariables, TOutput, TInput>(
-    ListOrganizationsDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -7837,7 +7817,7 @@ export const SearchGraphKeys = (variables: SearchGraphVariables) => ['SearchGrap
  * @returns `SearchGraphVariables` - The transformed variables
  */
 export const SearchGraphInputFn = <TInput = SearchGraphVariables>(variables: SearchGraphVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `SearchGraph`.
@@ -7859,7 +7839,7 @@ export const SearchGraphOutputFn = <TOutput = SearchGraphResult>({ searchGraph }
           record?.node?.properties && (JSON.parse(record?.node?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `SearchGraph`.
@@ -7878,16 +7858,11 @@ export const SearchGraphOutputFn = <TOutput = SearchGraphResult>({ searchGraph }
 export const SearchGraphFetcher = <TOutput = SearchGraphResult, TInput = SearchGraphVariables>(
   variables: SearchGraphVariables,
   options?: RequestInit['headers'],
+  document = SearchGraphDocument,
   outputFn = SearchGraphOutputFn,
   inputFn = SearchGraphInputFn,
 ) =>
-  fetchWithAmplify<SearchGraph, SearchGraphVariables, TOutput, TInput>(
-    SearchGraphDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<SearchGraph, SearchGraphVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `SearchGraph`.
@@ -7947,7 +7922,8 @@ export const GetNodeKeys = (variables: GetNodeVariables) => ['GetNode', variable
  * @param variables `GetNodeVariables` - The original variables
  * @returns `GetNodeVariables` - The transformed variables
  */
-export const GetNodeInputFn = <TInput = GetNodeVariables>(variables: GetNodeVariables) => variables as TInput;
+export const GetNodeInputFn = <TInput = GetNodeVariables>(variables: GetNodeVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetNode`.
@@ -7981,7 +7957,7 @@ export const GetNodeOutputFn = <TOutput = GraphNodeRecord>({ getNode }: GetNode)
           (JSON.parse(relationship?.relationship?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `GetNode`.
@@ -8000,10 +7976,10 @@ export const GetNodeOutputFn = <TOutput = GraphNodeRecord>({ getNode }: GetNode)
 export const GetNodeFetcher = <TOutput = GraphNodeRecord, TInput = GetNodeVariables>(
   variables: GetNodeVariables,
   options?: RequestInit['headers'],
+  document = GetNodeDocument,
   outputFn = GetNodeOutputFn,
   inputFn = GetNodeInputFn,
-) =>
-  fetchWithAmplify<GetNode, GetNodeVariables, TOutput, TInput>(GetNodeDocument, variables, options, outputFn, inputFn);
+) => fetchWithAmplify<GetNode, GetNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `GetNode`.
@@ -8057,7 +8033,7 @@ export const GetRelationshipKeys = (variables: GetRelationshipVariables) => ['Ge
  * @returns `GetRelationshipVariables` - The transformed variables
  */
 export const GetRelationshipInputFn = <TInput = GetRelationshipVariables>(variables: GetRelationshipVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetRelationship`.
@@ -8089,7 +8065,7 @@ export const GetRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({ get
         getRelationship.start?.properties &&
         (JSON.parse(getRelationship.start?.properties as any) as unknown as Scalars['AWSJSON']),
     },
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `GetRelationship`.
@@ -8108,11 +8084,12 @@ export const GetRelationshipOutputFn = <TOutput = GraphRelationshipRecord>({ get
 export const GetRelationshipFetcher = <TOutput = GraphRelationshipRecord, TInput = GetRelationshipVariables>(
   variables: GetRelationshipVariables,
   options?: RequestInit['headers'],
+  document = GetRelationshipDocument,
   outputFn = GetRelationshipOutputFn,
   inputFn = GetRelationshipInputFn,
 ) =>
   fetchWithAmplify<GetRelationship, GetRelationshipVariables, TOutput, TInput>(
-    GetRelationshipDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -8179,7 +8156,8 @@ export const ListNodesKeys = (variables: ListNodesVariables) => ['ListNodes', va
  * @param variables `ListNodesVariables` - The original variables
  * @returns `ListNodesVariables` - The transformed variables
  */
-export const ListNodesInputFn = <TInput = ListNodesVariables>(variables: ListNodesVariables) => variables as TInput;
+export const ListNodesInputFn = <TInput = ListNodesVariables>(variables: ListNodesVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `ListNodes`.
@@ -8216,7 +8194,7 @@ export const ListNodesOutputFn = <TOutput = GraphNodeRecords>({ listNodes }: Lis
         },
       })),
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `ListNodes`.
@@ -8235,16 +8213,10 @@ export const ListNodesOutputFn = <TOutput = GraphNodeRecords>({ listNodes }: Lis
 export const ListNodesFetcher = <TOutput = GraphNodeRecords, TInput = ListNodesVariables>(
   variables: ListNodesVariables,
   options?: RequestInit['headers'],
+  document = ListNodesDocument,
   outputFn = ListNodesOutputFn,
   inputFn = ListNodesInputFn,
-) =>
-  fetchWithAmplify<ListNodes, ListNodesVariables, TOutput, TInput>(
-    ListNodesDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+) => fetchWithAmplify<ListNodes, ListNodesVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `ListNodes`.
@@ -8287,7 +8259,8 @@ export const GetUserKeys = (variables: GetUserVariables) => ['GetUser', variable
  * @param variables `GetUserVariables` - The original variables
  * @returns `GetUserVariables` - The transformed variables
  */
-export const GetUserInputFn = <TInput = GetUserVariables>(variables: GetUserVariables) => variables as TInput;
+export const GetUserInputFn = <TInput = GetUserVariables>(variables: GetUserVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetUser`.
@@ -8302,7 +8275,7 @@ export const GetUserOutputFn = <TOutput = CognitoUser>({ getUser }: GetUser) =>
   ({
     ...getUser,
     attributes: getUser.attributes && (JSON.parse(getUser.attributes as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `GetUser`.
@@ -8321,10 +8294,10 @@ export const GetUserOutputFn = <TOutput = CognitoUser>({ getUser }: GetUser) =>
 export const GetUserFetcher = <TOutput = CognitoUser, TInput = GetUserVariables>(
   variables: GetUserVariables,
   options?: RequestInit['headers'],
+  document = GetUserDocument,
   outputFn = GetUserOutputFn,
   inputFn = GetUserInputFn,
-) =>
-  fetchWithAmplify<GetUser, GetUserVariables, TOutput, TInput>(GetUserDocument, variables, options, outputFn, inputFn);
+) => fetchWithAmplify<GetUser, GetUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `GetUser`.
@@ -8369,7 +8342,8 @@ export const FindUsersKeys = (variables: FindUsersVariables) => ['FindUsers', va
  * @param variables `FindUsersVariables` - The original variables
  * @returns `FindUsersVariables` - The transformed variables
  */
-export const FindUsersInputFn = <TInput = FindUsersVariables>(variables: FindUsersVariables) => variables as TInput;
+export const FindUsersInputFn = <TInput = FindUsersVariables>(variables: FindUsersVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `FindUsers`.
@@ -8387,7 +8361,7 @@ export const FindUsersOutputFn = <TOutput = CognitoUserList>({ findUsers }: Find
       ...item,
       attributes: item?.attributes && (JSON.parse(item?.attributes as any) as unknown as Scalars['AWSJSON']),
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `FindUsers`.
@@ -8406,16 +8380,10 @@ export const FindUsersOutputFn = <TOutput = CognitoUserList>({ findUsers }: Find
 export const FindUsersFetcher = <TOutput = CognitoUserList, TInput = FindUsersVariables>(
   variables: FindUsersVariables,
   options?: RequestInit['headers'],
+  document = FindUsersDocument,
   outputFn = FindUsersOutputFn,
   inputFn = FindUsersInputFn,
-) =>
-  fetchWithAmplify<FindUsers, FindUsersVariables, TOutput, TInput>(
-    FindUsersDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+) => fetchWithAmplify<FindUsers, FindUsersVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `FindUsers`.
@@ -8462,7 +8430,8 @@ export const ListUsersKeys = (variables?: ListUsersVariables) =>
  * @param variables `ListUsersVariables` - The original variables
  * @returns `ListUsersVariables` - The transformed variables
  */
-export const ListUsersInputFn = <TInput = ListUsersVariables>(variables?: ListUsersVariables) => variables as TInput;
+export const ListUsersInputFn = <TInput = ListUsersVariables>(variables?: ListUsersVariables) =>
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `ListUsers`.
@@ -8480,7 +8449,7 @@ export const ListUsersOutputFn = <TOutput = CognitoUserList>({ listUsers }: List
       ...item,
       attributes: item?.attributes && (JSON.parse(item?.attributes as any) as unknown as Scalars['AWSJSON']),
     })),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `ListUsers`.
@@ -8499,16 +8468,10 @@ export const ListUsersOutputFn = <TOutput = CognitoUserList>({ listUsers }: List
 export const ListUsersFetcher = <TOutput = CognitoUserList, TInput = ListUsersVariables>(
   variables?: ListUsersVariables,
   options?: RequestInit['headers'],
+  document = ListUsersDocument,
   outputFn = ListUsersOutputFn,
   inputFn = ListUsersInputFn,
-) =>
-  fetchWithAmplify<ListUsers, ListUsersVariables, TOutput, TInput>(
-    ListUsersDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+) => fetchWithAmplify<ListUsers, ListUsersVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `ListUsers`.
@@ -8557,7 +8520,7 @@ export const GetConnectorCredentialsKeys = (variables: GetConnectorCredentialsVa
  */
 export const GetConnectorCredentialsInputFn = <TInput = GetConnectorCredentialsVariables>(
   variables: GetConnectorCredentialsVariables,
-) => variables as TInput;
+) => variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetConnectorCredentials`.
@@ -8576,7 +8539,7 @@ export const GetConnectorCredentialsOutputFn = <TOutput = ConnectorCredentials>(
     plainCredentials:
       getConnectorCredentials.plainCredentials &&
       (JSON.parse(getConnectorCredentials.plainCredentials as any) as unknown as Scalars['AWSJSON']),
-  } as TOutput);
+  } as unknown as TOutput);
 
 /**
  * Fetcher function for `GetConnectorCredentials`.
@@ -8598,11 +8561,12 @@ export const GetConnectorCredentialsFetcher = <
 >(
   variables: GetConnectorCredentialsVariables,
   options?: RequestInit['headers'],
+  document = GetConnectorCredentialsDocument,
   outputFn = GetConnectorCredentialsOutputFn,
   inputFn = GetConnectorCredentialsInputFn,
 ) =>
   fetchWithAmplify<GetConnectorCredentials, GetConnectorCredentialsVariables, TOutput, TInput>(
-    GetConnectorCredentialsDocument,
+    document,
     variables,
     options,
     outputFn,
@@ -8649,7 +8613,7 @@ export const GetManifestKeys = (variables: GetManifestVariables) => ['GetManifes
  * @returns `GetManifestVariables` - The transformed variables
  */
 export const GetManifestInputFn = <TInput = GetManifestVariables>(variables: GetManifestVariables) =>
-  variables as TInput;
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `GetManifest`.
@@ -8679,16 +8643,11 @@ export const GetManifestOutputFn = <TOutput = Scalars['AWSJSON']>({ getManifest 
 export const GetManifestFetcher = <TOutput = Scalars['AWSJSON'], TInput = GetManifestVariables>(
   variables: GetManifestVariables,
   options?: RequestInit['headers'],
+  document = GetManifestDocument,
   outputFn = GetManifestOutputFn,
   inputFn = GetManifestInputFn,
 ) =>
-  fetchWithAmplify<GetManifest, GetManifestVariables, TOutput, TInput>(
-    GetManifestDocument,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
+  fetchWithAmplify<GetManifest, GetManifestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
  * GraphQL request function for `GetManifest`.
