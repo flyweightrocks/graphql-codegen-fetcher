@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExtendedReactQueryVisitor = exports.validate = exports.plugin = void 0;
+exports.ExtendedReactQueryVisitor = exports.plugin = void 0;
 const plugin_helpers_1 = require("@graphql-codegen/plugin-helpers");
 const graphql_1 = require("graphql");
 const visitor_1 = require("./visitor");
@@ -30,6 +30,4 @@ const plugin = (schema, documents, config) => {
     };
 };
 exports.plugin = plugin;
-var typescript_react_query_1 = require("@graphql-codegen/typescript-react-query");
-Object.defineProperty(exports, "validate", { enumerable: true, get: function () { return typescript_react_query_1.validate; } });
 //# sourceMappingURL=index.js.map

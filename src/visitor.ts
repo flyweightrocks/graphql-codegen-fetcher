@@ -1,5 +1,5 @@
 import { Types } from '@graphql-codegen/plugin-helpers';
-import { ReactQueryVisitor } from '@graphql-codegen/typescript-react-query';
+// import { ReactQueryVisitor } from '@graphql-codegen/typescript-react-query';
 import {
   ClientSideBasePluginConfig,
   ClientSideBaseVisitor,
@@ -14,20 +14,30 @@ import { CustomMapperFetcher } from './fetcher-custom-mapper';
 import { generateMutationKeyMaker, generateQueryKeyMaker } from './variables-generator';
 import { generateInputTransformer, generateOutputTransformer } from './transformer';
 import { getInputVariablesType, getOutputType } from './type-resolver';
-import { ReactQueryRawPluginConfig } from '@graphql-codegen/typescript-react-query/config';
-import { RawPluginConfig } from './config';
+// import { ReactQueryRawPluginConfig } from '@graphql-codegen/typescript-react-query/config';
+import { RawPluginConfig, ReactQueryRawPluginConfig } from './config';
 import { FetcherRenderer } from './fetcher-renderer';
-import { ReactQueryPluginConfig } from '@graphql-codegen/typescript-react-query/visitor';
+// import { ReactQueryPluginConfig } from '@graphql-codegen/typescript-react-query/visitor';
+export interface ReactQueryPluginConfig extends ClientSideBasePluginConfig {
+  errorType: string;
+  exposeDocument: boolean;
+  exposeQueryKeys: boolean;
+  exposeMutationKeys: boolean;
+  exposeFetcher: boolean;
+  addInfiniteQuery: boolean;
+}
 export interface ParsedPluginConfig extends ReactQueryPluginConfig {
   generateReactQueryHooks?: boolean;
   generateGqlRequestFunctions?: boolean;
 }
 
 export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedPluginConfig> {
+  private _externalImportPrefix: string;
+
   public fetcher: FetcherRenderer;
   public fields: Record<string, GraphQLField<any, any>>;
   public outputResultTypes: Record<string, string> = {};
-  public reactQueryVisitor: ReactQueryVisitor;
+  // public reactQueryVisitor: ReactQueryVisitor;
 
   constructor(
     schema: GraphQLSchema,
@@ -37,14 +47,15 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
   ) {
     super(schema, fragments, rawConfig, {
       documentMode: DocumentMode.string,
-      generateReactQueryHooks: getConfigValue(rawConfig.generateReactQueryHooks, false),
-      generateGqlRequestFunctions: getConfigValue(rawConfig.generateGqlRequestFunctions, false),
+      // generateReactQueryHooks: getConfigValue(rawConfig.generateReactQueryHooks, false),
+      // generateGqlRequestFunctions: getConfigValue(rawConfig.generateGqlRequestFunctions, false),
     });
 
     this.fetcher = this.createExtendedFetcher(rawConfig.fetcher || 'fetch');
     this.fields = { ...this._schema.getQueryType()?.getFields(), ...this._schema.getMutationType()?.getFields() };
-    this.reactQueryVisitor = new ReactQueryVisitor(schema, fragments, rawConfig, documents);
+    // this.reactQueryVisitor = new ReactQueryVisitor(schema, fragments, rawConfig, documents);
     this._documents = documents;
+    this._externalImportPrefix = this.config.importOperationTypesFrom ? `${this.config.importOperationTypesFrom}.` : '';
 
     autoBind(this);
   }
@@ -56,7 +67,8 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
   OperationDefinition(node: OperationDefinitionNode): string {
     // overwrite method to call the same method on ReactQueryVisitor
     // it collects all operations into _collectedOperations and it must be filled for the type imports
-    this.reactQueryVisitor.OperationDefinition(node);
+    // TODO check if this is still needed
+    // this.reactQueryVisitor.OperationDefinition(node);
     return super.OperationDefinition(node);
   }
 
@@ -64,15 +76,15 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
     return this._collectedOperations.length > 0;
   }
 
-  public getImports(): string[] {
-    const baseImports = super.getImports();
+  // public getImports(): string[] {
+  //   const baseImports = super.getImports();
 
-    if (!this.config.generateReactQueryHooks) {
-      return baseImports;
-    }
+  //   // if (!this.config.generateReactQueryHooks) {
+  //   //   return baseImports;
+  //   // }
 
-    return this.reactQueryVisitor.getImports();
-  }
+  //   // return this.reactQueryVisitor.getImports();
+  // }
 
   public getFetcherImplementation(): string {
     return this.fetcher.generateFetcherImplementaion();
@@ -114,8 +126,8 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
       useTypesSuffix: false,
     });
 
-    operationResultType = this.reactQueryVisitor['_externalImportPrefix'] + operationResultType;
-    operationVariablesTypes = this.reactQueryVisitor['_externalImportPrefix'] + operationVariablesTypes;
+    operationResultType = this._externalImportPrefix + operationResultType;
+    operationVariablesTypes = this._externalImportPrefix + operationVariablesTypes;
 
     const fieldName = lowerCaseFirst(nodeName); // createNode, getNode, ...
     const fieldDefinition = this.fields[fieldName];
@@ -165,20 +177,20 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
         );
       }
 
-      if (this.config.generateReactQueryHooks) {
-        query += this.fetcher.generateQueryHook(
-          node,
-          documentVariableName,
-          operationName,
-          operationResultType,
-          operationVariablesTypes,
-          hasRequiredVariables,
-        );
+      // if (this.config.generateReactQueryHooks) {
+      //   query += this.fetcher.generateQueryHook(
+      //     node,
+      //     documentVariableName,
+      //     operationName,
+      //     operationResultType,
+      //     operationVariablesTypes,
+      //     hasRequiredVariables,
+      //   );
 
-        if (this.reactQueryVisitor.config.exposeQueryKeys) {
-          query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
-        }
-      }
+      //   // if (this.reactQueryVisitor.config.exposeQueryKeys) {
+      //   //   query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+      //   // }
+      // }
     } else if (operationType === 'Mutation') {
       query += generateMutationKeyMaker(node, operationName);
       query += generateInputTransformer(
@@ -217,20 +229,20 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
         );
       }
 
-      if (this.config.generateReactQueryHooks) {
-        query += this.fetcher.generateMutationHook(
-          node,
-          documentVariableName,
-          operationName,
-          operationResultType,
-          operationVariablesTypes,
-          hasRequiredVariables,
-        );
+      // if (this.config.generateReactQueryHooks) {
+      //   query += this.fetcher.generateMutationHook(
+      //     node,
+      //     documentVariableName,
+      //     operationName,
+      //     operationResultType,
+      //     operationVariablesTypes,
+      //     hasRequiredVariables,
+      //   );
 
-        if (this.reactQueryVisitor.config.exposeMutationKeys) {
-          query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
-        }
-      }
+      //   // if (this.reactQueryVisitor.config.exposeMutationKeys) {
+      //   //   query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
+      //   // }
+      // }
     } else if (operationType === 'Subscription') {
       // not supported yet
     }

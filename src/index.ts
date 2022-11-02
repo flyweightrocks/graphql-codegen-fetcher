@@ -1,8 +1,8 @@
 import { oldVisit, PluginFunction, Types } from '@graphql-codegen/plugin-helpers';
-import { ReactQueryRawPluginConfig } from '@graphql-codegen/typescript-react-query/config';
+// import { ReactQueryRawPluginConfig } from '@graphql-codegen/typescript-react-query/config';
 import { LoadedFragment } from '@graphql-codegen/visitor-plugin-common';
 import { concatAST, DocumentNode, FragmentDefinitionNode, GraphQLSchema, Kind } from 'graphql';
-import { RawPluginConfig } from './config';
+import { RawPluginConfig, ReactQueryRawPluginConfig } from './config';
 import { ExtendedReactQueryVisitor } from './visitor';
 
 export const plugin: PluginFunction<RawPluginConfig, Types.ComplexPluginOutput> = (
@@ -40,5 +40,5 @@ export const plugin: PluginFunction<RawPluginConfig, Types.ComplexPluginOutput> 
   };
 };
 
-export { validate } from '@graphql-codegen/typescript-react-query';
+// export { validate } from '@graphql-codegen/typescript-react-query';
 export { ExtendedReactQueryVisitor };

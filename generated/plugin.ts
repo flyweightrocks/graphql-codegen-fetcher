@@ -1,6 +1,4 @@
-/* eslint-disable */
-import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
-import { fetchWithAmplify } from '../graphql/fetcher';
+import { fetcher } from '../graphql/fetcher';
 export type Maybe<T> = T | undefined;
 export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -2900,29 +2898,7 @@ export const EmptyMutationFetcher = <TOutput = Scalars['Int'], TInput = EmptyMut
   document = EmptyMutationDocument,
   outputFn = EmptyMutationOutputFn,
   inputFn = EmptyMutationInputFn,
-) =>
-  fetchWithAmplify<EmptyMutation, EmptyMutationVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `EmptyMutation`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const emptyMutation = (variables?: EmptyMutationVariables) => EmptyMutationFetcher(variables)();
-
-export const useEmptyMutation = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Scalars['Int'] | undefined, TError, EmptyMutationVariables, TContext>,
-) =>
-  useMutation<Scalars['Int'] | undefined, TError, EmptyMutationVariables, TContext>(
-    ['EmptyMutation'],
-    (variables?: EmptyMutationVariables) => EmptyMutationFetcher(variables)(),
-    options,
-  );
+) => fetcher<EmptyMutation, EmptyMutationVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const CreateConnectorDocument = `
     mutation CreateConnector($input: CreateConnectorInput!, $condition: ModelConnectorConditionInput) {
@@ -3022,28 +2998,7 @@ export const CreateConnectorFetcher = <TOutput = Connector, TInput = CreateConne
   outputFn = CreateConnectorOutputFn,
   inputFn = CreateConnectorInputFn,
 ) =>
-  fetchWithAmplify<CreateConnector, CreateConnectorVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `CreateConnector`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createConnector = (variables: CreateConnectorVariables) => CreateConnectorFetcher(variables)();
-
-export const useCreateConnector = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Connector | undefined, TError, CreateConnectorVariables, TContext>,
-) =>
-  useMutation<Connector | undefined, TError, CreateConnectorVariables, TContext>(
-    ['CreateConnector'],
-    (variables: CreateConnectorVariables) => CreateConnectorFetcher(variables)(),
-    options,
-  );
+  fetcher<CreateConnector, CreateConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const UpdateConnectorDocument = `
     mutation UpdateConnector($input: UpdateConnectorInput!, $condition: ModelConnectorConditionInput) {
@@ -3143,28 +3098,7 @@ export const UpdateConnectorFetcher = <TOutput = Connector, TInput = UpdateConne
   outputFn = UpdateConnectorOutputFn,
   inputFn = UpdateConnectorInputFn,
 ) =>
-  fetchWithAmplify<UpdateConnector, UpdateConnectorVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `UpdateConnector`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateConnector = (variables: UpdateConnectorVariables) => UpdateConnectorFetcher(variables)();
-
-export const useUpdateConnector = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Connector | undefined, TError, UpdateConnectorVariables, TContext>,
-) =>
-  useMutation<Connector | undefined, TError, UpdateConnectorVariables, TContext>(
-    ['UpdateConnector'],
-    (variables: UpdateConnectorVariables) => UpdateConnectorFetcher(variables)(),
-    options,
-  );
+  fetcher<UpdateConnector, UpdateConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const DeleteConnectorDocument = `
     mutation DeleteConnector($input: DeleteConnectorInput!, $condition: ModelConnectorConditionInput) {
@@ -3264,28 +3198,7 @@ export const DeleteConnectorFetcher = <TOutput = Connector, TInput = DeleteConne
   outputFn = DeleteConnectorOutputFn,
   inputFn = DeleteConnectorInputFn,
 ) =>
-  fetchWithAmplify<DeleteConnector, DeleteConnectorVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `DeleteConnector`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteConnector = (variables: DeleteConnectorVariables) => DeleteConnectorFetcher(variables)();
-
-export const useDeleteConnector = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Connector | undefined, TError, DeleteConnectorVariables, TContext>,
-) =>
-  useMutation<Connector | undefined, TError, DeleteConnectorVariables, TContext>(
-    ['DeleteConnector'],
-    (variables: DeleteConnectorVariables) => DeleteConnectorFetcher(variables)(),
-    options,
-  );
+  fetcher<DeleteConnector, DeleteConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const CreateTransformationDocument = `
     mutation CreateTransformation($input: CreateTransformationInput!, $condition: ModelTransformationConditionInput) {
@@ -3383,28 +3296,12 @@ export const CreateTransformationFetcher = <TOutput = Transformation, TInput = C
   outputFn = CreateTransformationOutputFn,
   inputFn = CreateTransformationInputFn,
 ) =>
-  fetchWithAmplify<CreateTransformation, CreateTransformationVariables, TOutput, TInput>(
+  fetcher<CreateTransformation, CreateTransformationVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `CreateTransformation`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createTransformation = (variables: CreateTransformationVariables) =>
-  CreateTransformationFetcher(variables)();
-
-export const useCreateTransformation = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Transformation | undefined, TError, CreateTransformationVariables, TContext>,
-) =>
-  useMutation<Transformation | undefined, TError, CreateTransformationVariables, TContext>(
-    ['CreateTransformation'],
-    (variables: CreateTransformationVariables) => CreateTransformationFetcher(variables)(),
-    options,
   );
 
 export const UpdateTransformationDocument = `
@@ -3503,28 +3400,12 @@ export const UpdateTransformationFetcher = <TOutput = Transformation, TInput = U
   outputFn = UpdateTransformationOutputFn,
   inputFn = UpdateTransformationInputFn,
 ) =>
-  fetchWithAmplify<UpdateTransformation, UpdateTransformationVariables, TOutput, TInput>(
+  fetcher<UpdateTransformation, UpdateTransformationVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `UpdateTransformation`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateTransformation = (variables: UpdateTransformationVariables) =>
-  UpdateTransformationFetcher(variables)();
-
-export const useUpdateTransformation = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Transformation | undefined, TError, UpdateTransformationVariables, TContext>,
-) =>
-  useMutation<Transformation | undefined, TError, UpdateTransformationVariables, TContext>(
-    ['UpdateTransformation'],
-    (variables: UpdateTransformationVariables) => UpdateTransformationFetcher(variables)(),
-    options,
   );
 
 export const DeleteTransformationDocument = `
@@ -3623,28 +3504,12 @@ export const DeleteTransformationFetcher = <TOutput = Transformation, TInput = D
   outputFn = DeleteTransformationOutputFn,
   inputFn = DeleteTransformationInputFn,
 ) =>
-  fetchWithAmplify<DeleteTransformation, DeleteTransformationVariables, TOutput, TInput>(
+  fetcher<DeleteTransformation, DeleteTransformationVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `DeleteTransformation`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteTransformation = (variables: DeleteTransformationVariables) =>
-  DeleteTransformationFetcher(variables)();
-
-export const useDeleteTransformation = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Transformation | undefined, TError, DeleteTransformationVariables, TContext>,
-) =>
-  useMutation<Transformation | undefined, TError, DeleteTransformationVariables, TContext>(
-    ['DeleteTransformation'],
-    (variables: DeleteTransformationVariables) => DeleteTransformationFetcher(variables)(),
-    options,
   );
 
 export const CreatePerspectiveDocument = `
@@ -3719,27 +3584,12 @@ export const CreatePerspectiveFetcher = <TOutput = Perspective, TInput = CreateP
   outputFn = CreatePerspectiveOutputFn,
   inputFn = CreatePerspectiveInputFn,
 ) =>
-  fetchWithAmplify<CreatePerspective, CreatePerspectiveVariables, TOutput, TInput>(
+  fetcher<CreatePerspective, CreatePerspectiveVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `CreatePerspective`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createPerspective = (variables: CreatePerspectiveVariables) => CreatePerspectiveFetcher(variables)();
-
-export const useCreatePerspective = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Perspective | undefined, TError, CreatePerspectiveVariables, TContext>,
-) =>
-  useMutation<Perspective | undefined, TError, CreatePerspectiveVariables, TContext>(
-    ['CreatePerspective'],
-    (variables: CreatePerspectiveVariables) => CreatePerspectiveFetcher(variables)(),
-    options,
   );
 
 export const UpdatePerspectiveDocument = `
@@ -3814,27 +3664,12 @@ export const UpdatePerspectiveFetcher = <TOutput = Perspective, TInput = UpdateP
   outputFn = UpdatePerspectiveOutputFn,
   inputFn = UpdatePerspectiveInputFn,
 ) =>
-  fetchWithAmplify<UpdatePerspective, UpdatePerspectiveVariables, TOutput, TInput>(
+  fetcher<UpdatePerspective, UpdatePerspectiveVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `UpdatePerspective`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updatePerspective = (variables: UpdatePerspectiveVariables) => UpdatePerspectiveFetcher(variables)();
-
-export const useUpdatePerspective = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Perspective | undefined, TError, UpdatePerspectiveVariables, TContext>,
-) =>
-  useMutation<Perspective | undefined, TError, UpdatePerspectiveVariables, TContext>(
-    ['UpdatePerspective'],
-    (variables: UpdatePerspectiveVariables) => UpdatePerspectiveFetcher(variables)(),
-    options,
   );
 
 export const DeletePerspectiveDocument = `
@@ -3909,27 +3744,12 @@ export const DeletePerspectiveFetcher = <TOutput = Perspective, TInput = DeleteP
   outputFn = DeletePerspectiveOutputFn,
   inputFn = DeletePerspectiveInputFn,
 ) =>
-  fetchWithAmplify<DeletePerspective, DeletePerspectiveVariables, TOutput, TInput>(
+  fetcher<DeletePerspective, DeletePerspectiveVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `DeletePerspective`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deletePerspective = (variables: DeletePerspectiveVariables) => DeletePerspectiveFetcher(variables)();
-
-export const useDeletePerspective = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Perspective | undefined, TError, DeletePerspectiveVariables, TContext>,
-) =>
-  useMutation<Perspective | undefined, TError, DeletePerspectiveVariables, TContext>(
-    ['DeletePerspective'],
-    (variables: DeletePerspectiveVariables) => DeletePerspectiveFetcher(variables)(),
-    options,
   );
 
 export const CreateSchemaDocument = `
@@ -4017,29 +3837,7 @@ export const CreateSchemaFetcher = <TOutput = Schema, TInput = CreateSchemaVaria
   document = CreateSchemaDocument,
   outputFn = CreateSchemaOutputFn,
   inputFn = CreateSchemaInputFn,
-) =>
-  fetchWithAmplify<CreateSchema, CreateSchemaVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `CreateSchema`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createSchema = (variables: CreateSchemaVariables) => CreateSchemaFetcher(variables)();
-
-export const useCreateSchema = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Schema | undefined, TError, CreateSchemaVariables, TContext>,
-) =>
-  useMutation<Schema | undefined, TError, CreateSchemaVariables, TContext>(
-    ['CreateSchema'],
-    (variables: CreateSchemaVariables) => CreateSchemaFetcher(variables)(),
-    options,
-  );
+) => fetcher<CreateSchema, CreateSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const UpdateSchemaDocument = `
     mutation UpdateSchema($input: UpdateSchemaInput!, $condition: ModelSchemaConditionInput) {
@@ -4126,29 +3924,7 @@ export const UpdateSchemaFetcher = <TOutput = Schema, TInput = UpdateSchemaVaria
   document = UpdateSchemaDocument,
   outputFn = UpdateSchemaOutputFn,
   inputFn = UpdateSchemaInputFn,
-) =>
-  fetchWithAmplify<UpdateSchema, UpdateSchemaVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `UpdateSchema`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateSchema = (variables: UpdateSchemaVariables) => UpdateSchemaFetcher(variables)();
-
-export const useUpdateSchema = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Schema | undefined, TError, UpdateSchemaVariables, TContext>,
-) =>
-  useMutation<Schema | undefined, TError, UpdateSchemaVariables, TContext>(
-    ['UpdateSchema'],
-    (variables: UpdateSchemaVariables) => UpdateSchemaFetcher(variables)(),
-    options,
-  );
+) => fetcher<UpdateSchema, UpdateSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const DeleteSchemaDocument = `
     mutation DeleteSchema($input: DeleteSchemaInput!, $condition: ModelSchemaConditionInput) {
@@ -4235,29 +4011,7 @@ export const DeleteSchemaFetcher = <TOutput = Schema, TInput = DeleteSchemaVaria
   document = DeleteSchemaDocument,
   outputFn = DeleteSchemaOutputFn,
   inputFn = DeleteSchemaInputFn,
-) =>
-  fetchWithAmplify<DeleteSchema, DeleteSchemaVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `DeleteSchema`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteSchema = (variables: DeleteSchemaVariables) => DeleteSchemaFetcher(variables)();
-
-export const useDeleteSchema = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Schema | undefined, TError, DeleteSchemaVariables, TContext>,
-) =>
-  useMutation<Schema | undefined, TError, DeleteSchemaVariables, TContext>(
-    ['DeleteSchema'],
-    (variables: DeleteSchemaVariables) => DeleteSchemaFetcher(variables)(),
-    options,
-  );
+) => fetcher<DeleteSchema, DeleteSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const CreateTestDocument = `
     mutation CreateTest($input: CreateTestInput!, $condition: ModelTestConditionInput) {
@@ -4320,23 +4074,7 @@ export const CreateTestFetcher = <TOutput = Test, TInput = CreateTestVariables>(
   document = CreateTestDocument,
   outputFn = CreateTestOutputFn,
   inputFn = CreateTestInputFn,
-) =>
-  fetchWithAmplify<CreateTest, CreateTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `CreateTest`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createTest = (variables: CreateTestVariables) => CreateTestFetcher(variables)();
-
-export const useCreateTest = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Test | undefined, TError, CreateTestVariables, TContext>,
-) =>
-  useMutation<Test | undefined, TError, CreateTestVariables, TContext>(
-    ['CreateTest'],
-    (variables: CreateTestVariables) => CreateTestFetcher(variables)(),
-    options,
-  );
+) => fetcher<CreateTest, CreateTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const UpdateTestDocument = `
     mutation UpdateTest($input: UpdateTestInput!, $condition: ModelTestConditionInput) {
@@ -4399,23 +4137,7 @@ export const UpdateTestFetcher = <TOutput = Test, TInput = UpdateTestVariables>(
   document = UpdateTestDocument,
   outputFn = UpdateTestOutputFn,
   inputFn = UpdateTestInputFn,
-) =>
-  fetchWithAmplify<UpdateTest, UpdateTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `UpdateTest`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateTest = (variables: UpdateTestVariables) => UpdateTestFetcher(variables)();
-
-export const useUpdateTest = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Test | undefined, TError, UpdateTestVariables, TContext>,
-) =>
-  useMutation<Test | undefined, TError, UpdateTestVariables, TContext>(
-    ['UpdateTest'],
-    (variables: UpdateTestVariables) => UpdateTestFetcher(variables)(),
-    options,
-  );
+) => fetcher<UpdateTest, UpdateTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const DeleteTestDocument = `
     mutation DeleteTest($input: DeleteTestInput!, $condition: ModelTestConditionInput) {
@@ -4478,23 +4200,7 @@ export const DeleteTestFetcher = <TOutput = Test, TInput = DeleteTestVariables>(
   document = DeleteTestDocument,
   outputFn = DeleteTestOutputFn,
   inputFn = DeleteTestInputFn,
-) =>
-  fetchWithAmplify<DeleteTest, DeleteTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `DeleteTest`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteTest = (variables: DeleteTestVariables) => DeleteTestFetcher(variables)();
-
-export const useDeleteTest = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Test | undefined, TError, DeleteTestVariables, TContext>,
-) =>
-  useMutation<Test | undefined, TError, DeleteTestVariables, TContext>(
-    ['DeleteTest'],
-    (variables: DeleteTestVariables) => DeleteTestFetcher(variables)(),
-    options,
-  );
+) => fetcher<DeleteTest, DeleteTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const CreateOrganizationDocument = `
     mutation CreateOrganization($input: CreateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
@@ -4559,27 +4265,12 @@ export const CreateOrganizationFetcher = <TOutput = Organization, TInput = Creat
   outputFn = CreateOrganizationOutputFn,
   inputFn = CreateOrganizationInputFn,
 ) =>
-  fetchWithAmplify<CreateOrganization, CreateOrganizationVariables, TOutput, TInput>(
+  fetcher<CreateOrganization, CreateOrganizationVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `CreateOrganization`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createOrganization = (variables: CreateOrganizationVariables) => CreateOrganizationFetcher(variables)();
-
-export const useCreateOrganization = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Organization | undefined, TError, CreateOrganizationVariables, TContext>,
-) =>
-  useMutation<Organization | undefined, TError, CreateOrganizationVariables, TContext>(
-    ['CreateOrganization'],
-    (variables: CreateOrganizationVariables) => CreateOrganizationFetcher(variables)(),
-    options,
   );
 
 export const UpdateOrganizationDocument = `
@@ -4645,27 +4336,12 @@ export const UpdateOrganizationFetcher = <TOutput = Organization, TInput = Updat
   outputFn = UpdateOrganizationOutputFn,
   inputFn = UpdateOrganizationInputFn,
 ) =>
-  fetchWithAmplify<UpdateOrganization, UpdateOrganizationVariables, TOutput, TInput>(
+  fetcher<UpdateOrganization, UpdateOrganizationVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `UpdateOrganization`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateOrganization = (variables: UpdateOrganizationVariables) => UpdateOrganizationFetcher(variables)();
-
-export const useUpdateOrganization = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Organization | undefined, TError, UpdateOrganizationVariables, TContext>,
-) =>
-  useMutation<Organization | undefined, TError, UpdateOrganizationVariables, TContext>(
-    ['UpdateOrganization'],
-    (variables: UpdateOrganizationVariables) => UpdateOrganizationFetcher(variables)(),
-    options,
   );
 
 export const RunPerspectiveDocument = `
@@ -4728,29 +4404,7 @@ export const RunPerspectiveFetcher = <TOutput = RunPerspectiveResult, TInput = R
   document = RunPerspectiveDocument,
   outputFn = RunPerspectiveOutputFn,
   inputFn = RunPerspectiveInputFn,
-) =>
-  fetchWithAmplify<RunPerspective, RunPerspectiveVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `RunPerspective`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const runPerspective = (variables: RunPerspectiveVariables) => RunPerspectiveFetcher(variables)();
-
-export const useRunPerspective = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<RunPerspectiveResult | undefined, TError, RunPerspectiveVariables, TContext>,
-) =>
-  useMutation<RunPerspectiveResult | undefined, TError, RunPerspectiveVariables, TContext>(
-    ['RunPerspective'],
-    (variables: RunPerspectiveVariables) => RunPerspectiveFetcher(variables)(),
-    options,
-  );
+) => fetcher<RunPerspective, RunPerspectiveVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const RunConnectorDocument = `
     mutation RunConnector($input: RunConnectorInput!) {
@@ -4806,29 +4460,7 @@ export const RunConnectorFetcher = <TOutput = Scalars['AWSJSON'], TInput = RunCo
   document = RunConnectorDocument,
   outputFn = RunConnectorOutputFn,
   inputFn = RunConnectorInputFn,
-) =>
-  fetchWithAmplify<RunConnector, RunConnectorVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `RunConnector`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const runConnector = (variables: RunConnectorVariables) => RunConnectorFetcher(variables)();
-
-export const useRunConnector = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<Scalars['AWSJSON'] | undefined, TError, RunConnectorVariables, TContext>,
-) =>
-  useMutation<Scalars['AWSJSON'] | undefined, TError, RunConnectorVariables, TContext>(
-    ['RunConnector'],
-    (variables: RunConnectorVariables) => RunConnectorFetcher(variables)(),
-    options,
-  );
+) => fetcher<RunConnector, RunConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const CreateConnectorCredentialsDocument = `
     mutation CreateConnectorCredentials($input: CreateConnectorCredentialsInput!) {
@@ -4910,28 +4542,12 @@ export const CreateConnectorCredentialsFetcher = <
   outputFn = CreateConnectorCredentialsOutputFn,
   inputFn = CreateConnectorCredentialsInputFn,
 ) =>
-  fetchWithAmplify<CreateConnectorCredentials, CreateConnectorCredentialsVariables, TOutput, TInput>(
+  fetcher<CreateConnectorCredentials, CreateConnectorCredentialsVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `CreateConnectorCredentials`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createConnectorCredentials = (variables: CreateConnectorCredentialsVariables) =>
-  CreateConnectorCredentialsFetcher(variables)();
-
-export const useCreateConnectorCredentials = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, CreateConnectorCredentialsVariables, TContext>,
-) =>
-  useMutation<ConnectorCredentials | undefined, TError, CreateConnectorCredentialsVariables, TContext>(
-    ['CreateConnectorCredentials'],
-    (variables: CreateConnectorCredentialsVariables) => CreateConnectorCredentialsFetcher(variables)(),
-    options,
   );
 
 export const UpdateConnectorCredentialsDocument = `
@@ -5014,28 +4630,12 @@ export const UpdateConnectorCredentialsFetcher = <
   outputFn = UpdateConnectorCredentialsOutputFn,
   inputFn = UpdateConnectorCredentialsInputFn,
 ) =>
-  fetchWithAmplify<UpdateConnectorCredentials, UpdateConnectorCredentialsVariables, TOutput, TInput>(
+  fetcher<UpdateConnectorCredentials, UpdateConnectorCredentialsVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `UpdateConnectorCredentials`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateConnectorCredentials = (variables: UpdateConnectorCredentialsVariables) =>
-  UpdateConnectorCredentialsFetcher(variables)();
-
-export const useUpdateConnectorCredentials = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, UpdateConnectorCredentialsVariables, TContext>,
-) =>
-  useMutation<ConnectorCredentials | undefined, TError, UpdateConnectorCredentialsVariables, TContext>(
-    ['UpdateConnectorCredentials'],
-    (variables: UpdateConnectorCredentialsVariables) => UpdateConnectorCredentialsFetcher(variables)(),
-    options,
   );
 
 export const DeleteConnectorCredentialsDocument = `
@@ -5109,28 +4709,12 @@ export const DeleteConnectorCredentialsFetcher = <
   outputFn = DeleteConnectorCredentialsOutputFn,
   inputFn = DeleteConnectorCredentialsInputFn,
 ) =>
-  fetchWithAmplify<DeleteConnectorCredentials, DeleteConnectorCredentialsVariables, TOutput, TInput>(
+  fetcher<DeleteConnectorCredentials, DeleteConnectorCredentialsVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `DeleteConnectorCredentials`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteConnectorCredentials = (variables: DeleteConnectorCredentialsVariables) =>
-  DeleteConnectorCredentialsFetcher(variables)();
-
-export const useDeleteConnectorCredentials = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<ConnectorCredentials | undefined, TError, DeleteConnectorCredentialsVariables, TContext>,
-) =>
-  useMutation<ConnectorCredentials | undefined, TError, DeleteConnectorCredentialsVariables, TContext>(
-    ['DeleteConnectorCredentials'],
-    (variables: DeleteConnectorCredentialsVariables) => DeleteConnectorCredentialsFetcher(variables)(),
-    options,
   );
 
 export const CreateNodeDocument = `
@@ -5239,23 +4823,7 @@ export const CreateNodeFetcher = <TOutput = GraphNodeRecord, TInput = CreateNode
   document = CreateNodeDocument,
   outputFn = CreateNodeOutputFn,
   inputFn = CreateNodeInputFn,
-) =>
-  fetchWithAmplify<CreateNode, CreateNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `CreateNode`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createNode = (variables: CreateNodeVariables) => CreateNodeFetcher(variables)();
-
-export const useCreateNode = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<GraphNodeRecord | undefined, TError, CreateNodeVariables, TContext>,
-) =>
-  useMutation<GraphNodeRecord | undefined, TError, CreateNodeVariables, TContext>(
-    ['CreateNode'],
-    (variables: CreateNodeVariables) => CreateNodeFetcher(variables)(),
-    options,
-  );
+) => fetcher<CreateNode, CreateNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const UpdateNodeDocument = `
     mutation UpdateNode($input: UpdateNodeInput!) {
@@ -5363,23 +4931,7 @@ export const UpdateNodeFetcher = <TOutput = GraphNodeRecord, TInput = UpdateNode
   document = UpdateNodeDocument,
   outputFn = UpdateNodeOutputFn,
   inputFn = UpdateNodeInputFn,
-) =>
-  fetchWithAmplify<UpdateNode, UpdateNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `UpdateNode`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateNode = (variables: UpdateNodeVariables) => UpdateNodeFetcher(variables)();
-
-export const useUpdateNode = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<GraphNodeRecord | undefined, TError, UpdateNodeVariables, TContext>,
-) =>
-  useMutation<GraphNodeRecord | undefined, TError, UpdateNodeVariables, TContext>(
-    ['UpdateNode'],
-    (variables: UpdateNodeVariables) => UpdateNodeFetcher(variables)(),
-    options,
-  );
+) => fetcher<UpdateNode, UpdateNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const DeleteNodeDocument = `
     mutation DeleteNode($input: DeleteNodeInput!) {
@@ -5460,23 +5012,7 @@ export const DeleteNodeFetcher = <TOutput = DeleteNodeRecord, TInput = DeleteNod
   document = DeleteNodeDocument,
   outputFn = DeleteNodeOutputFn,
   inputFn = DeleteNodeInputFn,
-) =>
-  fetchWithAmplify<DeleteNode, DeleteNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `DeleteNode`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteNode = (variables: DeleteNodeVariables) => DeleteNodeFetcher(variables)();
-
-export const useDeleteNode = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<DeleteNodeRecord | undefined, TError, DeleteNodeVariables, TContext>,
-) =>
-  useMutation<DeleteNodeRecord | undefined, TError, DeleteNodeVariables, TContext>(
-    ['DeleteNode'],
-    (variables: DeleteNodeVariables) => DeleteNodeFetcher(variables)(),
-    options,
-  );
+) => fetcher<DeleteNode, DeleteNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const CreateRelationshipDocument = `
     mutation CreateRelationship($input: CreateRelationshipInput!) {
@@ -5584,27 +5120,12 @@ export const CreateRelationshipFetcher = <TOutput = GraphRelationshipRecord, TIn
   outputFn = CreateRelationshipOutputFn,
   inputFn = CreateRelationshipInputFn,
 ) =>
-  fetchWithAmplify<CreateRelationship, CreateRelationshipVariables, TOutput, TInput>(
+  fetcher<CreateRelationship, CreateRelationshipVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `CreateRelationship`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createRelationship = (variables: CreateRelationshipVariables) => CreateRelationshipFetcher(variables)();
-
-export const useCreateRelationship = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<GraphRelationshipRecord | undefined, TError, CreateRelationshipVariables, TContext>,
-) =>
-  useMutation<GraphRelationshipRecord | undefined, TError, CreateRelationshipVariables, TContext>(
-    ['CreateRelationship'],
-    (variables: CreateRelationshipVariables) => CreateRelationshipFetcher(variables)(),
-    options,
   );
 
 export const UpdateRelationshipDocument = `
@@ -5713,27 +5234,12 @@ export const UpdateRelationshipFetcher = <TOutput = GraphRelationshipRecord, TIn
   outputFn = UpdateRelationshipOutputFn,
   inputFn = UpdateRelationshipInputFn,
 ) =>
-  fetchWithAmplify<UpdateRelationship, UpdateRelationshipVariables, TOutput, TInput>(
+  fetcher<UpdateRelationship, UpdateRelationshipVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `UpdateRelationship`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateRelationship = (variables: UpdateRelationshipVariables) => UpdateRelationshipFetcher(variables)();
-
-export const useUpdateRelationship = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<GraphRelationshipRecord | undefined, TError, UpdateRelationshipVariables, TContext>,
-) =>
-  useMutation<GraphRelationshipRecord | undefined, TError, UpdateRelationshipVariables, TContext>(
-    ['UpdateRelationship'],
-    (variables: UpdateRelationshipVariables) => UpdateRelationshipFetcher(variables)(),
-    options,
   );
 
 export const DeleteRelationshipDocument = `
@@ -5810,27 +5316,12 @@ export const DeleteRelationshipFetcher = <TOutput = DeleteRelationshipRecord, TI
   outputFn = DeleteRelationshipOutputFn,
   inputFn = DeleteRelationshipInputFn,
 ) =>
-  fetchWithAmplify<DeleteRelationship, DeleteRelationshipVariables, TOutput, TInput>(
+  fetcher<DeleteRelationship, DeleteRelationshipVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
-  );
-
-/**
- * GraphQL request function for `DeleteRelationship`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteRelationship = (variables: DeleteRelationshipVariables) => DeleteRelationshipFetcher(variables)();
-
-export const useDeleteRelationship = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<DeleteRelationshipRecord | undefined, TError, DeleteRelationshipVariables, TContext>,
-) =>
-  useMutation<DeleteRelationshipRecord | undefined, TError, DeleteRelationshipVariables, TContext>(
-    ['DeleteRelationship'],
-    (variables: DeleteRelationshipVariables) => DeleteRelationshipFetcher(variables)(),
-    options,
   );
 
 export const CreateUserDocument = `
@@ -5898,23 +5389,7 @@ export const CreateUserFetcher = <TOutput = CognitoUser, TInput = CreateUserVari
   document = CreateUserDocument,
   outputFn = CreateUserOutputFn,
   inputFn = CreateUserInputFn,
-) =>
-  fetchWithAmplify<CreateUser, CreateUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `CreateUser`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const createUser = (variables: CreateUserVariables) => CreateUserFetcher(variables)();
-
-export const useCreateUser = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<CognitoUser | undefined, TError, CreateUserVariables, TContext>,
-) =>
-  useMutation<CognitoUser | undefined, TError, CreateUserVariables, TContext>(
-    ['CreateUser'],
-    (variables: CreateUserVariables) => CreateUserFetcher(variables)(),
-    options,
-  );
+) => fetcher<CreateUser, CreateUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const UpdateUserDocument = `
     mutation UpdateUser($input: UpdateUserInput!) {
@@ -5981,23 +5456,7 @@ export const UpdateUserFetcher = <TOutput = CognitoUser, TInput = UpdateUserVari
   document = UpdateUserDocument,
   outputFn = UpdateUserOutputFn,
   inputFn = UpdateUserInputFn,
-) =>
-  fetchWithAmplify<UpdateUser, UpdateUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `UpdateUser`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const updateUser = (variables: UpdateUserVariables) => UpdateUserFetcher(variables)();
-
-export const useUpdateUser = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<CognitoUser | undefined, TError, UpdateUserVariables, TContext>,
-) =>
-  useMutation<CognitoUser | undefined, TError, UpdateUserVariables, TContext>(
-    ['UpdateUser'],
-    (variables: UpdateUserVariables) => UpdateUserFetcher(variables)(),
-    options,
-  );
+) => fetcher<UpdateUser, UpdateUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const DeleteUserDocument = `
     mutation DeleteUser($input: DeleteUserInput!) {
@@ -6064,23 +5523,7 @@ export const DeleteUserFetcher = <TOutput = CognitoUser, TInput = DeleteUserVari
   document = DeleteUserDocument,
   outputFn = DeleteUserOutputFn,
   inputFn = DeleteUserInputFn,
-) =>
-  fetchWithAmplify<DeleteUser, DeleteUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `DeleteUser`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const deleteUser = (variables: DeleteUserVariables) => DeleteUserFetcher(variables)();
-
-export const useDeleteUser = <TError = undefined, TContext = unknown>(
-  options?: UseMutationOptions<CognitoUser | undefined, TError, DeleteUserVariables, TContext>,
-) =>
-  useMutation<CognitoUser | undefined, TError, DeleteUserVariables, TContext>(
-    ['DeleteUser'],
-    (variables: DeleteUserVariables) => DeleteUserFetcher(variables)(),
-    options,
-  );
+) => fetcher<DeleteUser, DeleteUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const EmptyQueryDocument = `
     query EmptyQuery {
@@ -6137,26 +5580,7 @@ export const EmptyQueryFetcher = <TOutput = Scalars['String'], TInput = EmptyQue
   document = EmptyQueryDocument,
   outputFn = EmptyQueryOutputFn,
   inputFn = EmptyQueryInputFn,
-) =>
-  fetchWithAmplify<EmptyQuery, EmptyQueryVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `EmptyQuery`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const emptyQuery = (variables?: EmptyQueryVariables) => EmptyQueryFetcher(variables)();
-
-export const useEmptyQuery = <TData = Scalars['String'] | undefined, TError = undefined>(
-  variables?: EmptyQueryVariables,
-  options?: UseQueryOptions<Scalars['String'] | undefined, TError, TData>,
-) =>
-  useQuery<Scalars['String'] | undefined, TError, TData>(
-    variables === undefined ? ['EmptyQuery'] : ['EmptyQuery', variables],
-    EmptyQueryFetcher(variables),
-    options,
-  );
-
-useEmptyQuery.getKey = EmptyQueryKeys;
+) => fetcher<EmptyQuery, EmptyQueryVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const EchoDocument = `
     query Echo($msg: String) {
@@ -6210,25 +5634,7 @@ export const EchoFetcher = <TOutput = Scalars['String'], TInput = EchoVariables>
   document = EchoDocument,
   outputFn = EchoOutputFn,
   inputFn = EchoInputFn,
-) => fetchWithAmplify<Echo, EchoVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `Echo`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const echo = (variables?: EchoVariables) => EchoFetcher(variables)();
-
-export const useEcho = <TData = Scalars['String'] | undefined, TError = undefined>(
-  variables?: EchoVariables,
-  options?: UseQueryOptions<Scalars['String'] | undefined, TError, TData>,
-) =>
-  useQuery<Scalars['String'] | undefined, TError, TData>(
-    variables === undefined ? ['Echo'] : ['Echo', variables],
-    EchoFetcher(variables),
-    options,
-  );
-
-useEcho.getKey = EchoKeys;
+) => fetcher<Echo, EchoVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const CustomTestDocument = `
     query CustomTest($id: ID!) {
@@ -6291,21 +5697,7 @@ export const CustomTestFetcher = <TOutput = Test, TInput = CustomTestVariables>(
   document = CustomTestDocument,
   outputFn = CustomTestOutputFn,
   inputFn = CustomTestInputFn,
-) =>
-  fetchWithAmplify<CustomTest, CustomTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `CustomTest`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const customTest = (variables: CustomTestVariables) => CustomTestFetcher(variables)();
-
-export const useCustomTest = <TData = Test | undefined, TError = undefined>(
-  variables: CustomTestVariables,
-  options?: UseQueryOptions<Test | undefined, TError, TData>,
-) => useQuery<Test | undefined, TError, TData>(['CustomTest', variables], CustomTestFetcher(variables), options);
-
-useCustomTest.getKey = CustomTestKeys;
+) => fetcher<CustomTest, CustomTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const GetConnectorDocument = `
     query GetConnector($id: ID!) {
@@ -6404,28 +5796,7 @@ export const GetConnectorFetcher = <TOutput = Connector, TInput = GetConnectorVa
   document = GetConnectorDocument,
   outputFn = GetConnectorOutputFn,
   inputFn = GetConnectorInputFn,
-) =>
-  fetchWithAmplify<GetConnector, GetConnectorVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `GetConnector`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getConnector = (variables: GetConnectorVariables) => GetConnectorFetcher(variables)();
-
-export const useGetConnector = <TData = Connector | undefined, TError = undefined>(
-  variables: GetConnectorVariables,
-  options?: UseQueryOptions<Connector | undefined, TError, TData>,
-) =>
-  useQuery<Connector | undefined, TError, TData>(['GetConnector', variables], GetConnectorFetcher(variables), options);
-
-useGetConnector.getKey = GetConnectorKeys;
+) => fetcher<GetConnector, GetConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const ListConnectorsDocument = `
     query ListConnectors($filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
@@ -6513,32 +5884,7 @@ export const ListConnectorsFetcher = <TOutput = ModelConnectorConnection, TInput
   document = ListConnectorsDocument,
   outputFn = ListConnectorsOutputFn,
   inputFn = ListConnectorsInputFn,
-) =>
-  fetchWithAmplify<ListConnectors, ListConnectorsVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `ListConnectors`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const listConnectors = (variables?: ListConnectorsVariables) => ListConnectorsFetcher(variables)();
-
-export const useListConnectors = <TData = ModelConnectorConnection | undefined, TError = undefined>(
-  variables?: ListConnectorsVariables,
-  options?: UseQueryOptions<ModelConnectorConnection | undefined, TError, TData>,
-) =>
-  useQuery<ModelConnectorConnection | undefined, TError, TData>(
-    variables === undefined ? ['ListConnectors'] : ['ListConnectors', variables],
-    ListConnectorsFetcher(variables),
-    options,
-  );
-
-useListConnectors.getKey = ListConnectorsKeys;
+) => fetcher<ListConnectors, ListConnectorsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const GetConnectorByDataSourceDocument = `
     query GetConnectorByDataSource($dataSource: String!, $id: ModelIDKeyConditionInput, $sortDirection: ModelSortDirection, $filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
@@ -6641,32 +5987,13 @@ export const GetConnectorByDataSourceFetcher = <
   outputFn = GetConnectorByDataSourceOutputFn,
   inputFn = GetConnectorByDataSourceInputFn,
 ) =>
-  fetchWithAmplify<GetConnectorByDataSource, GetConnectorByDataSourceVariables, TOutput, TInput>(
+  fetcher<GetConnectorByDataSource, GetConnectorByDataSourceVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
   );
-
-/**
- * GraphQL request function for `GetConnectorByDataSource`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getConnectorByDataSource = (variables: GetConnectorByDataSourceVariables) =>
-  GetConnectorByDataSourceFetcher(variables)();
-
-export const useGetConnectorByDataSource = <TData = ModelConnectorConnection | undefined, TError = undefined>(
-  variables: GetConnectorByDataSourceVariables,
-  options?: UseQueryOptions<ModelConnectorConnection | undefined, TError, TData>,
-) =>
-  useQuery<ModelConnectorConnection | undefined, TError, TData>(
-    ['GetConnectorByDataSource', variables],
-    GetConnectorByDataSourceFetcher(variables),
-    options,
-  );
-
-useGetConnectorByDataSource.getKey = GetConnectorByDataSourceKeys;
 
 export const GetTransformationDocument = `
     query GetTransformation($id: ID!) {
@@ -6762,31 +6089,13 @@ export const GetTransformationFetcher = <TOutput = Transformation, TInput = GetT
   outputFn = GetTransformationOutputFn,
   inputFn = GetTransformationInputFn,
 ) =>
-  fetchWithAmplify<GetTransformation, GetTransformationVariables, TOutput, TInput>(
+  fetcher<GetTransformation, GetTransformationVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
   );
-
-/**
- * GraphQL request function for `GetTransformation`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getTransformation = (variables: GetTransformationVariables) => GetTransformationFetcher(variables)();
-
-export const useGetTransformation = <TData = Transformation | undefined, TError = undefined>(
-  variables: GetTransformationVariables,
-  options?: UseQueryOptions<Transformation | undefined, TError, TData>,
-) =>
-  useQuery<Transformation | undefined, TError, TData>(
-    ['GetTransformation', variables],
-    GetTransformationFetcher(variables),
-    options,
-  );
-
-useGetTransformation.getKey = GetTransformationKeys;
 
 export const ListTransformationsDocument = `
     query ListTransformations($filter: ModelTransformationFilterInput, $limit: Int, $nextToken: String) {
@@ -6880,32 +6189,13 @@ export const ListTransformationsFetcher = <
   outputFn = ListTransformationsOutputFn,
   inputFn = ListTransformationsInputFn,
 ) =>
-  fetchWithAmplify<ListTransformations, ListTransformationsVariables, TOutput, TInput>(
+  fetcher<ListTransformations, ListTransformationsVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
   );
-
-/**
- * GraphQL request function for `ListTransformations`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const listTransformations = (variables?: ListTransformationsVariables) =>
-  ListTransformationsFetcher(variables)();
-
-export const useListTransformations = <TData = ModelTransformationConnection | undefined, TError = undefined>(
-  variables?: ListTransformationsVariables,
-  options?: UseQueryOptions<ModelTransformationConnection | undefined, TError, TData>,
-) =>
-  useQuery<ModelTransformationConnection | undefined, TError, TData>(
-    variables === undefined ? ['ListTransformations'] : ['ListTransformations', variables],
-    ListTransformationsFetcher(variables),
-    options,
-  );
-
-useListTransformations.getKey = ListTransformationsKeys;
 
 export const GetTransformationsByConnectorDocument = `
     query GetTransformationsByConnector($connectorID: ID!, $sortDirection: ModelSortDirection, $filter: ModelTransformationFilterInput, $limit: Int, $nextToken: String) {
@@ -7007,32 +6297,13 @@ export const GetTransformationsByConnectorFetcher = <
   outputFn = GetTransformationsByConnectorOutputFn,
   inputFn = GetTransformationsByConnectorInputFn,
 ) =>
-  fetchWithAmplify<GetTransformationsByConnector, GetTransformationsByConnectorVariables, TOutput, TInput>(
+  fetcher<GetTransformationsByConnector, GetTransformationsByConnectorVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
   );
-
-/**
- * GraphQL request function for `GetTransformationsByConnector`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getTransformationsByConnector = (variables: GetTransformationsByConnectorVariables) =>
-  GetTransformationsByConnectorFetcher(variables)();
-
-export const useGetTransformationsByConnector = <TData = ModelTransformationConnection | undefined, TError = undefined>(
-  variables: GetTransformationsByConnectorVariables,
-  options?: UseQueryOptions<ModelTransformationConnection | undefined, TError, TData>,
-) =>
-  useQuery<ModelTransformationConnection | undefined, TError, TData>(
-    ['GetTransformationsByConnector', variables],
-    GetTransformationsByConnectorFetcher(variables),
-    options,
-  );
-
-useGetTransformationsByConnector.getKey = GetTransformationsByConnectorKeys;
 
 export const GetPerspectiveDocument = `
     query GetPerspective($id: ID!) {
@@ -7105,32 +6376,7 @@ export const GetPerspectiveFetcher = <TOutput = Perspective, TInput = GetPerspec
   document = GetPerspectiveDocument,
   outputFn = GetPerspectiveOutputFn,
   inputFn = GetPerspectiveInputFn,
-) =>
-  fetchWithAmplify<GetPerspective, GetPerspectiveVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `GetPerspective`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getPerspective = (variables: GetPerspectiveVariables) => GetPerspectiveFetcher(variables)();
-
-export const useGetPerspective = <TData = Perspective | undefined, TError = undefined>(
-  variables: GetPerspectiveVariables,
-  options?: UseQueryOptions<Perspective | undefined, TError, TData>,
-) =>
-  useQuery<Perspective | undefined, TError, TData>(
-    ['GetPerspective', variables],
-    GetPerspectiveFetcher(variables),
-    options,
-  );
-
-useGetPerspective.getKey = GetPerspectiveKeys;
+) => fetcher<GetPerspective, GetPerspectiveVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const ListPerspectivesDocument = `
     query ListPerspectives($filter: ModelPerspectiveFilterInput, $limit: Int, $nextToken: String) {
@@ -7209,31 +6455,13 @@ export const ListPerspectivesFetcher = <TOutput = ModelPerspectiveConnection, TI
   outputFn = ListPerspectivesOutputFn,
   inputFn = ListPerspectivesInputFn,
 ) =>
-  fetchWithAmplify<ListPerspectives, ListPerspectivesVariables, TOutput, TInput>(
+  fetcher<ListPerspectives, ListPerspectivesVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
   );
-
-/**
- * GraphQL request function for `ListPerspectives`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const listPerspectives = (variables?: ListPerspectivesVariables) => ListPerspectivesFetcher(variables)();
-
-export const useListPerspectives = <TData = ModelPerspectiveConnection | undefined, TError = undefined>(
-  variables?: ListPerspectivesVariables,
-  options?: UseQueryOptions<ModelPerspectiveConnection | undefined, TError, TData>,
-) =>
-  useQuery<ModelPerspectiveConnection | undefined, TError, TData>(
-    variables === undefined ? ['ListPerspectives'] : ['ListPerspectives', variables],
-    ListPerspectivesFetcher(variables),
-    options,
-  );
-
-useListPerspectives.getKey = ListPerspectivesKeys;
 
 export const GetSchemaDocument = `
     query GetSchema($id: ID!) {
@@ -7319,20 +6547,7 @@ export const GetSchemaFetcher = <TOutput = Schema, TInput = GetSchemaVariables>(
   document = GetSchemaDocument,
   outputFn = GetSchemaOutputFn,
   inputFn = GetSchemaInputFn,
-) => fetchWithAmplify<GetSchema, GetSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `GetSchema`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getSchema = (variables: GetSchemaVariables) => GetSchemaFetcher(variables)();
-
-export const useGetSchema = <TData = Schema | undefined, TError = undefined>(
-  variables: GetSchemaVariables,
-  options?: UseQueryOptions<Schema | undefined, TError, TData>,
-) => useQuery<Schema | undefined, TError, TData>(['GetSchema', variables], GetSchemaFetcher(variables), options);
-
-useGetSchema.getKey = GetSchemaKeys;
+) => fetcher<GetSchema, GetSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const ListSchemasDocument = `
     query ListSchemas($filter: ModelSchemaFilterInput, $limit: Int, $nextToken: String) {
@@ -7423,26 +6638,7 @@ export const ListSchemasFetcher = <TOutput = ModelSchemaConnection, TInput = Lis
   document = ListSchemasDocument,
   outputFn = ListSchemasOutputFn,
   inputFn = ListSchemasInputFn,
-) =>
-  fetchWithAmplify<ListSchemas, ListSchemasVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `ListSchemas`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const listSchemas = (variables?: ListSchemasVariables) => ListSchemasFetcher(variables)();
-
-export const useListSchemas = <TData = ModelSchemaConnection | undefined, TError = undefined>(
-  variables?: ListSchemasVariables,
-  options?: UseQueryOptions<ModelSchemaConnection | undefined, TError, TData>,
-) =>
-  useQuery<ModelSchemaConnection | undefined, TError, TData>(
-    variables === undefined ? ['ListSchemas'] : ['ListSchemas', variables],
-    ListSchemasFetcher(variables),
-    options,
-  );
-
-useListSchemas.getKey = ListSchemasKeys;
+) => fetcher<ListSchemas, ListSchemasVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const GetTestDocument = `
     query GetTest($id: ID!) {
@@ -7505,20 +6701,7 @@ export const GetTestFetcher = <TOutput = Test, TInput = GetTestVariables>(
   document = GetTestDocument,
   outputFn = GetTestOutputFn,
   inputFn = GetTestInputFn,
-) => fetchWithAmplify<GetTest, GetTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `GetTest`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getTest = (variables: GetTestVariables) => GetTestFetcher(variables)();
-
-export const useGetTest = <TData = Test | undefined, TError = undefined>(
-  variables: GetTestVariables,
-  options?: UseQueryOptions<Test | undefined, TError, TData>,
-) => useQuery<Test | undefined, TError, TData>(['GetTest', variables], GetTestFetcher(variables), options);
-
-useGetTest.getKey = GetTestKeys;
+) => fetcher<GetTest, GetTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const ListTestsDocument = `
     query ListTests($filter: ModelTestFilterInput, $limit: Int, $nextToken: String) {
@@ -7586,25 +6769,7 @@ export const ListTestsFetcher = <TOutput = ModelTestConnection, TInput = ListTes
   document = ListTestsDocument,
   outputFn = ListTestsOutputFn,
   inputFn = ListTestsInputFn,
-) => fetchWithAmplify<ListTests, ListTestsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `ListTests`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const listTests = (variables?: ListTestsVariables) => ListTestsFetcher(variables)();
-
-export const useListTests = <TData = ModelTestConnection | undefined, TError = undefined>(
-  variables?: ListTestsVariables,
-  options?: UseQueryOptions<ModelTestConnection | undefined, TError, TData>,
-) =>
-  useQuery<ModelTestConnection | undefined, TError, TData>(
-    variables === undefined ? ['ListTests'] : ['ListTests', variables],
-    ListTestsFetcher(variables),
-    options,
-  );
-
-useListTests.getKey = ListTestsKeys;
+) => fetcher<ListTests, ListTestsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const GetOrganizationDocument = `
     query GetOrganization($id: ID!) {
@@ -7668,31 +6833,7 @@ export const GetOrganizationFetcher = <TOutput = Organization, TInput = GetOrgan
   outputFn = GetOrganizationOutputFn,
   inputFn = GetOrganizationInputFn,
 ) =>
-  fetchWithAmplify<GetOrganization, GetOrganizationVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `GetOrganization`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getOrganization = (variables: GetOrganizationVariables) => GetOrganizationFetcher(variables)();
-
-export const useGetOrganization = <TData = Organization | undefined, TError = undefined>(
-  variables: GetOrganizationVariables,
-  options?: UseQueryOptions<Organization | undefined, TError, TData>,
-) =>
-  useQuery<Organization | undefined, TError, TData>(
-    ['GetOrganization', variables],
-    GetOrganizationFetcher(variables),
-    options,
-  );
-
-useGetOrganization.getKey = GetOrganizationKeys;
+  fetcher<GetOrganization, GetOrganizationVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const ListOrganizationsDocument = `
     query ListOrganizations($filter: ModelOrganizationFilterInput, $limit: Int, $nextToken: String) {
@@ -7761,31 +6902,13 @@ export const ListOrganizationsFetcher = <TOutput = ModelOrganizationConnection, 
   outputFn = ListOrganizationsOutputFn,
   inputFn = ListOrganizationsInputFn,
 ) =>
-  fetchWithAmplify<ListOrganizations, ListOrganizationsVariables, TOutput, TInput>(
+  fetcher<ListOrganizations, ListOrganizationsVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
   );
-
-/**
- * GraphQL request function for `ListOrganizations`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const listOrganizations = (variables?: ListOrganizationsVariables) => ListOrganizationsFetcher(variables)();
-
-export const useListOrganizations = <TData = ModelOrganizationConnection | undefined, TError = undefined>(
-  variables?: ListOrganizationsVariables,
-  options?: UseQueryOptions<ModelOrganizationConnection | undefined, TError, TData>,
-) =>
-  useQuery<ModelOrganizationConnection | undefined, TError, TData>(
-    variables === undefined ? ['ListOrganizations'] : ['ListOrganizations', variables],
-    ListOrganizationsFetcher(variables),
-    options,
-  );
-
-useListOrganizations.getKey = ListOrganizationsKeys;
 
 export const SearchGraphDocument = `
     query SearchGraph($input: SearchGraphInput!) {
@@ -7861,26 +6984,7 @@ export const SearchGraphFetcher = <TOutput = SearchGraphResult, TInput = SearchG
   document = SearchGraphDocument,
   outputFn = SearchGraphOutputFn,
   inputFn = SearchGraphInputFn,
-) =>
-  fetchWithAmplify<SearchGraph, SearchGraphVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `SearchGraph`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const searchGraph = (variables: SearchGraphVariables) => SearchGraphFetcher(variables)();
-
-export const useSearchGraph = <TData = SearchGraphResult | undefined, TError = undefined>(
-  variables: SearchGraphVariables,
-  options?: UseQueryOptions<SearchGraphResult | undefined, TError, TData>,
-) =>
-  useQuery<SearchGraphResult | undefined, TError, TData>(
-    ['SearchGraph', variables],
-    SearchGraphFetcher(variables),
-    options,
-  );
-
-useSearchGraph.getKey = SearchGraphKeys;
+) => fetcher<SearchGraph, SearchGraphVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const GetNodeDocument = `
     query GetNode($identity: ID!) {
@@ -7979,20 +7083,7 @@ export const GetNodeFetcher = <TOutput = GraphNodeRecord, TInput = GetNodeVariab
   document = GetNodeDocument,
   outputFn = GetNodeOutputFn,
   inputFn = GetNodeInputFn,
-) => fetchWithAmplify<GetNode, GetNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `GetNode`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getNode = (variables: GetNodeVariables) => GetNodeFetcher(variables)();
-
-export const useGetNode = <TData = GraphNodeRecord | undefined, TError = undefined>(
-  variables: GetNodeVariables,
-  options?: UseQueryOptions<GraphNodeRecord | undefined, TError, TData>,
-) => useQuery<GraphNodeRecord | undefined, TError, TData>(['GetNode', variables], GetNodeFetcher(variables), options);
-
-useGetNode.getKey = GetNodeKeys;
+) => fetcher<GetNode, GetNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const GetRelationshipDocument = `
     query GetRelationship($identity: ID!) {
@@ -8088,31 +7179,7 @@ export const GetRelationshipFetcher = <TOutput = GraphRelationshipRecord, TInput
   outputFn = GetRelationshipOutputFn,
   inputFn = GetRelationshipInputFn,
 ) =>
-  fetchWithAmplify<GetRelationship, GetRelationshipVariables, TOutput, TInput>(
-    document,
-    variables,
-    options,
-    outputFn,
-    inputFn,
-  );
-
-/**
- * GraphQL request function for `GetRelationship`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getRelationship = (variables: GetRelationshipVariables) => GetRelationshipFetcher(variables)();
-
-export const useGetRelationship = <TData = GraphRelationshipRecord | undefined, TError = undefined>(
-  variables: GetRelationshipVariables,
-  options?: UseQueryOptions<GraphRelationshipRecord | undefined, TError, TData>,
-) =>
-  useQuery<GraphRelationshipRecord | undefined, TError, TData>(
-    ['GetRelationship', variables],
-    GetRelationshipFetcher(variables),
-    options,
-  );
-
-useGetRelationship.getKey = GetRelationshipKeys;
+  fetcher<GetRelationship, GetRelationshipVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const ListNodesDocument = `
     query ListNodes($input: ListNodesInput!) {
@@ -8216,21 +7283,7 @@ export const ListNodesFetcher = <TOutput = GraphNodeRecords, TInput = ListNodesV
   document = ListNodesDocument,
   outputFn = ListNodesOutputFn,
   inputFn = ListNodesInputFn,
-) => fetchWithAmplify<ListNodes, ListNodesVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `ListNodes`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const listNodes = (variables: ListNodesVariables) => ListNodesFetcher(variables)();
-
-export const useListNodes = <TData = GraphNodeRecords | undefined, TError = undefined>(
-  variables: ListNodesVariables,
-  options?: UseQueryOptions<GraphNodeRecords | undefined, TError, TData>,
-) =>
-  useQuery<GraphNodeRecords | undefined, TError, TData>(['ListNodes', variables], ListNodesFetcher(variables), options);
-
-useListNodes.getKey = ListNodesKeys;
+) => fetcher<ListNodes, ListNodesVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const GetUserDocument = `
     query GetUser($username: ID!) {
@@ -8297,20 +7350,7 @@ export const GetUserFetcher = <TOutput = CognitoUser, TInput = GetUserVariables>
   document = GetUserDocument,
   outputFn = GetUserOutputFn,
   inputFn = GetUserInputFn,
-) => fetchWithAmplify<GetUser, GetUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `GetUser`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getUser = (variables: GetUserVariables) => GetUserFetcher(variables)();
-
-export const useGetUser = <TData = CognitoUser | undefined, TError = undefined>(
-  variables: GetUserVariables,
-  options?: UseQueryOptions<CognitoUser | undefined, TError, TData>,
-) => useQuery<CognitoUser | undefined, TError, TData>(['GetUser', variables], GetUserFetcher(variables), options);
-
-useGetUser.getKey = GetUserKeys;
+) => fetcher<GetUser, GetUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const FindUsersDocument = `
     query FindUsers($input: FindUsersInput!) {
@@ -8383,21 +7423,7 @@ export const FindUsersFetcher = <TOutput = CognitoUserList, TInput = FindUsersVa
   document = FindUsersDocument,
   outputFn = FindUsersOutputFn,
   inputFn = FindUsersInputFn,
-) => fetchWithAmplify<FindUsers, FindUsersVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `FindUsers`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const findUsers = (variables: FindUsersVariables) => FindUsersFetcher(variables)();
-
-export const useFindUsers = <TData = CognitoUserList | undefined, TError = undefined>(
-  variables: FindUsersVariables,
-  options?: UseQueryOptions<CognitoUserList | undefined, TError, TData>,
-) =>
-  useQuery<CognitoUserList | undefined, TError, TData>(['FindUsers', variables], FindUsersFetcher(variables), options);
-
-useFindUsers.getKey = FindUsersKeys;
+) => fetcher<FindUsers, FindUsersVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const ListUsersDocument = `
     query ListUsers($nextToken: String) {
@@ -8471,25 +7497,7 @@ export const ListUsersFetcher = <TOutput = CognitoUserList, TInput = ListUsersVa
   document = ListUsersDocument,
   outputFn = ListUsersOutputFn,
   inputFn = ListUsersInputFn,
-) => fetchWithAmplify<ListUsers, ListUsersVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `ListUsers`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const listUsers = (variables?: ListUsersVariables) => ListUsersFetcher(variables)();
-
-export const useListUsers = <TData = CognitoUserList | undefined, TError = undefined>(
-  variables?: ListUsersVariables,
-  options?: UseQueryOptions<CognitoUserList | undefined, TError, TData>,
-) =>
-  useQuery<CognitoUserList | undefined, TError, TData>(
-    variables === undefined ? ['ListUsers'] : ['ListUsers', variables],
-    ListUsersFetcher(variables),
-    options,
-  );
-
-useListUsers.getKey = ListUsersKeys;
+) => fetcher<ListUsers, ListUsersVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 export const GetConnectorCredentialsDocument = `
     query GetConnectorCredentials($id: ID!) {
@@ -8565,32 +7573,13 @@ export const GetConnectorCredentialsFetcher = <
   outputFn = GetConnectorCredentialsOutputFn,
   inputFn = GetConnectorCredentialsInputFn,
 ) =>
-  fetchWithAmplify<GetConnectorCredentials, GetConnectorCredentialsVariables, TOutput, TInput>(
+  fetcher<GetConnectorCredentials, GetConnectorCredentialsVariables, TOutput, TInput>(
     document,
     variables,
     options,
     outputFn,
     inputFn,
   );
-
-/**
- * GraphQL request function for `GetConnectorCredentials`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getConnectorCredentials = (variables: GetConnectorCredentialsVariables) =>
-  GetConnectorCredentialsFetcher(variables)();
-
-export const useGetConnectorCredentials = <TData = ConnectorCredentials | undefined, TError = undefined>(
-  variables: GetConnectorCredentialsVariables,
-  options?: UseQueryOptions<ConnectorCredentials | undefined, TError, TData>,
-) =>
-  useQuery<ConnectorCredentials | undefined, TError, TData>(
-    ['GetConnectorCredentials', variables],
-    GetConnectorCredentialsFetcher(variables),
-    options,
-  );
-
-useGetConnectorCredentials.getKey = GetConnectorCredentialsKeys;
 
 export const GetManifestDocument = `
     query GetManifest($service: ConnectorService!) {
@@ -8646,23 +7635,4 @@ export const GetManifestFetcher = <TOutput = Scalars['AWSJSON'], TInput = GetMan
   document = GetManifestDocument,
   outputFn = GetManifestOutputFn,
   inputFn = GetManifestInputFn,
-) =>
-  fetchWithAmplify<GetManifest, GetManifestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
-
-/**
- * GraphQL request function for `GetManifest`.
- * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
- */
-export const getManifest = (variables: GetManifestVariables) => GetManifestFetcher(variables)();
-
-export const useGetManifest = <TData = Scalars['AWSJSON'] | undefined, TError = undefined>(
-  variables: GetManifestVariables,
-  options?: UseQueryOptions<Scalars['AWSJSON'] | undefined, TError, TData>,
-) =>
-  useQuery<Scalars['AWSJSON'] | undefined, TError, TData>(
-    ['GetManifest', variables],
-    GetManifestFetcher(variables),
-    options,
-  );
-
-useGetManifest.getKey = GetManifestKeys;
+) => fetcher<GetManifest, GetManifestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);

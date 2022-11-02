@@ -10,8 +10,8 @@ config:
   maybeValue: T | undefined
   scalars:
     AWSJSON: Record<string, any> | string
-  exposeFetcher: true
-  exposeQueryKeys: true  
+  # exposeFetcher: true
+  # exposeQueryKeys: true  
   # exposeMutationKeys: true  
   # excludeOperations:
     # - '*Relationship'
@@ -24,25 +24,20 @@ config:
 generates:
   generated/plugin.ts:
     config:
-      skipHooks:
-        - SaveNode
-        - ReadNode
-        - SaveRelationship
-        - ReadRelationship  
-      fetcher: '../graphql/fetcher#fetchWithAmplify'
+      fetcher: '../graphql/fetcher#fetcher'
       omitOperationSuffix: true
-      generateReactQueryHooks: true
-      generateGqlRequestFunctions: true
+      # generateGqlRequestFunctions: true
     plugins:
       - typescript
       - typescript-operations    
       # - typescript-react-query  
       - dist/index.js
-      - add:
-          placement: prepend
-          content:
-            - "/* eslint-disable */"
-            # - "import awsconfig from '../src/aws-exports.js';"              
+      # - add:
+      #     placement: prepend
+      #     content:
+      #       - "/* eslint-disable */"
+      #       # - "import awsconfig from '../src/aws-exports.js';"              
 hooks:
   afterAllFileWrite:
-    - npx prettier --write
+    - npx eslint --fix
+    # - npx prettier --write
