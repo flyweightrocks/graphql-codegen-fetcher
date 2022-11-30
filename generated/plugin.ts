@@ -4,7 +4,6 @@ export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -1204,9 +1203,9 @@ export enum UserStatus {
   Unknown = 'UNKNOWN',
 }
 
-export type EmptyMutationVariables = Exact<{ [key: string]: never }>;
+export type EmptyTestVariables = Exact<{ [key: string]: never }>;
 
-export type EmptyMutation = { emptyMutation?: number | undefined };
+export type EmptyTest = { emptyMutation?: number | undefined };
 
 export type CreateConnectorVariables = Exact<{
   input: CreateConnectorInput;
@@ -2844,47 +2843,47 @@ export type GetManifestVariables = Exact<{
 
 export type GetManifest = { getManifest?: Record<string, any> | string | undefined };
 
-export const EmptyMutationDocument = `
-    mutation EmptyMutation {
+export const EmptyTestDocument = `
+    mutation EmptyTest {
   emptyMutation
 }
     `;
 
 /**
- * Key maker function for `EmptyMutation`.
+ * Key maker function for `EmptyTest`.
  */
-export const EmptyMutationKeys = () => ['EmptyMutation'];
+export const EmptyTestKeys = () => ['EmptyTest'];
 
 /**
- * Input transformer function for `EmptyMutation`.
+ * Input transformer function for `EmptyTest`.
  * It transforms the fields of the variables into JSON strings.
  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
  * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
  *
- * @param variables `EmptyMutationVariables` - The original variables
- * @returns `EmptyMutationVariables` - The transformed variables
+ * @param variables `EmptyTestVariables` - The original variables
+ * @returns `EmptyTestVariables` - The transformed variables
  */
-export const EmptyMutationInputFn = <TInput = EmptyMutationVariables>(variables?: EmptyMutationVariables) =>
+export const EmptyTestInputFn = <TInput = EmptyTestVariables>(variables?: EmptyTestVariables) =>
   variables as unknown as TInput;
 
 /**
- * Output transformer function for `EmptyMutation`.
+ * Output transformer function for `EmptyTest`.
  * It extracts the `emptyMutation` field from the result and transforms it into a `Scalars['Int']` object.
  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
  * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data EmptyMutation - The data returned from the GraphQL server
+ * @param data EmptyTest - The data returned from the GraphQL server
  * @returns Scalars['Int'] - The transformed data
  */
-export const EmptyMutationOutputFn = <TOutput = Scalars['Int']>({ emptyMutation }: EmptyMutation) =>
+export const EmptyTestOutputFn = <TOutput = Scalars['Int']>({ emptyMutation }: EmptyTest) =>
   emptyMutation as unknown as TOutput;
 
 /**
- * Fetcher function for `EmptyMutation`.
+ * Fetcher function for `EmptyTest`.
  * It invokes the base fetcher function with the operation-specific input and output transformer functions.
  * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
  * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  *
- * The input and output transformer functions are optional arguments and default to the generated `EmptyMutationInput` and `EmptyMutationOutput` functions.
+ * The input and output transformer functions are optional arguments and default to the generated `EmptyTestInput` and `EmptyTestOutput` functions.
  * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
  * @param variables - The variables to pass to the GraphQL operation.
  * @param options - The options to pass to the GraphQL operation.
@@ -2892,13 +2891,19 @@ export const EmptyMutationOutputFn = <TOutput = Scalars['Int']>({ emptyMutation 
  * @param inputFn - The input transformer function.
  * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
-export const EmptyMutationFetcher = <TOutput = Scalars['Int'], TInput = EmptyMutationVariables>(
-  variables?: EmptyMutationVariables,
+export const EmptyTestFetcher = <TOutput = Scalars['Int'], TInput = EmptyTestVariables>(
+  variables?: EmptyTestVariables,
   options?: RequestInit['headers'],
-  document = EmptyMutationDocument,
-  outputFn = EmptyMutationOutputFn,
-  inputFn = EmptyMutationInputFn,
-) => fetcher<EmptyMutation, EmptyMutationVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+  document = EmptyTestDocument,
+  outputFn = EmptyTestOutputFn,
+  inputFn = EmptyTestInputFn,
+) => fetcher<EmptyTest, EmptyTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `EmptyTest`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const emptyTest = (variables?: EmptyTestVariables) => EmptyTestFetcher(variables)();
 
 export const CreateConnectorDocument = `
     mutation CreateConnector($input: CreateConnectorInput!, $condition: ModelConnectorConditionInput) {
@@ -3000,6 +3005,12 @@ export const CreateConnectorFetcher = <TOutput = Connector, TInput = CreateConne
 ) =>
   fetcher<CreateConnector, CreateConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `CreateConnector`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createConnector = (variables: CreateConnectorVariables) => CreateConnectorFetcher(variables)();
+
 export const UpdateConnectorDocument = `
     mutation UpdateConnector($input: UpdateConnectorInput!, $condition: ModelConnectorConditionInput) {
   updateConnector(input: $input, condition: $condition) {
@@ -3100,6 +3111,12 @@ export const UpdateConnectorFetcher = <TOutput = Connector, TInput = UpdateConne
 ) =>
   fetcher<UpdateConnector, UpdateConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `UpdateConnector`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateConnector = (variables: UpdateConnectorVariables) => UpdateConnectorFetcher(variables)();
+
 export const DeleteConnectorDocument = `
     mutation DeleteConnector($input: DeleteConnectorInput!, $condition: ModelConnectorConditionInput) {
   deleteConnector(input: $input, condition: $condition) {
@@ -3199,6 +3216,12 @@ export const DeleteConnectorFetcher = <TOutput = Connector, TInput = DeleteConne
   inputFn = DeleteConnectorInputFn,
 ) =>
   fetcher<DeleteConnector, DeleteConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `DeleteConnector`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteConnector = (variables: DeleteConnectorVariables) => DeleteConnectorFetcher(variables)();
 
 export const CreateTransformationDocument = `
     mutation CreateTransformation($input: CreateTransformationInput!, $condition: ModelTransformationConditionInput) {
@@ -3304,6 +3327,13 @@ export const CreateTransformationFetcher = <TOutput = Transformation, TInput = C
     inputFn,
   );
 
+/**
+ * GraphQL request function for `CreateTransformation`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createTransformation = (variables: CreateTransformationVariables) =>
+  CreateTransformationFetcher(variables)();
+
 export const UpdateTransformationDocument = `
     mutation UpdateTransformation($input: UpdateTransformationInput!, $condition: ModelTransformationConditionInput) {
   updateTransformation(input: $input, condition: $condition) {
@@ -3407,6 +3437,13 @@ export const UpdateTransformationFetcher = <TOutput = Transformation, TInput = U
     outputFn,
     inputFn,
   );
+
+/**
+ * GraphQL request function for `UpdateTransformation`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateTransformation = (variables: UpdateTransformationVariables) =>
+  UpdateTransformationFetcher(variables)();
 
 export const DeleteTransformationDocument = `
     mutation DeleteTransformation($input: DeleteTransformationInput!, $condition: ModelTransformationConditionInput) {
@@ -3512,6 +3549,13 @@ export const DeleteTransformationFetcher = <TOutput = Transformation, TInput = D
     inputFn,
   );
 
+/**
+ * GraphQL request function for `DeleteTransformation`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteTransformation = (variables: DeleteTransformationVariables) =>
+  DeleteTransformationFetcher(variables)();
+
 export const CreatePerspectiveDocument = `
     mutation CreatePerspective($input: CreatePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   createPerspective(input: $input, condition: $condition) {
@@ -3591,6 +3635,12 @@ export const CreatePerspectiveFetcher = <TOutput = Perspective, TInput = CreateP
     outputFn,
     inputFn,
   );
+
+/**
+ * GraphQL request function for `CreatePerspective`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createPerspective = (variables: CreatePerspectiveVariables) => CreatePerspectiveFetcher(variables)();
 
 export const UpdatePerspectiveDocument = `
     mutation UpdatePerspective($input: UpdatePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
@@ -3672,6 +3722,12 @@ export const UpdatePerspectiveFetcher = <TOutput = Perspective, TInput = UpdateP
     inputFn,
   );
 
+/**
+ * GraphQL request function for `UpdatePerspective`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updatePerspective = (variables: UpdatePerspectiveVariables) => UpdatePerspectiveFetcher(variables)();
+
 export const DeletePerspectiveDocument = `
     mutation DeletePerspective($input: DeletePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
   deletePerspective(input: $input, condition: $condition) {
@@ -3751,6 +3807,12 @@ export const DeletePerspectiveFetcher = <TOutput = Perspective, TInput = DeleteP
     outputFn,
     inputFn,
   );
+
+/**
+ * GraphQL request function for `DeletePerspective`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deletePerspective = (variables: DeletePerspectiveVariables) => DeletePerspectiveFetcher(variables)();
 
 export const CreateSchemaDocument = `
     mutation CreateSchema($input: CreateSchemaInput!, $condition: ModelSchemaConditionInput) {
@@ -3839,6 +3901,12 @@ export const CreateSchemaFetcher = <TOutput = Schema, TInput = CreateSchemaVaria
   inputFn = CreateSchemaInputFn,
 ) => fetcher<CreateSchema, CreateSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `CreateSchema`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createSchema = (variables: CreateSchemaVariables) => CreateSchemaFetcher(variables)();
+
 export const UpdateSchemaDocument = `
     mutation UpdateSchema($input: UpdateSchemaInput!, $condition: ModelSchemaConditionInput) {
   updateSchema(input: $input, condition: $condition) {
@@ -3925,6 +3993,12 @@ export const UpdateSchemaFetcher = <TOutput = Schema, TInput = UpdateSchemaVaria
   outputFn = UpdateSchemaOutputFn,
   inputFn = UpdateSchemaInputFn,
 ) => fetcher<UpdateSchema, UpdateSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `UpdateSchema`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateSchema = (variables: UpdateSchemaVariables) => UpdateSchemaFetcher(variables)();
 
 export const DeleteSchemaDocument = `
     mutation DeleteSchema($input: DeleteSchemaInput!, $condition: ModelSchemaConditionInput) {
@@ -4013,6 +4087,12 @@ export const DeleteSchemaFetcher = <TOutput = Schema, TInput = DeleteSchemaVaria
   inputFn = DeleteSchemaInputFn,
 ) => fetcher<DeleteSchema, DeleteSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `DeleteSchema`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteSchema = (variables: DeleteSchemaVariables) => DeleteSchemaFetcher(variables)();
+
 export const CreateTestDocument = `
     mutation CreateTest($input: CreateTestInput!, $condition: ModelTestConditionInput) {
   createTest(input: $input, condition: $condition) {
@@ -4075,6 +4155,12 @@ export const CreateTestFetcher = <TOutput = Test, TInput = CreateTestVariables>(
   outputFn = CreateTestOutputFn,
   inputFn = CreateTestInputFn,
 ) => fetcher<CreateTest, CreateTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `CreateTest`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createTest = (variables: CreateTestVariables) => CreateTestFetcher(variables)();
 
 export const UpdateTestDocument = `
     mutation UpdateTest($input: UpdateTestInput!, $condition: ModelTestConditionInput) {
@@ -4139,6 +4225,12 @@ export const UpdateTestFetcher = <TOutput = Test, TInput = UpdateTestVariables>(
   inputFn = UpdateTestInputFn,
 ) => fetcher<UpdateTest, UpdateTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `UpdateTest`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateTest = (variables: UpdateTestVariables) => UpdateTestFetcher(variables)();
+
 export const DeleteTestDocument = `
     mutation DeleteTest($input: DeleteTestInput!, $condition: ModelTestConditionInput) {
   deleteTest(input: $input, condition: $condition) {
@@ -4201,6 +4293,12 @@ export const DeleteTestFetcher = <TOutput = Test, TInput = DeleteTestVariables>(
   outputFn = DeleteTestOutputFn,
   inputFn = DeleteTestInputFn,
 ) => fetcher<DeleteTest, DeleteTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `DeleteTest`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteTest = (variables: DeleteTestVariables) => DeleteTestFetcher(variables)();
 
 export const CreateOrganizationDocument = `
     mutation CreateOrganization($input: CreateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
@@ -4273,6 +4371,12 @@ export const CreateOrganizationFetcher = <TOutput = Organization, TInput = Creat
     inputFn,
   );
 
+/**
+ * GraphQL request function for `CreateOrganization`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createOrganization = (variables: CreateOrganizationVariables) => CreateOrganizationFetcher(variables)();
+
 export const UpdateOrganizationDocument = `
     mutation UpdateOrganization($input: UpdateOrganizationInput!, $condition: ModelOrganizationConditionInput) {
   updateOrganization(input: $input, condition: $condition) {
@@ -4344,6 +4448,12 @@ export const UpdateOrganizationFetcher = <TOutput = Organization, TInput = Updat
     inputFn,
   );
 
+/**
+ * GraphQL request function for `UpdateOrganization`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateOrganization = (variables: UpdateOrganizationVariables) => UpdateOrganizationFetcher(variables)();
+
 export const RunPerspectiveDocument = `
     mutation RunPerspective($input: RunPerspectiveInput!) {
   runPerspective(input: $input) {
@@ -4406,6 +4516,12 @@ export const RunPerspectiveFetcher = <TOutput = RunPerspectiveResult, TInput = R
   inputFn = RunPerspectiveInputFn,
 ) => fetcher<RunPerspective, RunPerspectiveVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `RunPerspective`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const runPerspective = (variables: RunPerspectiveVariables) => RunPerspectiveFetcher(variables)();
+
 export const RunConnectorDocument = `
     mutation RunConnector($input: RunConnectorInput!) {
   runConnector(input: $input)
@@ -4461,6 +4577,12 @@ export const RunConnectorFetcher = <TOutput = Scalars['AWSJSON'], TInput = RunCo
   outputFn = RunConnectorOutputFn,
   inputFn = RunConnectorInputFn,
 ) => fetcher<RunConnector, RunConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `RunConnector`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const runConnector = (variables: RunConnectorVariables) => RunConnectorFetcher(variables)();
 
 export const CreateConnectorCredentialsDocument = `
     mutation CreateConnectorCredentials($input: CreateConnectorCredentialsInput!) {
@@ -4550,6 +4672,13 @@ export const CreateConnectorCredentialsFetcher = <
     inputFn,
   );
 
+/**
+ * GraphQL request function for `CreateConnectorCredentials`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createConnectorCredentials = (variables: CreateConnectorCredentialsVariables) =>
+  CreateConnectorCredentialsFetcher(variables)();
+
 export const UpdateConnectorCredentialsDocument = `
     mutation UpdateConnectorCredentials($input: UpdateConnectorCredentialsInput!) {
   updateConnectorCredentials(input: $input) {
@@ -4638,6 +4767,13 @@ export const UpdateConnectorCredentialsFetcher = <
     inputFn,
   );
 
+/**
+ * GraphQL request function for `UpdateConnectorCredentials`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateConnectorCredentials = (variables: UpdateConnectorCredentialsVariables) =>
+  UpdateConnectorCredentialsFetcher(variables)();
+
 export const DeleteConnectorCredentialsDocument = `
     mutation DeleteConnectorCredentials($input: DeleteConnectorCredentialsInput!) {
   deleteConnectorCredentials(input: $input) {
@@ -4716,6 +4852,13 @@ export const DeleteConnectorCredentialsFetcher = <
     outputFn,
     inputFn,
   );
+
+/**
+ * GraphQL request function for `DeleteConnectorCredentials`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteConnectorCredentials = (variables: DeleteConnectorCredentialsVariables) =>
+  DeleteConnectorCredentialsFetcher(variables)();
 
 export const CreateNodeDocument = `
     mutation CreateNode($input: CreateNodeInput!) {
@@ -4825,6 +4968,12 @@ export const CreateNodeFetcher = <TOutput = GraphNodeRecord, TInput = CreateNode
   inputFn = CreateNodeInputFn,
 ) => fetcher<CreateNode, CreateNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `CreateNode`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createNode = (variables: CreateNodeVariables) => CreateNodeFetcher(variables)();
+
 export const UpdateNodeDocument = `
     mutation UpdateNode($input: UpdateNodeInput!) {
   updateNode(input: $input) {
@@ -4933,6 +5082,12 @@ export const UpdateNodeFetcher = <TOutput = GraphNodeRecord, TInput = UpdateNode
   inputFn = UpdateNodeInputFn,
 ) => fetcher<UpdateNode, UpdateNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `UpdateNode`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateNode = (variables: UpdateNodeVariables) => UpdateNodeFetcher(variables)();
+
 export const DeleteNodeDocument = `
     mutation DeleteNode($input: DeleteNodeInput!) {
   deleteNode(input: $input) {
@@ -5013,6 +5168,12 @@ export const DeleteNodeFetcher = <TOutput = DeleteNodeRecord, TInput = DeleteNod
   outputFn = DeleteNodeOutputFn,
   inputFn = DeleteNodeInputFn,
 ) => fetcher<DeleteNode, DeleteNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `DeleteNode`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteNode = (variables: DeleteNodeVariables) => DeleteNodeFetcher(variables)();
 
 export const CreateRelationshipDocument = `
     mutation CreateRelationship($input: CreateRelationshipInput!) {
@@ -5128,6 +5289,12 @@ export const CreateRelationshipFetcher = <TOutput = GraphRelationshipRecord, TIn
     inputFn,
   );
 
+/**
+ * GraphQL request function for `CreateRelationship`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createRelationship = (variables: CreateRelationshipVariables) => CreateRelationshipFetcher(variables)();
+
 export const UpdateRelationshipDocument = `
     mutation UpdateRelationship($input: UpdateRelationshipInput!) {
   updateRelationship(input: $input) {
@@ -5242,6 +5409,12 @@ export const UpdateRelationshipFetcher = <TOutput = GraphRelationshipRecord, TIn
     inputFn,
   );
 
+/**
+ * GraphQL request function for `UpdateRelationship`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateRelationship = (variables: UpdateRelationshipVariables) => UpdateRelationshipFetcher(variables)();
+
 export const DeleteRelationshipDocument = `
     mutation DeleteRelationship($input: DeleteRelationshipInput!) {
   deleteRelationship(input: $input) {
@@ -5324,6 +5497,12 @@ export const DeleteRelationshipFetcher = <TOutput = DeleteRelationshipRecord, TI
     inputFn,
   );
 
+/**
+ * GraphQL request function for `DeleteRelationship`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteRelationship = (variables: DeleteRelationshipVariables) => DeleteRelationshipFetcher(variables)();
+
 export const CreateUserDocument = `
     mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
@@ -5390,6 +5569,12 @@ export const CreateUserFetcher = <TOutput = CognitoUser, TInput = CreateUserVari
   outputFn = CreateUserOutputFn,
   inputFn = CreateUserInputFn,
 ) => fetcher<CreateUser, CreateUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `CreateUser`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createUser = (variables: CreateUserVariables) => CreateUserFetcher(variables)();
 
 export const UpdateUserDocument = `
     mutation UpdateUser($input: UpdateUserInput!) {
@@ -5458,6 +5643,12 @@ export const UpdateUserFetcher = <TOutput = CognitoUser, TInput = UpdateUserVari
   inputFn = UpdateUserInputFn,
 ) => fetcher<UpdateUser, UpdateUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `UpdateUser`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const updateUser = (variables: UpdateUserVariables) => UpdateUserFetcher(variables)();
+
 export const DeleteUserDocument = `
     mutation DeleteUser($input: DeleteUserInput!) {
   deleteUser(input: $input) {
@@ -5525,6 +5716,12 @@ export const DeleteUserFetcher = <TOutput = CognitoUser, TInput = DeleteUserVari
   inputFn = DeleteUserInputFn,
 ) => fetcher<DeleteUser, DeleteUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `DeleteUser`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteUser = (variables: DeleteUserVariables) => DeleteUserFetcher(variables)();
+
 export const EmptyQueryDocument = `
     query EmptyQuery {
   emptyQuery
@@ -5582,6 +5779,12 @@ export const EmptyQueryFetcher = <TOutput = Scalars['String'], TInput = EmptyQue
   inputFn = EmptyQueryInputFn,
 ) => fetcher<EmptyQuery, EmptyQueryVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `EmptyQuery`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const emptyQuery = (variables?: EmptyQueryVariables) => EmptyQueryFetcher(variables)();
+
 export const EchoDocument = `
     query Echo($msg: String) {
   echo(msg: $msg)
@@ -5635,6 +5838,12 @@ export const EchoFetcher = <TOutput = Scalars['String'], TInput = EchoVariables>
   outputFn = EchoOutputFn,
   inputFn = EchoInputFn,
 ) => fetcher<Echo, EchoVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `Echo`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const echo = (variables?: EchoVariables) => EchoFetcher(variables)();
 
 export const CustomTestDocument = `
     query CustomTest($id: ID!) {
@@ -5698,6 +5907,12 @@ export const CustomTestFetcher = <TOutput = Test, TInput = CustomTestVariables>(
   outputFn = CustomTestOutputFn,
   inputFn = CustomTestInputFn,
 ) => fetcher<CustomTest, CustomTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `CustomTest`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const customTest = (variables: CustomTestVariables) => CustomTestFetcher(variables)();
 
 export const GetConnectorDocument = `
     query GetConnector($id: ID!) {
@@ -5798,6 +6013,12 @@ export const GetConnectorFetcher = <TOutput = Connector, TInput = GetConnectorVa
   inputFn = GetConnectorInputFn,
 ) => fetcher<GetConnector, GetConnectorVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `GetConnector`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getConnector = (variables: GetConnectorVariables) => GetConnectorFetcher(variables)();
+
 export const ListConnectorsDocument = `
     query ListConnectors($filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
   listConnectors(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -5885,6 +6106,12 @@ export const ListConnectorsFetcher = <TOutput = ModelConnectorConnection, TInput
   outputFn = ListConnectorsOutputFn,
   inputFn = ListConnectorsInputFn,
 ) => fetcher<ListConnectors, ListConnectorsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `ListConnectors`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const listConnectors = (variables?: ListConnectorsVariables) => ListConnectorsFetcher(variables)();
 
 export const GetConnectorByDataSourceDocument = `
     query GetConnectorByDataSource($dataSource: String!, $id: ModelIDKeyConditionInput, $sortDirection: ModelSortDirection, $filter: ModelConnectorFilterInput, $limit: Int, $nextToken: String) {
@@ -5995,6 +6222,13 @@ export const GetConnectorByDataSourceFetcher = <
     inputFn,
   );
 
+/**
+ * GraphQL request function for `GetConnectorByDataSource`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getConnectorByDataSource = (variables: GetConnectorByDataSourceVariables) =>
+  GetConnectorByDataSourceFetcher(variables)();
+
 export const GetTransformationDocument = `
     query GetTransformation($id: ID!) {
   getTransformation(id: $id) {
@@ -6097,6 +6331,12 @@ export const GetTransformationFetcher = <TOutput = Transformation, TInput = GetT
     inputFn,
   );
 
+/**
+ * GraphQL request function for `GetTransformation`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getTransformation = (variables: GetTransformationVariables) => GetTransformationFetcher(variables)();
+
 export const ListTransformationsDocument = `
     query ListTransformations($filter: ModelTransformationFilterInput, $limit: Int, $nextToken: String) {
   listTransformations(filter: $filter, limit: $limit, nextToken: $nextToken) {
@@ -6196,6 +6436,13 @@ export const ListTransformationsFetcher = <
     outputFn,
     inputFn,
   );
+
+/**
+ * GraphQL request function for `ListTransformations`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const listTransformations = (variables?: ListTransformationsVariables) =>
+  ListTransformationsFetcher(variables)();
 
 export const GetTransformationsByConnectorDocument = `
     query GetTransformationsByConnector($connectorID: ID!, $sortDirection: ModelSortDirection, $filter: ModelTransformationFilterInput, $limit: Int, $nextToken: String) {
@@ -6305,6 +6552,13 @@ export const GetTransformationsByConnectorFetcher = <
     inputFn,
   );
 
+/**
+ * GraphQL request function for `GetTransformationsByConnector`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getTransformationsByConnector = (variables: GetTransformationsByConnectorVariables) =>
+  GetTransformationsByConnectorFetcher(variables)();
+
 export const GetPerspectiveDocument = `
     query GetPerspective($id: ID!) {
   getPerspective(id: $id) {
@@ -6377,6 +6631,12 @@ export const GetPerspectiveFetcher = <TOutput = Perspective, TInput = GetPerspec
   outputFn = GetPerspectiveOutputFn,
   inputFn = GetPerspectiveInputFn,
 ) => fetcher<GetPerspective, GetPerspectiveVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `GetPerspective`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getPerspective = (variables: GetPerspectiveVariables) => GetPerspectiveFetcher(variables)();
 
 export const ListPerspectivesDocument = `
     query ListPerspectives($filter: ModelPerspectiveFilterInput, $limit: Int, $nextToken: String) {
@@ -6463,6 +6723,12 @@ export const ListPerspectivesFetcher = <TOutput = ModelPerspectiveConnection, TI
     inputFn,
   );
 
+/**
+ * GraphQL request function for `ListPerspectives`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const listPerspectives = (variables?: ListPerspectivesVariables) => ListPerspectivesFetcher(variables)();
+
 export const GetSchemaDocument = `
     query GetSchema($id: ID!) {
   getSchema(id: $id) {
@@ -6548,6 +6814,12 @@ export const GetSchemaFetcher = <TOutput = Schema, TInput = GetSchemaVariables>(
   outputFn = GetSchemaOutputFn,
   inputFn = GetSchemaInputFn,
 ) => fetcher<GetSchema, GetSchemaVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `GetSchema`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getSchema = (variables: GetSchemaVariables) => GetSchemaFetcher(variables)();
 
 export const ListSchemasDocument = `
     query ListSchemas($filter: ModelSchemaFilterInput, $limit: Int, $nextToken: String) {
@@ -6640,6 +6912,12 @@ export const ListSchemasFetcher = <TOutput = ModelSchemaConnection, TInput = Lis
   inputFn = ListSchemasInputFn,
 ) => fetcher<ListSchemas, ListSchemasVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `ListSchemas`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const listSchemas = (variables?: ListSchemasVariables) => ListSchemasFetcher(variables)();
+
 export const GetTestDocument = `
     query GetTest($id: ID!) {
   getTest(id: $id) {
@@ -6702,6 +6980,12 @@ export const GetTestFetcher = <TOutput = Test, TInput = GetTestVariables>(
   outputFn = GetTestOutputFn,
   inputFn = GetTestInputFn,
 ) => fetcher<GetTest, GetTestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `GetTest`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getTest = (variables: GetTestVariables) => GetTestFetcher(variables)();
 
 export const ListTestsDocument = `
     query ListTests($filter: ModelTestFilterInput, $limit: Int, $nextToken: String) {
@@ -6771,6 +7055,12 @@ export const ListTestsFetcher = <TOutput = ModelTestConnection, TInput = ListTes
   inputFn = ListTestsInputFn,
 ) => fetcher<ListTests, ListTestsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `ListTests`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const listTests = (variables?: ListTestsVariables) => ListTestsFetcher(variables)();
+
 export const GetOrganizationDocument = `
     query GetOrganization($id: ID!) {
   getOrganization(id: $id) {
@@ -6834,6 +7124,12 @@ export const GetOrganizationFetcher = <TOutput = Organization, TInput = GetOrgan
   inputFn = GetOrganizationInputFn,
 ) =>
   fetcher<GetOrganization, GetOrganizationVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `GetOrganization`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getOrganization = (variables: GetOrganizationVariables) => GetOrganizationFetcher(variables)();
 
 export const ListOrganizationsDocument = `
     query ListOrganizations($filter: ModelOrganizationFilterInput, $limit: Int, $nextToken: String) {
@@ -6910,6 +7206,12 @@ export const ListOrganizationsFetcher = <TOutput = ModelOrganizationConnection, 
     inputFn,
   );
 
+/**
+ * GraphQL request function for `ListOrganizations`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const listOrganizations = (variables?: ListOrganizationsVariables) => ListOrganizationsFetcher(variables)();
+
 export const SearchGraphDocument = `
     query SearchGraph($input: SearchGraphInput!) {
   searchGraph(input: $input) {
@@ -6985,6 +7287,12 @@ export const SearchGraphFetcher = <TOutput = SearchGraphResult, TInput = SearchG
   outputFn = SearchGraphOutputFn,
   inputFn = SearchGraphInputFn,
 ) => fetcher<SearchGraph, SearchGraphVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `SearchGraph`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const searchGraph = (variables: SearchGraphVariables) => SearchGraphFetcher(variables)();
 
 export const GetNodeDocument = `
     query GetNode($identity: ID!) {
@@ -7085,6 +7393,12 @@ export const GetNodeFetcher = <TOutput = GraphNodeRecord, TInput = GetNodeVariab
   inputFn = GetNodeInputFn,
 ) => fetcher<GetNode, GetNodeVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `GetNode`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getNode = (variables: GetNodeVariables) => GetNodeFetcher(variables)();
+
 export const GetRelationshipDocument = `
     query GetRelationship($identity: ID!) {
   getRelationship(identity: $identity) {
@@ -7180,6 +7494,12 @@ export const GetRelationshipFetcher = <TOutput = GraphRelationshipRecord, TInput
   inputFn = GetRelationshipInputFn,
 ) =>
   fetcher<GetRelationship, GetRelationshipVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `GetRelationship`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getRelationship = (variables: GetRelationshipVariables) => GetRelationshipFetcher(variables)();
 
 export const ListNodesDocument = `
     query ListNodes($input: ListNodesInput!) {
@@ -7285,6 +7605,12 @@ export const ListNodesFetcher = <TOutput = GraphNodeRecords, TInput = ListNodesV
   inputFn = ListNodesInputFn,
 ) => fetcher<ListNodes, ListNodesVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `ListNodes`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const listNodes = (variables: ListNodesVariables) => ListNodesFetcher(variables)();
+
 export const GetUserDocument = `
     query GetUser($username: ID!) {
   getUser(username: $username) {
@@ -7351,6 +7677,12 @@ export const GetUserFetcher = <TOutput = CognitoUser, TInput = GetUserVariables>
   outputFn = GetUserOutputFn,
   inputFn = GetUserInputFn,
 ) => fetcher<GetUser, GetUserVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `GetUser`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getUser = (variables: GetUserVariables) => GetUserFetcher(variables)();
 
 export const FindUsersDocument = `
     query FindUsers($input: FindUsersInput!) {
@@ -7425,6 +7757,12 @@ export const FindUsersFetcher = <TOutput = CognitoUserList, TInput = FindUsersVa
   inputFn = FindUsersInputFn,
 ) => fetcher<FindUsers, FindUsersVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
+/**
+ * GraphQL request function for `FindUsers`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const findUsers = (variables: FindUsersVariables) => FindUsersFetcher(variables)();
+
 export const ListUsersDocument = `
     query ListUsers($nextToken: String) {
   listUsers(nextToken: $nextToken) {
@@ -7498,6 +7836,12 @@ export const ListUsersFetcher = <TOutput = CognitoUserList, TInput = ListUsersVa
   outputFn = ListUsersOutputFn,
   inputFn = ListUsersInputFn,
 ) => fetcher<ListUsers, ListUsersVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `ListUsers`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const listUsers = (variables?: ListUsersVariables) => ListUsersFetcher(variables)();
 
 export const GetConnectorCredentialsDocument = `
     query GetConnectorCredentials($id: ID!) {
@@ -7581,6 +7925,13 @@ export const GetConnectorCredentialsFetcher = <
     inputFn,
   );
 
+/**
+ * GraphQL request function for `GetConnectorCredentials`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getConnectorCredentials = (variables: GetConnectorCredentialsVariables) =>
+  GetConnectorCredentialsFetcher(variables)();
+
 export const GetManifestDocument = `
     query GetManifest($service: ConnectorService!) {
   getManifest(service: $service)
@@ -7636,3 +7987,9 @@ export const GetManifestFetcher = <TOutput = Scalars['AWSJSON'], TInput = GetMan
   outputFn = GetManifestOutputFn,
   inputFn = GetManifestInputFn,
 ) => fetcher<GetManifest, GetManifestVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `GetManifest`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const getManifest = (variables: GetManifestVariables) => GetManifestFetcher(variables)();

@@ -8,12 +8,12 @@
     "url": "https://github.com/flyweightrocks/graphql-codegen-fetcher.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx jest",
     "build": "tsc",
     "build:watch": "tsc --watch",
     "amplify:pull": "./amplify-pull.sh",
-    "graphql:codegen": "graphql-codegen --config codegen.yml",
-    "graphql:codegen:operations": "graphql-codegen --config codegen.operations.yml"
+    "amplify:schema": "aws appsync get-introspection-schema --api-id=jgqlihtplrhvtpqcxxhwa46cvq --format=JSON src/graphql/schema.json",
+    "graphql:codegen": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],
   "author": "",
@@ -23,10 +23,12 @@
     "@graphql-codegen/cli": "^2.2.2",
     "@graphql-codegen/operations-document": "^1.0.0-alpha-17cc8e1de.0",
     "@graphql-codegen/plugin-helpers": "^2.3.0",
+    "@graphql-codegen/testing": "^1.18.0",
     "@graphql-codegen/typescript": "^2.3.0",
     "@graphql-codegen/typescript-operations": "^2.2.0",
     "@graphql-codegen/visitor-plugin-common": "^2.5.0",
     "@tsconfig/node14": "^1.0.1",
+    "@types/jest": "^29.2.3",
     "@types/micromatch": "^4.0.2",
     "@types/react-query": "^1.2.9",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
@@ -37,8 +39,11 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "graphql": "^15.7.2",
+    "jest": "^29.3.1",
     "prettier": "^2.4.1",
     "react-query": "^3.34.0",
-    "typescript": "^4.4.4"
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
   }
 }

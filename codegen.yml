@@ -1,26 +1,15 @@
 overwrite: true
-schema: graphql/schema.json
+schema: graphql/nebula/schema.json
 documents:
   # - output/operations.graphql
-  - graphql/queries.ts
-  - graphql/mutations.ts
+  - graphql/nebula/queries.ts
+  - graphql/nebula/mutations.ts
 config:
   # preResolveTypes: false
   skipTypename: true
   maybeValue: T | undefined
   scalars:
     AWSJSON: Record<string, any> | string
-  # exposeFetcher: true
-  # exposeQueryKeys: true  
-  # exposeMutationKeys: true  
-  # excludeOperations:
-    # - '*Relationship'
-    # - '*Node'  
-  # skipHooks:
-  #   - SaveNode
-  #   - ReadNode
-  #   - SaveRelationship
-  #   - ReadRelationship  
 generates:
   generated/plugin.ts:
     config:

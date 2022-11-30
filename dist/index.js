@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExtendedReactQueryVisitor = exports.plugin = void 0;
-const plugin_helpers_1 = require("@graphql-codegen/plugin-helpers");
+exports.PuginVisitor = exports.validate = exports.plugin = void 0;
 const graphql_1 = require("graphql");
 const visitor_1 = require("./visitor");
-Object.defineProperty(exports, "ExtendedReactQueryVisitor", { enumerable: true, get: function () { return visitor_1.ExtendedReactQueryVisitor; } });
+Object.defineProperty(exports, "PuginVisitor", { enumerable: true, get: function () { return visitor_1.PuginVisitor; } });
+const path_1 = require("path");
 const plugin = (schema, documents, config) => {
     const allAst = (0, graphql_1.concatAST)(documents.map((v) => v.document));
     const allFragments = [
@@ -16,18 +16,18 @@ const plugin = (schema, documents, config) => {
         })),
         ...(config.externalFragments || []),
     ];
-    const visitor = new visitor_1.ExtendedReactQueryVisitor(schema, allFragments, config, documents);
-    const visitorResult = (0, plugin_helpers_1.oldVisit)(allAst, { leave: visitor });
-    if (visitor.hasOperations) {
-        return {
-            prepend: [...visitor.getImports(), '\n', visitor.getFetcherImplementation()],
-            content: [visitor.fragments, ...visitorResult.definitions.filter((t) => typeof t === 'string')].join('\n'),
-        };
-    }
+    const visitor = new visitor_1.PuginVisitor(schema, allFragments, config, documents);
+    const visitorResult = (0, graphql_1.visit)(allAst, { leave: visitor });
     return {
-        prepend: [...visitor.getImports(), '\n'],
+        prepend: visitor.getImports(),
         content: [visitor.fragments, ...visitorResult.definitions.filter((t) => typeof t === 'string')].join('\n'),
     };
 };
 exports.plugin = plugin;
+const validate = (schema, documents, config, outputFile, allPlugins, pluginContext) => {
+    if ((0, path_1.extname)(outputFile) !== '.ts' && (0, path_1.extname)(outputFile) !== '.tsx') {
+        throw new Error(`Plugin "graphql-codegen-typescript-transformer" requires extension to be ".ts" or ".tsx"!`);
+    }
+};
+exports.validate = validate;
 //# sourceMappingURL=index.js.map

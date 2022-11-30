@@ -1,15 +1,11 @@
-import { oldVisit, PluginFunction, Types } from '@graphql-codegen/plugin-helpers';
-// import { ReactQueryRawPluginConfig } from '@graphql-codegen/typescript-react-query/config';
+import { oldVisit, PluginFunction, PluginValidateFn, Types } from '@graphql-codegen/plugin-helpers';
 import { LoadedFragment } from '@graphql-codegen/visitor-plugin-common';
-import { concatAST, DocumentNode, FragmentDefinitionNode, GraphQLSchema, Kind } from 'graphql';
-import { RawPluginConfig, ReactQueryRawPluginConfig } from './config';
-import { ExtendedReactQueryVisitor } from './visitor';
+import { concatAST, DocumentNode, FragmentDefinitionNode, GraphQLSchema, Kind, visit } from 'graphql';
+import { RawPluginConfig } from './config';
+import { PuginVisitor } from './visitor';
+import { extname } from 'path';
 
-export const plugin: PluginFunction<RawPluginConfig, Types.ComplexPluginOutput> = (
-  schema: GraphQLSchema,
-  documents: Types.DocumentFile[],
-  config: ReactQueryRawPluginConfig,
-) => {
+export const plugin: PluginFunction<RawPluginConfig, Types.ComplexPluginOutput> = (schema, documents, config) => {
   const allAst = concatAST(documents.map((v) => v.document as DocumentNode));
 
   const allFragments: LoadedFragment[] = [
@@ -24,21 +20,28 @@ export const plugin: PluginFunction<RawPluginConfig, Types.ComplexPluginOutput> 
     ...(config.externalFragments || []),
   ];
 
-  const visitor = new ExtendedReactQueryVisitor(schema, allFragments, config, documents);
-  const visitorResult = oldVisit(allAst, { leave: visitor });
-
-  if (visitor.hasOperations) {
-    return {
-      prepend: [...visitor.getImports(), '\n', visitor.getFetcherImplementation()],
-      content: [visitor.fragments, ...visitorResult.definitions.filter((t: any) => typeof t === 'string')].join('\n'),
-    };
-  }
+  const visitor = new PuginVisitor(schema, allFragments, config, documents);
+  const visitorResult = visit(allAst, { leave: visitor });
 
   return {
-    prepend: [...visitor.getImports(), '\n'],
+    // prepend: [...visitor.getImports(), '\n', visitor.getFetcherImplementation()],
+    prepend: visitor.getImports(),
     content: [visitor.fragments, ...visitorResult.definitions.filter((t: any) => typeof t === 'string')].join('\n'),
   };
 };
 
+export const validate: PluginValidateFn<RawPluginConfig> = (
+  schema,
+  documents,
+  config,
+  outputFile,
+  allPlugins,
+  pluginContext,
+) => {
+  if (extname(outputFile) !== '.ts' && extname(outputFile) !== '.tsx') {
+    throw new Error(`Plugin "graphql-codegen-typescript-transformer" requires extension to be ".ts" or ".tsx"!`);
+  }
+};
+
 // export { validate } from '@graphql-codegen/typescript-react-query';
-export { ExtendedReactQueryVisitor };
+export { PuginVisitor };

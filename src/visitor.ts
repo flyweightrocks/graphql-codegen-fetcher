@@ -1,113 +1,155 @@
 import { Types } from '@graphql-codegen/plugin-helpers';
-// import { ReactQueryVisitor } from '@graphql-codegen/typescript-react-query';
 import {
+  buildMapperImport,
   ClientSideBasePluginConfig,
   ClientSideBaseVisitor,
   DocumentMode,
-  getConfigValue,
+  ExternalParsedMapper,
+  InternalParsedMapper,
   LoadedFragment,
+  ParsedMapper,
+  parseMapper,
 } from '@graphql-codegen/visitor-plugin-common';
-import autoBind from 'auto-bind';
+// import autoBind from 'auto-bind';
 import { lowerCaseFirst, pascalCase } from 'change-case-all';
-import { GraphQLField, GraphQLSchema, OperationDefinitionNode } from 'graphql';
-import { CustomMapperFetcher } from './fetcher-custom-mapper';
+import { GraphQLField, GraphQLSchema, OperationDefinitionNode, OperationTypeNode } from 'graphql';
+import { CustomFetcher, FetcherRenderer } from './customer-fetcher';
 import { generateMutationKeyMaker, generateQueryKeyMaker } from './variables-generator';
 import { generateInputTransformer, generateOutputTransformer } from './transformer';
 import { getInputVariablesType, getOutputType } from './type-resolver';
-// import { ReactQueryRawPluginConfig } from '@graphql-codegen/typescript-react-query/config';
-import { RawPluginConfig, ReactQueryRawPluginConfig } from './config';
-import { FetcherRenderer } from './fetcher-renderer';
-// import { ReactQueryPluginConfig } from '@graphql-codegen/typescript-react-query/visitor';
-export interface ReactQueryPluginConfig extends ClientSideBasePluginConfig {
-  errorType: string;
-  exposeDocument: boolean;
-  exposeQueryKeys: boolean;
-  exposeMutationKeys: boolean;
-  exposeFetcher: boolean;
-  addInfiniteQuery: boolean;
-}
-export interface ParsedPluginConfig extends ReactQueryPluginConfig {
-  generateReactQueryHooks?: boolean;
-  generateGqlRequestFunctions?: boolean;
-}
+import { RawPluginConfig } from './config';
 
-export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedPluginConfig> {
-  private _externalImportPrefix: string;
+type SchemaFields = {
+  [operation in OperationTypeNode]: {
+    [key: string]: GraphQLField<any, any>;
+  };
+};
+
+export type ParsedPluginConfig = ClientSideBasePluginConfig;
+
+const JsonStringify: InternalParsedMapper = {
+  isExternal: false,
+  type: 'JSON.stringify',
+};
+
+const JsonParse: InternalParsedMapper = {
+  isExternal: false,
+  type: 'JSON.parse',
+};
+
+export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedPluginConfig> {
+  private externalImportPrefix: string;
+  private inputTransformerMap = new Map<string, ParsedMapper>();
+  private outputTransformerMap = new Map<string, ParsedMapper>();
 
   public fetcher: FetcherRenderer;
-  public fields: Record<string, GraphQLField<any, any>>;
+  public fields: SchemaFields;
   public outputResultTypes: Record<string, string> = {};
-  // public reactQueryVisitor: ReactQueryVisitor;
 
   constructor(
     schema: GraphQLSchema,
     fragments: LoadedFragment[],
-    protected rawConfig: RawPluginConfig,
+    rawConfig: RawPluginConfig,
     documents: Types.DocumentFile[],
   ) {
-    super(schema, fragments, rawConfig, {
-      documentMode: DocumentMode.string,
-      // generateReactQueryHooks: getConfigValue(rawConfig.generateReactQueryHooks, false),
-      // generateGqlRequestFunctions: getConfigValue(rawConfig.generateGqlRequestFunctions, false),
-    });
+    super(
+      schema,
+      fragments,
+      rawConfig,
+      {
+        documentMode: DocumentMode.string,
+      },
+      documents,
+    );
 
-    this.fetcher = this.createExtendedFetcher(rawConfig.fetcher || 'fetch');
-    this.fields = { ...this._schema.getQueryType()?.getFields(), ...this._schema.getMutationType()?.getFields() };
-    // this.reactQueryVisitor = new ReactQueryVisitor(schema, fragments, rawConfig, documents);
-    this._documents = documents;
-    this._externalImportPrefix = this.config.importOperationTypesFrom ? `${this.config.importOperationTypesFrom}.` : '';
+    this.fetcher = this.createFetcher(rawConfig.fetcher || 'fetch');
+    this.externalImportPrefix = this.config.importOperationTypesFrom ? `${this.config.importOperationTypesFrom}.` : '';
+    this.fields = {
+      query: { ...this._schema.getQueryType()?.getFields() },
+      mutation: { ...this._schema.getMutationType()?.getFields() },
+      subscription: { ...this._schema.getSubscriptionType()?.getFields() },
+    };
 
-    autoBind(this);
+    if (rawConfig.inputTransformer) {
+      Object.entries(rawConfig.inputTransformer).forEach(([scalar, type]) => {
+        const mapper = type === 'json-stringify' ? JsonStringify : parseMapper(type.func);
+        this.inputTransformerMap.set(scalar, mapper);
+      });
+    }
+
+    if (rawConfig.outputTransformer) {
+      Object.entries(rawConfig.outputTransformer).forEach(([scalar, type]) => {
+        const mapper = type === 'json-parse' ? JsonStringify : parseMapper(type.func);
+        this.outputTransformerMap.set(scalar, mapper);
+      });
+    }
+
+    this._imports.add(this.fetcher.generateFetcherImport());
+    [...this.inputTransformerMap.values(), ...this.outputTransformerMap.values()]
+      .filter((mapper): mapper is ExternalParsedMapper => mapper.isExternal)
+      .forEach((mapper) =>
+        this._imports.add(
+          buildMapperImport(
+            mapper.source,
+            [
+              {
+                identifier: mapper.type,
+                asDefault: mapper.default,
+              },
+            ],
+            this.config.useTypeImports,
+          ) || '',
+        ),
+      );
+
+    // autoBind(this);
   }
 
-  public get imports(): Set<string> {
-    return this._imports;
-  }
-
-  OperationDefinition(node: OperationDefinitionNode): string {
-    // overwrite method to call the same method on ReactQueryVisitor
-    // it collects all operations into _collectedOperations and it must be filled for the type imports
-    // TODO check if this is still needed
-    // this.reactQueryVisitor.OperationDefinition(node);
-    return super.OperationDefinition(node);
-  }
-
-  public get hasOperations() {
-    return this._collectedOperations.length > 0;
-  }
-
-  // public getImports(): string[] {
-  //   const baseImports = super.getImports();
-
-  //   // if (!this.config.generateReactQueryHooks) {
-  //   //   return baseImports;
-  //   // }
-
-  //   // return this.reactQueryVisitor.getImports();
+  // public get imports(): Set<string> {
+  //   return this._imports;
   // }
 
-  public getFetcherImplementation(): string {
-    return this.fetcher.generateFetcherImplementaion();
-  }
+  // OperationDefinition(node: OperationDefinitionNode): string {
+  //   // overwrite method to call the same method on ReactQueryVisitor
+  //   // it collects all operations into _collectedOperations and it must be filled for the type imports
+  //   // TODO check if this is still needed
+  //   // this.reactQueryVisitor.OperationDefinition(node);
+  //   return super.OperationDefinition(node);
+  // }
 
-  private createExtendedFetcher(raw: ReactQueryRawPluginConfig['fetcher']): FetcherRenderer {
+  // public get hasOperations() {
+  //   return this._collectedOperations.length > 0;
+  // }
+
+  // public getFetcherImplementation(): string {
+  //   return this.fetcher.generateFetcherImplementaion();
+  // }
+
+  private createFetcher(raw: RawPluginConfig['fetcher']): FetcherRenderer {
     if (!raw || raw === 'fetch' || raw === 'graphql-request' || (typeof raw === 'object' && 'endpoint' in raw))
-      throw new Error('Only custom fetchers are supported');
+      throw new Error('Plugin "graphql-codegen-typescript-transformer" only supports custom fetchers');
 
-    return new CustomMapperFetcher(this, raw);
+    return new CustomFetcher(this, raw);
   }
 
   private getSuffix(name: string, operationType: string) {
     if (this.config.omitOperationSuffix) {
       return '';
     }
+
     if (!this.config.dedupeOperationSuffix) {
       return pascalCase(operationType);
     }
+
     if (name.includes('Query') || name.includes('Mutation') || name.includes('Subscription')) {
       return '';
     }
+
     return pascalCase(operationType);
+  }
+
+  OperationDefinition(node: OperationDefinitionNode): string {
+    return super.OperationDefinition(node);
   }
 
   protected buildOperation(
@@ -126,11 +168,16 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
       useTypesSuffix: false,
     });
 
-    operationResultType = this._externalImportPrefix + operationResultType;
-    operationVariablesTypes = this._externalImportPrefix + operationVariablesTypes;
+    operationResultType = this.externalImportPrefix + operationResultType;
+    operationVariablesTypes = this.externalImportPrefix + operationVariablesTypes;
 
-    const fieldName = lowerCaseFirst(nodeName); // createNode, getNode, ...
-    const fieldDefinition = this.fields[fieldName];
+    const selectionNode = node.selectionSet.selections[0]; // createNode, getNode, ...
+    if (!('name' in selectionNode)) throw new Error('Selection node must have a name');
+
+    const selectionNodeName = selectionNode.name?.value;
+
+    // const fieldName = lowerCaseFirst(nodeName);
+    const fieldDefinition = this.fields[node.operation][selectionNodeName];
 
     const output = getOutputType(fieldDefinition);
     this.outputResultTypes[operationName] = output.typeName;
@@ -165,32 +212,14 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
         operationVariablesTypes,
         hasRequiredVariables,
       );
-
-      if (this.config.generateGqlRequestFunctions) {
-        query += this.fetcher.generateRequestFunction(
-          node,
-          documentVariableName,
-          operationName,
-          operationResultType,
-          operationVariablesTypes,
-          hasRequiredVariables,
-        );
-      }
-
-      // if (this.config.generateReactQueryHooks) {
-      //   query += this.fetcher.generateQueryHook(
-      //     node,
-      //     documentVariableName,
-      //     operationName,
-      //     operationResultType,
-      //     operationVariablesTypes,
-      //     hasRequiredVariables,
-      //   );
-
-      //   // if (this.reactQueryVisitor.config.exposeQueryKeys) {
-      //   //   query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
-      //   // }
-      // }
+      query += this.fetcher.generateRequestFunction(
+        node,
+        documentVariableName,
+        operationName,
+        operationResultType,
+        operationVariablesTypes,
+        hasRequiredVariables,
+      );
     } else if (operationType === 'Mutation') {
       query += generateMutationKeyMaker(node, operationName);
       query += generateInputTransformer(
@@ -217,32 +246,14 @@ export class ExtendedReactQueryVisitor extends ClientSideBaseVisitor<RawPluginCo
         operationVariablesTypes,
         hasRequiredVariables,
       );
-
-      if (this.config.generateGqlRequestFunctions) {
-        query += this.fetcher.generateRequestFunction(
-          node,
-          documentVariableName,
-          operationName,
-          operationResultType,
-          operationVariablesTypes,
-          hasRequiredVariables,
-        );
-      }
-
-      // if (this.config.generateReactQueryHooks) {
-      //   query += this.fetcher.generateMutationHook(
-      //     node,
-      //     documentVariableName,
-      //     operationName,
-      //     operationResultType,
-      //     operationVariablesTypes,
-      //     hasRequiredVariables,
-      //   );
-
-      //   // if (this.reactQueryVisitor.config.exposeMutationKeys) {
-      //   //   query += `\nuse${operationName}.getKey = ${operationName}Keys;\n`;
-      //   // }
-      // }
+      query += this.fetcher.generateRequestFunction(
+        node,
+        documentVariableName,
+        operationName,
+        operationResultType,
+        operationVariablesTypes,
+        hasRequiredVariables,
+      );
     } else if (operationType === 'Subscription') {
       // not supported yet
     }

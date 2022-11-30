@@ -1,45 +1,61 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ExtendedReactQueryVisitor = void 0;
+exports.PuginVisitor = void 0;
 const visitor_plugin_common_1 = require("@graphql-codegen/visitor-plugin-common");
-const auto_bind_1 = __importDefault(require("auto-bind"));
 const change_case_all_1 = require("change-case-all");
-const fetcher_custom_mapper_1 = require("./fetcher-custom-mapper");
+const customer_fetcher_1 = require("./customer-fetcher");
 const variables_generator_1 = require("./variables-generator");
 const transformer_1 = require("./transformer");
 const type_resolver_1 = require("./type-resolver");
-class ExtendedReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVisitor {
+const JsonStringify = {
+    isExternal: false,
+    type: 'JSON.stringify',
+};
+const JsonParse = {
+    isExternal: false,
+    type: 'JSON.parse',
+};
+class PuginVisitor extends visitor_plugin_common_1.ClientSideBaseVisitor {
     constructor(schema, fragments, rawConfig, documents) {
         super(schema, fragments, rawConfig, {
             documentMode: visitor_plugin_common_1.DocumentMode.string,
-        });
-        this.rawConfig = rawConfig;
+        }, documents);
+        this.inputTransformerMap = new Map();
+        this.outputTransformerMap = new Map();
         this.outputResultTypes = {};
-        this.fetcher = this.createExtendedFetcher(rawConfig.fetcher || 'fetch');
-        this.fields = { ...this._schema.getQueryType()?.getFields(), ...this._schema.getMutationType()?.getFields() };
-        this._documents = documents;
-        this._externalImportPrefix = this.config.importOperationTypesFrom ? `${this.config.importOperationTypesFrom}.` : '';
-        (0, auto_bind_1.default)(this);
+        this.fetcher = this.createFetcher(rawConfig.fetcher || 'fetch');
+        this.externalImportPrefix = this.config.importOperationTypesFrom ? `${this.config.importOperationTypesFrom}.` : '';
+        this.fields = {
+            query: { ...this._schema.getQueryType()?.getFields() },
+            mutation: { ...this._schema.getMutationType()?.getFields() },
+            subscription: { ...this._schema.getSubscriptionType()?.getFields() },
+        };
+        if (rawConfig.inputTransformer) {
+            Object.entries(rawConfig.inputTransformer).forEach(([scalar, type]) => {
+                const mapper = type === 'json-stringify' ? JsonStringify : (0, visitor_plugin_common_1.parseMapper)(type.func);
+                this.inputTransformerMap.set(scalar, mapper);
+            });
+        }
+        if (rawConfig.outputTransformer) {
+            Object.entries(rawConfig.outputTransformer).forEach(([scalar, type]) => {
+                const mapper = type === 'json-parse' ? JsonStringify : (0, visitor_plugin_common_1.parseMapper)(type.func);
+                this.outputTransformerMap.set(scalar, mapper);
+            });
+        }
+        this._imports.add(this.fetcher.generateFetcherImport());
+        [...this.inputTransformerMap.values(), ...this.outputTransformerMap.values()]
+            .filter((mapper) => mapper.isExternal)
+            .forEach((mapper) => this._imports.add((0, visitor_plugin_common_1.buildMapperImport)(mapper.source, [
+            {
+                identifier: mapper.type,
+                asDefault: mapper.default,
+            },
+        ], this.config.useTypeImports) || ''));
     }
-    get imports() {
-        return this._imports;
-    }
-    OperationDefinition(node) {
-        return super.OperationDefinition(node);
-    }
-    get hasOperations() {
-        return this._collectedOperations.length > 0;
-    }
-    getFetcherImplementation() {
-        return this.fetcher.generateFetcherImplementaion();
-    }
-    createExtendedFetcher(raw) {
+    createFetcher(raw) {
         if (!raw || raw === 'fetch' || raw === 'graphql-request' || (typeof raw === 'object' && 'endpoint' in raw))
-            throw new Error('Only custom fetchers are supported');
-        return new fetcher_custom_mapper_1.CustomMapperFetcher(this, raw);
+            throw new Error('Plugin "graphql-codegen-typescript-transformer" only supports custom fetchers');
+        return new customer_fetcher_1.CustomFetcher(this, raw);
     }
     getSuffix(name, operationType) {
         if (this.config.omitOperationSuffix) {
@@ -53,6 +69,9 @@ class ExtendedReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVi
         }
         return (0, change_case_all_1.pascalCase)(operationType);
     }
+    OperationDefinition(node) {
+        return super.OperationDefinition(node);
+    }
     buildOperation(node, documentVariableName, operationType, operationResultType, operationVariablesTypes, hasRequiredVariables) {
         const nodeName = node.name?.value ?? '';
         const suffix = this.getSuffix(nodeName, operationType);
@@ -61,10 +80,13 @@ class ExtendedReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVi
             useTypesPrefix: false,
             useTypesSuffix: false,
         });
-        operationResultType = this._externalImportPrefix + operationResultType;
-        operationVariablesTypes = this._externalImportPrefix + operationVariablesTypes;
-        const fieldName = (0, change_case_all_1.lowerCaseFirst)(nodeName);
-        const fieldDefinition = this.fields[fieldName];
+        operationResultType = this.externalImportPrefix + operationResultType;
+        operationVariablesTypes = this.externalImportPrefix + operationVariablesTypes;
+        const selectionNode = node.selectionSet.selections[0];
+        if (!('name' in selectionNode))
+            throw new Error('Selection node must have a name');
+        const selectionNodeName = selectionNode.name?.value;
+        const fieldDefinition = this.fields[node.operation][selectionNodeName];
         const output = (0, type_resolver_1.getOutputType)(fieldDefinition);
         this.outputResultTypes[operationName] = output.typeName;
         const inputVariables = (0, type_resolver_1.getInputVariablesType)(fieldDefinition);
@@ -74,23 +96,19 @@ class ExtendedReactQueryVisitor extends visitor_plugin_common_1.ClientSideBaseVi
             query += (0, transformer_1.generateInputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, inputVariables);
             query += (0, transformer_1.generateOutputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, output);
             query += this.fetcher.generateFetcherFetch(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
-            if (this.config.generateGqlRequestFunctions) {
-                query += this.fetcher.generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
-            }
+            query += this.fetcher.generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
         }
         else if (operationType === 'Mutation') {
             query += (0, variables_generator_1.generateMutationKeyMaker)(node, operationName);
             query += (0, transformer_1.generateInputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, inputVariables);
             query += (0, transformer_1.generateOutputTransformer)(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, output);
             query += this.fetcher.generateFetcherFetch(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
-            if (this.config.generateGqlRequestFunctions) {
-                query += this.fetcher.generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
-            }
+            query += this.fetcher.generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables);
         }
         else if (operationType === 'Subscription') {
         }
         return query;
     }
 }
-exports.ExtendedReactQueryVisitor = ExtendedReactQueryVisitor;
+exports.PuginVisitor = PuginVisitor;
 //# sourceMappingURL=visitor.js.map

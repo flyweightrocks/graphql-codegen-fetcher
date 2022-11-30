@@ -1,9 +1,0 @@
-# extend type Query {
-  # search(input: SearchInput!): String
-  #   @function(name: "nebula-api-${env}-resolver")  
-# }
-
-# Search
-input SearchInput {
-  term: String!
-}

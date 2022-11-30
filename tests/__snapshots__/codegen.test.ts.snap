@@ -1,0 +1,1021 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`graphql-codegen-typescript-transformer Should generate query correctly with external mapper 1`] = `
+[
+  "import { fetcher } from '../graphql/fetcher';",
+]
+`;
+
+exports[`graphql-codegen-typescript-transformer Should generate query correctly with external mapper 2`] = `
+"
+export const GetBlogDocument = \`
+    query GetBlog($id: ID!) {
+  getBlog(id: $id) {
+    id
+    name
+    posts {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`GetBlog\`.
+  */
+export const GetBlogKeys = (variables: GetBlogVariables) => ['GetBlog', variables];
+
+/**
+  * Input transformer function for \`GetBlog\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`GetBlogVariables\` - The original variables
+  * @returns \`GetBlogVariables\` - The transformed variables
+  */
+export const GetBlogInputFn = <TInput = GetBlogVariables>(variables: GetBlogVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`GetBlog\`.
+  * It extracts the \`getBlog\` field from the result and transforms it into a \`Blog\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data GetBlog - The data returned from the GraphQL server
+  * @returns Blog - The transformed data
+  */
+export const GetBlogOutputFn = <TOutput = Blog>({ getBlog }: GetBlog) => getBlog as unknown as TOutput;
+
+/**
+    * Fetcher function for \`GetBlog\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`GetBlogInput\` and \`GetBlogOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const GetBlogFetcher = <TOutput = Blog, TInput = GetBlogVariables>(variables: GetBlogVariables, options?: RequestInit['headers'], document = GetBlogDocument, outputFn = GetBlogOutputFn, inputFn = GetBlogInputFn) => fetcher<GetBlog, GetBlogVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`GetBlog\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const getBlog = (variables: GetBlogVariables) => GetBlogFetcher(variables)();
+
+export const ListBlogsDocument = \`
+    query ListBlogs($filter: ModelBlogFilterInput, $limit: Int, $nextToken: String) {
+  listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`ListBlogs\`.
+  */
+export const ListBlogsKeys = (variables?: ListBlogsVariables) => variables === undefined ? ['ListBlogs'] : ['ListBlogs', variables];
+
+/**
+  * Input transformer function for \`ListBlogs\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`ListBlogsVariables\` - The original variables
+  * @returns \`ListBlogsVariables\` - The transformed variables
+  */
+export const ListBlogsInputFn = <TInput = ListBlogsVariables>(variables?: ListBlogsVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`ListBlogs\`.
+  * It extracts the \`listBlogs\` field from the result and transforms it into a \`ModelBlogConnection\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data ListBlogs - The data returned from the GraphQL server
+  * @returns ModelBlogConnection - The transformed data
+  */
+export const ListBlogsOutputFn = <TOutput = ModelBlogConnection>({ listBlogs }: ListBlogs) => listBlogs as unknown as TOutput;
+
+/**
+    * Fetcher function for \`ListBlogs\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`ListBlogsInput\` and \`ListBlogsOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const ListBlogsFetcher = <TOutput = ModelBlogConnection, TInput = ListBlogsVariables>(variables?: ListBlogsVariables, options?: RequestInit['headers'], document = ListBlogsDocument, outputFn = ListBlogsOutputFn, inputFn = ListBlogsInputFn) => fetcher<ListBlogs, ListBlogsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`ListBlogs\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const listBlogs = (variables?: ListBlogsVariables) => ListBlogsFetcher(variables)();
+
+export const GetPostDocument = \`
+    query GetPost($id: ID!) {
+  getPost(id: $id) {
+    id
+    title
+    blog {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+    comments {
+      nextToken
+    }
+    createdAt
+    updatedAt
+    blogPostsId
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`GetPost\`.
+  */
+export const GetPostKeys = (variables: GetPostVariables) => ['GetPost', variables];
+
+/**
+  * Input transformer function for \`GetPost\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`GetPostVariables\` - The original variables
+  * @returns \`GetPostVariables\` - The transformed variables
+  */
+export const GetPostInputFn = <TInput = GetPostVariables>(variables: GetPostVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`GetPost\`.
+  * It extracts the \`getPost\` field from the result and transforms it into a \`Post\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data GetPost - The data returned from the GraphQL server
+  * @returns Post - The transformed data
+  */
+export const GetPostOutputFn = <TOutput = Post>({ getPost }: GetPost) => getPost as unknown as TOutput;
+
+/**
+    * Fetcher function for \`GetPost\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`GetPostInput\` and \`GetPostOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const GetPostFetcher = <TOutput = Post, TInput = GetPostVariables>(variables: GetPostVariables, options?: RequestInit['headers'], document = GetPostDocument, outputFn = GetPostOutputFn, inputFn = GetPostInputFn) => fetcher<GetPost, GetPostVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`GetPost\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const getPost = (variables: GetPostVariables) => GetPostFetcher(variables)();
+
+export const ListPostsDocument = \`
+    query ListPosts($filter: ModelPostFilterInput, $limit: Int, $nextToken: String) {
+  listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      createdAt
+      updatedAt
+      blogPostsId
+    }
+    nextToken
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`ListPosts\`.
+  */
+export const ListPostsKeys = (variables?: ListPostsVariables) => variables === undefined ? ['ListPosts'] : ['ListPosts', variables];
+
+/**
+  * Input transformer function for \`ListPosts\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`ListPostsVariables\` - The original variables
+  * @returns \`ListPostsVariables\` - The transformed variables
+  */
+export const ListPostsInputFn = <TInput = ListPostsVariables>(variables?: ListPostsVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`ListPosts\`.
+  * It extracts the \`listPosts\` field from the result and transforms it into a \`ModelPostConnection\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data ListPosts - The data returned from the GraphQL server
+  * @returns ModelPostConnection - The transformed data
+  */
+export const ListPostsOutputFn = <TOutput = ModelPostConnection>({ listPosts }: ListPosts) => listPosts as unknown as TOutput;
+
+/**
+    * Fetcher function for \`ListPosts\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`ListPostsInput\` and \`ListPostsOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const ListPostsFetcher = <TOutput = ModelPostConnection, TInput = ListPostsVariables>(variables?: ListPostsVariables, options?: RequestInit['headers'], document = ListPostsDocument, outputFn = ListPostsOutputFn, inputFn = ListPostsInputFn) => fetcher<ListPosts, ListPostsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`ListPosts\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const listPosts = (variables?: ListPostsVariables) => ListPostsFetcher(variables)();
+
+export const GetCommentDocument = \`
+    query GetComment($id: ID!) {
+  getComment(id: $id) {
+    id
+    post {
+      id
+      title
+      createdAt
+      updatedAt
+      blogPostsId
+    }
+    content
+    createdAt
+    updatedAt
+    postCommentsId
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`GetComment\`.
+  */
+export const GetCommentKeys = (variables: GetCommentVariables) => ['GetComment', variables];
+
+/**
+  * Input transformer function for \`GetComment\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`GetCommentVariables\` - The original variables
+  * @returns \`GetCommentVariables\` - The transformed variables
+  */
+export const GetCommentInputFn = <TInput = GetCommentVariables>(variables: GetCommentVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`GetComment\`.
+  * It extracts the \`getComment\` field from the result and transforms it into a \`Comment\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data GetComment - The data returned from the GraphQL server
+  * @returns Comment - The transformed data
+  */
+export const GetCommentOutputFn = <TOutput = Comment>({ getComment }: GetComment) => getComment as unknown as TOutput;
+
+/**
+    * Fetcher function for \`GetComment\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`GetCommentInput\` and \`GetCommentOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const GetCommentFetcher = <TOutput = Comment, TInput = GetCommentVariables>(variables: GetCommentVariables, options?: RequestInit['headers'], document = GetCommentDocument, outputFn = GetCommentOutputFn, inputFn = GetCommentInputFn) => fetcher<GetComment, GetCommentVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`GetComment\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const getComment = (variables: GetCommentVariables) => GetCommentFetcher(variables)();
+
+export const ListCommentsDocument = \`
+    query ListComments($filter: ModelCommentFilterInput, $limit: Int, $nextToken: String) {
+  listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      content
+      createdAt
+      updatedAt
+      postCommentsId
+    }
+    nextToken
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`ListComments\`.
+  */
+export const ListCommentsKeys = (variables?: ListCommentsVariables) => variables === undefined ? ['ListComments'] : ['ListComments', variables];
+
+/**
+  * Input transformer function for \`ListComments\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`ListCommentsVariables\` - The original variables
+  * @returns \`ListCommentsVariables\` - The transformed variables
+  */
+export const ListCommentsInputFn = <TInput = ListCommentsVariables>(variables?: ListCommentsVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`ListComments\`.
+  * It extracts the \`listComments\` field from the result and transforms it into a \`ModelCommentConnection\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data ListComments - The data returned from the GraphQL server
+  * @returns ModelCommentConnection - The transformed data
+  */
+export const ListCommentsOutputFn = <TOutput = ModelCommentConnection>({ listComments }: ListComments) => listComments as unknown as TOutput;
+
+/**
+    * Fetcher function for \`ListComments\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`ListCommentsInput\` and \`ListCommentsOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const ListCommentsFetcher = <TOutput = ModelCommentConnection, TInput = ListCommentsVariables>(variables?: ListCommentsVariables, options?: RequestInit['headers'], document = ListCommentsDocument, outputFn = ListCommentsOutputFn, inputFn = ListCommentsInputFn) => fetcher<ListComments, ListCommentsVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`ListComments\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const listComments = (variables?: ListCommentsVariables) => ListCommentsFetcher(variables)();
+
+export const CreateBlogDocument = \`
+    mutation CreateBlog($input: CreateBlogInput!, $condition: ModelBlogConditionInput) {
+  createBlog(input: $input, condition: $condition) {
+    id
+    name
+    posts {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`CreateBlog\`.
+  */
+export const CreateBlogKeys = () => ['CreateBlog'];
+
+/**
+  * Input transformer function for \`CreateBlog\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`CreateBlogVariables\` - The original variables
+  * @returns \`CreateBlogVariables\` - The transformed variables
+  */
+export const CreateBlogInputFn = <TInput = CreateBlogVariables>(variables: CreateBlogVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`CreateBlog\`.
+  * It extracts the \`createBlog\` field from the result and transforms it into a \`Blog\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data CreateBlog - The data returned from the GraphQL server
+  * @returns Blog - The transformed data
+  */
+export const CreateBlogOutputFn = <TOutput = Blog>({ createBlog }: CreateBlog) => createBlog as unknown as TOutput;
+
+/**
+    * Fetcher function for \`CreateBlog\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`CreateBlogInput\` and \`CreateBlogOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const CreateBlogFetcher = <TOutput = Blog, TInput = CreateBlogVariables>(variables: CreateBlogVariables, options?: RequestInit['headers'], document = CreateBlogDocument, outputFn = CreateBlogOutputFn, inputFn = CreateBlogInputFn) => fetcher<CreateBlog, CreateBlogVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`CreateBlog\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const createBlog = (variables: CreateBlogVariables) => CreateBlogFetcher(variables)();
+
+export const UpdateBlogDocument = \`
+    mutation UpdateBlog($input: UpdateBlogInput!, $condition: ModelBlogConditionInput) {
+  updateBlog(input: $input, condition: $condition) {
+    id
+    name
+    posts {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`UpdateBlog\`.
+  */
+export const UpdateBlogKeys = () => ['UpdateBlog'];
+
+/**
+  * Input transformer function for \`UpdateBlog\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`UpdateBlogVariables\` - The original variables
+  * @returns \`UpdateBlogVariables\` - The transformed variables
+  */
+export const UpdateBlogInputFn = <TInput = UpdateBlogVariables>(variables: UpdateBlogVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`UpdateBlog\`.
+  * It extracts the \`updateBlog\` field from the result and transforms it into a \`Blog\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data UpdateBlog - The data returned from the GraphQL server
+  * @returns Blog - The transformed data
+  */
+export const UpdateBlogOutputFn = <TOutput = Blog>({ updateBlog }: UpdateBlog) => updateBlog as unknown as TOutput;
+
+/**
+    * Fetcher function for \`UpdateBlog\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`UpdateBlogInput\` and \`UpdateBlogOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const UpdateBlogFetcher = <TOutput = Blog, TInput = UpdateBlogVariables>(variables: UpdateBlogVariables, options?: RequestInit['headers'], document = UpdateBlogDocument, outputFn = UpdateBlogOutputFn, inputFn = UpdateBlogInputFn) => fetcher<UpdateBlog, UpdateBlogVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`UpdateBlog\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const updateBlog = (variables: UpdateBlogVariables) => UpdateBlogFetcher(variables)();
+
+export const DeleteBlogDocument = \`
+    mutation DeleteBlog($input: DeleteBlogInput!, $condition: ModelBlogConditionInput) {
+  deleteBlog(input: $input, condition: $condition) {
+    id
+    name
+    posts {
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`DeleteBlog\`.
+  */
+export const DeleteBlogKeys = () => ['DeleteBlog'];
+
+/**
+  * Input transformer function for \`DeleteBlog\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`DeleteBlogVariables\` - The original variables
+  * @returns \`DeleteBlogVariables\` - The transformed variables
+  */
+export const DeleteBlogInputFn = <TInput = DeleteBlogVariables>(variables: DeleteBlogVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`DeleteBlog\`.
+  * It extracts the \`deleteBlog\` field from the result and transforms it into a \`Blog\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data DeleteBlog - The data returned from the GraphQL server
+  * @returns Blog - The transformed data
+  */
+export const DeleteBlogOutputFn = <TOutput = Blog>({ deleteBlog }: DeleteBlog) => deleteBlog as unknown as TOutput;
+
+/**
+    * Fetcher function for \`DeleteBlog\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`DeleteBlogInput\` and \`DeleteBlogOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const DeleteBlogFetcher = <TOutput = Blog, TInput = DeleteBlogVariables>(variables: DeleteBlogVariables, options?: RequestInit['headers'], document = DeleteBlogDocument, outputFn = DeleteBlogOutputFn, inputFn = DeleteBlogInputFn) => fetcher<DeleteBlog, DeleteBlogVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`DeleteBlog\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const deleteBlog = (variables: DeleteBlogVariables) => DeleteBlogFetcher(variables)();
+
+export const CreatePostDocument = \`
+    mutation CreatePost($input: CreatePostInput!, $condition: ModelPostConditionInput) {
+  createPost(input: $input, condition: $condition) {
+    id
+    title
+    blog {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+    comments {
+      nextToken
+    }
+    createdAt
+    updatedAt
+    blogPostsId
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`CreatePost\`.
+  */
+export const CreatePostKeys = () => ['CreatePost'];
+
+/**
+  * Input transformer function for \`CreatePost\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`CreatePostVariables\` - The original variables
+  * @returns \`CreatePostVariables\` - The transformed variables
+  */
+export const CreatePostInputFn = <TInput = CreatePostVariables>(variables: CreatePostVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`CreatePost\`.
+  * It extracts the \`createPost\` field from the result and transforms it into a \`Post\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data CreatePost - The data returned from the GraphQL server
+  * @returns Post - The transformed data
+  */
+export const CreatePostOutputFn = <TOutput = Post>({ createPost }: CreatePost) => createPost as unknown as TOutput;
+
+/**
+    * Fetcher function for \`CreatePost\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`CreatePostInput\` and \`CreatePostOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const CreatePostFetcher = <TOutput = Post, TInput = CreatePostVariables>(variables: CreatePostVariables, options?: RequestInit['headers'], document = CreatePostDocument, outputFn = CreatePostOutputFn, inputFn = CreatePostInputFn) => fetcher<CreatePost, CreatePostVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`CreatePost\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const createPost = (variables: CreatePostVariables) => CreatePostFetcher(variables)();
+
+export const UpdatePostDocument = \`
+    mutation UpdatePost($input: UpdatePostInput!, $condition: ModelPostConditionInput) {
+  updatePost(input: $input, condition: $condition) {
+    id
+    title
+    blog {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+    comments {
+      nextToken
+    }
+    createdAt
+    updatedAt
+    blogPostsId
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`UpdatePost\`.
+  */
+export const UpdatePostKeys = () => ['UpdatePost'];
+
+/**
+  * Input transformer function for \`UpdatePost\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`UpdatePostVariables\` - The original variables
+  * @returns \`UpdatePostVariables\` - The transformed variables
+  */
+export const UpdatePostInputFn = <TInput = UpdatePostVariables>(variables: UpdatePostVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`UpdatePost\`.
+  * It extracts the \`updatePost\` field from the result and transforms it into a \`Post\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data UpdatePost - The data returned from the GraphQL server
+  * @returns Post - The transformed data
+  */
+export const UpdatePostOutputFn = <TOutput = Post>({ updatePost }: UpdatePost) => updatePost as unknown as TOutput;
+
+/**
+    * Fetcher function for \`UpdatePost\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`UpdatePostInput\` and \`UpdatePostOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const UpdatePostFetcher = <TOutput = Post, TInput = UpdatePostVariables>(variables: UpdatePostVariables, options?: RequestInit['headers'], document = UpdatePostDocument, outputFn = UpdatePostOutputFn, inputFn = UpdatePostInputFn) => fetcher<UpdatePost, UpdatePostVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`UpdatePost\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const updatePost = (variables: UpdatePostVariables) => UpdatePostFetcher(variables)();
+
+export const DeletePostDocument = \`
+    mutation DeletePost($input: DeletePostInput!, $condition: ModelPostConditionInput) {
+  deletePost(input: $input, condition: $condition) {
+    id
+    title
+    blog {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+    comments {
+      nextToken
+    }
+    createdAt
+    updatedAt
+    blogPostsId
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`DeletePost\`.
+  */
+export const DeletePostKeys = () => ['DeletePost'];
+
+/**
+  * Input transformer function for \`DeletePost\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`DeletePostVariables\` - The original variables
+  * @returns \`DeletePostVariables\` - The transformed variables
+  */
+export const DeletePostInputFn = <TInput = DeletePostVariables>(variables: DeletePostVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`DeletePost\`.
+  * It extracts the \`deletePost\` field from the result and transforms it into a \`Post\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data DeletePost - The data returned from the GraphQL server
+  * @returns Post - The transformed data
+  */
+export const DeletePostOutputFn = <TOutput = Post>({ deletePost }: DeletePost) => deletePost as unknown as TOutput;
+
+/**
+    * Fetcher function for \`DeletePost\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`DeletePostInput\` and \`DeletePostOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const DeletePostFetcher = <TOutput = Post, TInput = DeletePostVariables>(variables: DeletePostVariables, options?: RequestInit['headers'], document = DeletePostDocument, outputFn = DeletePostOutputFn, inputFn = DeletePostInputFn) => fetcher<DeletePost, DeletePostVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`DeletePost\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const deletePost = (variables: DeletePostVariables) => DeletePostFetcher(variables)();
+
+export const CreateCommentDocument = \`
+    mutation CreateComment($input: CreateCommentInput!, $condition: ModelCommentConditionInput) {
+  createComment(input: $input, condition: $condition) {
+    id
+    post {
+      id
+      title
+      createdAt
+      updatedAt
+      blogPostsId
+    }
+    content
+    createdAt
+    updatedAt
+    postCommentsId
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`CreateComment\`.
+  */
+export const CreateCommentKeys = () => ['CreateComment'];
+
+/**
+  * Input transformer function for \`CreateComment\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`CreateCommentVariables\` - The original variables
+  * @returns \`CreateCommentVariables\` - The transformed variables
+  */
+export const CreateCommentInputFn = <TInput = CreateCommentVariables>(variables: CreateCommentVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`CreateComment\`.
+  * It extracts the \`createComment\` field from the result and transforms it into a \`Comment\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data CreateComment - The data returned from the GraphQL server
+  * @returns Comment - The transformed data
+  */
+export const CreateCommentOutputFn = <TOutput = Comment>({ createComment }: CreateComment) => createComment as unknown as TOutput;
+
+/**
+    * Fetcher function for \`CreateComment\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`CreateCommentInput\` and \`CreateCommentOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const CreateCommentFetcher = <TOutput = Comment, TInput = CreateCommentVariables>(variables: CreateCommentVariables, options?: RequestInit['headers'], document = CreateCommentDocument, outputFn = CreateCommentOutputFn, inputFn = CreateCommentInputFn) => fetcher<CreateComment, CreateCommentVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`CreateComment\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const createComment = (variables: CreateCommentVariables) => CreateCommentFetcher(variables)();
+
+export const UpdateCommentDocument = \`
+    mutation UpdateComment($input: UpdateCommentInput!, $condition: ModelCommentConditionInput) {
+  updateComment(input: $input, condition: $condition) {
+    id
+    post {
+      id
+      title
+      createdAt
+      updatedAt
+      blogPostsId
+    }
+    content
+    createdAt
+    updatedAt
+    postCommentsId
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`UpdateComment\`.
+  */
+export const UpdateCommentKeys = () => ['UpdateComment'];
+
+/**
+  * Input transformer function for \`UpdateComment\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`UpdateCommentVariables\` - The original variables
+  * @returns \`UpdateCommentVariables\` - The transformed variables
+  */
+export const UpdateCommentInputFn = <TInput = UpdateCommentVariables>(variables: UpdateCommentVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`UpdateComment\`.
+  * It extracts the \`updateComment\` field from the result and transforms it into a \`Comment\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data UpdateComment - The data returned from the GraphQL server
+  * @returns Comment - The transformed data
+  */
+export const UpdateCommentOutputFn = <TOutput = Comment>({ updateComment }: UpdateComment) => updateComment as unknown as TOutput;
+
+/**
+    * Fetcher function for \`UpdateComment\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`UpdateCommentInput\` and \`UpdateCommentOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const UpdateCommentFetcher = <TOutput = Comment, TInput = UpdateCommentVariables>(variables: UpdateCommentVariables, options?: RequestInit['headers'], document = UpdateCommentDocument, outputFn = UpdateCommentOutputFn, inputFn = UpdateCommentInputFn) => fetcher<UpdateComment, UpdateCommentVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`UpdateComment\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const updateComment = (variables: UpdateCommentVariables) => UpdateCommentFetcher(variables)();
+
+export const DeleteCommentDocument = \`
+    mutation DeleteComment($input: DeleteCommentInput!, $condition: ModelCommentConditionInput) {
+  deleteComment(input: $input, condition: $condition) {
+    id
+    post {
+      id
+      title
+      createdAt
+      updatedAt
+      blogPostsId
+    }
+    content
+    createdAt
+    updatedAt
+    postCommentsId
+  }
+}
+    \`;
+
+
+/**
+  * Key maker function for \`DeleteComment\`.
+  */
+export const DeleteCommentKeys = () => ['DeleteComment'];
+
+/**
+  * Input transformer function for \`DeleteComment\`.
+  * It transforms the fields of the variables into JSON strings.
+  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new \`variables\` object.
+  * If the variables do not conatain any JSON fields, it will return the orignal \`variables\` object.
+  * 
+  * @param variables \`DeleteCommentVariables\` - The original variables
+  * @returns \`DeleteCommentVariables\` - The transformed variables
+  */
+export const DeleteCommentInputFn = <TInput = DeleteCommentVariables>(variables: DeleteCommentVariables) => variables as unknown as TInput;
+
+/**
+  * Output transformer function for \`DeleteComment\`.
+  * It extracts the \`deleteComment\` field from the result and transforms it into a \`Comment\` object.
+  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+  * If the object does not conatain any JSON fields, it will return the orignal object.
+  * @param data DeleteComment - The data returned from the GraphQL server
+  * @returns Comment - The transformed data
+  */
+export const DeleteCommentOutputFn = <TOutput = Comment>({ deleteComment }: DeleteComment) => deleteComment as unknown as TOutput;
+
+/**
+    * Fetcher function for \`DeleteComment\`.
+    * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+    * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
+    * The output transformer function must be called inside the base fetcher to transform the result \`data\` after executing the GraphQL operation.
+    * 
+    * The input and output transformer functions are optional arguments and default to the generated \`DeleteCommentInput\` and \`DeleteCommentOutput\` functions.    
+    * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+    * @param variables - The variables to pass to the GraphQL operation.
+    * @param options - The options to pass to the GraphQL operation.
+    * @param outputFn - The output transformer function.
+    * @param inputFn - The input transformer function.
+    * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
+    */
+export const DeleteCommentFetcher = <TOutput = Comment, TInput = DeleteCommentVariables>(variables: DeleteCommentVariables, options?: RequestInit['headers'], document = DeleteCommentDocument, outputFn = DeleteCommentOutputFn, inputFn = DeleteCommentInputFn) => fetcher<DeleteComment, DeleteCommentVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+
+/**
+    * GraphQL request function for \`DeleteComment\`.
+    * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+    */
+export const deleteComment = (variables: DeleteCommentVariables) => DeleteCommentFetcher(variables)();
+"
+`;
