@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PuginVisitor = void 0;
 const visitor_plugin_common_1 = require("@graphql-codegen/visitor-plugin-common");
 const change_case_all_1 = require("change-case-all");
-const customer_fetcher_1 = require("./customer-fetcher");
+const custom_fetcher_1 = require("./custom-fetcher");
 const variables_generator_1 = require("./variables-generator");
 const transformer_1 = require("./transformer");
 const type_resolver_1 = require("./type-resolver");
@@ -55,7 +55,7 @@ class PuginVisitor extends visitor_plugin_common_1.ClientSideBaseVisitor {
     createFetcher(raw) {
         if (!raw || raw === 'fetch' || raw === 'graphql-request' || (typeof raw === 'object' && 'endpoint' in raw))
             throw new Error('Plugin "graphql-codegen-typescript-transformer" only supports custom fetchers');
-        return new customer_fetcher_1.CustomFetcher(this, raw);
+        return new custom_fetcher_1.CustomFetcher(this, raw);
     }
     getSuffix(name, operationType) {
         if (this.config.omitOperationSuffix) {

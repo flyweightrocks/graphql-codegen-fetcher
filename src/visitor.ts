@@ -13,7 +13,7 @@ import {
 // import autoBind from 'auto-bind';
 import { lowerCaseFirst, pascalCase } from 'change-case-all';
 import { GraphQLField, GraphQLSchema, OperationDefinitionNode, OperationTypeNode } from 'graphql';
-import { CustomFetcher, FetcherRenderer } from './customer-fetcher';
+import { CustomFetcher, FetcherRenderer } from './custom-fetcher';
 import { generateMutationKeyMaker, generateQueryKeyMaker } from './variables-generator';
 import { generateInputTransformer, generateOutputTransformer } from './transformer';
 import { getInputVariablesType, getOutputType } from './type-resolver';
