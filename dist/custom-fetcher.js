@@ -1,53 +1,40 @@
-'use strict';
-Object.defineProperty(exports, '__esModule', { value: true });
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.CustomFetcher = void 0;
-const visitor_plugin_common_1 = require('@graphql-codegen/visitor-plugin-common');
-const change_case_all_1 = require('change-case-all');
+const visitor_plugin_common_1 = require("@graphql-codegen/visitor-plugin-common");
+const change_case_all_1 = require("change-case-all");
 class CustomFetcher {
-  constructor(visitor, customFetcher) {
-    this.visitor = visitor;
-    if (typeof customFetcher === 'string') {
-      customFetcher = { func: customFetcher };
+    constructor(visitor, customFetcher) {
+        this.visitor = visitor;
+        if (typeof customFetcher === 'string') {
+            customFetcher = { func: customFetcher };
+        }
+        this.mapper = (0, visitor_plugin_common_1.parseMapper)(customFetcher.func);
     }
-    this.mapper = (0, visitor_plugin_common_1.parseMapper)(customFetcher.func);
-  }
-  getFetcherFnGenerics(operationResultType, operationVariablesTypes) {
-    return `${this.mapper.type}<${operationResultType}, ${operationVariablesTypes}, TOutput, TInput>`;
-  }
-  getFetcherName(operationName) {
-    return `${operationName}Fetcher`;
-  }
-  generateFetcherImport() {
-    if (this.mapper.isExternal) {
-      return (
-        (0, visitor_plugin_common_1.buildMapperImport)(
-          this.mapper.source,
-          [
-            {
-              identifier: this.mapper.type,
-              asDefault: this.mapper.default,
-            },
-          ],
-          this.visitor.config.useTypeImports,
-        ) || ''
-      );
+    getFetcherFnGenerics(operationResultType, operationVariablesTypes) {
+        return `${this.mapper.type}<${operationResultType}, ${operationVariablesTypes}, TOutput, TInput>`;
     }
-    return '';
-  }
-  generateFetcherFetch(
-    node,
-    documentVariableName,
-    operationName,
-    operationResultType,
-    operationVariablesTypes,
-    hasRequiredVariables,
-  ) {
-    const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
-    const outputResultType = this.visitor.outputResultTypes[operationName];
-    const inputVariablesType = operationVariablesTypes;
-    const typedFetcher = this.getFetcherFnGenerics(operationResultType, operationVariablesTypes);
-    const invokeFetcher = `${typedFetcher}(document, variables, options, outputFn, inputFn)`;
-    const comment = `\n/**
+    getFetcherName(operationName) {
+        return `${operationName}Fetcher`;
+    }
+    generateFetcherImport() {
+        if (this.mapper.isExternal) {
+            return ((0, visitor_plugin_common_1.buildMapperImport)(this.mapper.source, [
+                {
+                    identifier: this.mapper.type,
+                    asDefault: this.mapper.default,
+                },
+            ], this.visitor.config.useTypeImports) || '');
+        }
+        return '';
+    }
+    generateFetcherFetch(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables) {
+        const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
+        const outputResultType = this.visitor.outputResultTypes[operationName];
+        const inputVariablesType = operationVariablesTypes;
+        const typedFetcher = this.getFetcherFnGenerics(operationResultType, operationVariablesTypes);
+        const invokeFetcher = `${typedFetcher}(document, variables, options, outputFn, inputFn)`;
+        const comment = `\n/**
     * Fetcher function for \`${operationName}\`.
     * It invokes the base fetcher function with the operation-specific input and output transformer functions.
     * The input transformer function must be called inside the base fetcher to transform the \`variables\` before executing the GraphQL operation.
@@ -61,29 +48,20 @@ class CustomFetcher {
     * @param inputFn - The input transformer function.
     * @returns A function \`() => Promise<TOutput>\` that must be invoked manually or passed to ReactQuery as fetcher argument.
     */`;
-    const implementation = `export const ${this.getFetcherName(
-      operationName,
-    )} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], document = ${documentVariableName}, outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${invokeFetcher};`;
-    return `\n${comment}\n${implementation}\n`;
-  }
-  generateRequestFunction(
-    node,
-    documentVariableName,
-    operationName,
-    operationResultType,
-    operationVariablesTypes,
-    hasRequiredVariables,
-  ) {
-    const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
-    const functionName = (0, change_case_all_1.lowerCaseFirst)(operationName);
-    const fetcher = `(${variables}) => ${this.getFetcherName(operationName)}(variables)()`;
-    const comment = `\n/**
+        const implementation = `export const ${this.getFetcherName(operationName)} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], document = ${documentVariableName}, outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${invokeFetcher};`;
+        return `\n${comment}\n${implementation}\n`;
+    }
+    generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables) {
+        const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
+        const functionName = (0, change_case_all_1.lowerCaseFirst)(operationName);
+        const fetcher = `(${variables}) => ${this.getFetcherName(operationName)}(variables)()`;
+        const comment = `\n/**
     * GraphQL request function for \`${operationName}\`.
     * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
     */`;
-    const implementation = `export const ${functionName} = ${fetcher};`;
-    return `\n${comment}\n${implementation}\n`;
-  }
+        const implementation = `export const ${functionName} = ${fetcher};`;
+        return `\n${comment}\n${implementation}\n`;
+    }
 }
 exports.CustomFetcher = CustomFetcher;
 //# sourceMappingURL=custom-fetcher.js.map
