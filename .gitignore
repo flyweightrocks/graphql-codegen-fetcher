@@ -51,7 +51,6 @@ coverage
 
 # production
 build
-dist
 lib
 
 # Amplify
