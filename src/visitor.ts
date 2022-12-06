@@ -39,11 +39,15 @@ const JsonParse: InternalParsedMapper = {
 
 export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedPluginConfig> {
   private externalImportPrefix: string;
+
   private inputTransformerMap = new Map<string, ParsedMapper>();
+
   private outputTransformerMap = new Map<string, ParsedMapper>();
 
   public fetcher: FetcherRenderer;
+
   public fields: SchemaFields;
+
   public outputResultTypes: Record<string, string> = {};
 
   constructor(

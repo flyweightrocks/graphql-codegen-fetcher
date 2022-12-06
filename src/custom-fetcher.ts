@@ -1,7 +1,7 @@
 import { buildMapperImport, ParsedMapper, parseMapper } from '@graphql-codegen/visitor-plugin-common';
 import { OperationDefinitionNode } from 'graphql';
-import { PuginVisitor } from './visitor';
 import { lowerCaseFirst } from 'change-case-all';
+import type { PuginVisitor } from './visitor';
 import { CustomFetch } from './config';
 
 export interface FetcherRenderer {
@@ -29,11 +29,8 @@ export interface FetcherRenderer {
 export class CustomFetcher implements FetcherRenderer {
   private mapper: ParsedMapper;
 
-  constructor(private visitor: PuginVisitor, customFetcher: CustomFetch) {
-    if (typeof customFetcher === 'string') {
-      customFetcher = { func: customFetcher };
-    }
-    this.mapper = parseMapper(customFetcher.func);
+  constructor(private visitor: PuginVisitor, fetcher: CustomFetch) {
+    this.mapper = parseMapper(typeof fetcher === 'string' ? fetcher : fetcher.func);
   }
 
   private getFetcherFnGenerics(

@@ -4,12 +4,9 @@ exports.CustomFetcher = void 0;
 const visitor_plugin_common_1 = require("@graphql-codegen/visitor-plugin-common");
 const change_case_all_1 = require("change-case-all");
 class CustomFetcher {
-    constructor(visitor, customFetcher) {
+    constructor(visitor, fetcher) {
         this.visitor = visitor;
-        if (typeof customFetcher === 'string') {
-            customFetcher = { func: customFetcher };
-        }
-        this.mapper = (0, visitor_plugin_common_1.parseMapper)(customFetcher.func);
+        this.mapper = (0, visitor_plugin_common_1.parseMapper)(typeof fetcher === 'string' ? fetcher : fetcher.func);
     }
     getFetcherFnGenerics(operationResultType, operationVariablesTypes) {
         return `${this.mapper.type}<${operationResultType}, ${operationVariablesTypes}, TOutput, TInput>`;

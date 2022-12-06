@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {},
+  // https://github.com/typescript-eslint/typescript-eslint/issues/967#issuecomment-531817014
+  "include": [
+    ".eslintrc.js",
+    "*.js",
+    "src/**/*.ts",
+  ],
+  "exclude": [
+    "**/node_modules/*",
+  ],
+}

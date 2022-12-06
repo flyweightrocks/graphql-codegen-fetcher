@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PuginVisitor = exports.validate = exports.plugin = void 0;
 const graphql_1 = require("graphql");
+const path_1 = require("path");
 const visitor_1 = require("./visitor");
 Object.defineProperty(exports, "PuginVisitor", { enumerable: true, get: function () { return visitor_1.PuginVisitor; } });
-const path_1 = require("path");
 const plugin = (schema, documents, config) => {
     const allAst = (0, graphql_1.concatAST)(documents.map((v) => v.document));
     const allFragments = [

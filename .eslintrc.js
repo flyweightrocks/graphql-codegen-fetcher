@@ -1,15 +1,10 @@
 module.exports = {
-  // Stop ESLint from looking for a configuration file in parent folders
   root: true,
   extends: [
-    'eslint:recommended',
-    // Use after eslint:recommended. It disables rules that are already checked by TS compiler and enables rules that promote using the more modern TS features
-    // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin/src/configs#eslint-recommended
-    'plugin:@typescript-eslint/eslint-recommended',
-    // The recommended set is an opinionated set of rules
-    // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin/src/configs#recommended
-    'plugin:@typescript-eslint/recommended',
-    // Enables eslint-plugin-prettier and eslint-config-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array
+    // https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb
+    'airbnb',
+    // https://github.com/iamturns/eslint-config-airbnb-typescript
+    'airbnb-typescript',
     // https://github.com/prettier/eslint-plugin-prettier#readme
     'plugin:prettier/recommended',
   ],
@@ -25,8 +20,11 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
+    tsconfigRootDir: __dirname,
+    project: ['tsconfig.eslint.json'],
   },
   rules: {
+    '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/ban-types': [
@@ -38,5 +36,8 @@ module.exports = {
       },
     ],
     'import/prefer-default-export': 'off',
+    'class-methods-use-this': 'off',
+    'no-underscore-dangle': 'off',
+    'no-param-reassign': 'warn',
   },
 };
