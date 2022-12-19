@@ -45,6 +45,13 @@ const transformJsonFields = (fields, path, transformer) => {
 function generateOutputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, output) {
     const hasJson = hasJsonFields(output.fields);
     const returnsJson = isJsonType(output.typeName);
+    let result = `${output.fieldName} as unknown as TOutput`;
+    if (hasJson) {
+        result = `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(output.fields, `${output.fieldName}`, 'parse').join('\n')} }) as unknown as TOutput`;
+    }
+    if (returnsJson) {
+        result = `JSON.parse(${output.fieldName} as any) as unknown as TOutput`;
+    }
     const comment = `\n/**
   * Output transformer function for \`${operationName}\`.
   * It extracts the \`${output.fieldName}\` field from the result and transforms it into a \`${output.typeName}\` object.
@@ -53,17 +60,20 @@ function generateOutputTransformer(node, operationName, operationVariablesTypes,
   * @param data ${operationResultType} - The data returned from the GraphQL server
   * @returns ${output.typeName} - The transformed data
   */`;
-    const implementation = `export const ${operationName}OutputFn = <TOutput = ${output.typeName}>({ ${output.fieldName} }: ${operationResultType}) => ${hasJson
-        ? `${output.fieldName} && ({...${output.fieldName}, ${transformJsonFields(output.fields, `${output.fieldName}`, 'parse').join('\n')} }) as unknown as TOutput`
-        : returnsJson
-            ? `JSON.parse(${output.fieldName} as any) as unknown as TOutput`
-            : `${output.fieldName} as unknown as TOutput`};`;
+    const implementation = `export const ${operationName}OutputFn = <TOutput = ${output.typeName}>({ ${output.fieldName} }: ${operationResultType}) => ${result};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateOutputTransformer = generateOutputTransformer;
 function generateInputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, inputVariables) {
     const signature = (0, variables_generator_1.generateQueryVariablesSignature)(hasRequiredVariables, operationVariablesTypes);
     const hasJson = inputVariables.some((field) => hasJsonFields(field.fields));
+    let result = `variables as unknown as TInput`;
+    if (hasJson) {
+        result = `({...variables, ${inputVariables
+            .filter((variable) => hasJsonFields(variable.fields))
+            .map((variable) => `${variable.fieldName}: { ...variables.${variable.fieldName}, ${transformJsonFields(variable.fields || {}, `variables.${variable.fieldName}`, 'stringify')} },`)
+            .join('\n')} }) as unknown as TInput`;
+    }
     const comment = `\n/**
   * Input transformer function for \`${operationName}\`.
   * It transforms the fields of the variables into JSON strings.
@@ -73,12 +83,7 @@ function generateInputTransformer(node, operationName, operationVariablesTypes, 
   * @param variables \`${operationVariablesTypes}\` - The original variables
   * @returns \`${operationVariablesTypes}\` - The transformed variables
   */`;
-    const implementation = `export const ${operationName}InputFn = <TInput = ${operationVariablesTypes}>(${signature}) => ${hasJson
-        ? `({...variables, ${inputVariables
-            .filter((variable) => hasJsonFields(variable.fields))
-            .map((variable) => `${variable.fieldName}: { ...variables.${variable.fieldName}, ${transformJsonFields(variable.fields || {}, `variables.${variable.fieldName}`, 'stringify')} },`)
-            .join('\n')} }) as unknown as TInput`
-        : `variables as unknown as TInput`};`;
+    const implementation = `export const ${operationName}InputFn = <TInput = ${operationVariablesTypes}>(${signature}) => ${result};`;
     return `\n${comment}\n${implementation}`;
 }
 exports.generateInputTransformer = generateInputTransformer;

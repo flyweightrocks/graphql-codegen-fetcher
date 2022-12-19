@@ -1,16 +1,13 @@
 import {
-  GraphQLEnumType,
   GraphQLField,
-  GraphQLFieldMap,
-  GraphQLInputObjectType,
-  GraphQLList,
-  GraphQLNonNull,
-  GraphQLObjectType,
-  GraphQLScalarType,
   GraphQLType,
-  OperationDefinitionNode,
+  isEnumType,
+  isInputObjectType,
+  isListType,
+  isNonNullType,
+  isObjectType,
+  isScalarType,
 } from 'graphql';
-import { upperCaseFirst, lowerCaseFirst } from 'change-case-all';
 
 export type OperationFieldMap = { [field: string]: string } | { [field: string]: OperationFieldMap };
 export type OperationField = {
@@ -24,15 +21,14 @@ export type OperationInputVariableField = OperationField[];
 const toScalarType = (type: string) =>
   ['ID', 'String', 'Boolean', 'Int', 'Float', 'AWSDateTime', 'AWSJSON'].includes(type) ? `Scalars['${type}']` : type;
 
-const isScalarField = (type: GraphQLType) => type instanceof GraphQLScalarType || type instanceof GraphQLEnumType;
+const isScalarField = (type: GraphQLType) => isScalarType(type) || isEnumType(type);
 
-const isArrayField = (type: GraphQLType) =>
-  type instanceof GraphQLList || (type instanceof GraphQLNonNull && type.ofType instanceof GraphQLList);
+const isArrayField = (type: GraphQLType) => isListType(type) || (isNonNullType(type) && isListType(type.ofType));
 
-const isMandatoryField = (type: GraphQLType) => type instanceof GraphQLNonNull;
+const isMandatoryField = (type: GraphQLType) => isNonNullType(type);
 
 const isModelField = (type: GraphQLType): boolean => {
-  if (type instanceof GraphQLNonNull || type instanceof GraphQLList) return isModelField(type.ofType);
+  if (isNonNullType(type) || isListType(type)) return isModelField(type.ofType);
 
   if (type.name.startsWith('Model') && type.name.endsWith('Connection')) return true;
   if (type.name.startsWith('Model') && type.name.endsWith('Input')) return true;
@@ -41,37 +37,49 @@ const isModelField = (type: GraphQLType): boolean => {
 };
 
 const getTypeName = (type: GraphQLType): string => {
-  if (type instanceof GraphQLNonNull) return getTypeName(type.ofType);
-  if (type instanceof GraphQLList) return `${getTypeName(type.ofType)}[]`;
+  if (isNonNullType(type)) return getTypeName(type.ofType);
+  if (isListType(type)) return `${getTypeName(type.ofType)}[]`;
 
   return toScalarType(type.name);
 };
 
+// If different versions of GraphQL are installed, the check of instanceof GraphQLType will fail.
+// In these cases, we can use the constructor.name property or Symbol.toStringTag to check the type.
+// This is automatically handled by the `instanceOf` function in graphql-js:
+// https://github.dev/graphql/graphql-js/blob/1564174b0dc26e0adf7ff2833716d06606b06a20/src/jsutils/instanceOf.ts#L9-L10
 const resolveFields = (type: GraphQLType): any => {
-  if (type instanceof GraphQLNonNull) {
+  // const typeConstructor = type.constructor.name;
+
+  if (isNonNullType(type)) {
     const resolved = resolveFields(type.ofType);
     return resolved;
   }
-  if (type instanceof GraphQLList) {
+
+  if (isListType(type)) {
     const resolved = resolveFields(type.ofType);
     return resolved;
   }
-  if (type instanceof GraphQLObjectType || type instanceof GraphQLInputObjectType) {
+
+  if (isObjectType(type) || isInputObjectType(type)) {
     const fields = type.getFields();
     const resolved = Object.fromEntries(
       Object.values(fields).map((field) => {
-        const isModel = isModelField(field.type);
         const isArray = isArrayField(field.type);
         const isMandatory = isMandatoryField(field.type);
 
-        if (isModel) return [field.name, field.type.name];
+        if (isModelField(field.type)) return [field.name, field.type.name];
 
         return [`${field.name}${isArray ? '[]' : ''}${isMandatory ? '!' : ''}`, resolveFields(field.type)];
       }),
     );
     return resolved;
   }
-  if (type instanceof GraphQLScalarType || type instanceof GraphQLEnumType) {
+
+  if (isScalarType(type)) {
+    return type.name;
+  }
+
+  if (isEnumType(type)) {
     return type.name;
   }
 
