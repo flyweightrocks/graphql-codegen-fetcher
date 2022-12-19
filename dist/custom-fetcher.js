@@ -25,9 +25,9 @@ class CustomFetcher {
         }
         return '';
     }
-    generateFetcherFetch(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables) {
+    generateFetcherFetch(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables, output) {
         const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
-        const outputResultType = this.visitor.outputResultTypes[operationName];
+        const outputResultType = output.typeName;
         const inputVariablesType = operationVariablesTypes;
         const typedFetcher = this.getFetcherFnGenerics(operationResultType, operationVariablesTypes);
         const invokeFetcher = `${typedFetcher}(document, variables, options, outputFn, inputFn)`;
@@ -48,7 +48,7 @@ class CustomFetcher {
         const implementation = `export const ${this.getFetcherName(operationName)} = <TOutput = ${outputResultType}, TInput = ${inputVariablesType}>(${variables}, options?: RequestInit['headers'], document = ${documentVariableName}, outputFn = ${operationName}OutputFn, inputFn = ${operationName}InputFn) => ${invokeFetcher};`;
         return `\n${comment}\n${implementation}\n`;
     }
-    generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables) {
+    generateRequestFunction(node, documentVariableName, operationName, operationResultType, operationVariablesTypes, hasRequiredVariables, output) {
         const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
         const functionName = (0, change_case_all_1.lowerCaseFirst)(operationName);
         const fetcher = `(${variables}) => ${this.getFetcherName(operationName)}(variables)()`;

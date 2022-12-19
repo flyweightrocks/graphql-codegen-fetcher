@@ -1,23 +1,20 @@
 import { Types } from '@graphql-codegen/plugin-helpers';
 import {
-  buildMapperImport,
   ClientSideBasePluginConfig,
   ClientSideBaseVisitor,
   DocumentMode,
-  ExternalParsedMapper,
   InternalParsedMapper,
   LoadedFragment,
-  ParsedMapper,
   parseMapper,
 } from '@graphql-codegen/visitor-plugin-common';
 // import autoBind from 'auto-bind';
-import { lowerCaseFirst, pascalCase } from 'change-case-all';
+import { pascalCase } from 'change-case-all';
 import { GraphQLField, GraphQLSchema, OperationDefinitionNode, OperationTypeNode } from 'graphql';
-import { CustomFetcher, FetcherRenderer } from './custom-fetcher';
-import { generateMutationKeyMaker, generateQueryKeyMaker } from './variables-generator';
-import { generateInputTransformer, generateOutputTransformer } from './transformer';
-import { getInputVariablesType, getOutputType } from './type-resolver';
 import { RawPluginConfig } from './config';
+import { CustomFetcher, FetcherRenderer } from './custom-fetcher';
+import { Transformer, TransformerMap } from './transformer';
+import { getInputVariablesType, getOutputType } from './type-resolver';
+import { generateMutationKeyMaker, generateQueryKeyMaker } from './variables-generator';
 
 type SchemaFields = {
   [operation in OperationTypeNode]: {
@@ -40,15 +37,11 @@ const JsonParse: InternalParsedMapper = {
 export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedPluginConfig> {
   private externalImportPrefix: string;
 
-  private inputTransformerMap = new Map<string, ParsedMapper>();
-
-  private outputTransformerMap = new Map<string, ParsedMapper>();
-
   public fetcher: FetcherRenderer;
 
-  public fields: SchemaFields;
+  public transformer: Transformer;
 
-  public outputResultTypes: Record<string, string> = {};
+  public fields: SchemaFields;
 
   constructor(
     schema: GraphQLSchema,
@@ -66,7 +59,6 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
       documents,
     );
 
-    this.fetcher = this.createFetcher(rawConfig.fetcher || 'fetch');
     this.externalImportPrefix = this.config.importOperationTypesFrom ? `${this.config.importOperationTypesFrom}.` : '';
     this.fields = {
       query: { ...this._schema.getQueryType()?.getFields() },
@@ -74,58 +66,46 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
       subscription: { ...this._schema.getSubscriptionType()?.getFields() },
     };
 
+    this.fetcher = this.createFetcher(rawConfig);
+    this.transformer = this.createTransformer(rawConfig);
+
+    this._imports.add(this.fetcher.generateFetcherImport());
+    this.transformer.generateImports().map((i) => this._imports.add(i));
+  }
+
+  private createTransformer(rawConfig: RawPluginConfig): Transformer {
+    const inputTransformerMap: TransformerMap = {};
+    const outputTransformerMap: TransformerMap = {};
+
     if (rawConfig.inputTransformer) {
       Object.entries(rawConfig.inputTransformer).forEach(([scalar, type]) => {
         const mapper = type === 'JSON.stringify' ? JsonStringify : parseMapper(type.func);
-        this.inputTransformerMap.set(scalar, mapper);
+        inputTransformerMap[scalar] = mapper;
       });
     }
 
     if (rawConfig.outputTransformer) {
       Object.entries(rawConfig.outputTransformer).forEach(([scalar, type]) => {
         const mapper = type === 'JSON.parse' ? JsonParse : parseMapper(type.func);
-        this.outputTransformerMap.set(scalar, mapper);
+        outputTransformerMap[scalar] = mapper;
       });
     }
 
-    this._imports.add(this.fetcher.generateFetcherImport());
-    [...this.inputTransformerMap.values(), ...this.outputTransformerMap.values()]
-      .filter((mapper): mapper is ExternalParsedMapper => mapper.isExternal)
-      .forEach((mapper) =>
-        this._imports.add(
-          buildMapperImport(
-            mapper.source,
-            [
-              {
-                identifier: mapper.type,
-                asDefault: mapper.default,
-              },
-            ],
-            this.config.useTypeImports,
-          ) || '',
-        ),
-      );
-
-    // autoBind(this);
+    return new Transformer(this, inputTransformerMap, outputTransformerMap);
   }
 
-  // public get imports(): Set<string> {
-  //   return this._imports;
-  // }
+  private createFetcher(rawConfig: RawPluginConfig): FetcherRenderer {
+    const { fetcher } = rawConfig;
 
-  // public get hasOperations() {
-  //   return this._collectedOperations.length > 0;
-  // }
-
-  // public getFetcherImplementation(): string {
-  //   return this.fetcher.generateFetcherImplementaion();
-  // }
-
-  private createFetcher(raw: RawPluginConfig['fetcher']): FetcherRenderer {
-    if (!raw || raw === 'fetch' || raw === 'graphql-request' || (typeof raw === 'object' && 'endpoint' in raw))
+    if (
+      !fetcher ||
+      fetcher === 'fetch' ||
+      fetcher === 'graphql-request' ||
+      (typeof fetcher === 'object' && 'endpoint' in fetcher)
+    )
       throw new Error('Plugin "graphql-codegen-typescript-transformer" only supports custom fetchers');
 
-    return new CustomFetcher(this, raw);
+    return new CustomFetcher(this, fetcher);
   }
 
   private getSuffix(name: string, operationType: string) {
@@ -172,19 +152,16 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
 
     const selectionNodeName = selectionNode.name?.value;
 
-    // const fieldName = lowerCaseFirst(nodeName);
     const fieldDefinition = this.fields[node.operation][selectionNodeName];
 
     const output = getOutputType(fieldDefinition);
-    this.outputResultTypes[operationName] = output.typeName;
-
     const inputVariables = getInputVariablesType(fieldDefinition);
 
     let query = '';
 
     if (operationType === 'Query') {
       query += generateQueryKeyMaker(node, operationName, operationVariablesTypes, hasRequiredVariables);
-      query += generateInputTransformer(
+      query += this.transformer.generateInputTransformer(
         node,
         operationName,
         operationVariablesTypes,
@@ -192,7 +169,7 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
         hasRequiredVariables,
         inputVariables,
       );
-      query += generateOutputTransformer(
+      query += this.transformer.generateOutputTransformer(
         node,
         operationName,
         operationVariablesTypes,
@@ -207,6 +184,7 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
         operationResultType,
         operationVariablesTypes,
         hasRequiredVariables,
+        output,
       );
       query += this.fetcher.generateRequestFunction(
         node,
@@ -215,10 +193,11 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
         operationResultType,
         operationVariablesTypes,
         hasRequiredVariables,
+        output,
       );
     } else if (operationType === 'Mutation') {
       query += generateMutationKeyMaker(node, operationName);
-      query += generateInputTransformer(
+      query += this.transformer.generateInputTransformer(
         node,
         operationName,
         operationVariablesTypes,
@@ -226,7 +205,7 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
         hasRequiredVariables,
         inputVariables,
       );
-      query += generateOutputTransformer(
+      query += this.transformer.generateOutputTransformer(
         node,
         operationName,
         operationVariablesTypes,
@@ -241,6 +220,7 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
         operationResultType,
         operationVariablesTypes,
         hasRequiredVariables,
+        output,
       );
       query += this.fetcher.generateRequestFunction(
         node,
@@ -249,6 +229,7 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
         operationResultType,
         operationVariablesTypes,
         hasRequiredVariables,
+        output,
       );
     } else if (operationType === 'Subscription') {
       // not supported yet

@@ -3,6 +3,7 @@ import { OperationDefinitionNode } from 'graphql';
 import { lowerCaseFirst } from 'change-case-all';
 import type { PuginVisitor } from './visitor';
 import { CustomFetch } from './config';
+import { OperationField } from './type-resolver';
 
 export interface FetcherRenderer {
   generateFetcherImport: () => string;
@@ -13,6 +14,7 @@ export interface FetcherRenderer {
     operationResultType: string,
     operationVariablesTypes: string,
     hasRequiredVariables: boolean,
+    output: OperationField,
   ) => string;
 
   generateRequestFunction(
@@ -22,6 +24,7 @@ export interface FetcherRenderer {
     operationResultType: string,
     operationVariablesTypes: string,
     hasRequiredVariables: boolean,
+    output: OperationField,
   ): string;
 }
 
@@ -72,15 +75,10 @@ export class CustomFetcher implements FetcherRenderer {
     operationResultType: string,
     operationVariablesTypes: string,
     hasRequiredVariables: boolean,
-    // outputResultType: string,
-    // inputVariablesTypes: string = operationVariablesTypes,
+    output: OperationField,
   ): string {
-    // We can't generate a fetcher field since we can't call react hooks outside of a React Fucntion Component
-    // Related: https://reactjs.org/docs/hooks-rules.html
-    // if (this._isReactHook) return '';
-
     const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
-    const outputResultType = this.visitor.outputResultTypes[operationName];
+    const outputResultType = output.typeName;
     const inputVariablesType = operationVariablesTypes;
 
     const typedFetcher = this.getFetcherFnGenerics(
@@ -120,6 +118,7 @@ export class CustomFetcher implements FetcherRenderer {
     operationResultType: string,
     operationVariablesTypes: string,
     hasRequiredVariables: boolean,
+    output: OperationField,
   ): string {
     const variables = `variables${hasRequiredVariables ? '' : '?'}: ${operationVariablesTypes}`;
 

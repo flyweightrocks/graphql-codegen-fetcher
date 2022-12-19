@@ -48,8 +48,6 @@ const getTypeName = (type: GraphQLType): string => {
 // This is automatically handled by the `instanceOf` function in graphql-js:
 // https://github.dev/graphql/graphql-js/blob/1564174b0dc26e0adf7ff2833716d06606b06a20/src/jsutils/instanceOf.ts#L9-L10
 const resolveFields = (type: GraphQLType): any => {
-  // const typeConstructor = type.constructor.name;
-
   if (isNonNullType(type)) {
     const resolved = resolveFields(type.ofType);
     return resolved;
