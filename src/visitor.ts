@@ -76,14 +76,14 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
 
     if (rawConfig.inputTransformer) {
       Object.entries(rawConfig.inputTransformer).forEach(([scalar, type]) => {
-        const mapper = type === 'json-stringify' ? JsonStringify : parseMapper(type.func);
+        const mapper = type === 'JSON.stringify' ? JsonStringify : parseMapper(type.func);
         this.inputTransformerMap.set(scalar, mapper);
       });
     }
 
     if (rawConfig.outputTransformer) {
       Object.entries(rawConfig.outputTransformer).forEach(([scalar, type]) => {
-        const mapper = type === 'json-parse' ? JsonStringify : parseMapper(type.func);
+        const mapper = type === 'JSON.parse' ? JsonParse : parseMapper(type.func);
         this.outputTransformerMap.set(scalar, mapper);
       });
     }

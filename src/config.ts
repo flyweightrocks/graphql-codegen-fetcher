@@ -3,11 +3,11 @@ import { RawClientSideBasePluginConfig } from '@graphql-codegen/visitor-plugin-c
 export type CustomFetch = string | { func: string };
 
 export type InputScalarTransformer = {
-  [scalar: string]: 'json-stringify' | { func: string };
+  [scalar: string]: 'JSON.stringify' | { func: string };
 };
 
 export type OutputScalarTransformer = {
-  [scalar: string]: 'json-parse' | { func: string };
+  [scalar: string]: 'JSON.parse' | { func: string };
 };
 
 export interface RawPluginConfig extends RawClientSideBasePluginConfig {

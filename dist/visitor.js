@@ -32,13 +32,13 @@ class PuginVisitor extends visitor_plugin_common_1.ClientSideBaseVisitor {
         };
         if (rawConfig.inputTransformer) {
             Object.entries(rawConfig.inputTransformer).forEach(([scalar, type]) => {
-                const mapper = type === 'json-stringify' ? JsonStringify : (0, visitor_plugin_common_1.parseMapper)(type.func);
+                const mapper = type === 'JSON.stringify' ? JsonStringify : (0, visitor_plugin_common_1.parseMapper)(type.func);
                 this.inputTransformerMap.set(scalar, mapper);
             });
         }
         if (rawConfig.outputTransformer) {
             Object.entries(rawConfig.outputTransformer).forEach(([scalar, type]) => {
-                const mapper = type === 'json-parse' ? JsonStringify : (0, visitor_plugin_common_1.parseMapper)(type.func);
+                const mapper = type === 'JSON.parse' ? JsonParse : (0, visitor_plugin_common_1.parseMapper)(type.func);
                 this.outputTransformerMap.set(scalar, mapper);
             });
         }

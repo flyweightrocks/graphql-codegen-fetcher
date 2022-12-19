@@ -2,6 +2,46 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateInputTransformer = exports.generateOutputTransformer = void 0;
 const variables_generator_1 = require("./variables-generator");
+const isJsonType = (type) => type === 'AWSJSON' || type === `Scalars['AWSJSON']`;
+const hasJsonFields = (fields) => {
+    if (!fields)
+        return false;
+    return (Object.entries(fields)
+        .map(([, fieldValue]) => {
+        if (fieldValue && typeof fieldValue === 'object') {
+            return hasJsonFields(fieldValue);
+        }
+        return isJsonType(fieldValue);
+    })
+        .filter(Boolean).length > 0);
+};
+const transformJsonFields = (fields, path, transformer) => {
+    const stack = [];
+    for (const [field, fieldValue] of Object.entries(fields)) {
+        let fieldName = field;
+        const isMandatory = field.includes('!');
+        fieldName = isMandatory ? fieldName.substring(0, fieldName.length - 1) : fieldName;
+        const isArray = field.includes('[]');
+        fieldName = isArray ? fieldName.substring(0, fieldName.length - 2) : fieldName;
+        const fieldNameSingular = fieldName.substring(0, fieldName.length - 1);
+        const fieldPath = `${path}.${fieldName}`;
+        if (fieldValue && typeof fieldValue === 'object') {
+            if (isArray) {
+                stack.push(`${fieldName}: ${fieldPath}?.map((${fieldNameSingular}) => ({`, `...${fieldNameSingular},`, ...transformJsonFields(fieldValue, `${fieldNameSingular}?`, transformer), `})),`);
+            }
+            else {
+                stack.push(`${fieldName}: {`, `...${fieldPath},`, ...transformJsonFields(fieldValue, `${fieldPath}?`, transformer), `},`);
+            }
+        }
+        else if (fieldValue === 'AWSJSON') {
+            if (transformer === 'parse')
+                stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
+            if (transformer === 'stringify')
+                stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
+        }
+    }
+    return stack;
+};
 function generateOutputTransformer(node, operationName, operationVariablesTypes, operationResultType, hasRequiredVariables, output) {
     const hasJson = hasJsonFields(output.fields);
     const returnsJson = isJsonType(output.typeName);
@@ -42,48 +82,4 @@ function generateInputTransformer(node, operationName, operationVariablesTypes, 
     return `\n${comment}\n${implementation}`;
 }
 exports.generateInputTransformer = generateInputTransformer;
-const transformJsonFields = (fields, path, transformer) => {
-    const stack = [];
-    for (const [field, fieldValue] of Object.entries(fields)) {
-        let fieldName = field;
-        const isMandatory = field.includes('!');
-        fieldName = isMandatory ? fieldName.substring(0, fieldName.length - 1) : fieldName;
-        const isArray = field.includes('[]');
-        fieldName = isArray ? fieldName.substring(0, fieldName.length - 2) : fieldName;
-        const fieldNameSingular = fieldName.substring(0, fieldName.length - 1);
-        const fieldPath = `${path}.${fieldName}`;
-        if (fieldValue && typeof fieldValue === 'object') {
-            if (isArray) {
-                stack.push(`${fieldName}: ${fieldPath}?.map((${fieldNameSingular}) => ({`, `...${fieldNameSingular},`, ...transformJsonFields(fieldValue, fieldNameSingular + '?', transformer), `})),`);
-            }
-            else {
-                stack.push(`${fieldName}: {`, `...${fieldPath},`, ...transformJsonFields(fieldValue, fieldPath + '?', transformer), `},`);
-            }
-        }
-        else {
-            if (fieldValue === 'AWSJSON') {
-                transformer === 'parse' &&
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
-                transformer === 'stringify' &&
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
-            }
-        }
-    }
-    return stack;
-};
-const hasJsonFields = (fields) => {
-    if (!fields)
-        return false;
-    return (Object.entries(fields)
-        .map(([, fieldValue]) => {
-        if (fieldValue && typeof fieldValue === 'object') {
-            return hasJsonFields(fieldValue);
-        }
-        else {
-            return isJsonType(fieldValue);
-        }
-    })
-        .filter(Boolean).length > 0);
-};
-const isJsonType = (type) => type === 'AWSJSON' || type === `Scalars['AWSJSON']`;
 //# sourceMappingURL=transformer.js.map

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PuginVisitor = exports.validate = exports.plugin = void 0;
+const plugin_helpers_1 = require("@graphql-codegen/plugin-helpers");
 const graphql_1 = require("graphql");
 const path_1 = require("path");
 const visitor_1 = require("./visitor");
@@ -17,7 +18,7 @@ const plugin = (schema, documents, config) => {
         ...(config.externalFragments || []),
     ];
     const visitor = new visitor_1.PuginVisitor(schema, allFragments, config, documents);
-    const visitorResult = (0, graphql_1.visit)(allAst, { leave: visitor });
+    const visitorResult = (0, plugin_helpers_1.oldVisit)(allAst, { leave: visitor });
     return {
         prepend: visitor.getImports(),
         content: [visitor.fragments, ...visitorResult.definitions.filter((t) => typeof t === 'string')].join('\n'),

@@ -13,19 +13,23 @@ config:
 generates:
   generated/plugin.ts:
     config:
-      fetcher: '../graphql/fetcher#fetcher'
+      fetcher: "../graphql/fetcher#fetcher"
       omitOperationSuffix: true
-      # generateGqlRequestFunctions: true
+
+      inputTransformer:
+        AWSJSON: "JSON.stringify"
+      outputTransformer:
+        AWSJSON: "JSON.parse"
     plugins:
       - typescript
-      - typescript-operations    
-      # - typescript-react-query  
+      - typescript-operations
+      # - typescript-react-query
       - dist/index.js
       # - add:
       #     placement: prepend
       #     content:
       #       - "/* eslint-disable */"
-      #       # - "import awsconfig from '../src/aws-exports.js';"              
+      #       # - "import awsconfig from '../src/aws-exports.js';"
 hooks:
   afterAllFileWrite:
     - npx eslint --fix
