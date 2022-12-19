@@ -113,14 +113,6 @@ export class PuginVisitor extends ClientSideBaseVisitor<RawPluginConfig, ParsedP
   //   return this._imports;
   // }
 
-  // OperationDefinition(node: OperationDefinitionNode): string {
-  //   // overwrite method to call the same method on ReactQueryVisitor
-  //   // it collects all operations into _collectedOperations and it must be filled for the type imports
-  //   // TODO check if this is still needed
-  //   // this.reactQueryVisitor.OperationDefinition(node);
-  //   return super.OperationDefinition(node);
-  // }
-
   // public get hasOperations() {
   //   return this._collectedOperations.length > 0;
   // }

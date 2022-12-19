@@ -42,7 +42,7 @@ const isModelField = (type: GraphQLType): boolean => {
 
 const getTypeName = (type: GraphQLType): string => {
   if (type instanceof GraphQLNonNull) return getTypeName(type.ofType);
-  if (type instanceof GraphQLList) return getTypeName(type.ofType) + '[]';
+  if (type instanceof GraphQLList) return `${getTypeName(type.ofType)}[]`;
 
   return toScalarType(type.name);
 };
@@ -51,10 +51,12 @@ const resolveFields = (type: GraphQLType): any => {
   if (type instanceof GraphQLNonNull) {
     const resolved = resolveFields(type.ofType);
     return resolved;
-  } else if (type instanceof GraphQLList) {
+  }
+  if (type instanceof GraphQLList) {
     const resolved = resolveFields(type.ofType);
     return resolved;
-  } else if (type instanceof GraphQLObjectType || type instanceof GraphQLInputObjectType) {
+  }
+  if (type instanceof GraphQLObjectType || type instanceof GraphQLInputObjectType) {
     const fields = type.getFields();
     const resolved = Object.fromEntries(
       Object.values(fields).map((field) => {
@@ -68,9 +70,12 @@ const resolveFields = (type: GraphQLType): any => {
       }),
     );
     return resolved;
-  } else if (type instanceof GraphQLScalarType || type instanceof GraphQLEnumType) {
+  }
+  if (type instanceof GraphQLScalarType || type instanceof GraphQLEnumType) {
     return type.name;
   }
+
+  throw new Error(`Can't resolve type ${type.name}`);
 };
 
 export const getOutputType = (fieldDefinition: GraphQLField<any, any>): OperationOutputField => {

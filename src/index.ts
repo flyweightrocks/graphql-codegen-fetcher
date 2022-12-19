@@ -23,6 +23,7 @@ export const plugin: PluginFunction<RawPluginConfig, Types.ComplexPluginOutput> 
   const visitor = new PuginVisitor(schema, allFragments, config, documents);
   // visit is not available in older versions of graphql
   // const visitorResult = visit(allAst, { leave: visitor });
+  // @ts-ignore
   const visitorResult = oldVisit(allAst, { leave: visitor });
 
   return {

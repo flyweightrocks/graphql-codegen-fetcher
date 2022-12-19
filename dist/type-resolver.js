@@ -19,7 +19,7 @@ const getTypeName = (type) => {
     if (type instanceof graphql_1.GraphQLNonNull)
         return getTypeName(type.ofType);
     if (type instanceof graphql_1.GraphQLList)
-        return getTypeName(type.ofType) + '[]';
+        return `${getTypeName(type.ofType)}[]`;
     return toScalarType(type.name);
 };
 const resolveFields = (type) => {
@@ -27,11 +27,11 @@ const resolveFields = (type) => {
         const resolved = resolveFields(type.ofType);
         return resolved;
     }
-    else if (type instanceof graphql_1.GraphQLList) {
+    if (type instanceof graphql_1.GraphQLList) {
         const resolved = resolveFields(type.ofType);
         return resolved;
     }
-    else if (type instanceof graphql_1.GraphQLObjectType || type instanceof graphql_1.GraphQLInputObjectType) {
+    if (type instanceof graphql_1.GraphQLObjectType || type instanceof graphql_1.GraphQLInputObjectType) {
         const fields = type.getFields();
         const resolved = Object.fromEntries(Object.values(fields).map((field) => {
             const isModel = isModelField(field.type);
@@ -43,9 +43,10 @@ const resolveFields = (type) => {
         }));
         return resolved;
     }
-    else if (type instanceof graphql_1.GraphQLScalarType || type instanceof graphql_1.GraphQLEnumType) {
+    if (type instanceof graphql_1.GraphQLScalarType || type instanceof graphql_1.GraphQLEnumType) {
         return type.name;
     }
+    throw new Error(`Can't resolve type ${type.name}`);
 };
 const getOutputType = (fieldDefinition) => {
     return {
