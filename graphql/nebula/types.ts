@@ -2,33 +2,23 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export type Test = {
-  __typename: "Test",
-  id: string,
-  createdAt?: string | null,
-  updatedAt?: string | null,
-  owner?: string | null,
-  groups?: Array< string | null > | null,
-  name: string,
-  credentials?: string | null,
-};
-
 export type Connector = {
   __typename: "Connector",
   id: string,
+  tenantID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
   name: string,
-  descritpion?: string | null,
-  resourceName: string,
-  extractor?: string | null,
-  topics?: Array< string > | null,
+  description?: string | null,
+  topics: Array< string >,
   service: ConnectorService,
   active?: boolean | null,
-  status: ConnectorStatus,
-  secretCredentials?: string | null,
+  status?: ConnectorStatus | null,
   dataSource?: string | null,
-  transformations?: ModelTransformationConnection | null,
+  stack?: string | null,
+  secretCredentials?: string | null,
+  extractor?: string | null,
+  graphID?: string | null,
 };
 
 export enum ConnectorService {
@@ -38,57 +28,28 @@ export enum ConnectorService {
 
 
 export enum ConnectorStatus {
-  ACTIVE = "ACTIVE",
-  INACTIVE = "INACTIVE",
-}
-
-
-export type ModelTransformationConnection = {
-  __typename: "ModelTransformationConnection",
-  items:  Array<Transformation | null >,
-  nextToken?: string | null,
-};
-
-export type Transformation = {
-  __typename: "Transformation",
-  id: string,
-  createdAt?: string | null,
-  updatedAt?: string | null,
-  connectorID: string,
-  topics: Array< string >,
-  schemaEntity: string,
-  graphEntityType: GraphEntityType,
-  status: TransformationStatus,
-  expression?: string | null,
-  connector?: Connector | null,
-};
-
-export enum GraphEntityType {
-  NODE = "NODE",
-  RELATIONSHIP = "RELATIONSHIP",
-}
-
-
-export enum TransformationStatus {
-  ENABLED = "ENABLED",
-  DISABLED = "DISABLED",
+  AuthorizationGranted = "AuthorizationGranted",
+  AuthorizationRevoked = "AuthorizationRevoked",
+  AuthorizationFailed = "AuthorizationFailed",
 }
 
 
 export type ModelConnectorFilterInput = {
   id?: ModelIDInput | null,
+  tenantID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   name?: ModelStringInput | null,
-  descritpion?: ModelStringInput | null,
-  resourceName?: ModelStringInput | null,
-  extractor?: ModelStringInput | null,
+  description?: ModelStringInput | null,
   topics?: ModelStringInput | null,
   service?: ModelConnectorServiceInput | null,
   active?: ModelBooleanInput | null,
   status?: ModelConnectorStatusInput | null,
-  secretCredentials?: ModelStringInput | null,
   dataSource?: ModelStringInput | null,
+  stack?: ModelStringInput | null,
+  secretCredentials?: ModelStringInput | null,
+  extractor?: ModelStringInput | null,
+  graphID?: ModelStringInput | null,
   and?: Array< ModelConnectorFilterInput | null > | null,
   or?: Array< ModelConnectorFilterInput | null > | null,
   not?: ModelConnectorFilterInput | null,
@@ -189,31 +150,6 @@ export enum ModelSortDirection {
 }
 
 
-export type ModelTransformationFilterInput = {
-  id?: ModelIDInput | null,
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
-  connectorID?: ModelIDInput | null,
-  topics?: ModelStringInput | null,
-  schemaEntity?: ModelStringInput | null,
-  graphEntityType?: ModelGraphEntityTypeInput | null,
-  status?: ModelTransformationStatusInput | null,
-  expression?: ModelStringInput | null,
-  and?: Array< ModelTransformationFilterInput | null > | null,
-  or?: Array< ModelTransformationFilterInput | null > | null,
-  not?: ModelTransformationFilterInput | null,
-};
-
-export type ModelGraphEntityTypeInput = {
-  eq?: GraphEntityType | null,
-  ne?: GraphEntityType | null,
-};
-
-export type ModelTransformationStatusInput = {
-  eq?: TransformationStatus | null,
-  ne?: TransformationStatus | null,
-};
-
 export type Perspective = {
   __typename: "Perspective",
   id: string,
@@ -283,12 +219,11 @@ export type ModelPerspectiveConnection = {
 export type Schema = {
   __typename: "Schema",
   id: string,
+  tenantID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
-  owner?: string | null,
-  groups?: Array< string | null > | null,
-  nodes?:  Array<SchemaNode > | null,
-  relationships?:  Array<SchemaRelationship > | null,
+  nodes:  Array<SchemaNode >,
+  relationships:  Array<SchemaRelationship >,
 };
 
 export type SchemaNode = {
@@ -333,10 +268,9 @@ export type SchemaRelationship = {
 
 export type ModelSchemaFilterInput = {
   id?: ModelIDInput | null,
+  tenantID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  groups?: ModelStringInput | null,
   and?: Array< ModelSchemaFilterInput | null > | null,
   or?: Array< ModelSchemaFilterInput | null > | null,
   not?: ModelSchemaFilterInput | null,
@@ -348,62 +282,83 @@ export type ModelSchemaConnection = {
   nextToken?: string | null,
 };
 
-export type ModelTestFilterInput = {
-  id?: ModelIDInput | null,
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  groups?: ModelStringInput | null,
-  name?: ModelStringInput | null,
-  credentials?: ModelStringInput | null,
-  and?: Array< ModelTestFilterInput | null > | null,
-  or?: Array< ModelTestFilterInput | null > | null,
-  not?: ModelTestFilterInput | null,
-};
-
-export type ModelTestConnection = {
-  __typename: "ModelTestConnection",
-  items:  Array<Test | null >,
-  nextToken?: string | null,
-};
-
-export type Organization = {
-  __typename: "Organization",
+export type Tenant = {
+  __typename: "Tenant",
   id: string,
+  tenantID: string,
+  schemaID: string,
+  graphID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
-  adminGroup?: string | null,
-  userGroup?: string | null,
   name: string,
 };
 
-export type ModelOrganizationFilterInput = {
+export type ModelTenantFilterInput = {
   id?: ModelIDInput | null,
+  tenantID?: ModelIDInput | null,
+  schemaID?: ModelIDInput | null,
+  graphID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  adminGroup?: ModelStringInput | null,
-  userGroup?: ModelStringInput | null,
   name?: ModelStringInput | null,
-  and?: Array< ModelOrganizationFilterInput | null > | null,
-  or?: Array< ModelOrganizationFilterInput | null > | null,
-  not?: ModelOrganizationFilterInput | null,
+  and?: Array< ModelTenantFilterInput | null > | null,
+  or?: Array< ModelTenantFilterInput | null > | null,
+  not?: ModelTenantFilterInput | null,
 };
 
-export type ModelOrganizationConnection = {
-  __typename: "ModelOrganizationConnection",
-  items:  Array<Organization | null >,
+export type ModelTenantConnection = {
+  __typename: "ModelTenantConnection",
+  items:  Array<Tenant | null >,
+  nextToken?: string | null,
+};
+
+export type Transformation = {
+  __typename: "Transformation",
+  id: string,
+  tenantID: string,
+  connectorID: string,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  name: string,
+  topics: Array< string >,
+  active?: boolean | null,
+  schemaEntityID?: string | null,
+  expression?: string | null,
+};
+
+export type ModelTransformationFilterInput = {
+  id?: ModelIDInput | null,
+  tenantID?: ModelIDInput | null,
+  connectorID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  name?: ModelStringInput | null,
+  topics?: ModelStringInput | null,
+  active?: ModelBooleanInput | null,
+  schemaEntityID?: ModelIDInput | null,
+  expression?: ModelStringInput | null,
+  and?: Array< ModelTransformationFilterInput | null > | null,
+  or?: Array< ModelTransformationFilterInput | null > | null,
+  not?: ModelTransformationFilterInput | null,
+};
+
+export type ModelTransformationConnection = {
+  __typename: "ModelTransformationConnection",
+  items:  Array<Transformation | null >,
   nextToken?: string | null,
 };
 
 export type SearchGraphInput = {
   term: string,
-  schemaID: string,
   labels?: Array< string > | null,
+  limit?: number | null,
+  offset?: number | null,
 };
 
 export type SearchGraphResult = {
   __typename: "SearchGraphResult",
   records?:  Array<SearchGraphRecord > | null,
+  nextOffset?: number | null,
 };
 
 export type SearchGraphRecord = {
@@ -419,16 +374,23 @@ export type GraphNode = {
   properties: string,
 };
 
-export type GraphNodeRecord = {
-  __typename: "GraphNodeRecord",
-  node: GraphNode,
-  relationships?:  Array<GraphNodeRelationship > | null,
+export type ExpandGraphInput = {
+  identities: Array< string >,
+  hops?: number | null,
+  direction?: RelationshipDirection | null,
 };
 
-export type GraphNodeRelationship = {
-  __typename: "GraphNodeRelationship",
-  node: GraphNode,
-  relationship: GraphRelationship,
+export enum RelationshipDirection {
+  OUTGOING = "OUTGOING",
+  INCOMING = "INCOMING",
+  BIDIRECTIONAL = "BIDIRECTIONAL",
+}
+
+
+export type GraphResult = {
+  __typename: "GraphResult",
+  nodes:  Array<GraphNode >,
+  relationships:  Array<GraphRelationship >,
 };
 
 export type GraphRelationship = {
@@ -440,26 +402,10 @@ export type GraphRelationship = {
   properties: string,
 };
 
-export type GraphRelationshipRecord = {
-  __typename: "GraphRelationshipRecord",
-  start: GraphNode,
-  end: GraphNode,
-  relationship: GraphRelationship,
-};
-
-export type ListNodesInput = {
-  identities: Array< string >,
-  limit?: number | null,
-};
-
-export type GraphNodeRecords = {
-  __typename: "GraphNodeRecords",
-  records?:  Array<GraphNodeRecord > | null,
-};
-
 export type CognitoUser = {
   __typename: "CognitoUser",
   username: string,
+  tenantID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
   attributes: string,
@@ -488,42 +434,39 @@ export type CognitoUserList = {
   nextToken?: string | null,
 };
 
-export type ConnectorCredentials = {
-  __typename: "ConnectorCredentials",
-  id: string,
-  plainCredentials?: string | null,
-  secretCredentials?: string | null,
-};
-
 export type CreateConnectorInput = {
   id?: string | null,
+  tenantID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
   name: string,
-  descritpion?: string | null,
-  resourceName: string,
-  extractor?: string | null,
-  topics?: Array< string > | null,
+  description?: string | null,
+  topics: Array< string >,
   service: ConnectorService,
   active?: boolean | null,
-  status: ConnectorStatus,
-  secretCredentials?: string | null,
+  status?: ConnectorStatus | null,
   dataSource?: string | null,
+  stack?: string | null,
+  secretCredentials?: string | null,
+  extractor?: string | null,
+  graphID?: string | null,
 };
 
 export type ModelConnectorConditionInput = {
+  tenantID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   name?: ModelStringInput | null,
-  descritpion?: ModelStringInput | null,
-  resourceName?: ModelStringInput | null,
-  extractor?: ModelStringInput | null,
+  description?: ModelStringInput | null,
   topics?: ModelStringInput | null,
   service?: ModelConnectorServiceInput | null,
   active?: ModelBooleanInput | null,
   status?: ModelConnectorStatusInput | null,
-  secretCredentials?: ModelStringInput | null,
   dataSource?: ModelStringInput | null,
+  stack?: ModelStringInput | null,
+  secretCredentials?: ModelStringInput | null,
+  extractor?: ModelStringInput | null,
+  graphID?: ModelStringInput | null,
   and?: Array< ModelConnectorConditionInput | null > | null,
   or?: Array< ModelConnectorConditionInput | null > | null,
   not?: ModelConnectorConditionInput | null,
@@ -531,63 +474,23 @@ export type ModelConnectorConditionInput = {
 
 export type UpdateConnectorInput = {
   id: string,
+  tenantID?: string | null,
   createdAt?: string | null,
   updatedAt?: string | null,
   name?: string | null,
-  descritpion?: string | null,
-  resourceName?: string | null,
-  extractor?: string | null,
+  description?: string | null,
   topics?: Array< string > | null,
   service?: ConnectorService | null,
   active?: boolean | null,
   status?: ConnectorStatus | null,
-  secretCredentials?: string | null,
   dataSource?: string | null,
+  stack?: string | null,
+  secretCredentials?: string | null,
+  extractor?: string | null,
+  graphID?: string | null,
 };
 
 export type DeleteConnectorInput = {
-  id: string,
-};
-
-export type CreateTransformationInput = {
-  id?: string | null,
-  createdAt?: string | null,
-  updatedAt?: string | null,
-  connectorID: string,
-  topics: Array< string >,
-  schemaEntity: string,
-  graphEntityType: GraphEntityType,
-  status: TransformationStatus,
-  expression?: string | null,
-};
-
-export type ModelTransformationConditionInput = {
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
-  connectorID?: ModelIDInput | null,
-  topics?: ModelStringInput | null,
-  schemaEntity?: ModelStringInput | null,
-  graphEntityType?: ModelGraphEntityTypeInput | null,
-  status?: ModelTransformationStatusInput | null,
-  expression?: ModelStringInput | null,
-  and?: Array< ModelTransformationConditionInput | null > | null,
-  or?: Array< ModelTransformationConditionInput | null > | null,
-  not?: ModelTransformationConditionInput | null,
-};
-
-export type UpdateTransformationInput = {
-  id: string,
-  createdAt?: string | null,
-  updatedAt?: string | null,
-  connectorID?: string | null,
-  topics?: Array< string > | null,
-  schemaEntity?: string | null,
-  graphEntityType?: GraphEntityType | null,
-  status?: TransformationStatus | null,
-  expression?: string | null,
-};
-
-export type DeleteTransformationInput = {
   id: string,
 };
 
@@ -645,12 +548,11 @@ export type DeletePerspectiveInput = {
 
 export type CreateSchemaInput = {
   id?: string | null,
+  tenantID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
-  owner?: string | null,
-  groups?: Array< string | null > | null,
-  nodes?: Array< SchemaNodeInput > | null,
-  relationships?: Array< SchemaRelationshipInput > | null,
+  nodes: Array< SchemaNodeInput >,
+  relationships: Array< SchemaRelationshipInput >,
 };
 
 export type SchemaNodeInput = {
@@ -679,10 +581,9 @@ export type SchemaRelationshipInput = {
 };
 
 export type ModelSchemaConditionInput = {
+  tenantID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  groups?: ModelStringInput | null,
   and?: Array< ModelSchemaConditionInput | null > | null,
   or?: Array< ModelSchemaConditionInput | null > | null,
   not?: ModelSchemaConditionInput | null,
@@ -690,10 +591,9 @@ export type ModelSchemaConditionInput = {
 
 export type UpdateSchemaInput = {
   id: string,
+  tenantID?: string | null,
   createdAt?: string | null,
   updatedAt?: string | null,
-  owner?: string | null,
-  groups?: Array< string | null > | null,
   nodes?: Array< SchemaNodeInput > | null,
   relationships?: Array< SchemaRelationshipInput > | null,
 };
@@ -702,69 +602,85 @@ export type DeleteSchemaInput = {
   id: string,
 };
 
-export type CreateTestInput = {
+export type CreateTenantInput = {
   id?: string | null,
+  tenantID: string,
+  schemaID: string,
+  graphID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
-  owner?: string | null,
-  groups?: Array< string | null > | null,
-  name: string,
-  credentials?: string | null,
-};
-
-export type ModelTestConditionInput = {
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
-  owner?: ModelStringInput | null,
-  groups?: ModelStringInput | null,
-  name?: ModelStringInput | null,
-  credentials?: ModelStringInput | null,
-  and?: Array< ModelTestConditionInput | null > | null,
-  or?: Array< ModelTestConditionInput | null > | null,
-  not?: ModelTestConditionInput | null,
-};
-
-export type UpdateTestInput = {
-  id: string,
-  createdAt?: string | null,
-  updatedAt?: string | null,
-  owner?: string | null,
-  groups?: Array< string | null > | null,
-  name?: string | null,
-  credentials?: string | null,
-};
-
-export type DeleteTestInput = {
-  id: string,
-};
-
-export type CreateOrganizationInput = {
-  id?: string | null,
-  createdAt?: string | null,
-  updatedAt?: string | null,
-  adminGroup?: string | null,
-  userGroup?: string | null,
   name: string,
 };
 
-export type ModelOrganizationConditionInput = {
+export type ModelTenantConditionInput = {
+  tenantID?: ModelIDInput | null,
+  schemaID?: ModelIDInput | null,
+  graphID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  adminGroup?: ModelStringInput | null,
-  userGroup?: ModelStringInput | null,
   name?: ModelStringInput | null,
-  and?: Array< ModelOrganizationConditionInput | null > | null,
-  or?: Array< ModelOrganizationConditionInput | null > | null,
-  not?: ModelOrganizationConditionInput | null,
+  and?: Array< ModelTenantConditionInput | null > | null,
+  or?: Array< ModelTenantConditionInput | null > | null,
+  not?: ModelTenantConditionInput | null,
 };
 
-export type UpdateOrganizationInput = {
+export type UpdateTenantInput = {
   id: string,
+  tenantID?: string | null,
+  schemaID?: string | null,
+  graphID?: string | null,
   createdAt?: string | null,
   updatedAt?: string | null,
-  adminGroup?: string | null,
-  userGroup?: string | null,
   name?: string | null,
+};
+
+export type DeleteTenantInput = {
+  id: string,
+};
+
+export type CreateTransformationInput = {
+  id?: string | null,
+  tenantID: string,
+  connectorID: string,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  name: string,
+  topics: Array< string >,
+  active?: boolean | null,
+  schemaEntityID?: string | null,
+  expression?: string | null,
+};
+
+export type ModelTransformationConditionInput = {
+  tenantID?: ModelIDInput | null,
+  connectorID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  name?: ModelStringInput | null,
+  topics?: ModelStringInput | null,
+  active?: ModelBooleanInput | null,
+  schemaEntityID?: ModelIDInput | null,
+  expression?: ModelStringInput | null,
+  and?: Array< ModelTransformationConditionInput | null > | null,
+  or?: Array< ModelTransformationConditionInput | null > | null,
+  not?: ModelTransformationConditionInput | null,
+};
+
+export type UpdateTransformationInput = {
+  id: string,
+  tenantID?: string | null,
+  connectorID?: string | null,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  name?: string | null,
+  topics?: Array< string > | null,
+  active?: boolean | null,
+  schemaEntityID?: string | null,
+  expression?: string | null,
+};
+
+export type DeleteTransformationInput = {
+  id: string,
 };
 
 export type RunPerspectiveInput = {
@@ -783,6 +699,35 @@ export type RunPerspectiveResult = {
   records: string,
 };
 
+export type AuthorizeConnectorInput = {
+  id: string,
+  dataSource: string,
+  plainCredentials?: string | null,
+};
+
+export type RequestFileUploadInput = {
+  prefix: string,
+  fileName: string,
+  nodeID: string,
+};
+
+export type RequestFileUploadResult = {
+  __typename: "RequestFileUploadResult",
+  signedUploadUrl: string,
+  objectKey: string,
+  expiresIn: number,
+};
+
+export type RequestFileDownloadInput = {
+  objectKey: string,
+};
+
+export type RequestFileDownloadResult = {
+  __typename: "RequestFileDownloadResult",
+  signedDownloadUrl: string,
+  expiresIn: number,
+};
+
 export type RunConnectorInput = {
   id: string,
   topic: string,
@@ -794,18 +739,9 @@ export type RunConnectorParameterInput = {
   value?: string | null,
 };
 
-export type CreateConnectorCredentialsInput = {
-  id: string,
-  plainCredentials: string,
-};
-
-export type UpdateConnectorCredentialsInput = {
-  id: string,
-  plainCredentials: string,
-};
-
-export type DeleteConnectorCredentialsInput = {
-  id: string,
+export type InitTransformationsResult = {
+  __typename: "InitTransformationsResult",
+  transformations: Array< string | null >,
 };
 
 export type CreateNodeInput = {
@@ -822,12 +758,6 @@ export type DeleteNodeInput = {
   identities: Array< string >,
 };
 
-export type DeleteNodeRecord = {
-  __typename: "DeleteNodeRecord",
-  nodes?:  Array<GraphNode > | null,
-  relationships?:  Array<GraphRelationship > | null,
-};
-
 export type CreateRelationshipInput = {
   type: string,
   start: string,
@@ -842,11 +772,6 @@ export type UpdateRelationshipInput = {
 
 export type DeleteRelationshipInput = {
   identities: Array< string >,
-};
-
-export type DeleteRelationshipRecord = {
-  __typename: "DeleteRelationshipRecord",
-  relationships?:  Array<GraphRelationship > | null,
 };
 
 export type CreateUserInput = {
@@ -874,23 +799,6 @@ export type EchoQuery = {
   echo?: string | null,
 };
 
-export type CustomTestQueryVariables = {
-  id: string,
-};
-
-export type CustomTestQuery = {
-  customTest?:  {
-    __typename: "Test",
-    id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
-    name: string,
-    credentials?: string | null,
-  } | null,
-};
-
 export type GetConnectorQueryVariables = {
   id: string,
 };
@@ -899,50 +807,20 @@ export type GetConnectorQuery = {
   getConnector?:  {
     __typename: "Connector",
     id: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
     name: string,
-    descritpion?: string | null,
-    resourceName: string,
-    extractor?: string | null,
-    topics?: Array< string > | null,
+    description?: string | null,
+    topics: Array< string >,
     service: ConnectorService,
     active?: boolean | null,
-    status: ConnectorStatus,
-    secretCredentials?: string | null,
+    status?: ConnectorStatus | null,
     dataSource?: string | null,
-    transformations?:  {
-      __typename: "ModelTransformationConnection",
-      items:  Array< {
-        __typename: "Transformation",
-        id: string,
-        createdAt?: string | null,
-        updatedAt?: string | null,
-        connectorID: string,
-        topics: Array< string >,
-        schemaEntity: string,
-        graphEntityType: GraphEntityType,
-        status: TransformationStatus,
-        expression?: string | null,
-        connector?:  {
-          __typename: "Connector",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          name: string,
-          descritpion?: string | null,
-          resourceName: string,
-          extractor?: string | null,
-          topics?: Array< string > | null,
-          service: ConnectorService,
-          active?: boolean | null,
-          status: ConnectorStatus,
-          secretCredentials?: string | null,
-          dataSource?: string | null,
-        } | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    stack?: string | null,
+    secretCredentials?: string | null,
+    extractor?: string | null,
+    graphID?: string | null,
   } | null,
 };
 
@@ -958,34 +836,20 @@ export type ListConnectorsQuery = {
     items:  Array< {
       __typename: "Connector",
       id: string,
+      tenantID: string,
       createdAt?: string | null,
       updatedAt?: string | null,
       name: string,
-      descritpion?: string | null,
-      resourceName: string,
-      extractor?: string | null,
-      topics?: Array< string > | null,
+      description?: string | null,
+      topics: Array< string >,
       service: ConnectorService,
       active?: boolean | null,
-      status: ConnectorStatus,
-      secretCredentials?: string | null,
+      status?: ConnectorStatus | null,
       dataSource?: string | null,
-      transformations?:  {
-        __typename: "ModelTransformationConnection",
-        items:  Array< {
-          __typename: "Transformation",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          connectorID: string,
-          topics: Array< string >,
-          schemaEntity: string,
-          graphEntityType: GraphEntityType,
-          status: TransformationStatus,
-          expression?: string | null,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
+      stack?: string | null,
+      secretCredentials?: string | null,
+      extractor?: string | null,
+      graphID?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1006,177 +870,20 @@ export type GetConnectorByDataSourceQuery = {
     items:  Array< {
       __typename: "Connector",
       id: string,
+      tenantID: string,
       createdAt?: string | null,
       updatedAt?: string | null,
       name: string,
-      descritpion?: string | null,
-      resourceName: string,
-      extractor?: string | null,
-      topics?: Array< string > | null,
+      description?: string | null,
+      topics: Array< string >,
       service: ConnectorService,
       active?: boolean | null,
-      status: ConnectorStatus,
-      secretCredentials?: string | null,
+      status?: ConnectorStatus | null,
       dataSource?: string | null,
-      transformations?:  {
-        __typename: "ModelTransformationConnection",
-        items:  Array< {
-          __typename: "Transformation",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          connectorID: string,
-          topics: Array< string >,
-          schemaEntity: string,
-          graphEntityType: GraphEntityType,
-          status: TransformationStatus,
-          expression?: string | null,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetTransformationQueryVariables = {
-  id: string,
-};
-
-export type GetTransformationQuery = {
-  getTransformation?:  {
-    __typename: "Transformation",
-    id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
-    connectorID: string,
-    topics: Array< string >,
-    schemaEntity: string,
-    graphEntityType: GraphEntityType,
-    status: TransformationStatus,
-    expression?: string | null,
-    connector?:  {
-      __typename: "Connector",
-      id: string,
-      createdAt?: string | null,
-      updatedAt?: string | null,
-      name: string,
-      descritpion?: string | null,
-      resourceName: string,
+      stack?: string | null,
+      secretCredentials?: string | null,
       extractor?: string | null,
-      topics?: Array< string > | null,
-      service: ConnectorService,
-      active?: boolean | null,
-      status: ConnectorStatus,
-      secretCredentials?: string | null,
-      dataSource?: string | null,
-      transformations?:  {
-        __typename: "ModelTransformationConnection",
-        items:  Array< {
-          __typename: "Transformation",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          connectorID: string,
-          topics: Array< string >,
-          schemaEntity: string,
-          graphEntityType: GraphEntityType,
-          status: TransformationStatus,
-          expression?: string | null,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-    } | null,
-  } | null,
-};
-
-export type ListTransformationsQueryVariables = {
-  filter?: ModelTransformationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListTransformationsQuery = {
-  listTransformations?:  {
-    __typename: "ModelTransformationConnection",
-    items:  Array< {
-      __typename: "Transformation",
-      id: string,
-      createdAt?: string | null,
-      updatedAt?: string | null,
-      connectorID: string,
-      topics: Array< string >,
-      schemaEntity: string,
-      graphEntityType: GraphEntityType,
-      status: TransformationStatus,
-      expression?: string | null,
-      connector?:  {
-        __typename: "Connector",
-        id: string,
-        createdAt?: string | null,
-        updatedAt?: string | null,
-        name: string,
-        descritpion?: string | null,
-        resourceName: string,
-        extractor?: string | null,
-        topics?: Array< string > | null,
-        service: ConnectorService,
-        active?: boolean | null,
-        status: ConnectorStatus,
-        secretCredentials?: string | null,
-        dataSource?: string | null,
-        transformations?:  {
-          __typename: "ModelTransformationConnection",
-          nextToken?: string | null,
-        } | null,
-      } | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetTransformationsByConnectorQueryVariables = {
-  connectorID: string,
-  sortDirection?: ModelSortDirection | null,
-  filter?: ModelTransformationFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type GetTransformationsByConnectorQuery = {
-  getTransformationsByConnector?:  {
-    __typename: "ModelTransformationConnection",
-    items:  Array< {
-      __typename: "Transformation",
-      id: string,
-      createdAt?: string | null,
-      updatedAt?: string | null,
-      connectorID: string,
-      topics: Array< string >,
-      schemaEntity: string,
-      graphEntityType: GraphEntityType,
-      status: TransformationStatus,
-      expression?: string | null,
-      connector?:  {
-        __typename: "Connector",
-        id: string,
-        createdAt?: string | null,
-        updatedAt?: string | null,
-        name: string,
-        descritpion?: string | null,
-        resourceName: string,
-        extractor?: string | null,
-        topics?: Array< string > | null,
-        service: ConnectorService,
-        active?: boolean | null,
-        status: ConnectorStatus,
-        secretCredentials?: string | null,
-        dataSource?: string | null,
-        transformations?:  {
-          __typename: "ModelTransformationConnection",
-          nextToken?: string | null,
-        } | null,
-      } | null,
+      graphID?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1250,11 +957,10 @@ export type GetSchemaQuery = {
   getSchema?:  {
     __typename: "Schema",
     id: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
-    nodes?:  Array< {
+    nodes:  Array< {
       __typename: "SchemaNode",
       id: string,
       label: string,
@@ -1268,8 +974,8 @@ export type GetSchemaQuery = {
       descriptionSelector?: Array< string > | null,
       avatarSelector?: string | null,
       avatarColor: string,
-    } > | null,
-    relationships?:  Array< {
+    } >,
+    relationships:  Array< {
       __typename: "SchemaRelationship",
       id: string,
       startNodeID: string,
@@ -1282,7 +988,7 @@ export type GetSchemaQuery = {
         type: SchemaPropertyType,
       } > | null,
       descriptionSelector?: Array< string > | null,
-    } > | null,
+    } >,
   } | null,
 };
 
@@ -1298,11 +1004,10 @@ export type ListSchemasQuery = {
     items:  Array< {
       __typename: "Schema",
       id: string,
+      tenantID: string,
       createdAt?: string | null,
       updatedAt?: string | null,
-      owner?: string | null,
-      groups?: Array< string | null > | null,
-      nodes?:  Array< {
+      nodes:  Array< {
         __typename: "SchemaNode",
         id: string,
         label: string,
@@ -1316,8 +1021,8 @@ export type ListSchemasQuery = {
         descriptionSelector?: Array< string > | null,
         avatarSelector?: string | null,
         avatarColor: string,
-      } > | null,
-      relationships?:  Array< {
+      } >,
+      relationships:  Array< {
         __typename: "SchemaRelationship",
         id: string,
         startNodeID: string,
@@ -1330,85 +1035,121 @@ export type ListSchemasQuery = {
           type: SchemaPropertyType,
         } > | null,
         descriptionSelector?: Array< string > | null,
-      } > | null,
+      } >,
     } | null >,
     nextToken?: string | null,
   } | null,
 };
 
-export type GetTestQueryVariables = {
+export type GetTenantQueryVariables = {
   id: string,
 };
 
-export type GetTestQuery = {
-  getTest?:  {
-    __typename: "Test",
+export type GetTenantQuery = {
+  getTenant?:  {
+    __typename: "Tenant",
     id: string,
+    tenantID: string,
+    schemaID: string,
+    graphID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
     name: string,
-    credentials?: string | null,
   } | null,
 };
 
-export type ListTestsQueryVariables = {
-  filter?: ModelTestFilterInput | null,
+export type ListTenantsQueryVariables = {
+  filter?: ModelTenantFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListTestsQuery = {
-  listTests?:  {
-    __typename: "ModelTestConnection",
+export type ListTenantsQuery = {
+  listTenants?:  {
+    __typename: "ModelTenantConnection",
     items:  Array< {
-      __typename: "Test",
+      __typename: "Tenant",
       id: string,
+      tenantID: string,
+      schemaID: string,
+      graphID: string,
       createdAt?: string | null,
       updatedAt?: string | null,
-      owner?: string | null,
-      groups?: Array< string | null > | null,
       name: string,
-      credentials?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
 };
 
-export type GetOrganizationQueryVariables = {
+export type GetTransformationQueryVariables = {
   id: string,
 };
 
-export type GetOrganizationQuery = {
-  getOrganization?:  {
-    __typename: "Organization",
+export type GetTransformationQuery = {
+  getTransformation?:  {
+    __typename: "Transformation",
     id: string,
+    tenantID: string,
+    connectorID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    adminGroup?: string | null,
-    userGroup?: string | null,
     name: string,
+    topics: Array< string >,
+    active?: boolean | null,
+    schemaEntityID?: string | null,
+    expression?: string | null,
   } | null,
 };
 
-export type ListOrganizationsQueryVariables = {
-  filter?: ModelOrganizationFilterInput | null,
+export type ListTransformationsQueryVariables = {
+  filter?: ModelTransformationFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListOrganizationsQuery = {
-  listOrganizations?:  {
-    __typename: "ModelOrganizationConnection",
+export type ListTransformationsQuery = {
+  listTransformations?:  {
+    __typename: "ModelTransformationConnection",
     items:  Array< {
-      __typename: "Organization",
+      __typename: "Transformation",
       id: string,
+      tenantID: string,
+      connectorID: string,
       createdAt?: string | null,
       updatedAt?: string | null,
-      adminGroup?: string | null,
-      userGroup?: string | null,
       name: string,
+      topics: Array< string >,
+      active?: boolean | null,
+      schemaEntityID?: string | null,
+      expression?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type ListTransformationsByConnectorQueryVariables = {
+  connectorID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTransformationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListTransformationsByConnectorQuery = {
+  listTransformationsByConnector?:  {
+    __typename: "ModelTransformationConnection",
+    items:  Array< {
+      __typename: "Transformation",
+      id: string,
+      tenantID: string,
+      connectorID: string,
+      createdAt?: string | null,
+      updatedAt?: string | null,
+      name: string,
+      topics: Array< string >,
+      active?: boolean | null,
+      schemaEntityID?: string | null,
+      expression?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1416,6 +1157,8 @@ export type ListOrganizationsQuery = {
 
 export type SearchGraphQueryVariables = {
   input: SearchGraphInput,
+  graphID: string,
+  schemaID: string,
 };
 
 export type SearchGraphQuery = {
@@ -1431,116 +1174,75 @@ export type SearchGraphQuery = {
       },
       score: string,
     } > | null,
+    nextOffset?: number | null,
   } | null,
 };
 
-export type GetNodeQueryVariables = {
-  identity: string,
+export type ExpandGraphQueryVariables = {
+  input: ExpandGraphInput,
+  graphID: string,
 };
 
-export type GetNodeQuery = {
-  getNode?:  {
-    __typename: "GraphNodeRecord",
-    node:  {
+export type ExpandGraphQuery = {
+  expandGraph?:  {
+    __typename: "GraphResult",
+    nodes:  Array< {
       __typename: "GraphNode",
       identity: string,
       labels: Array< string >,
       properties: string,
-    },
-    relationships?:  Array< {
-      __typename: "GraphNodeRelationship",
-      node:  {
-        __typename: "GraphNode",
-        identity: string,
-        labels: Array< string >,
-        properties: string,
-      },
-      relationship:  {
-        __typename: "GraphRelationship",
-        identity: string,
-        type: string,
-        start: string,
-        end: string,
-        properties: string,
-      },
-    } > | null,
-  } | null,
-};
-
-export type GetRelationshipQueryVariables = {
-  identity: string,
-};
-
-export type GetRelationshipQuery = {
-  getRelationship?:  {
-    __typename: "GraphRelationshipRecord",
-    start:  {
-      __typename: "GraphNode",
-      identity: string,
-      labels: Array< string >,
-      properties: string,
-    },
-    end:  {
-      __typename: "GraphNode",
-      identity: string,
-      labels: Array< string >,
-      properties: string,
-    },
-    relationship:  {
+    } >,
+    relationships:  Array< {
       __typename: "GraphRelationship",
       identity: string,
       type: string,
       start: string,
       end: string,
       properties: string,
-    },
+    } >,
   } | null,
 };
 
-export type ListNodesQueryVariables = {
-  input: ListNodesInput,
+export type GetNodeQueryVariables = {
+  identity: string,
+  graphID: string,
 };
 
-export type ListNodesQuery = {
-  listNodes?:  {
-    __typename: "GraphNodeRecords",
-    records?:  Array< {
-      __typename: "GraphNodeRecord",
-      node:  {
-        __typename: "GraphNode",
-        identity: string,
-        labels: Array< string >,
-        properties: string,
-      },
-      relationships?:  Array< {
-        __typename: "GraphNodeRelationship",
-        node:  {
-          __typename: "GraphNode",
-          identity: string,
-          labels: Array< string >,
-          properties: string,
-        },
-        relationship:  {
-          __typename: "GraphRelationship",
-          identity: string,
-          type: string,
-          start: string,
-          end: string,
-          properties: string,
-        },
-      } > | null,
-    } > | null,
+export type GetNodeQuery = {
+  getNode?:  {
+    __typename: "GraphNode",
+    identity: string,
+    labels: Array< string >,
+    properties: string,
+  } | null,
+};
+
+export type GetRelationshipQueryVariables = {
+  identity: string,
+  graphID: string,
+};
+
+export type GetRelationshipQuery = {
+  getRelationship?:  {
+    __typename: "GraphRelationship",
+    identity: string,
+    type: string,
+    start: string,
+    end: string,
+    properties: string,
   } | null,
 };
 
 export type GetUserQueryVariables = {
   username: string,
+  tenantID: string,
 };
 
 export type GetUserQuery = {
   getUser?:  {
     __typename: "CognitoUser",
     username: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
     attributes: string,
@@ -1551,6 +1253,7 @@ export type GetUserQuery = {
 
 export type FindUsersQueryVariables = {
   input: FindUsersInput,
+  tenantID: string,
 };
 
 export type FindUsersQuery = {
@@ -1559,6 +1262,7 @@ export type FindUsersQuery = {
     items:  Array< {
       __typename: "CognitoUser",
       username: string,
+      tenantID: string,
       createdAt?: string | null,
       updatedAt?: string | null,
       attributes: string,
@@ -1570,6 +1274,7 @@ export type FindUsersQuery = {
 };
 
 export type ListUsersQueryVariables = {
+  tenantID: string,
   nextToken?: string | null,
 };
 
@@ -1579,6 +1284,7 @@ export type ListUsersQuery = {
     items:  Array< {
       __typename: "CognitoUser",
       username: string,
+      tenantID: string,
       createdAt?: string | null,
       updatedAt?: string | null,
       attributes: string,
@@ -1586,19 +1292,6 @@ export type ListUsersQuery = {
       enabled?: boolean | null,
     } | null >,
     nextToken?: string | null,
-  } | null,
-};
-
-export type GetConnectorCredentialsQueryVariables = {
-  id: string,
-};
-
-export type GetConnectorCredentialsQuery = {
-  getConnectorCredentials?:  {
-    __typename: "ConnectorCredentials",
-    id: string,
-    plainCredentials?: string | null,
-    secretCredentials?: string | null,
   } | null,
 };
 
@@ -1623,50 +1316,20 @@ export type CreateConnectorMutation = {
   createConnector?:  {
     __typename: "Connector",
     id: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
     name: string,
-    descritpion?: string | null,
-    resourceName: string,
-    extractor?: string | null,
-    topics?: Array< string > | null,
+    description?: string | null,
+    topics: Array< string >,
     service: ConnectorService,
     active?: boolean | null,
-    status: ConnectorStatus,
-    secretCredentials?: string | null,
+    status?: ConnectorStatus | null,
     dataSource?: string | null,
-    transformations?:  {
-      __typename: "ModelTransformationConnection",
-      items:  Array< {
-        __typename: "Transformation",
-        id: string,
-        createdAt?: string | null,
-        updatedAt?: string | null,
-        connectorID: string,
-        topics: Array< string >,
-        schemaEntity: string,
-        graphEntityType: GraphEntityType,
-        status: TransformationStatus,
-        expression?: string | null,
-        connector?:  {
-          __typename: "Connector",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          name: string,
-          descritpion?: string | null,
-          resourceName: string,
-          extractor?: string | null,
-          topics?: Array< string > | null,
-          service: ConnectorService,
-          active?: boolean | null,
-          status: ConnectorStatus,
-          secretCredentials?: string | null,
-          dataSource?: string | null,
-        } | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    stack?: string | null,
+    secretCredentials?: string | null,
+    extractor?: string | null,
+    graphID?: string | null,
   } | null,
 };
 
@@ -1679,50 +1342,20 @@ export type UpdateConnectorMutation = {
   updateConnector?:  {
     __typename: "Connector",
     id: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
     name: string,
-    descritpion?: string | null,
-    resourceName: string,
-    extractor?: string | null,
-    topics?: Array< string > | null,
+    description?: string | null,
+    topics: Array< string >,
     service: ConnectorService,
     active?: boolean | null,
-    status: ConnectorStatus,
-    secretCredentials?: string | null,
+    status?: ConnectorStatus | null,
     dataSource?: string | null,
-    transformations?:  {
-      __typename: "ModelTransformationConnection",
-      items:  Array< {
-        __typename: "Transformation",
-        id: string,
-        createdAt?: string | null,
-        updatedAt?: string | null,
-        connectorID: string,
-        topics: Array< string >,
-        schemaEntity: string,
-        graphEntityType: GraphEntityType,
-        status: TransformationStatus,
-        expression?: string | null,
-        connector?:  {
-          __typename: "Connector",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          name: string,
-          descritpion?: string | null,
-          resourceName: string,
-          extractor?: string | null,
-          topics?: Array< string > | null,
-          service: ConnectorService,
-          active?: boolean | null,
-          status: ConnectorStatus,
-          secretCredentials?: string | null,
-          dataSource?: string | null,
-        } | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    stack?: string | null,
+    secretCredentials?: string | null,
+    extractor?: string | null,
+    graphID?: string | null,
   } | null,
 };
 
@@ -1735,206 +1368,20 @@ export type DeleteConnectorMutation = {
   deleteConnector?:  {
     __typename: "Connector",
     id: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
     name: string,
-    descritpion?: string | null,
-    resourceName: string,
-    extractor?: string | null,
-    topics?: Array< string > | null,
+    description?: string | null,
+    topics: Array< string >,
     service: ConnectorService,
     active?: boolean | null,
-    status: ConnectorStatus,
-    secretCredentials?: string | null,
+    status?: ConnectorStatus | null,
     dataSource?: string | null,
-    transformations?:  {
-      __typename: "ModelTransformationConnection",
-      items:  Array< {
-        __typename: "Transformation",
-        id: string,
-        createdAt?: string | null,
-        updatedAt?: string | null,
-        connectorID: string,
-        topics: Array< string >,
-        schemaEntity: string,
-        graphEntityType: GraphEntityType,
-        status: TransformationStatus,
-        expression?: string | null,
-        connector?:  {
-          __typename: "Connector",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          name: string,
-          descritpion?: string | null,
-          resourceName: string,
-          extractor?: string | null,
-          topics?: Array< string > | null,
-          service: ConnectorService,
-          active?: boolean | null,
-          status: ConnectorStatus,
-          secretCredentials?: string | null,
-          dataSource?: string | null,
-        } | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-  } | null,
-};
-
-export type CreateTransformationMutationVariables = {
-  input: CreateTransformationInput,
-  condition?: ModelTransformationConditionInput | null,
-};
-
-export type CreateTransformationMutation = {
-  createTransformation?:  {
-    __typename: "Transformation",
-    id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
-    connectorID: string,
-    topics: Array< string >,
-    schemaEntity: string,
-    graphEntityType: GraphEntityType,
-    status: TransformationStatus,
-    expression?: string | null,
-    connector?:  {
-      __typename: "Connector",
-      id: string,
-      createdAt?: string | null,
-      updatedAt?: string | null,
-      name: string,
-      descritpion?: string | null,
-      resourceName: string,
-      extractor?: string | null,
-      topics?: Array< string > | null,
-      service: ConnectorService,
-      active?: boolean | null,
-      status: ConnectorStatus,
-      secretCredentials?: string | null,
-      dataSource?: string | null,
-      transformations?:  {
-        __typename: "ModelTransformationConnection",
-        items:  Array< {
-          __typename: "Transformation",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          connectorID: string,
-          topics: Array< string >,
-          schemaEntity: string,
-          graphEntityType: GraphEntityType,
-          status: TransformationStatus,
-          expression?: string | null,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-    } | null,
-  } | null,
-};
-
-export type UpdateTransformationMutationVariables = {
-  input: UpdateTransformationInput,
-  condition?: ModelTransformationConditionInput | null,
-};
-
-export type UpdateTransformationMutation = {
-  updateTransformation?:  {
-    __typename: "Transformation",
-    id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
-    connectorID: string,
-    topics: Array< string >,
-    schemaEntity: string,
-    graphEntityType: GraphEntityType,
-    status: TransformationStatus,
-    expression?: string | null,
-    connector?:  {
-      __typename: "Connector",
-      id: string,
-      createdAt?: string | null,
-      updatedAt?: string | null,
-      name: string,
-      descritpion?: string | null,
-      resourceName: string,
-      extractor?: string | null,
-      topics?: Array< string > | null,
-      service: ConnectorService,
-      active?: boolean | null,
-      status: ConnectorStatus,
-      secretCredentials?: string | null,
-      dataSource?: string | null,
-      transformations?:  {
-        __typename: "ModelTransformationConnection",
-        items:  Array< {
-          __typename: "Transformation",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          connectorID: string,
-          topics: Array< string >,
-          schemaEntity: string,
-          graphEntityType: GraphEntityType,
-          status: TransformationStatus,
-          expression?: string | null,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-    } | null,
-  } | null,
-};
-
-export type DeleteTransformationMutationVariables = {
-  input: DeleteTransformationInput,
-  condition?: ModelTransformationConditionInput | null,
-};
-
-export type DeleteTransformationMutation = {
-  deleteTransformation?:  {
-    __typename: "Transformation",
-    id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
-    connectorID: string,
-    topics: Array< string >,
-    schemaEntity: string,
-    graphEntityType: GraphEntityType,
-    status: TransformationStatus,
-    expression?: string | null,
-    connector?:  {
-      __typename: "Connector",
-      id: string,
-      createdAt?: string | null,
-      updatedAt?: string | null,
-      name: string,
-      descritpion?: string | null,
-      resourceName: string,
-      extractor?: string | null,
-      topics?: Array< string > | null,
-      service: ConnectorService,
-      active?: boolean | null,
-      status: ConnectorStatus,
-      secretCredentials?: string | null,
-      dataSource?: string | null,
-      transformations?:  {
-        __typename: "ModelTransformationConnection",
-        items:  Array< {
-          __typename: "Transformation",
-          id: string,
-          createdAt?: string | null,
-          updatedAt?: string | null,
-          connectorID: string,
-          topics: Array< string >,
-          schemaEntity: string,
-          graphEntityType: GraphEntityType,
-          status: TransformationStatus,
-          expression?: string | null,
-        } | null >,
-        nextToken?: string | null,
-      } | null,
-    } | null,
+    stack?: string | null,
+    secretCredentials?: string | null,
+    extractor?: string | null,
+    graphID?: string | null,
   } | null,
 };
 
@@ -2031,11 +1478,10 @@ export type CreateSchemaMutation = {
   createSchema?:  {
     __typename: "Schema",
     id: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
-    nodes?:  Array< {
+    nodes:  Array< {
       __typename: "SchemaNode",
       id: string,
       label: string,
@@ -2049,8 +1495,8 @@ export type CreateSchemaMutation = {
       descriptionSelector?: Array< string > | null,
       avatarSelector?: string | null,
       avatarColor: string,
-    } > | null,
-    relationships?:  Array< {
+    } >,
+    relationships:  Array< {
       __typename: "SchemaRelationship",
       id: string,
       startNodeID: string,
@@ -2063,7 +1509,7 @@ export type CreateSchemaMutation = {
         type: SchemaPropertyType,
       } > | null,
       descriptionSelector?: Array< string > | null,
-    } > | null,
+    } >,
   } | null,
 };
 
@@ -2076,11 +1522,10 @@ export type UpdateSchemaMutation = {
   updateSchema?:  {
     __typename: "Schema",
     id: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
-    nodes?:  Array< {
+    nodes:  Array< {
       __typename: "SchemaNode",
       id: string,
       label: string,
@@ -2094,8 +1539,8 @@ export type UpdateSchemaMutation = {
       descriptionSelector?: Array< string > | null,
       avatarSelector?: string | null,
       avatarColor: string,
-    } > | null,
-    relationships?:  Array< {
+    } >,
+    relationships:  Array< {
       __typename: "SchemaRelationship",
       id: string,
       startNodeID: string,
@@ -2108,7 +1553,7 @@ export type UpdateSchemaMutation = {
         type: SchemaPropertyType,
       } > | null,
       descriptionSelector?: Array< string > | null,
-    } > | null,
+    } >,
   } | null,
 };
 
@@ -2121,11 +1566,10 @@ export type DeleteSchemaMutation = {
   deleteSchema?:  {
     __typename: "Schema",
     id: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
-    nodes?:  Array< {
+    nodes:  Array< {
       __typename: "SchemaNode",
       id: string,
       label: string,
@@ -2139,8 +1583,8 @@ export type DeleteSchemaMutation = {
       descriptionSelector?: Array< string > | null,
       avatarSelector?: string | null,
       avatarColor: string,
-    } > | null,
-    relationships?:  Array< {
+    } >,
+    relationships:  Array< {
       __typename: "SchemaRelationship",
       id: string,
       startNodeID: string,
@@ -2153,95 +1597,124 @@ export type DeleteSchemaMutation = {
         type: SchemaPropertyType,
       } > | null,
       descriptionSelector?: Array< string > | null,
-    } > | null,
+    } >,
   } | null,
 };
 
-export type CreateTestMutationVariables = {
-  input: CreateTestInput,
-  condition?: ModelTestConditionInput | null,
+export type CreateTenantMutationVariables = {
+  input: CreateTenantInput,
+  condition?: ModelTenantConditionInput | null,
 };
 
-export type CreateTestMutation = {
-  createTest?:  {
-    __typename: "Test",
+export type CreateTenantMutation = {
+  createTenant?:  {
+    __typename: "Tenant",
     id: string,
+    tenantID: string,
+    schemaID: string,
+    graphID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
-    name: string,
-    credentials?: string | null,
-  } | null,
-};
-
-export type UpdateTestMutationVariables = {
-  input: UpdateTestInput,
-  condition?: ModelTestConditionInput | null,
-};
-
-export type UpdateTestMutation = {
-  updateTest?:  {
-    __typename: "Test",
-    id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
-    name: string,
-    credentials?: string | null,
-  } | null,
-};
-
-export type DeleteTestMutationVariables = {
-  input: DeleteTestInput,
-  condition?: ModelTestConditionInput | null,
-};
-
-export type DeleteTestMutation = {
-  deleteTest?:  {
-    __typename: "Test",
-    id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
-    owner?: string | null,
-    groups?: Array< string | null > | null,
-    name: string,
-    credentials?: string | null,
-  } | null,
-};
-
-export type CreateOrganizationMutationVariables = {
-  input: CreateOrganizationInput,
-  condition?: ModelOrganizationConditionInput | null,
-};
-
-export type CreateOrganizationMutation = {
-  createOrganization?:  {
-    __typename: "Organization",
-    id: string,
-    createdAt?: string | null,
-    updatedAt?: string | null,
-    adminGroup?: string | null,
-    userGroup?: string | null,
     name: string,
   } | null,
 };
 
-export type UpdateOrganizationMutationVariables = {
-  input: UpdateOrganizationInput,
-  condition?: ModelOrganizationConditionInput | null,
+export type UpdateTenantMutationVariables = {
+  input: UpdateTenantInput,
+  condition?: ModelTenantConditionInput | null,
 };
 
-export type UpdateOrganizationMutation = {
-  updateOrganization?:  {
-    __typename: "Organization",
+export type UpdateTenantMutation = {
+  updateTenant?:  {
+    __typename: "Tenant",
     id: string,
+    tenantID: string,
+    schemaID: string,
+    graphID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    adminGroup?: string | null,
-    userGroup?: string | null,
     name: string,
+  } | null,
+};
+
+export type DeleteTenantMutationVariables = {
+  input: DeleteTenantInput,
+  condition?: ModelTenantConditionInput | null,
+};
+
+export type DeleteTenantMutation = {
+  deleteTenant?:  {
+    __typename: "Tenant",
+    id: string,
+    tenantID: string,
+    schemaID: string,
+    graphID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    name: string,
+  } | null,
+};
+
+export type CreateTransformationMutationVariables = {
+  input: CreateTransformationInput,
+  condition?: ModelTransformationConditionInput | null,
+};
+
+export type CreateTransformationMutation = {
+  createTransformation?:  {
+    __typename: "Transformation",
+    id: string,
+    tenantID: string,
+    connectorID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    name: string,
+    topics: Array< string >,
+    active?: boolean | null,
+    schemaEntityID?: string | null,
+    expression?: string | null,
+  } | null,
+};
+
+export type UpdateTransformationMutationVariables = {
+  input: UpdateTransformationInput,
+  condition?: ModelTransformationConditionInput | null,
+};
+
+export type UpdateTransformationMutation = {
+  updateTransformation?:  {
+    __typename: "Transformation",
+    id: string,
+    tenantID: string,
+    connectorID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    name: string,
+    topics: Array< string >,
+    active?: boolean | null,
+    schemaEntityID?: string | null,
+    expression?: string | null,
+  } | null,
+};
+
+export type DeleteTransformationMutationVariables = {
+  input: DeleteTransformationInput,
+  condition?: ModelTransformationConditionInput | null,
+};
+
+export type DeleteTransformationMutation = {
+  deleteTransformation?:  {
+    __typename: "Transformation",
+    id: string,
+    tenantID: string,
+    connectorID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    name: string,
+    topics: Array< string >,
+    active?: boolean | null,
+    schemaEntityID?: string | null,
+    expression?: string | null,
   } | null,
 };
 
@@ -2256,6 +1729,60 @@ export type RunPerspectiveMutation = {
   } | null,
 };
 
+export type AuthorizeConnectorMutationVariables = {
+  input: AuthorizeConnectorInput,
+};
+
+export type AuthorizeConnectorMutation = {
+  authorizeConnector?:  {
+    __typename: "Connector",
+    id: string,
+    tenantID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    name: string,
+    description?: string | null,
+    topics: Array< string >,
+    service: ConnectorService,
+    active?: boolean | null,
+    status?: ConnectorStatus | null,
+    dataSource?: string | null,
+    stack?: string | null,
+    secretCredentials?: string | null,
+    extractor?: string | null,
+    graphID?: string | null,
+  } | null,
+};
+
+export type RequestFileUploadMutationVariables = {
+  input: RequestFileUploadInput,
+  tenantID: string,
+  graphID: string,
+};
+
+export type RequestFileUploadMutation = {
+  requestFileUpload?:  {
+    __typename: "RequestFileUploadResult",
+    signedUploadUrl: string,
+    objectKey: string,
+    expiresIn: number,
+  } | null,
+};
+
+export type RequestFileDownloadMutationVariables = {
+  input: RequestFileDownloadInput,
+  tenantID: string,
+  graphID: string,
+};
+
+export type RequestFileDownloadMutation = {
+  requestFileDownload?:  {
+    __typename: "RequestFileDownloadResult",
+    signedDownloadUrl: string,
+    expiresIn: number,
+  } | null,
+};
+
 export type RunConnectorMutationVariables = {
   input: RunConnectorInput,
 };
@@ -2264,221 +1791,139 @@ export type RunConnectorMutation = {
   runConnector?: string | null,
 };
 
-export type CreateConnectorCredentialsMutationVariables = {
-  input: CreateConnectorCredentialsInput,
+export type InitTransformationsMutationVariables = {
+  connectorID: string,
+  tenantID: string,
+  schemaID: string,
 };
 
-export type CreateConnectorCredentialsMutation = {
-  createConnectorCredentials?:  {
-    __typename: "ConnectorCredentials",
-    id: string,
-    plainCredentials?: string | null,
-    secretCredentials?: string | null,
-  } | null,
-};
-
-export type UpdateConnectorCredentialsMutationVariables = {
-  input: UpdateConnectorCredentialsInput,
-};
-
-export type UpdateConnectorCredentialsMutation = {
-  updateConnectorCredentials?:  {
-    __typename: "ConnectorCredentials",
-    id: string,
-    plainCredentials?: string | null,
-    secretCredentials?: string | null,
-  } | null,
-};
-
-export type DeleteConnectorCredentialsMutationVariables = {
-  input: DeleteConnectorCredentialsInput,
-};
-
-export type DeleteConnectorCredentialsMutation = {
-  deleteConnectorCredentials?:  {
-    __typename: "ConnectorCredentials",
-    id: string,
-    plainCredentials?: string | null,
-    secretCredentials?: string | null,
+export type InitTransformationsMutation = {
+  initTransformations?:  {
+    __typename: "InitTransformationsResult",
+    transformations: Array< string | null >,
   } | null,
 };
 
 export type CreateNodeMutationVariables = {
   input: CreateNodeInput,
+  graphID: string,
 };
 
 export type CreateNodeMutation = {
   createNode?:  {
-    __typename: "GraphNodeRecord",
-    node:  {
-      __typename: "GraphNode",
-      identity: string,
-      labels: Array< string >,
-      properties: string,
-    },
-    relationships?:  Array< {
-      __typename: "GraphNodeRelationship",
-      node:  {
-        __typename: "GraphNode",
-        identity: string,
-        labels: Array< string >,
-        properties: string,
-      },
-      relationship:  {
-        __typename: "GraphRelationship",
-        identity: string,
-        type: string,
-        start: string,
-        end: string,
-        properties: string,
-      },
-    } > | null,
+    __typename: "GraphNode",
+    identity: string,
+    labels: Array< string >,
+    properties: string,
   } | null,
 };
 
 export type UpdateNodeMutationVariables = {
   input: UpdateNodeInput,
+  graphID: string,
 };
 
 export type UpdateNodeMutation = {
   updateNode?:  {
-    __typename: "GraphNodeRecord",
-    node:  {
-      __typename: "GraphNode",
-      identity: string,
-      labels: Array< string >,
-      properties: string,
-    },
-    relationships?:  Array< {
-      __typename: "GraphNodeRelationship",
-      node:  {
-        __typename: "GraphNode",
-        identity: string,
-        labels: Array< string >,
-        properties: string,
-      },
-      relationship:  {
-        __typename: "GraphRelationship",
-        identity: string,
-        type: string,
-        start: string,
-        end: string,
-        properties: string,
-      },
-    } > | null,
+    __typename: "GraphNode",
+    identity: string,
+    labels: Array< string >,
+    properties: string,
   } | null,
 };
 
 export type DeleteNodeMutationVariables = {
   input: DeleteNodeInput,
+  graphID: string,
 };
 
 export type DeleteNodeMutation = {
   deleteNode?:  {
-    __typename: "DeleteNodeRecord",
-    nodes?:  Array< {
+    __typename: "GraphResult",
+    nodes:  Array< {
       __typename: "GraphNode",
       identity: string,
       labels: Array< string >,
       properties: string,
-    } > | null,
-    relationships?:  Array< {
+    } >,
+    relationships:  Array< {
       __typename: "GraphRelationship",
       identity: string,
       type: string,
       start: string,
       end: string,
       properties: string,
-    } > | null,
+    } >,
   } | null,
 };
 
 export type CreateRelationshipMutationVariables = {
   input: CreateRelationshipInput,
+  graphID: string,
 };
 
 export type CreateRelationshipMutation = {
   createRelationship?:  {
-    __typename: "GraphRelationshipRecord",
-    start:  {
-      __typename: "GraphNode",
-      identity: string,
-      labels: Array< string >,
-      properties: string,
-    },
-    end:  {
-      __typename: "GraphNode",
-      identity: string,
-      labels: Array< string >,
-      properties: string,
-    },
-    relationship:  {
-      __typename: "GraphRelationship",
-      identity: string,
-      type: string,
-      start: string,
-      end: string,
-      properties: string,
-    },
+    __typename: "GraphRelationship",
+    identity: string,
+    type: string,
+    start: string,
+    end: string,
+    properties: string,
   } | null,
 };
 
 export type UpdateRelationshipMutationVariables = {
   input: UpdateRelationshipInput,
+  graphID: string,
 };
 
 export type UpdateRelationshipMutation = {
   updateRelationship?:  {
-    __typename: "GraphRelationshipRecord",
-    start:  {
-      __typename: "GraphNode",
-      identity: string,
-      labels: Array< string >,
-      properties: string,
-    },
-    end:  {
-      __typename: "GraphNode",
-      identity: string,
-      labels: Array< string >,
-      properties: string,
-    },
-    relationship:  {
-      __typename: "GraphRelationship",
-      identity: string,
-      type: string,
-      start: string,
-      end: string,
-      properties: string,
-    },
+    __typename: "GraphRelationship",
+    identity: string,
+    type: string,
+    start: string,
+    end: string,
+    properties: string,
   } | null,
 };
 
 export type DeleteRelationshipMutationVariables = {
   input: DeleteRelationshipInput,
+  graphID: string,
 };
 
 export type DeleteRelationshipMutation = {
   deleteRelationship?:  {
-    __typename: "DeleteRelationshipRecord",
-    relationships?:  Array< {
+    __typename: "GraphResult",
+    nodes:  Array< {
+      __typename: "GraphNode",
+      identity: string,
+      labels: Array< string >,
+      properties: string,
+    } >,
+    relationships:  Array< {
       __typename: "GraphRelationship",
       identity: string,
       type: string,
       start: string,
       end: string,
       properties: string,
-    } > | null,
+    } >,
   } | null,
 };
 
 export type CreateUserMutationVariables = {
   input: CreateUserInput,
+  tenantID: string,
 };
 
 export type CreateUserMutation = {
   createUser?:  {
     __typename: "CognitoUser",
     username: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
     attributes: string,
@@ -2489,12 +1934,14 @@ export type CreateUserMutation = {
 
 export type UpdateUserMutationVariables = {
   input: UpdateUserInput,
+  tenantID: string,
 };
 
 export type UpdateUserMutation = {
   updateUser?:  {
     __typename: "CognitoUser",
     username: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
     attributes: string,
@@ -2505,12 +1952,14 @@ export type UpdateUserMutation = {
 
 export type DeleteUserMutationVariables = {
   input: DeleteUserInput,
+  tenantID: string,
 };
 
 export type DeleteUserMutation = {
   deleteUser?:  {
     __typename: "CognitoUser",
     username: string,
+    tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
     attributes: string,

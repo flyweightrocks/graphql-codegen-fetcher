@@ -10,16 +10,15 @@ config:
   maybeValue: T | undefined
   scalars:
     AWSJSON: Record<string, any> | string
+  omitOperationSuffix: true
+  inputTransformer:
+    AWSJSON: "JSON.stringify"
+  outputTransformer:
+    AWSJSON: "JSON.parse"
 generates:
   generated/plugin.ts:
     config:
-      fetcher: "../graphql/fetcher#fetcher"
-      omitOperationSuffix: true
-
-      inputTransformer:
-        AWSJSON: "JSON.stringify"
-      outputTransformer:
-        AWSJSON: "JSON.parse"
+      fetcher: "../graphql/nebula/fetcher#fetcher"
     plugins:
       - typescript
       - typescript-operations
@@ -32,5 +31,5 @@ generates:
       #       # - "import awsconfig from '../src/aws-exports.js';"
 hooks:
   afterAllFileWrite:
-    - npx eslint --fix
-    # - npx prettier --write
+    # - npx eslint --fix
+    - npx prettier --write

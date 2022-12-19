@@ -2,74 +2,34 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const empty = /* GraphQL */ `
+export const emptyQuery = /* GraphQL */ `
   query EmptyQuery {
     emptyQuery
   }
 `;
-export const echoTest = /* GraphQL */ `
+export const echo = /* GraphQL */ `
   query Echo($msg: String) {
     echo(msg: $msg)
-  }
-`;
-export const customTest = /* GraphQL */ `
-  query CustomTest($id: ID!) {
-    customTest(id: $id) {
-      id
-      createdAt
-      updatedAt
-      owner
-      groups
-      name
-      credentials
-    }
   }
 `;
 export const getConnector = /* GraphQL */ `
   query GetConnector($id: ID!) {
     getConnector(id: $id) {
       id
+      tenantID
       createdAt
       updatedAt
       name
-      descritpion
-      resourceName
-      extractor
+      description
       topics
       service
       active
       status
-      secretCredentials
       dataSource
-      transformations {
-        items {
-          id
-          createdAt
-          updatedAt
-          connectorID
-          topics
-          schemaEntity
-          graphEntityType
-          status
-          expression
-          connector {
-            id
-            createdAt
-            updatedAt
-            name
-            descritpion
-            resourceName
-            extractor
-            topics
-            service
-            active
-            status
-            secretCredentials
-            dataSource
-          }
-        }
-        nextToken
-      }
+      stack
+      secretCredentials
+      extractor
+      graphID
     }
   }
 `;
@@ -82,32 +42,20 @@ export const listConnectors = /* GraphQL */ `
     listConnectors(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        tenantID
         createdAt
         updatedAt
         name
-        descritpion
-        resourceName
-        extractor
+        description
         topics
         service
         active
         status
-        secretCredentials
         dataSource
-        transformations {
-          items {
-            id
-            createdAt
-            updatedAt
-            connectorID
-            topics
-            schemaEntity
-            graphEntityType
-            status
-            expression
-          }
-          nextToken
-        }
+        stack
+        secretCredentials
+        extractor
+        graphID
       }
       nextToken
     }
@@ -132,164 +80,20 @@ export const getConnectorByDataSource = /* GraphQL */ `
     ) {
       items {
         id
+        tenantID
         createdAt
         updatedAt
         name
-        descritpion
-        resourceName
-        extractor
+        description
         topics
         service
         active
         status
-        secretCredentials
         dataSource
-        transformations {
-          items {
-            id
-            createdAt
-            updatedAt
-            connectorID
-            topics
-            schemaEntity
-            graphEntityType
-            status
-            expression
-          }
-          nextToken
-        }
-      }
-      nextToken
-    }
-  }
-`;
-export const getTransformation = /* GraphQL */ `
-  query GetTransformation($id: ID!) {
-    getTransformation(id: $id) {
-      id
-      createdAt
-      updatedAt
-      connectorID
-      topics
-      schemaEntity
-      graphEntityType
-      status
-      expression
-      connector {
-        id
-        createdAt
-        updatedAt
-        name
-        descritpion
-        resourceName
+        stack
+        secretCredentials
         extractor
-        topics
-        service
-        active
-        status
-        secretCredentials
-        dataSource
-        transformations {
-          items {
-            id
-            createdAt
-            updatedAt
-            connectorID
-            topics
-            schemaEntity
-            graphEntityType
-            status
-            expression
-          }
-          nextToken
-        }
-      }
-    }
-  }
-`;
-export const listTransformations = /* GraphQL */ `
-  query ListTransformations(
-    $filter: ModelTransformationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTransformations(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        createdAt
-        updatedAt
-        connectorID
-        topics
-        schemaEntity
-        graphEntityType
-        status
-        expression
-        connector {
-          id
-          createdAt
-          updatedAt
-          name
-          descritpion
-          resourceName
-          extractor
-          topics
-          service
-          active
-          status
-          secretCredentials
-          dataSource
-          transformations {
-            nextToken
-          }
-        }
-      }
-      nextToken
-    }
-  }
-`;
-export const getTransformationsByConnector = /* GraphQL */ `
-  query GetTransformationsByConnector(
-    $connectorID: ID!
-    $sortDirection: ModelSortDirection
-    $filter: ModelTransformationFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    getTransformationsByConnector(
-      connectorID: $connectorID
-      sortDirection: $sortDirection
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        createdAt
-        updatedAt
-        connectorID
-        topics
-        schemaEntity
-        graphEntityType
-        status
-        expression
-        connector {
-          id
-          createdAt
-          updatedAt
-          name
-          descritpion
-          resourceName
-          extractor
-          topics
-          service
-          active
-          status
-          secretCredentials
-          dataSource
-          transformations {
-            nextToken
-          }
-        }
+        graphID
       }
       nextToken
     }
@@ -350,10 +154,9 @@ export const getSchema = /* GraphQL */ `
   query GetSchema($id: ID!) {
     getSchema(id: $id) {
       id
+      tenantID
       createdAt
       updatedAt
-      owner
-      groups
       nodes {
         id
         label
@@ -391,10 +194,9 @@ export const listSchemas = /* GraphQL */ `
     listSchemas(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        tenantID
         createdAt
         updatedAt
-        owner
-        groups
         nodes {
           id
           label
@@ -425,73 +227,116 @@ export const listSchemas = /* GraphQL */ `
     }
   }
 `;
-export const getTest = /* GraphQL */ `
-  query GetTest($id: ID!) {
-    getTest(id: $id) {
+export const getTenant = /* GraphQL */ `
+  query GetTenant($id: ID!) {
+    getTenant(id: $id) {
       id
+      tenantID
+      schemaID
+      graphID
       createdAt
       updatedAt
-      owner
-      groups
       name
-      credentials
     }
   }
 `;
-export const listTests = /* GraphQL */ `
-  query ListTests(
-    $filter: ModelTestFilterInput
+export const listTenants = /* GraphQL */ `
+  query ListTenants(
+    $filter: ModelTenantFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listTests(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listTenants(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        tenantID
+        schemaID
+        graphID
         createdAt
         updatedAt
-        owner
-        groups
         name
-        credentials
       }
       nextToken
     }
   }
 `;
-export const getOrganization = /* GraphQL */ `
-  query GetOrganization($id: ID!) {
-    getOrganization(id: $id) {
+export const getTransformation = /* GraphQL */ `
+  query GetTransformation($id: ID!) {
+    getTransformation(id: $id) {
       id
+      tenantID
+      connectorID
       createdAt
       updatedAt
-      adminGroup
-      userGroup
       name
+      topics
+      active
+      schemaEntityID
+      expression
     }
   }
 `;
-export const listOrganizations = /* GraphQL */ `
-  query ListOrganizations(
-    $filter: ModelOrganizationFilterInput
+export const listTransformations = /* GraphQL */ `
+  query ListTransformations(
+    $filter: ModelTransformationFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listTransformations(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        tenantID
+        connectorID
         createdAt
         updatedAt
-        adminGroup
-        userGroup
         name
+        topics
+        active
+        schemaEntityID
+        expression
+      }
+      nextToken
+    }
+  }
+`;
+export const listTransformationsByConnector = /* GraphQL */ `
+  query ListTransformationsByConnector(
+    $connectorID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelTransformationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTransformationsByConnector(
+      connectorID: $connectorID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        connectorID
+        createdAt
+        updatedAt
+        name
+        topics
+        active
+        schemaEntityID
+        expression
       }
       nextToken
     }
   }
 `;
 export const searchGraph = /* GraphQL */ `
-  query SearchGraph($input: SearchGraphInput!) {
-    searchGraph(input: $input) {
+  query SearchGraph(
+    $input: SearchGraphInput!
+    $graphID: String!
+    $schemaID: ID!
+  ) {
+    searchGraph(input: $input, graphID: $graphID, schemaID: $schemaID) {
       records {
         node {
           identity
@@ -500,48 +345,19 @@ export const searchGraph = /* GraphQL */ `
         }
         score
       }
+      nextOffset
     }
   }
 `;
-export const getNode = /* GraphQL */ `
-  query GetNode($identity: ID!) {
-    getNode(identity: $identity) {
-      node {
+export const expandGraph = /* GraphQL */ `
+  query ExpandGraph($input: ExpandGraphInput!, $graphID: String!) {
+    expandGraph(input: $input, graphID: $graphID) {
+      nodes {
         identity
         labels
         properties
       }
       relationships {
-        node {
-          identity
-          labels
-          properties
-        }
-        relationship {
-          identity
-          type
-          start
-          end
-          properties
-        }
-      }
-    }
-  }
-`;
-export const getRelationship = /* GraphQL */ `
-  query GetRelationship($identity: ID!) {
-    getRelationship(identity: $identity) {
-      start {
-        identity
-        labels
-        properties
-      }
-      end {
-        identity
-        labels
-        properties
-      }
-      relationship {
         identity
         type
         start
@@ -551,37 +367,31 @@ export const getRelationship = /* GraphQL */ `
     }
   }
 `;
-export const listNodes = /* GraphQL */ `
-  query ListNodes($input: ListNodesInput!) {
-    listNodes(input: $input) {
-      records {
-        node {
-          identity
-          labels
-          properties
-        }
-        relationships {
-          node {
-            identity
-            labels
-            properties
-          }
-          relationship {
-            identity
-            type
-            start
-            end
-            properties
-          }
-        }
-      }
+export const getNode = /* GraphQL */ `
+  query GetNode($identity: ID!, $graphID: String!) {
+    getNode(identity: $identity, graphID: $graphID) {
+      identity
+      labels
+      properties
+    }
+  }
+`;
+export const getRelationship = /* GraphQL */ `
+  query GetRelationship($identity: ID!, $graphID: String!) {
+    getRelationship(identity: $identity, graphID: $graphID) {
+      identity
+      type
+      start
+      end
+      properties
     }
   }
 `;
 export const getUser = /* GraphQL */ `
-  query GetUser($username: ID!) {
-    getUser(username: $username) {
+  query GetUser($username: ID!, $tenantID: ID!) {
+    getUser(username: $username, tenantID: $tenantID) {
       username
+      tenantID
       createdAt
       updatedAt
       attributes
@@ -591,10 +401,11 @@ export const getUser = /* GraphQL */ `
   }
 `;
 export const findUsers = /* GraphQL */ `
-  query FindUsers($input: FindUsersInput!) {
-    findUsers(input: $input) {
+  query FindUsers($input: FindUsersInput!, $tenantID: String!) {
+    findUsers(input: $input, tenantID: $tenantID) {
       items {
         username
+        tenantID
         createdAt
         updatedAt
         attributes
@@ -606,10 +417,11 @@ export const findUsers = /* GraphQL */ `
   }
 `;
 export const listUsers = /* GraphQL */ `
-  query ListUsers($nextToken: String) {
-    listUsers(nextToken: $nextToken) {
+  query ListUsers($tenantID: ID!, $nextToken: String) {
+    listUsers(tenantID: $tenantID, nextToken: $nextToken) {
       items {
         username
+        tenantID
         createdAt
         updatedAt
         attributes
@@ -617,15 +429,6 @@ export const listUsers = /* GraphQL */ `
         enabled
       }
       nextToken
-    }
-  }
-`;
-export const getConnectorCredentials = /* GraphQL */ `
-  query GetConnectorCredentials($id: ID!) {
-    getConnectorCredentials(id: $id) {
-      id
-      plainCredentials
-      secretCredentials
     }
   }
 `;
