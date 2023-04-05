@@ -7,6 +7,63 @@ export const emptyMutation = /* GraphQL */ `
     emptyMutation
   }
 `;
+export const createQueryCache = /* GraphQL */ `
+  mutation CreateQueryCache(
+    $input: CreateQueryCacheInput!
+    $condition: ModelQueryCacheConditionInput
+  ) {
+    createQueryCache(input: $input, condition: $condition) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      refType
+      refID
+      key
+      data
+      error
+      ttl
+    }
+  }
+`;
+export const updateQueryCache = /* GraphQL */ `
+  mutation UpdateQueryCache(
+    $input: UpdateQueryCacheInput!
+    $condition: ModelQueryCacheConditionInput
+  ) {
+    updateQueryCache(input: $input, condition: $condition) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      refType
+      refID
+      key
+      data
+      error
+      ttl
+    }
+  }
+`;
+export const deleteQueryCache = /* GraphQL */ `
+  mutation DeleteQueryCache(
+    $input: DeleteQueryCacheInput!
+    $condition: ModelQueryCacheConditionInput
+  ) {
+    deleteQueryCache(input: $input, condition: $condition) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      refType
+      refID
+      key
+      data
+      error
+      ttl
+    }
+  }
+`;
 export const createConnector = /* GraphQL */ `
   mutation CreateConnector(
     $input: CreateConnectorInput!
@@ -15,19 +72,18 @@ export const createConnector = /* GraphQL */ `
     createConnector(input: $input, condition: $condition) {
       id
       tenantID
+      schemaID
+      graphID
       createdAt
       updatedAt
       name
       description
-      topics
       service
       active
       status
       dataSource
-      stack
       secretCredentials
       extractor
-      graphID
     }
   }
 `;
@@ -39,19 +95,18 @@ export const updateConnector = /* GraphQL */ `
     updateConnector(input: $input, condition: $condition) {
       id
       tenantID
+      schemaID
+      graphID
       createdAt
       updatedAt
       name
       description
-      topics
       service
       active
       status
       dataSource
-      stack
       secretCredentials
       extractor
-      graphID
     }
   }
 `;
@@ -63,19 +118,18 @@ export const deleteConnector = /* GraphQL */ `
     deleteConnector(input: $input, condition: $condition) {
       id
       tenantID
+      schemaID
+      graphID
       createdAt
       updatedAt
       name
       description
-      topics
       service
       active
       status
       dataSource
-      stack
       secretCredentials
       extractor
-      graphID
     }
   }
 `;
@@ -86,21 +140,32 @@ export const createPerspective = /* GraphQL */ `
   ) {
     createPerspective(input: $input, condition: $condition) {
       id
+      tenantID
       createdAt
       updatedAt
-      owner
-      groups
       name
       description
+      query {
+        type
+        body
+      }
       type
-      query
-      parameters {
+      inputs {
+        id
         key
         name
+        description
         type
-        definition
-        value
+        default
       }
+      outputs {
+        id
+        key
+        name
+        description
+        type
+      }
+      cacheTime
     }
   }
 `;
@@ -111,21 +176,32 @@ export const updatePerspective = /* GraphQL */ `
   ) {
     updatePerspective(input: $input, condition: $condition) {
       id
+      tenantID
       createdAt
       updatedAt
-      owner
-      groups
       name
       description
+      query {
+        type
+        body
+      }
       type
-      query
-      parameters {
+      inputs {
+        id
         key
         name
+        description
         type
-        definition
-        value
+        default
       }
+      outputs {
+        id
+        key
+        name
+        description
+        type
+      }
+      cacheTime
     }
   }
 `;
@@ -136,21 +212,32 @@ export const deletePerspective = /* GraphQL */ `
   ) {
     deletePerspective(input: $input, condition: $condition) {
       id
+      tenantID
       createdAt
       updatedAt
-      owner
-      groups
       name
       description
+      query {
+        type
+        body
+      }
       type
-      query
-      parameters {
+      inputs {
+        id
         key
         name
+        description
         type
-        definition
-        value
+        default
       }
+      outputs {
+        id
+        key
+        name
+        description
+        type
+      }
+      cacheTime
     }
   }
 `;
@@ -164,6 +251,7 @@ export const createSchema = /* GraphQL */ `
       tenantID
       createdAt
       updatedAt
+      name
       nodes {
         id
         label
@@ -171,6 +259,7 @@ export const createSchema = /* GraphQL */ `
           key
           name
           type
+          semanticType
         }
         idSelector
         descriptionSelector
@@ -186,6 +275,7 @@ export const createSchema = /* GraphQL */ `
           key
           name
           type
+          semanticType
         }
         descriptionSelector
       }
@@ -202,6 +292,7 @@ export const updateSchema = /* GraphQL */ `
       tenantID
       createdAt
       updatedAt
+      name
       nodes {
         id
         label
@@ -209,6 +300,7 @@ export const updateSchema = /* GraphQL */ `
           key
           name
           type
+          semanticType
         }
         idSelector
         descriptionSelector
@@ -224,6 +316,7 @@ export const updateSchema = /* GraphQL */ `
           key
           name
           type
+          semanticType
         }
         descriptionSelector
       }
@@ -240,6 +333,7 @@ export const deleteSchema = /* GraphQL */ `
       tenantID
       createdAt
       updatedAt
+      name
       nodes {
         id
         label
@@ -247,6 +341,7 @@ export const deleteSchema = /* GraphQL */ `
           key
           name
           type
+          semanticType
         }
         idSelector
         descriptionSelector
@@ -262,6 +357,7 @@ export const deleteSchema = /* GraphQL */ `
           key
           name
           type
+          semanticType
         }
         descriptionSelector
       }
@@ -281,6 +377,9 @@ export const createTenant = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      language
+      region
+      timezone
     }
   }
 `;
@@ -297,6 +396,9 @@ export const updateTenant = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      language
+      region
+      timezone
     }
   }
 `;
@@ -313,6 +415,9 @@ export const deleteTenant = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      language
+      region
+      timezone
     }
   }
 `;
@@ -325,12 +430,12 @@ export const createTransformation = /* GraphQL */ `
       id
       tenantID
       connectorID
+      schemaEntityID
       createdAt
       updatedAt
       name
       topics
       active
-      schemaEntityID
       expression
     }
   }
@@ -344,12 +449,12 @@ export const updateTransformation = /* GraphQL */ `
       id
       tenantID
       connectorID
+      schemaEntityID
       createdAt
       updatedAt
       name
       topics
       active
-      schemaEntityID
       expression
     }
   }
@@ -363,20 +468,21 @@ export const deleteTransformation = /* GraphQL */ `
       id
       tenantID
       connectorID
+      schemaEntityID
       createdAt
       updatedAt
       name
       topics
       active
-      schemaEntityID
       expression
     }
   }
 `;
-export const runPerspective = /* GraphQL */ `
-  mutation RunPerspective($input: RunPerspectiveInput!) {
-    runPerspective(input: $input) {
-      records
+export const executePerspective = /* GraphQL */ `
+  mutation ExecutePerspective($input: ExecutePerspectiveInput!) {
+    executePerspective(input: $input) {
+      data
+      updatedAt
     }
   }
 `;
@@ -385,44 +491,113 @@ export const authorizeConnector = /* GraphQL */ `
     authorizeConnector(input: $input) {
       id
       tenantID
+      schemaID
+      graphID
       createdAt
       updatedAt
       name
       description
-      topics
       service
       active
       status
       dataSource
-      stack
       secretCredentials
       extractor
-      graphID
     }
   }
 `;
-export const requestFileUpload = /* GraphQL */ `
-  mutation RequestFileUpload(
-    $input: RequestFileUploadInput!
+export const activateConnector = /* GraphQL */ `
+  mutation ActivateConnector($input: ActivateConnectorInput!) {
+    activateConnector(input: $input) {
+      id
+      tenantID
+      schemaID
+      graphID
+      createdAt
+      updatedAt
+      name
+      description
+      service
+      active
+      status
+      dataSource
+      secretCredentials
+      extractor
+    }
+  }
+`;
+export const activateTransformations = /* GraphQL */ `
+  mutation ActivateTransformations($input: ActivateTransformationsInput!) {
+    activateTransformations(input: $input) {
+      ids
+      transformations {
+        id
+        tenantID
+        connectorID
+        schemaEntityID
+        createdAt
+        updatedAt
+        name
+        topics
+        active
+        expression
+      }
+    }
+  }
+`;
+export const setupTransformations = /* GraphQL */ `
+  mutation SetupTransformations($input: SetupTransformationsInput!) {
+    setupTransformations(input: $input) {
+      ids
+      transformations {
+        id
+        tenantID
+        connectorID
+        schemaEntityID
+        createdAt
+        updatedAt
+        name
+        topics
+        active
+        expression
+      }
+    }
+  }
+`;
+export const uploadGraphFile = /* GraphQL */ `
+  mutation UploadGraphFile(
+    $input: UploadGraphFileInput!
     $tenantID: ID!
     $graphID: String!
   ) {
-    requestFileUpload(input: $input, tenantID: $tenantID, graphID: $graphID) {
+    uploadGraphFile(input: $input, tenantID: $tenantID, graphID: $graphID) {
       signedUploadUrl
       objectKey
       expiresIn
     }
   }
 `;
-export const requestFileDownload = /* GraphQL */ `
-  mutation RequestFileDownload(
-    $input: RequestFileDownloadInput!
+export const downloadGraphFile = /* GraphQL */ `
+  mutation DownloadGraphFile(
+    $input: DownloadGraphFileInput!
     $tenantID: ID!
     $graphID: String!
   ) {
-    requestFileDownload(input: $input, tenantID: $tenantID, graphID: $graphID) {
+    downloadGraphFile(input: $input, tenantID: $tenantID, graphID: $graphID) {
       signedDownloadUrl
       expiresIn
+    }
+  }
+`;
+export const deleteGraphFile = /* GraphQL */ `
+  mutation DeleteGraphFile(
+    $input: DeleteGraphFileInput!
+    $tenantID: ID!
+    $graphID: String!
+  ) {
+    deleteGraphFile(input: $input, tenantID: $tenantID, graphID: $graphID) {
+      objectKey
+      nodeID
     }
   }
 `;
@@ -431,42 +606,45 @@ export const runConnector = /* GraphQL */ `
     runConnector(input: $input)
   }
 `;
-export const initTransformations = /* GraphQL */ `
-  mutation InitTransformations(
-    $connectorID: ID!
-    $tenantID: ID!
-    $schemaID: ID!
-  ) {
-    initTransformations(
-      connectorID: $connectorID
-      tenantID: $tenantID
-      schemaID: $schemaID
-    ) {
-      transformations
-    }
-  }
-`;
 export const createNode = /* GraphQL */ `
-  mutation CreateNode($input: CreateNodeInput!, $graphID: String!) {
-    createNode(input: $input, graphID: $graphID) {
-      identity
-      labels
-      properties
+  mutation CreateNode($input: CreateNodeInput!) {
+    createNode(input: $input) {
+      nodes {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        identity
+        type
+        start
+        end
+        properties
+      }
     }
   }
 `;
 export const updateNode = /* GraphQL */ `
-  mutation UpdateNode($input: UpdateNodeInput!, $graphID: String!) {
-    updateNode(input: $input, graphID: $graphID) {
-      identity
-      labels
-      properties
+  mutation UpdateNode($input: UpdateNodeInput!) {
+    updateNode(input: $input) {
+      nodes {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        identity
+        type
+        start
+        end
+        properties
+      }
     }
   }
 `;
 export const deleteNode = /* GraphQL */ `
-  mutation DeleteNode($input: DeleteNodeInput!, $graphID: String!) {
-    deleteNode(input: $input, graphID: $graphID) {
+  mutation DeleteNode($input: DeleteNodeInput!) {
+    deleteNode(input: $input) {
       nodes {
         identity
         labels
@@ -483,39 +661,8 @@ export const deleteNode = /* GraphQL */ `
   }
 `;
 export const createRelationship = /* GraphQL */ `
-  mutation CreateRelationship(
-    $input: CreateRelationshipInput!
-    $graphID: String!
-  ) {
-    createRelationship(input: $input, graphID: $graphID) {
-      identity
-      type
-      start
-      end
-      properties
-    }
-  }
-`;
-export const updateRelationship = /* GraphQL */ `
-  mutation UpdateRelationship(
-    $input: UpdateRelationshipInput!
-    $graphID: String!
-  ) {
-    updateRelationship(input: $input, graphID: $graphID) {
-      identity
-      type
-      start
-      end
-      properties
-    }
-  }
-`;
-export const deleteRelationship = /* GraphQL */ `
-  mutation DeleteRelationship(
-    $input: DeleteRelationshipInput!
-    $graphID: String!
-  ) {
-    deleteRelationship(input: $input, graphID: $graphID) {
+  mutation CreateRelationship($input: CreateRelationshipInput!) {
+    createRelationship(input: $input) {
       nodes {
         identity
         labels
@@ -531,10 +678,87 @@ export const deleteRelationship = /* GraphQL */ `
     }
   }
 `;
+export const updateRelationship = /* GraphQL */ `
+  mutation UpdateRelationship($input: UpdateRelationshipInput!) {
+    updateRelationship(input: $input) {
+      nodes {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        identity
+        type
+        start
+        end
+        properties
+      }
+    }
+  }
+`;
+export const deleteRelationship = /* GraphQL */ `
+  mutation DeleteRelationship($input: DeleteRelationshipInput!) {
+    deleteRelationship(input: $input) {
+      nodes {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        identity
+        type
+        start
+        end
+        properties
+      }
+    }
+  }
+`;
+export const findUsers = /* GraphQL */ `
+  mutation FindUsers($input: FindUsersInput!) {
+    findUsers(input: $input) {
+      items {
+        id
+        tenantID
+        createdAt
+        updatedAt
+        attributes
+        status
+        enabled
+      }
+    }
+  }
+`;
 export const createUser = /* GraphQL */ `
-  mutation CreateUser($input: CreateUserInput!, $tenantID: ID!) {
-    createUser(input: $input, tenantID: $tenantID) {
-      username
+  mutation CreateUser($input: CreateUserInput!) {
+    createUser(input: $input) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      attributes
+      status
+      enabled
+    }
+  }
+`;
+export const inviteUser = /* GraphQL */ `
+  mutation InviteUser($input: InviteUserInput!) {
+    inviteUser(input: $input) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      attributes
+      status
+      enabled
+    }
+  }
+`;
+export const activateUser = /* GraphQL */ `
+  mutation ActivateUser($input: ActivateUserInput!) {
+    activateUser(input: $input) {
+      id
       tenantID
       createdAt
       updatedAt
@@ -545,9 +769,9 @@ export const createUser = /* GraphQL */ `
   }
 `;
 export const updateUser = /* GraphQL */ `
-  mutation UpdateUser($input: UpdateUserInput!, $tenantID: ID!) {
-    updateUser(input: $input, tenantID: $tenantID) {
-      username
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
       tenantID
       createdAt
       updatedAt
@@ -558,15 +782,69 @@ export const updateUser = /* GraphQL */ `
   }
 `;
 export const deleteUser = /* GraphQL */ `
-  mutation DeleteUser($input: DeleteUserInput!, $tenantID: ID!) {
-    deleteUser(input: $input, tenantID: $tenantID) {
-      username
+  mutation DeleteUser($input: DeleteUserInput!) {
+    deleteUser(input: $input) {
+      id
       tenantID
       createdAt
       updatedAt
       attributes
       status
       enabled
+    }
+  }
+`;
+export const setupTenant = /* GraphQL */ `
+  mutation SetupTenant($input: SetupTenantInput!) {
+    setupTenant(input: $input) {
+      id
+      tenantID
+      schemaID
+      graphID
+      createdAt
+      updatedAt
+      name
+      language
+      region
+      timezone
+    }
+  }
+`;
+export const setupSchema = /* GraphQL */ `
+  mutation SetupSchema($input: SetupSchemaInput!) {
+    setupSchema(input: $input) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      name
+      nodes {
+        id
+        label
+        properties {
+          key
+          name
+          type
+          semanticType
+        }
+        idSelector
+        descriptionSelector
+        avatarSelector
+        avatarColor
+      }
+      relationships {
+        id
+        startNodeID
+        endNodeID
+        type
+        properties {
+          key
+          name
+          type
+          semanticType
+        }
+        descriptionSelector
+      }
     }
   }
 `;

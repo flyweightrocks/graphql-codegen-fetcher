@@ -24,6 +24,7 @@ module.exports = {
     project: ['tsconfig.eslint.json'],
   },
   rules: {
+    'import/extensions': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-empty-function': 'off',

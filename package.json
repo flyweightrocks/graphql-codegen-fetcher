@@ -14,8 +14,6 @@
     "build:watch": "rimraf dist && tsc --watch",
     "release": "npm version $(semver $npm_package_version -i patch) && npm publish --tag latest",
     "release:beta": "npm version $(semver $npm_package_version -i prerelease --preid $(npm whoami) ) && npm publish --tag beta",
-    "amplify:pull": "./amplify-pull.sh",
-    "amplify:schema": "aws appsync get-introspection-schema --api-id=jgqlihtplrhvtpqcxxhwa46cvq --format=JSON src/graphql/schema.json",
     "graphql:codegen": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],

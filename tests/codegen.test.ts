@@ -1,12 +1,12 @@
 import { GraphQLSchema, buildClientSchema, buildSchema, parse } from 'graphql';
 import { Types, mergeOutputs } from '@graphql-codegen/plugin-helpers';
 
-import { plugin } from '../src/index';
 import { plugin as tsPlugin } from '@graphql-codegen/typescript';
 import { plugin as tsDocumentsPlugin } from '@graphql-codegen/typescript-operations';
 import { validateTs } from '@graphql-codegen/testing';
 import fs from 'fs';
 import path from 'path';
+import { plugin } from '../src/index';
 
 import * as queries from '../graphql/blog/queries';
 import * as mutations from '../graphql/blog/mutations';
@@ -23,11 +23,11 @@ const documents = [
 const validateTypeScript = async (
   output: Types.PluginOutput,
   testSchema: GraphQLSchema,
-  documents: Types.DocumentFile[],
+  testDocuments: Types.DocumentFile[],
   config: any,
 ) => {
-  const tsOutput = await tsPlugin(testSchema, documents, config, { outputFile: '' });
-  const tsDocumentsOutput = await tsDocumentsPlugin(testSchema, documents, config, { outputFile: '' });
+  const tsOutput = await tsPlugin(testSchema, testDocuments, config, { outputFile: '' });
+  const tsDocumentsOutput = await tsDocumentsPlugin(testSchema, testDocuments, config, { outputFile: '' });
   const merged = mergeOutputs([tsOutput, tsDocumentsOutput, output]);
   validateTs(merged, undefined, true, false);
 

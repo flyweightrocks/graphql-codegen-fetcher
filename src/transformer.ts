@@ -182,7 +182,7 @@ export class Transformer {
 
         if (transformer === 'stringify')
           stack.push(
-            `${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`,
+            `${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON']`,
           );
       }
     }

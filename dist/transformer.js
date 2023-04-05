@@ -99,7 +99,7 @@ class Transformer {
                 if (transformer === 'parse')
                     stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
                 if (transformer === 'stringify')
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
+                    stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON']`);
             }
         }
         return stack;

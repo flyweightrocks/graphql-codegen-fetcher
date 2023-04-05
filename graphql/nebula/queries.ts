@@ -12,24 +12,82 @@ export const echo = /* GraphQL */ `
     echo(msg: $msg)
   }
 `;
+export const getQueryCache = /* GraphQL */ `
+  query GetQueryCache(
+    $id: ID!
+    $tenantID: ID!
+    $refType: RefType!
+    $refID: ID!
+  ) {
+    getQueryCache(
+      id: $id
+      tenantID: $tenantID
+      refType: $refType
+      refID: $refID
+    ) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      refType
+      refID
+      key
+      data
+      error
+      ttl
+    }
+  }
+`;
+export const listQueriesByRef = /* GraphQL */ `
+  query ListQueriesByRef(
+    $tenantID: ID!
+    $refTypeRefID: ModelQueryCacheByRefCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelQueryCacheFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listQueriesByRef(
+      tenantID: $tenantID
+      refTypeRefID: $refTypeRefID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        createdAt
+        updatedAt
+        refType
+        refID
+        key
+        data
+        error
+        ttl
+      }
+      nextToken
+    }
+  }
+`;
 export const getConnector = /* GraphQL */ `
   query GetConnector($id: ID!) {
     getConnector(id: $id) {
       id
       tenantID
+      schemaID
+      graphID
       createdAt
       updatedAt
       name
       description
-      topics
       service
       active
       status
       dataSource
-      stack
       secretCredentials
       extractor
-      graphID
     }
   }
 `;
@@ -43,19 +101,18 @@ export const listConnectors = /* GraphQL */ `
       items {
         id
         tenantID
+        schemaID
+        graphID
         createdAt
         updatedAt
         name
         description
-        topics
         service
         active
         status
         dataSource
-        stack
         secretCredentials
         extractor
-        graphID
       }
       nextToken
     }
@@ -81,19 +138,341 @@ export const getConnectorByDataSource = /* GraphQL */ `
       items {
         id
         tenantID
+        schemaID
+        graphID
         createdAt
         updatedAt
         name
         description
-        topics
         service
         active
         status
         dataSource
-        stack
         secretCredentials
         extractor
-        graphID
+      }
+      nextToken
+    }
+  }
+`;
+export const getEvent = /* GraphQL */ `
+  query GetEvent($id: ID!) {
+    getEvent(id: $id) {
+      id
+      tenantID
+      pubType
+      pubID
+      createdAt
+      updatedAt
+      refType
+      refID
+      eventType
+      eventBody
+      eventStatus
+      ttl
+    }
+  }
+`;
+export const listEvents = /* GraphQL */ `
+  query ListEvents(
+    $filter: ModelEventFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEvents(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        tenantID
+        pubType
+        pubID
+        createdAt
+        updatedAt
+        refType
+        refID
+        eventType
+        eventBody
+        eventStatus
+        ttl
+      }
+      nextToken
+    }
+  }
+`;
+export const listEventsByPub = /* GraphQL */ `
+  query ListEventsByPub(
+    $pubID: ID!
+    $pubTypeUpdatedAt: ModelEventByPubCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventsByPub(
+      pubID: $pubID
+      pubTypeUpdatedAt: $pubTypeUpdatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        pubType
+        pubID
+        createdAt
+        updatedAt
+        refType
+        refID
+        eventType
+        eventBody
+        eventStatus
+        ttl
+      }
+      nextToken
+    }
+  }
+`;
+export const listEventsByRef = /* GraphQL */ `
+  query ListEventsByRef(
+    $refID: ID!
+    $refTypeUpdatedAt: ModelEventByRefCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventsByRef(
+      refID: $refID
+      refTypeUpdatedAt: $refTypeUpdatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        pubType
+        pubID
+        createdAt
+        updatedAt
+        refType
+        refID
+        eventType
+        eventBody
+        eventStatus
+        ttl
+      }
+      nextToken
+    }
+  }
+`;
+export const getEventSubscriber = /* GraphQL */ `
+  query GetEventSubscriber($id: ID!) {
+    getEventSubscriber(id: $id) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      subType
+      subID
+      refType
+      refID
+    }
+  }
+`;
+export const listEventSubscribers = /* GraphQL */ `
+  query ListEventSubscribers(
+    $filter: ModelEventSubscriberFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventSubscribers(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        createdAt
+        updatedAt
+        subType
+        subID
+        refType
+        refID
+      }
+      nextToken
+    }
+  }
+`;
+export const listEventSubscribersBySub = /* GraphQL */ `
+  query ListEventSubscribersBySub(
+    $subID: ID!
+    $subTypeUpdatedAt: ModelEventSubscriberBySubCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventSubscriberFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventSubscribersBySub(
+      subID: $subID
+      subTypeUpdatedAt: $subTypeUpdatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        createdAt
+        updatedAt
+        subType
+        subID
+        refType
+        refID
+      }
+      nextToken
+    }
+  }
+`;
+export const listEventSubscriberByRef = /* GraphQL */ `
+  query ListEventSubscriberByRef(
+    $refID: ID!
+    $refTypeUpdatedAt: ModelEventSubscriberByRefCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventSubscriberFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventSubscriberByRef(
+      refID: $refID
+      refTypeUpdatedAt: $refTypeUpdatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        createdAt
+        updatedAt
+        subType
+        subID
+        refType
+        refID
+      }
+      nextToken
+    }
+  }
+`;
+export const getEventNotification = /* GraphQL */ `
+  query GetEventNotification($id: ID!) {
+    getEventNotification(id: $id) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      subType
+      subID
+      refType
+      refID
+      notificationBody
+      isRead
+    }
+  }
+`;
+export const listEventNotifications = /* GraphQL */ `
+  query ListEventNotifications(
+    $filter: ModelEventNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventNotifications(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        createdAt
+        updatedAt
+        subType
+        subID
+        refType
+        refID
+        notificationBody
+        isRead
+      }
+      nextToken
+    }
+  }
+`;
+export const listEventNotificationsBySub = /* GraphQL */ `
+  query ListEventNotificationsBySub(
+    $subID: ID!
+    $subTypeUpdatedAt: ModelEventNotificationBySubCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventNotificationsBySub(
+      subID: $subID
+      subTypeUpdatedAt: $subTypeUpdatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        createdAt
+        updatedAt
+        subType
+        subID
+        refType
+        refID
+        notificationBody
+        isRead
+      }
+      nextToken
+    }
+  }
+`;
+export const listEventNotificationsByRef = /* GraphQL */ `
+  query ListEventNotificationsByRef(
+    $refID: ID!
+    $refTypeUpdatedAt: ModelEventNotificationByRefCompositeKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelEventNotificationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listEventNotificationsByRef(
+      refID: $refID
+      refTypeUpdatedAt: $refTypeUpdatedAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        createdAt
+        updatedAt
+        subType
+        subID
+        refType
+        refID
+        notificationBody
+        isRead
       }
       nextToken
     }
@@ -103,21 +482,32 @@ export const getPerspective = /* GraphQL */ `
   query GetPerspective($id: ID!) {
     getPerspective(id: $id) {
       id
+      tenantID
       createdAt
       updatedAt
-      owner
-      groups
       name
       description
+      query {
+        type
+        body
+      }
       type
-      query
-      parameters {
+      inputs {
+        id
         key
         name
+        description
         type
-        definition
-        value
+        default
       }
+      outputs {
+        id
+        key
+        name
+        description
+        type
+      }
+      cacheTime
     }
   }
 `;
@@ -130,21 +520,32 @@ export const listPerspectives = /* GraphQL */ `
     listPerspectives(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        tenantID
         createdAt
         updatedAt
-        owner
-        groups
         name
         description
+        query {
+          type
+          body
+        }
         type
-        query
-        parameters {
+        inputs {
+          id
           key
           name
+          description
           type
-          definition
-          value
+          default
         }
+        outputs {
+          id
+          key
+          name
+          description
+          type
+        }
+        cacheTime
       }
       nextToken
     }
@@ -157,6 +558,7 @@ export const getSchema = /* GraphQL */ `
       tenantID
       createdAt
       updatedAt
+      name
       nodes {
         id
         label
@@ -164,6 +566,7 @@ export const getSchema = /* GraphQL */ `
           key
           name
           type
+          semanticType
         }
         idSelector
         descriptionSelector
@@ -179,6 +582,7 @@ export const getSchema = /* GraphQL */ `
           key
           name
           type
+          semanticType
         }
         descriptionSelector
       }
@@ -197,6 +601,7 @@ export const listSchemas = /* GraphQL */ `
         tenantID
         createdAt
         updatedAt
+        name
         nodes {
           id
           label
@@ -204,6 +609,7 @@ export const listSchemas = /* GraphQL */ `
             key
             name
             type
+            semanticType
           }
           idSelector
           descriptionSelector
@@ -219,6 +625,7 @@ export const listSchemas = /* GraphQL */ `
             key
             name
             type
+            semanticType
           }
           descriptionSelector
         }
@@ -237,6 +644,9 @@ export const getTenant = /* GraphQL */ `
       createdAt
       updatedAt
       name
+      language
+      region
+      timezone
     }
   }
 `;
@@ -255,6 +665,9 @@ export const listTenants = /* GraphQL */ `
         createdAt
         updatedAt
         name
+        language
+        region
+        timezone
       }
       nextToken
     }
@@ -266,12 +679,12 @@ export const getTransformation = /* GraphQL */ `
       id
       tenantID
       connectorID
+      schemaEntityID
       createdAt
       updatedAt
       name
       topics
       active
-      schemaEntityID
       expression
     }
   }
@@ -287,12 +700,12 @@ export const listTransformations = /* GraphQL */ `
         id
         tenantID
         connectorID
+        schemaEntityID
         createdAt
         updatedAt
         name
         topics
         active
-        schemaEntityID
         expression
       }
       nextToken
@@ -318,12 +731,43 @@ export const listTransformationsByConnector = /* GraphQL */ `
         id
         tenantID
         connectorID
+        schemaEntityID
         createdAt
         updatedAt
         name
         topics
         active
+        expression
+      }
+      nextToken
+    }
+  }
+`;
+export const listTransformationsBySchemaEntity = /* GraphQL */ `
+  query ListTransformationsBySchemaEntity(
+    $schemaEntityID: ID!
+    $sortDirection: ModelSortDirection
+    $filter: ModelTransformationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTransformationsBySchemaEntity(
+      schemaEntityID: $schemaEntityID
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        tenantID
+        connectorID
         schemaEntityID
+        createdAt
+        updatedAt
+        name
+        topics
+        active
         expression
       }
       nextToken
@@ -331,12 +775,8 @@ export const listTransformationsByConnector = /* GraphQL */ `
   }
 `;
 export const searchGraph = /* GraphQL */ `
-  query SearchGraph(
-    $input: SearchGraphInput!
-    $graphID: String!
-    $schemaID: ID!
-  ) {
-    searchGraph(input: $input, graphID: $graphID, schemaID: $schemaID) {
+  query SearchGraph($input: SearchGraphInput!) {
+    searchGraph(input: $input) {
       records {
         node {
           identity
@@ -350,8 +790,8 @@ export const searchGraph = /* GraphQL */ `
   }
 `;
 export const expandGraph = /* GraphQL */ `
-  query ExpandGraph($input: ExpandGraphInput!, $graphID: String!) {
-    expandGraph(input: $input, graphID: $graphID) {
+  query ExpandGraph($input: ExpandGraphInput!) {
+    expandGraph(input: $input) {
       nodes {
         identity
         labels
@@ -368,29 +808,45 @@ export const expandGraph = /* GraphQL */ `
   }
 `;
 export const getNode = /* GraphQL */ `
-  query GetNode($identity: ID!, $graphID: String!) {
-    getNode(identity: $identity, graphID: $graphID) {
-      identity
-      labels
-      properties
+  query GetNode($input: GetNodeInput!) {
+    getNode(input: $input) {
+      nodes {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        identity
+        type
+        start
+        end
+        properties
+      }
     }
   }
 `;
 export const getRelationship = /* GraphQL */ `
-  query GetRelationship($identity: ID!, $graphID: String!) {
-    getRelationship(identity: $identity, graphID: $graphID) {
-      identity
-      type
-      start
-      end
-      properties
+  query GetRelationship($input: GetRelationshipInput!) {
+    getRelationship(input: $input) {
+      nodes {
+        identity
+        labels
+        properties
+      }
+      relationships {
+        identity
+        type
+        start
+        end
+        properties
+      }
     }
   }
 `;
 export const getUser = /* GraphQL */ `
-  query GetUser($username: ID!, $tenantID: ID!) {
-    getUser(username: $username, tenantID: $tenantID) {
-      username
+  query GetUser($input: GetUserInput!) {
+    getUser(input: $input) {
+      id
       tenantID
       createdAt
       updatedAt
@@ -400,27 +856,11 @@ export const getUser = /* GraphQL */ `
     }
   }
 `;
-export const findUsers = /* GraphQL */ `
-  query FindUsers($input: FindUsersInput!, $tenantID: String!) {
-    findUsers(input: $input, tenantID: $tenantID) {
-      items {
-        username
-        tenantID
-        createdAt
-        updatedAt
-        attributes
-        status
-        enabled
-      }
-      nextToken
-    }
-  }
-`;
 export const listUsers = /* GraphQL */ `
-  query ListUsers($tenantID: ID!, $nextToken: String) {
-    listUsers(tenantID: $tenantID, nextToken: $nextToken) {
+  query ListUsers($input: ListUsersInput!) {
+    listUsers(input: $input) {
       items {
-        username
+        id
         tenantID
         createdAt
         updatedAt
@@ -428,7 +868,6 @@ export const listUsers = /* GraphQL */ `
         status
         enabled
       }
-      nextToken
     }
   }
 `;
