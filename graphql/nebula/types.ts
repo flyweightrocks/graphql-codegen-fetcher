@@ -2,41 +2,27 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
-export enum RefType {
-  Node = "Node",
-  Relationship = "Relationship",
-  Perspective = "Perspective",
-  Connector = "Connector",
-}
-
-
 export type QueryCache = {
   __typename: "QueryCache",
-  id: string,
+  queryHash: string,
   tenantID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
-  refType: RefType,
-  refID: string,
-  key: string,
+  reference: string,
+  queryKey: string,
   data?: string | null,
   error?: string | null,
   ttl?: number | null,
 };
 
-export type ModelQueryCacheByRefCompositeKeyConditionInput = {
-  eq?: ModelQueryCacheByRefCompositeKeyInput | null,
-  le?: ModelQueryCacheByRefCompositeKeyInput | null,
-  lt?: ModelQueryCacheByRefCompositeKeyInput | null,
-  ge?: ModelQueryCacheByRefCompositeKeyInput | null,
-  gt?: ModelQueryCacheByRefCompositeKeyInput | null,
-  between?: Array< ModelQueryCacheByRefCompositeKeyInput | null > | null,
-  beginsWith?: ModelQueryCacheByRefCompositeKeyInput | null,
-};
-
-export type ModelQueryCacheByRefCompositeKeyInput = {
-  refType?: RefType | null,
-  refID?: string | null,
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
 };
 
 export enum ModelSortDirection {
@@ -46,13 +32,12 @@ export enum ModelSortDirection {
 
 
 export type ModelQueryCacheFilterInput = {
-  id?: ModelIDInput | null,
+  queryHash?: ModelIDInput | null,
   tenantID?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  refType?: ModelRefTypeInput | null,
-  refID?: ModelIDInput | null,
-  key?: ModelStringInput | null,
+  reference?: ModelStringInput | null,
+  queryKey?: ModelStringInput | null,
   data?: ModelStringInput | null,
   error?: ModelStringInput | null,
   ttl?: ModelIntInput | null,
@@ -115,11 +100,6 @@ export type ModelStringInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
-};
-
-export type ModelRefTypeInput = {
-  eq?: RefType | null,
-  ne?: RefType | null,
 };
 
 export type ModelIntInput = {
@@ -249,6 +229,14 @@ export enum PubSubType {
 }
 
 
+export enum RefType {
+  Node = "Node",
+  Relationship = "Relationship",
+  Perspective = "Perspective",
+  Connector = "Connector",
+}
+
+
 export enum EventType {
   Comment = "Comment",
   Reaction = "Reaction",
@@ -285,6 +273,11 @@ export type ModelEventFilterInput = {
 export type ModelPubSubTypeInput = {
   eq?: PubSubType | null,
   ne?: PubSubType | null,
+};
+
+export type ModelRefTypeInput = {
+  eq?: RefType | null,
+  ne?: RefType | null,
 };
 
 export type ModelEventTypeInput = {
@@ -818,13 +811,12 @@ export type CognitoUserList = {
 };
 
 export type CreateQueryCacheInput = {
-  id?: string | null,
+  queryHash: string,
   tenantID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
-  refType: RefType,
-  refID: string,
-  key: string,
+  reference: string,
+  queryKey: string,
   data?: string | null,
   error?: string | null,
   ttl?: number | null,
@@ -833,7 +825,8 @@ export type CreateQueryCacheInput = {
 export type ModelQueryCacheConditionInput = {
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  key?: ModelStringInput | null,
+  reference?: ModelStringInput | null,
+  queryKey?: ModelStringInput | null,
   data?: ModelStringInput | null,
   error?: ModelStringInput | null,
   ttl?: ModelIntInput | null,
@@ -843,23 +836,20 @@ export type ModelQueryCacheConditionInput = {
 };
 
 export type UpdateQueryCacheInput = {
-  id: string,
+  queryHash: string,
   tenantID: string,
   createdAt?: string | null,
   updatedAt?: string | null,
-  refType: RefType,
-  refID: string,
-  key?: string | null,
+  reference?: string | null,
+  queryKey?: string | null,
   data?: string | null,
   error?: string | null,
   ttl?: number | null,
 };
 
 export type DeleteQueryCacheInput = {
-  id: string,
+  queryHash: string,
   tenantID: string,
-  refType: RefType,
-  refID: string,
 };
 
 export type CreateConnectorInput = {
@@ -916,6 +906,102 @@ export type UpdateConnectorInput = {
 };
 
 export type DeleteConnectorInput = {
+  id: string,
+};
+
+export type CreateEventInput = {
+  id?: string | null,
+  tenantID: string,
+  pubType: PubSubType,
+  pubID: string,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  refType: RefType,
+  refID: string,
+  eventType: EventType,
+  eventBody?: string | null,
+  eventStatus?: EventStatus | null,
+  ttl?: number | null,
+};
+
+export type ModelEventConditionInput = {
+  tenantID?: ModelIDInput | null,
+  pubType?: ModelPubSubTypeInput | null,
+  pubID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  refType?: ModelRefTypeInput | null,
+  refID?: ModelIDInput | null,
+  eventType?: ModelEventTypeInput | null,
+  eventBody?: ModelStringInput | null,
+  eventStatus?: ModelEventStatusInput | null,
+  ttl?: ModelIntInput | null,
+  and?: Array< ModelEventConditionInput | null > | null,
+  or?: Array< ModelEventConditionInput | null > | null,
+  not?: ModelEventConditionInput | null,
+};
+
+export type DeleteEventInput = {
+  id: string,
+};
+
+export type CreateEventSubscriberInput = {
+  id?: string | null,
+  tenantID: string,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  subType: PubSubType,
+  subID: string,
+  refType: RefType,
+  refID: string,
+};
+
+export type ModelEventSubscriberConditionInput = {
+  tenantID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  subType?: ModelPubSubTypeInput | null,
+  subID?: ModelIDInput | null,
+  refType?: ModelRefTypeInput | null,
+  refID?: ModelIDInput | null,
+  and?: Array< ModelEventSubscriberConditionInput | null > | null,
+  or?: Array< ModelEventSubscriberConditionInput | null > | null,
+  not?: ModelEventSubscriberConditionInput | null,
+};
+
+export type DeleteEventSubscriberInput = {
+  id: string,
+};
+
+export type CreateEventNotificationInput = {
+  id?: string | null,
+  tenantID: string,
+  createdAt?: string | null,
+  updatedAt?: string | null,
+  subType: PubSubType,
+  subID: string,
+  refType: RefType,
+  refID: string,
+  notificationBody?: string | null,
+  isRead?: boolean | null,
+};
+
+export type ModelEventNotificationConditionInput = {
+  tenantID?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  subType?: ModelPubSubTypeInput | null,
+  subID?: ModelIDInput | null,
+  refType?: ModelRefTypeInput | null,
+  refID?: ModelIDInput | null,
+  notificationBody?: ModelStringInput | null,
+  isRead?: ModelBooleanInput | null,
+  and?: Array< ModelEventNotificationConditionInput | null > | null,
+  or?: Array< ModelEventNotificationConditionInput | null > | null,
+  not?: ModelEventNotificationConditionInput | null,
+};
+
+export type DeleteEventNotificationInput = {
   id: string,
 };
 
@@ -1142,6 +1228,7 @@ export type ExecutePerspectiveInput = {
   values?: Array< ExecutePerspectiveValueInput > | null,
   limit?: number | null,
   offset?: number | null,
+  refresh?: boolean | null,
 };
 
 export type ExecutePerspectiveValueInput = {
@@ -1151,7 +1238,7 @@ export type ExecutePerspectiveValueInput = {
 
 export type ExecutePerspectiveResult = {
   __typename: "ExecutePerspectiveResult",
-  data?: string | null,
+  data?: Array< string > | null,
   updatedAt?: string | null,
 };
 
@@ -1327,50 +1414,46 @@ export type EchoQuery = {
   echo?: string | null,
 };
 
-export type GetQueryCacheQueryVariables = {
-  id: string,
+export type GetQueryByHashQueryVariables = {
+  queryHash: string,
   tenantID: string,
-  refType: RefType,
-  refID: string,
 };
 
-export type GetQueryCacheQuery = {
-  getQueryCache?:  {
+export type GetQueryByHashQuery = {
+  getQueryByHash?:  {
     __typename: "QueryCache",
-    id: string,
+    queryHash: string,
     tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    refType: RefType,
-    refID: string,
-    key: string,
+    reference: string,
+    queryKey: string,
     data?: string | null,
     error?: string | null,
     ttl?: number | null,
   } | null,
 };
 
-export type ListQueriesByRefQueryVariables = {
+export type ListQueriesByReferenceQueryVariables = {
   tenantID: string,
-  refTypeRefID?: ModelQueryCacheByRefCompositeKeyConditionInput | null,
+  reference?: ModelStringKeyConditionInput | null,
   sortDirection?: ModelSortDirection | null,
   filter?: ModelQueryCacheFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListQueriesByRefQuery = {
-  listQueriesByRef?:  {
+export type ListQueriesByReferenceQuery = {
+  listQueriesByReference?:  {
     __typename: "ModelQueryCacheConnection",
     items:  Array< {
       __typename: "QueryCache",
-      id: string,
+      queryHash: string,
       tenantID: string,
       createdAt?: string | null,
       updatedAt?: string | null,
-      refType: RefType,
-      refID: string,
-      key: string,
+      reference: string,
+      queryKey: string,
       data?: string | null,
       error?: string | null,
       ttl?: number | null,
@@ -2260,13 +2343,12 @@ export type CreateQueryCacheMutationVariables = {
 export type CreateQueryCacheMutation = {
   createQueryCache?:  {
     __typename: "QueryCache",
-    id: string,
+    queryHash: string,
     tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    refType: RefType,
-    refID: string,
-    key: string,
+    reference: string,
+    queryKey: string,
     data?: string | null,
     error?: string | null,
     ttl?: number | null,
@@ -2281,13 +2363,12 @@ export type UpdateQueryCacheMutationVariables = {
 export type UpdateQueryCacheMutation = {
   updateQueryCache?:  {
     __typename: "QueryCache",
-    id: string,
+    queryHash: string,
     tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    refType: RefType,
-    refID: string,
-    key: string,
+    reference: string,
+    queryKey: string,
     data?: string | null,
     error?: string | null,
     ttl?: number | null,
@@ -2302,13 +2383,12 @@ export type DeleteQueryCacheMutationVariables = {
 export type DeleteQueryCacheMutation = {
   deleteQueryCache?:  {
     __typename: "QueryCache",
-    id: string,
+    queryHash: string,
     tenantID: string,
     createdAt?: string | null,
     updatedAt?: string | null,
-    refType: RefType,
-    refID: string,
-    key: string,
+    reference: string,
+    queryKey: string,
     data?: string | null,
     error?: string | null,
     ttl?: number | null,
@@ -2387,6 +2467,132 @@ export type DeleteConnectorMutation = {
     dataSource?: string | null,
     secretCredentials?: string | null,
     extractor?: string | null,
+  } | null,
+};
+
+export type CreateEventMutationVariables = {
+  input: CreateEventInput,
+  condition?: ModelEventConditionInput | null,
+};
+
+export type CreateEventMutation = {
+  createEvent?:  {
+    __typename: "Event",
+    id: string,
+    tenantID: string,
+    pubType: PubSubType,
+    pubID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    refType: RefType,
+    refID: string,
+    eventType: EventType,
+    eventBody?: string | null,
+    eventStatus?: EventStatus | null,
+    ttl?: number | null,
+  } | null,
+};
+
+export type DeleteEventMutationVariables = {
+  input: DeleteEventInput,
+  condition?: ModelEventConditionInput | null,
+};
+
+export type DeleteEventMutation = {
+  deleteEvent?:  {
+    __typename: "Event",
+    id: string,
+    tenantID: string,
+    pubType: PubSubType,
+    pubID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    refType: RefType,
+    refID: string,
+    eventType: EventType,
+    eventBody?: string | null,
+    eventStatus?: EventStatus | null,
+    ttl?: number | null,
+  } | null,
+};
+
+export type CreateEventSubscriberMutationVariables = {
+  input: CreateEventSubscriberInput,
+  condition?: ModelEventSubscriberConditionInput | null,
+};
+
+export type CreateEventSubscriberMutation = {
+  createEventSubscriber?:  {
+    __typename: "EventSubscriber",
+    id: string,
+    tenantID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    subType: PubSubType,
+    subID: string,
+    refType: RefType,
+    refID: string,
+  } | null,
+};
+
+export type DeleteEventSubscriberMutationVariables = {
+  input: DeleteEventSubscriberInput,
+  condition?: ModelEventSubscriberConditionInput | null,
+};
+
+export type DeleteEventSubscriberMutation = {
+  deleteEventSubscriber?:  {
+    __typename: "EventSubscriber",
+    id: string,
+    tenantID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    subType: PubSubType,
+    subID: string,
+    refType: RefType,
+    refID: string,
+  } | null,
+};
+
+export type CreateEventNotificationMutationVariables = {
+  input: CreateEventNotificationInput,
+  condition?: ModelEventNotificationConditionInput | null,
+};
+
+export type CreateEventNotificationMutation = {
+  createEventNotification?:  {
+    __typename: "EventNotification",
+    id: string,
+    tenantID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    subType: PubSubType,
+    subID: string,
+    refType: RefType,
+    refID: string,
+    notificationBody?: string | null,
+    isRead?: boolean | null,
+  } | null,
+};
+
+export type DeleteEventNotificationMutationVariables = {
+  input: DeleteEventNotificationInput,
+  condition?: ModelEventNotificationConditionInput | null,
+};
+
+export type DeleteEventNotificationMutation = {
+  deleteEventNotification?:  {
+    __typename: "EventNotification",
+    id: string,
+    tenantID: string,
+    createdAt?: string | null,
+    updatedAt?: string | null,
+    subType: PubSubType,
+    subID: string,
+    refType: RefType,
+    refID: string,
+    notificationBody?: string | null,
+    isRead?: boolean | null,
   } | null,
 };
 
@@ -2787,7 +2993,7 @@ export type ExecutePerspectiveMutationVariables = {
 export type ExecutePerspectiveMutation = {
   executePerspective?:  {
     __typename: "ExecutePerspectiveResult",
-    data?: string | null,
+    data?: Array< string > | null,
     updatedAt?: string | null,
   } | null,
 };

@@ -13,13 +13,12 @@ export const createQueryCache = /* GraphQL */ `
     $condition: ModelQueryCacheConditionInput
   ) {
     createQueryCache(input: $input, condition: $condition) {
-      id
+      queryHash
       tenantID
       createdAt
       updatedAt
-      refType
-      refID
-      key
+      reference
+      queryKey
       data
       error
       ttl
@@ -32,13 +31,12 @@ export const updateQueryCache = /* GraphQL */ `
     $condition: ModelQueryCacheConditionInput
   ) {
     updateQueryCache(input: $input, condition: $condition) {
-      id
+      queryHash
       tenantID
       createdAt
       updatedAt
-      refType
-      refID
-      key
+      reference
+      queryKey
       data
       error
       ttl
@@ -51,13 +49,12 @@ export const deleteQueryCache = /* GraphQL */ `
     $condition: ModelQueryCacheConditionInput
   ) {
     deleteQueryCache(input: $input, condition: $condition) {
-      id
+      queryHash
       tenantID
       createdAt
       updatedAt
-      refType
-      refID
-      key
+      reference
+      queryKey
       data
       error
       ttl
@@ -130,6 +127,120 @@ export const deleteConnector = /* GraphQL */ `
       dataSource
       secretCredentials
       extractor
+    }
+  }
+`;
+export const createEvent = /* GraphQL */ `
+  mutation CreateEvent(
+    $input: CreateEventInput!
+    $condition: ModelEventConditionInput
+  ) {
+    createEvent(input: $input, condition: $condition) {
+      id
+      tenantID
+      pubType
+      pubID
+      createdAt
+      updatedAt
+      refType
+      refID
+      eventType
+      eventBody
+      eventStatus
+      ttl
+    }
+  }
+`;
+export const deleteEvent = /* GraphQL */ `
+  mutation DeleteEvent(
+    $input: DeleteEventInput!
+    $condition: ModelEventConditionInput
+  ) {
+    deleteEvent(input: $input, condition: $condition) {
+      id
+      tenantID
+      pubType
+      pubID
+      createdAt
+      updatedAt
+      refType
+      refID
+      eventType
+      eventBody
+      eventStatus
+      ttl
+    }
+  }
+`;
+export const createEventSubscriber = /* GraphQL */ `
+  mutation CreateEventSubscriber(
+    $input: CreateEventSubscriberInput!
+    $condition: ModelEventSubscriberConditionInput
+  ) {
+    createEventSubscriber(input: $input, condition: $condition) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      subType
+      subID
+      refType
+      refID
+    }
+  }
+`;
+export const deleteEventSubscriber = /* GraphQL */ `
+  mutation DeleteEventSubscriber(
+    $input: DeleteEventSubscriberInput!
+    $condition: ModelEventSubscriberConditionInput
+  ) {
+    deleteEventSubscriber(input: $input, condition: $condition) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      subType
+      subID
+      refType
+      refID
+    }
+  }
+`;
+export const createEventNotification = /* GraphQL */ `
+  mutation CreateEventNotification(
+    $input: CreateEventNotificationInput!
+    $condition: ModelEventNotificationConditionInput
+  ) {
+    createEventNotification(input: $input, condition: $condition) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      subType
+      subID
+      refType
+      refID
+      notificationBody
+      isRead
+    }
+  }
+`;
+export const deleteEventNotification = /* GraphQL */ `
+  mutation DeleteEventNotification(
+    $input: DeleteEventNotificationInput!
+    $condition: ModelEventNotificationConditionInput
+  ) {
+    deleteEventNotification(input: $input, condition: $condition) {
+      id
+      tenantID
+      createdAt
+      updatedAt
+      subType
+      subID
+      refType
+      refID
+      notificationBody
+      isRead
     }
   }
 `;

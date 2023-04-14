@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Transformer = void 0;
 const visitor_plugin_common_1 = require("@graphql-codegen/visitor-plugin-common");
+const compromise_1 = __importDefault(require("compromise"));
 const variables_generator_1 = require("./variables-generator");
 class Transformer {
     constructor(visitor, inputTransformerMap, outputTransformerMap) {
@@ -85,7 +89,7 @@ class Transformer {
             fieldName = isMandatory ? fieldName.substring(0, fieldName.length - 1) : fieldName;
             const isArray = field.includes('[]');
             fieldName = isArray ? fieldName.substring(0, fieldName.length - 2) : fieldName;
-            const fieldNameSingular = fieldName.substring(0, fieldName.length - 1);
+            const fieldNameSingular = (0, compromise_1.default)(fieldName).nouns().toSingular().text() || fieldName;
             const fieldPath = `${path}.${fieldName}`;
             if (fieldValue && typeof fieldValue === 'object') {
                 if (isArray) {
@@ -96,10 +100,18 @@ class Transformer {
                 }
             }
             else if (fieldValue === 'AWSJSON') {
-                if (transformer === 'parse')
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
-                if (transformer === 'stringify')
-                    stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON']`);
+                if (isArray) {
+                    if (transformer === 'parse')
+                        stack.push(`${fieldName}: ${fieldPath}?.map((${fieldNameSingular}) => JSON.parse(${fieldNameSingular} as any) as unknown as Scalars['AWSJSON']),`);
+                    if (transformer === 'stringify')
+                        stack.push(`${fieldName}: ${fieldPath}?.map((${fieldNameSingular}) => JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON'])`);
+                }
+                else {
+                    if (transformer === 'parse')
+                        stack.push(`${fieldName}: ${fieldPath} && JSON.parse(${fieldPath} as any) as unknown as Scalars['AWSJSON'],`);
+                    if (transformer === 'stringify')
+                        stack.push(`${fieldName}: ${fieldPath} && JSON.stringify(${fieldPath} as any) as unknown as Scalars['AWSJSON']`);
+                }
             }
         }
         return stack;

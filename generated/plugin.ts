@@ -1,5 +1,4 @@
 import { fetcher } from '../graphql/nebula/fetcher';
-
 export type Maybe<T> = T | undefined;
 export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -100,6 +99,45 @@ export type CreateConnectorInput = {
   updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
 };
 
+export type CreateEventInput = {
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  eventBody?: InputMaybe<Scalars['String']>;
+  eventStatus?: InputMaybe<EventStatus>;
+  eventType: EventType;
+  id?: InputMaybe<Scalars['ID']>;
+  pubID: Scalars['ID'];
+  pubType: PubSubType;
+  refID: Scalars['ID'];
+  refType: RefType;
+  tenantID: Scalars['ID'];
+  ttl?: InputMaybe<Scalars['AWSTimestamp']>;
+  updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
+};
+
+export type CreateEventNotificationInput = {
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isRead?: InputMaybe<Scalars['Boolean']>;
+  notificationBody?: InputMaybe<Scalars['String']>;
+  refID: Scalars['ID'];
+  refType: RefType;
+  subID: Scalars['ID'];
+  subType: PubSubType;
+  tenantID: Scalars['ID'];
+  updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
+};
+
+export type CreateEventSubscriberInput = {
+  createdAt?: InputMaybe<Scalars['AWSDateTime']>;
+  id?: InputMaybe<Scalars['ID']>;
+  refID: Scalars['ID'];
+  refType: RefType;
+  subID: Scalars['ID'];
+  subType: PubSubType;
+  tenantID: Scalars['ID'];
+  updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
+};
+
 export type CreateNodeInput = {
   graphID: Scalars['String'];
   labels: Array<Scalars['String']>;
@@ -122,12 +160,11 @@ export type CreatePerspectiveInput = {
 
 export type CreateQueryCacheInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
-  data?: InputMaybe<Scalars['AWSJSON']>;
-  error?: InputMaybe<Scalars['AWSJSON']>;
-  id?: InputMaybe<Scalars['ID']>;
-  key: Scalars['String'];
-  refID: Scalars['ID'];
-  refType: RefType;
+  data?: InputMaybe<Scalars['String']>;
+  error?: InputMaybe<Scalars['String']>;
+  queryHash: Scalars['ID'];
+  queryKey: Scalars['String'];
+  reference: Scalars['String'];
   tenantID: Scalars['ID'];
   ttl?: InputMaybe<Scalars['AWSTimestamp']>;
   updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
@@ -186,6 +223,18 @@ export type DeleteConnectorInput = {
   id: Scalars['ID'];
 };
 
+export type DeleteEventInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteEventNotificationInput = {
+  id: Scalars['ID'];
+};
+
+export type DeleteEventSubscriberInput = {
+  id: Scalars['ID'];
+};
+
 export type DeleteGraphFileInput = {
   nodeID: Scalars['String'];
   objectKey: Scalars['String'];
@@ -206,9 +255,7 @@ export type DeletePerspectiveInput = {
 };
 
 export type DeleteQueryCacheInput = {
-  id: Scalars['ID'];
-  refID: Scalars['ID'];
-  refType: RefType;
+  queryHash: Scalars['ID'];
   tenantID: Scalars['ID'];
 };
 
@@ -300,11 +347,12 @@ export type ExecutePerspectiveInput = {
   id: Scalars['ID'];
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
+  refresh?: InputMaybe<Scalars['Boolean']>;
   values?: InputMaybe<Array<ExecutePerspectiveValueInput>>;
 };
 
 export type ExecutePerspectiveResult = {
-  data?: Maybe<Scalars['AWSJSON']>;
+  data?: Maybe<Array<Scalars['AWSJSON']>>;
   updatedAt?: Maybe<Scalars['AWSDateTime']>;
 };
 
@@ -490,6 +538,23 @@ export type ModelEventByRefCompositeKeyInput = {
   updatedAt?: InputMaybe<Scalars['String']>;
 };
 
+export type ModelEventConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelEventConditionInput>>>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  eventBody?: InputMaybe<ModelStringInput>;
+  eventStatus?: InputMaybe<ModelEventStatusInput>;
+  eventType?: InputMaybe<ModelEventTypeInput>;
+  not?: InputMaybe<ModelEventConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelEventConditionInput>>>;
+  pubID?: InputMaybe<ModelIdInput>;
+  pubType?: InputMaybe<ModelPubSubTypeInput>;
+  refID?: InputMaybe<ModelIdInput>;
+  refType?: InputMaybe<ModelRefTypeInput>;
+  tenantID?: InputMaybe<ModelIdInput>;
+  ttl?: InputMaybe<ModelIntInput>;
+  updatedAt?: InputMaybe<ModelStringInput>;
+};
+
 export type ModelEventConnection = {
   items: Array<Maybe<Event>>;
   nextToken?: Maybe<Scalars['String']>;
@@ -541,6 +606,21 @@ export type ModelEventNotificationBySubCompositeKeyConditionInput = {
 export type ModelEventNotificationBySubCompositeKeyInput = {
   subType?: InputMaybe<PubSubType>;
   updatedAt?: InputMaybe<Scalars['String']>;
+};
+
+export type ModelEventNotificationConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelEventNotificationConditionInput>>>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  isRead?: InputMaybe<ModelBooleanInput>;
+  not?: InputMaybe<ModelEventNotificationConditionInput>;
+  notificationBody?: InputMaybe<ModelStringInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelEventNotificationConditionInput>>>;
+  refID?: InputMaybe<ModelIdInput>;
+  refType?: InputMaybe<ModelRefTypeInput>;
+  subID?: InputMaybe<ModelIdInput>;
+  subType?: InputMaybe<ModelPubSubTypeInput>;
+  tenantID?: InputMaybe<ModelIdInput>;
+  updatedAt?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelEventNotificationConnection = {
@@ -597,6 +677,19 @@ export type ModelEventSubscriberBySubCompositeKeyConditionInput = {
 export type ModelEventSubscriberBySubCompositeKeyInput = {
   subType?: InputMaybe<PubSubType>;
   updatedAt?: InputMaybe<Scalars['String']>;
+};
+
+export type ModelEventSubscriberConditionInput = {
+  and?: InputMaybe<Array<InputMaybe<ModelEventSubscriberConditionInput>>>;
+  createdAt?: InputMaybe<ModelStringInput>;
+  not?: InputMaybe<ModelEventSubscriberConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelEventSubscriberConditionInput>>>;
+  refID?: InputMaybe<ModelIdInput>;
+  refType?: InputMaybe<ModelRefTypeInput>;
+  subID?: InputMaybe<ModelIdInput>;
+  subType?: InputMaybe<ModelPubSubTypeInput>;
+  tenantID?: InputMaybe<ModelIdInput>;
+  updatedAt?: InputMaybe<ModelStringInput>;
 };
 
 export type ModelEventSubscriberConnection = {
@@ -715,29 +808,15 @@ export type ModelPubSubTypeInput = {
   ne?: InputMaybe<PubSubType>;
 };
 
-export type ModelQueryCacheByRefCompositeKeyConditionInput = {
-  beginsWith?: InputMaybe<ModelQueryCacheByRefCompositeKeyInput>;
-  between?: InputMaybe<Array<InputMaybe<ModelQueryCacheByRefCompositeKeyInput>>>;
-  eq?: InputMaybe<ModelQueryCacheByRefCompositeKeyInput>;
-  ge?: InputMaybe<ModelQueryCacheByRefCompositeKeyInput>;
-  gt?: InputMaybe<ModelQueryCacheByRefCompositeKeyInput>;
-  le?: InputMaybe<ModelQueryCacheByRefCompositeKeyInput>;
-  lt?: InputMaybe<ModelQueryCacheByRefCompositeKeyInput>;
-};
-
-export type ModelQueryCacheByRefCompositeKeyInput = {
-  refID?: InputMaybe<Scalars['ID']>;
-  refType?: InputMaybe<RefType>;
-};
-
 export type ModelQueryCacheConditionInput = {
   and?: InputMaybe<Array<InputMaybe<ModelQueryCacheConditionInput>>>;
   createdAt?: InputMaybe<ModelStringInput>;
   data?: InputMaybe<ModelStringInput>;
   error?: InputMaybe<ModelStringInput>;
-  key?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelQueryCacheConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelQueryCacheConditionInput>>>;
+  queryKey?: InputMaybe<ModelStringInput>;
+  reference?: InputMaybe<ModelStringInput>;
   ttl?: InputMaybe<ModelIntInput>;
   updatedAt?: InputMaybe<ModelStringInput>;
 };
@@ -752,31 +831,14 @@ export type ModelQueryCacheFilterInput = {
   createdAt?: InputMaybe<ModelStringInput>;
   data?: InputMaybe<ModelStringInput>;
   error?: InputMaybe<ModelStringInput>;
-  id?: InputMaybe<ModelIdInput>;
-  key?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelQueryCacheFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelQueryCacheFilterInput>>>;
-  refID?: InputMaybe<ModelIdInput>;
-  refType?: InputMaybe<ModelRefTypeInput>;
+  queryHash?: InputMaybe<ModelIdInput>;
+  queryKey?: InputMaybe<ModelStringInput>;
+  reference?: InputMaybe<ModelStringInput>;
   tenantID?: InputMaybe<ModelIdInput>;
   ttl?: InputMaybe<ModelIntInput>;
   updatedAt?: InputMaybe<ModelStringInput>;
-};
-
-export type ModelQueryCachePrimaryCompositeKeyConditionInput = {
-  beginsWith?: InputMaybe<ModelQueryCachePrimaryCompositeKeyInput>;
-  between?: InputMaybe<Array<InputMaybe<ModelQueryCachePrimaryCompositeKeyInput>>>;
-  eq?: InputMaybe<ModelQueryCachePrimaryCompositeKeyInput>;
-  ge?: InputMaybe<ModelQueryCachePrimaryCompositeKeyInput>;
-  gt?: InputMaybe<ModelQueryCachePrimaryCompositeKeyInput>;
-  le?: InputMaybe<ModelQueryCachePrimaryCompositeKeyInput>;
-  lt?: InputMaybe<ModelQueryCachePrimaryCompositeKeyInput>;
-};
-
-export type ModelQueryCachePrimaryCompositeKeyInput = {
-  refID?: InputMaybe<Scalars['ID']>;
-  refType?: InputMaybe<RefType>;
-  tenantID?: InputMaybe<Scalars['ID']>;
 };
 
 export type ModelRefTypeInput = {
@@ -839,6 +901,16 @@ export type ModelStringInput = {
   ne?: InputMaybe<Scalars['String']>;
   notContains?: InputMaybe<Scalars['String']>;
   size?: InputMaybe<ModelSizeInput>;
+};
+
+export type ModelStringKeyConditionInput = {
+  beginsWith?: InputMaybe<Scalars['String']>;
+  between?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+  eq?: InputMaybe<Scalars['String']>;
+  ge?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  le?: InputMaybe<Scalars['String']>;
+  lt?: InputMaybe<Scalars['String']>;
 };
 
 export type ModelSubscriptionBooleanInput = {
@@ -988,6 +1060,9 @@ export type Mutation = {
   activateUser?: Maybe<CognitoUser>;
   authorizeConnector?: Maybe<Connector>;
   createConnector?: Maybe<Connector>;
+  createEvent?: Maybe<Event>;
+  createEventNotification?: Maybe<EventNotification>;
+  createEventSubscriber?: Maybe<EventSubscriber>;
   createNode?: Maybe<GraphResult>;
   createPerspective?: Maybe<Perspective>;
   createQueryCache?: Maybe<QueryCache>;
@@ -997,6 +1072,9 @@ export type Mutation = {
   createTransformation?: Maybe<Transformation>;
   createUser?: Maybe<CognitoUser>;
   deleteConnector?: Maybe<Connector>;
+  deleteEvent?: Maybe<Event>;
+  deleteEventNotification?: Maybe<EventNotification>;
+  deleteEventSubscriber?: Maybe<EventSubscriber>;
   deleteGraphFile?: Maybe<DeleteGraphFileResult>;
   deleteNode?: Maybe<GraphResult>;
   deletePerspective?: Maybe<Perspective>;
@@ -1048,6 +1126,21 @@ export type MutationCreateConnectorArgs = {
   input: CreateConnectorInput;
 };
 
+export type MutationCreateEventArgs = {
+  condition?: InputMaybe<ModelEventConditionInput>;
+  input: CreateEventInput;
+};
+
+export type MutationCreateEventNotificationArgs = {
+  condition?: InputMaybe<ModelEventNotificationConditionInput>;
+  input: CreateEventNotificationInput;
+};
+
+export type MutationCreateEventSubscriberArgs = {
+  condition?: InputMaybe<ModelEventSubscriberConditionInput>;
+  input: CreateEventSubscriberInput;
+};
+
 export type MutationCreateNodeArgs = {
   input: CreateNodeInput;
 };
@@ -1088,6 +1181,21 @@ export type MutationCreateUserArgs = {
 export type MutationDeleteConnectorArgs = {
   condition?: InputMaybe<ModelConnectorConditionInput>;
   input: DeleteConnectorInput;
+};
+
+export type MutationDeleteEventArgs = {
+  condition?: InputMaybe<ModelEventConditionInput>;
+  input: DeleteEventInput;
+};
+
+export type MutationDeleteEventNotificationArgs = {
+  condition?: InputMaybe<ModelEventNotificationConditionInput>;
+  input: DeleteEventNotificationInput;
+};
+
+export type MutationDeleteEventSubscriberArgs = {
+  condition?: InputMaybe<ModelEventSubscriberConditionInput>;
+  input: DeleteEventSubscriberInput;
 };
 
 export type MutationDeleteGraphFileArgs = {
@@ -1310,7 +1418,7 @@ export type Query = {
   getManifest?: Maybe<Scalars['AWSJSON']>;
   getNode?: Maybe<GraphResult>;
   getPerspective?: Maybe<Perspective>;
-  getQueryCache?: Maybe<QueryCache>;
+  getQueryByHash?: Maybe<QueryCache>;
   getRelationship?: Maybe<GraphResult>;
   getSchema?: Maybe<Schema>;
   getTenant?: Maybe<Tenant>;
@@ -1327,7 +1435,7 @@ export type Query = {
   listEventsByPub?: Maybe<ModelEventConnection>;
   listEventsByRef?: Maybe<ModelEventConnection>;
   listPerspectives?: Maybe<ModelPerspectiveConnection>;
-  listQueriesByRef?: Maybe<ModelQueryCacheConnection>;
+  listQueriesByReference?: Maybe<ModelQueryCacheConnection>;
   listSchemas?: Maybe<ModelSchemaConnection>;
   listTenants?: Maybe<ModelTenantConnection>;
   listTransformations?: Maybe<ModelTransformationConnection>;
@@ -1382,10 +1490,8 @@ export type QueryGetPerspectiveArgs = {
   id: Scalars['ID'];
 };
 
-export type QueryGetQueryCacheArgs = {
-  id: Scalars['ID'];
-  refID: Scalars['ID'];
-  refType: RefType;
+export type QueryGetQueryByHashArgs = {
+  queryHash: Scalars['ID'];
   tenantID: Scalars['ID'];
 };
 
@@ -1493,11 +1599,11 @@ export type QueryListPerspectivesArgs = {
   nextToken?: InputMaybe<Scalars['String']>;
 };
 
-export type QueryListQueriesByRefArgs = {
+export type QueryListQueriesByReferenceArgs = {
   filter?: InputMaybe<ModelQueryCacheFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
-  refTypeRefID?: InputMaybe<ModelQueryCacheByRefCompositeKeyConditionInput>;
+  reference?: InputMaybe<ModelStringKeyConditionInput>;
   sortDirection?: InputMaybe<ModelSortDirection>;
   tenantID: Scalars['ID'];
 };
@@ -1546,12 +1652,11 @@ export type QuerySearchGraphArgs = {
 
 export type QueryCache = {
   createdAt?: Maybe<Scalars['AWSDateTime']>;
-  data?: Maybe<Scalars['AWSJSON']>;
-  error?: Maybe<Scalars['AWSJSON']>;
-  id: Scalars['ID'];
-  key: Scalars['String'];
-  refID: Scalars['ID'];
-  refType: RefType;
+  data?: Maybe<Scalars['String']>;
+  error?: Maybe<Scalars['String']>;
+  queryHash: Scalars['ID'];
+  queryKey: Scalars['String'];
+  reference: Scalars['String'];
   tenantID: Scalars['ID'];
   ttl?: Maybe<Scalars['AWSTimestamp']>;
   updatedAt?: Maybe<Scalars['AWSDateTime']>;
@@ -1768,12 +1873,11 @@ export type UpdatePerspectiveInput = {
 
 export type UpdateQueryCacheInput = {
   createdAt?: InputMaybe<Scalars['AWSDateTime']>;
-  data?: InputMaybe<Scalars['AWSJSON']>;
-  error?: InputMaybe<Scalars['AWSJSON']>;
-  id: Scalars['ID'];
-  key?: InputMaybe<Scalars['String']>;
-  refID: Scalars['ID'];
-  refType: RefType;
+  data?: InputMaybe<Scalars['String']>;
+  error?: InputMaybe<Scalars['String']>;
+  queryHash: Scalars['ID'];
+  queryKey?: InputMaybe<Scalars['String']>;
+  reference?: InputMaybe<Scalars['String']>;
   tenantID: Scalars['ID'];
   ttl?: InputMaybe<Scalars['AWSTimestamp']>;
   updatedAt?: InputMaybe<Scalars['AWSDateTime']>;
@@ -1863,15 +1967,14 @@ export type CreateQueryCacheVariables = Exact<{
 export type CreateQueryCache = {
   createQueryCache?:
     | {
-        id: string;
+        queryHash: string;
         tenantID: string;
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
-        refType: RefType;
-        refID: string;
-        key: string;
-        data?: Record<string, any> | string | undefined;
-        error?: Record<string, any> | string | undefined;
+        reference: string;
+        queryKey: string;
+        data?: string | undefined;
+        error?: string | undefined;
         ttl?: any | undefined;
       }
     | undefined;
@@ -1885,15 +1988,14 @@ export type UpdateQueryCacheVariables = Exact<{
 export type UpdateQueryCache = {
   updateQueryCache?:
     | {
-        id: string;
+        queryHash: string;
         tenantID: string;
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
-        refType: RefType;
-        refID: string;
-        key: string;
-        data?: Record<string, any> | string | undefined;
-        error?: Record<string, any> | string | undefined;
+        reference: string;
+        queryKey: string;
+        data?: string | undefined;
+        error?: string | undefined;
         ttl?: any | undefined;
       }
     | undefined;
@@ -1907,15 +2009,14 @@ export type DeleteQueryCacheVariables = Exact<{
 export type DeleteQueryCache = {
   deleteQueryCache?:
     | {
-        id: string;
+        queryHash: string;
         tenantID: string;
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
-        refType: RefType;
-        refID: string;
-        key: string;
-        data?: Record<string, any> | string | undefined;
-        error?: Record<string, any> | string | undefined;
+        reference: string;
+        queryKey: string;
+        data?: string | undefined;
+        error?: string | undefined;
         ttl?: any | undefined;
       }
     | undefined;
@@ -1995,6 +2096,138 @@ export type DeleteConnector = {
         dataSource?: string | undefined;
         secretCredentials?: string | undefined;
         extractor?: string | undefined;
+      }
+    | undefined;
+};
+
+export type CreateEventVariables = Exact<{
+  input: CreateEventInput;
+  condition?: InputMaybe<ModelEventConditionInput>;
+}>;
+
+export type CreateEvent = {
+  createEvent?:
+    | {
+        id: string;
+        tenantID: string;
+        pubType: PubSubType;
+        pubID: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        refType: RefType;
+        refID: string;
+        eventType: EventType;
+        eventBody?: string | undefined;
+        eventStatus?: EventStatus | undefined;
+        ttl?: any | undefined;
+      }
+    | undefined;
+};
+
+export type DeleteEventVariables = Exact<{
+  input: DeleteEventInput;
+  condition?: InputMaybe<ModelEventConditionInput>;
+}>;
+
+export type DeleteEvent = {
+  deleteEvent?:
+    | {
+        id: string;
+        tenantID: string;
+        pubType: PubSubType;
+        pubID: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        refType: RefType;
+        refID: string;
+        eventType: EventType;
+        eventBody?: string | undefined;
+        eventStatus?: EventStatus | undefined;
+        ttl?: any | undefined;
+      }
+    | undefined;
+};
+
+export type CreateEventSubscriberVariables = Exact<{
+  input: CreateEventSubscriberInput;
+  condition?: InputMaybe<ModelEventSubscriberConditionInput>;
+}>;
+
+export type CreateEventSubscriber = {
+  createEventSubscriber?:
+    | {
+        id: string;
+        tenantID: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        subType: PubSubType;
+        subID: string;
+        refType: RefType;
+        refID: string;
+      }
+    | undefined;
+};
+
+export type DeleteEventSubscriberVariables = Exact<{
+  input: DeleteEventSubscriberInput;
+  condition?: InputMaybe<ModelEventSubscriberConditionInput>;
+}>;
+
+export type DeleteEventSubscriber = {
+  deleteEventSubscriber?:
+    | {
+        id: string;
+        tenantID: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        subType: PubSubType;
+        subID: string;
+        refType: RefType;
+        refID: string;
+      }
+    | undefined;
+};
+
+export type CreateEventNotificationVariables = Exact<{
+  input: CreateEventNotificationInput;
+  condition?: InputMaybe<ModelEventNotificationConditionInput>;
+}>;
+
+export type CreateEventNotification = {
+  createEventNotification?:
+    | {
+        id: string;
+        tenantID: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        subType: PubSubType;
+        subID: string;
+        refType: RefType;
+        refID: string;
+        notificationBody?: string | undefined;
+        isRead?: boolean | undefined;
+      }
+    | undefined;
+};
+
+export type DeleteEventNotificationVariables = Exact<{
+  input: DeleteEventNotificationInput;
+  condition?: InputMaybe<ModelEventNotificationConditionInput>;
+}>;
+
+export type DeleteEventNotification = {
+  deleteEventNotification?:
+    | {
+        id: string;
+        tenantID: string;
+        createdAt?: any | undefined;
+        updatedAt?: any | undefined;
+        subType: PubSubType;
+        subID: string;
+        refType: RefType;
+        refID: string;
+        notificationBody?: string | undefined;
+        isRead?: boolean | undefined;
       }
     | undefined;
 };
@@ -2352,7 +2585,9 @@ export type ExecutePerspectiveVariables = Exact<{
 }>;
 
 export type ExecutePerspective = {
-  executePerspective?: { data?: Record<string, any> | string | undefined; updatedAt?: any | undefined } | undefined;
+  executePerspective?:
+    | { data?: Array<Record<string, any> | string> | undefined; updatedAt?: any | undefined }
+    | undefined;
 };
 
 export type AuthorizeConnectorVariables = Exact<{
@@ -2784,54 +3019,50 @@ export type EchoVariables = Exact<{
 
 export type Echo = { echo?: string | undefined };
 
-export type GetQueryCacheVariables = Exact<{
-  id: Scalars['ID'];
+export type GetQueryByHashVariables = Exact<{
+  queryHash: Scalars['ID'];
   tenantID: Scalars['ID'];
-  refType: RefType;
-  refID: Scalars['ID'];
 }>;
 
-export type GetQueryCache = {
-  getQueryCache?:
+export type GetQueryByHash = {
+  getQueryByHash?:
     | {
-        id: string;
+        queryHash: string;
         tenantID: string;
         createdAt?: any | undefined;
         updatedAt?: any | undefined;
-        refType: RefType;
-        refID: string;
-        key: string;
-        data?: Record<string, any> | string | undefined;
-        error?: Record<string, any> | string | undefined;
+        reference: string;
+        queryKey: string;
+        data?: string | undefined;
+        error?: string | undefined;
         ttl?: any | undefined;
       }
     | undefined;
 };
 
-export type ListQueriesByRefVariables = Exact<{
+export type ListQueriesByReferenceVariables = Exact<{
   tenantID: Scalars['ID'];
-  refTypeRefID?: InputMaybe<ModelQueryCacheByRefCompositeKeyConditionInput>;
+  reference?: InputMaybe<ModelStringKeyConditionInput>;
   sortDirection?: InputMaybe<ModelSortDirection>;
   filter?: InputMaybe<ModelQueryCacheFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 }>;
 
-export type ListQueriesByRef = {
-  listQueriesByRef?:
+export type ListQueriesByReference = {
+  listQueriesByReference?:
     | {
         nextToken?: string | undefined;
         items: Array<
           | {
-              id: string;
+              queryHash: string;
               tenantID: string;
               createdAt?: any | undefined;
               updatedAt?: any | undefined;
-              refType: RefType;
-              refID: string;
-              key: string;
-              data?: Record<string, any> | string | undefined;
-              error?: Record<string, any> | string | undefined;
+              reference: string;
+              queryKey: string;
+              data?: string | undefined;
+              error?: string | undefined;
               ttl?: any | undefined;
             }
           | undefined
@@ -3787,13 +4018,12 @@ export const emptyMutation = (variables?: EmptyMutationVariables) => EmptyMutati
 export const CreateQueryCacheDocument = `
     mutation CreateQueryCache($input: CreateQueryCacheInput!, $condition: ModelQueryCacheConditionInput) {
   createQueryCache(input: $input, condition: $condition) {
-    id
+    queryHash
     tenantID
     createdAt
     updatedAt
-    refType
-    refID
-    key
+    reference
+    queryKey
     data
     error
     ttl
@@ -3816,14 +4046,7 @@ export const CreateQueryCacheKeys = () => ['CreateQueryCache'];
  * @returns `CreateQueryCacheVariables` - The transformed variables
  */
 export const CreateQueryCacheInputFn = <TInput = CreateQueryCacheVariables>(variables: CreateQueryCacheVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      data: variables.input.data && (JSON.stringify(variables.input.data as any) as unknown as Scalars['AWSJSON']),
-      error: variables.input.error && (JSON.stringify(variables.input.error as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as unknown as TInput);
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `CreateQueryCache`.
@@ -3834,12 +4057,7 @@ export const CreateQueryCacheInputFn = <TInput = CreateQueryCacheVariables>(vari
  * @returns QueryCache - The transformed data
  */
 export const CreateQueryCacheOutputFn = <TOutput = QueryCache>({ createQueryCache }: CreateQueryCache) =>
-  createQueryCache &&
-  ({
-    ...createQueryCache,
-    data: createQueryCache.data && (JSON.parse(createQueryCache.data as any) as unknown as Scalars['AWSJSON']),
-    error: createQueryCache.error && (JSON.parse(createQueryCache.error as any) as unknown as Scalars['AWSJSON']),
-  } as unknown as TOutput);
+  createQueryCache as unknown as TOutput;
 
 /**
  * Fetcher function for `CreateQueryCache`.
@@ -3879,13 +4097,12 @@ export const createQueryCache = (variables: CreateQueryCacheVariables) => Create
 export const UpdateQueryCacheDocument = `
     mutation UpdateQueryCache($input: UpdateQueryCacheInput!, $condition: ModelQueryCacheConditionInput) {
   updateQueryCache(input: $input, condition: $condition) {
-    id
+    queryHash
     tenantID
     createdAt
     updatedAt
-    refType
-    refID
-    key
+    reference
+    queryKey
     data
     error
     ttl
@@ -3908,14 +4125,7 @@ export const UpdateQueryCacheKeys = () => ['UpdateQueryCache'];
  * @returns `UpdateQueryCacheVariables` - The transformed variables
  */
 export const UpdateQueryCacheInputFn = <TInput = UpdateQueryCacheVariables>(variables: UpdateQueryCacheVariables) =>
-  ({
-    ...variables,
-    input: {
-      ...variables.input,
-      data: variables.input.data && (JSON.stringify(variables.input.data as any) as unknown as Scalars['AWSJSON']),
-      error: variables.input.error && (JSON.stringify(variables.input.error as any) as unknown as Scalars['AWSJSON']),
-    },
-  } as unknown as TInput);
+  variables as unknown as TInput;
 
 /**
  * Output transformer function for `UpdateQueryCache`.
@@ -3926,12 +4136,7 @@ export const UpdateQueryCacheInputFn = <TInput = UpdateQueryCacheVariables>(vari
  * @returns QueryCache - The transformed data
  */
 export const UpdateQueryCacheOutputFn = <TOutput = QueryCache>({ updateQueryCache }: UpdateQueryCache) =>
-  updateQueryCache &&
-  ({
-    ...updateQueryCache,
-    data: updateQueryCache.data && (JSON.parse(updateQueryCache.data as any) as unknown as Scalars['AWSJSON']),
-    error: updateQueryCache.error && (JSON.parse(updateQueryCache.error as any) as unknown as Scalars['AWSJSON']),
-  } as unknown as TOutput);
+  updateQueryCache as unknown as TOutput;
 
 /**
  * Fetcher function for `UpdateQueryCache`.
@@ -3971,13 +4176,12 @@ export const updateQueryCache = (variables: UpdateQueryCacheVariables) => Update
 export const DeleteQueryCacheDocument = `
     mutation DeleteQueryCache($input: DeleteQueryCacheInput!, $condition: ModelQueryCacheConditionInput) {
   deleteQueryCache(input: $input, condition: $condition) {
-    id
+    queryHash
     tenantID
     createdAt
     updatedAt
-    refType
-    refID
-    key
+    reference
+    queryKey
     data
     error
     ttl
@@ -4011,12 +4215,7 @@ export const DeleteQueryCacheInputFn = <TInput = DeleteQueryCacheVariables>(vari
  * @returns QueryCache - The transformed data
  */
 export const DeleteQueryCacheOutputFn = <TOutput = QueryCache>({ deleteQueryCache }: DeleteQueryCache) =>
-  deleteQueryCache &&
-  ({
-    ...deleteQueryCache,
-    data: deleteQueryCache.data && (JSON.parse(deleteQueryCache.data as any) as unknown as Scalars['AWSJSON']),
-    error: deleteQueryCache.error && (JSON.parse(deleteQueryCache.error as any) as unknown as Scalars['AWSJSON']),
-  } as unknown as TOutput);
+  deleteQueryCache as unknown as TOutput;
 
 /**
  * Fetcher function for `DeleteQueryCache`.
@@ -4286,6 +4485,482 @@ export const DeleteConnectorFetcher = <TOutput = Connector, TInput = DeleteConne
  * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
  */
 export const deleteConnector = (variables: DeleteConnectorVariables) => DeleteConnectorFetcher(variables)();
+
+export const CreateEventDocument = `
+    mutation CreateEvent($input: CreateEventInput!, $condition: ModelEventConditionInput) {
+  createEvent(input: $input, condition: $condition) {
+    id
+    tenantID
+    pubType
+    pubID
+    createdAt
+    updatedAt
+    refType
+    refID
+    eventType
+    eventBody
+    eventStatus
+    ttl
+  }
+}
+    `;
+
+/**
+ * Key maker function for `CreateEvent`.
+ */
+export const CreateEventKeys = () => ['CreateEvent'];
+
+/**
+ * Input transformer function for `CreateEvent`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateEventVariables` - The original variables
+ * @returns `CreateEventVariables` - The transformed variables
+ */
+export const CreateEventInputFn = <TInput = CreateEventVariables>(variables: CreateEventVariables) =>
+  variables as unknown as TInput;
+
+/**
+ * Output transformer function for `CreateEvent`.
+ * It extracts the `createEvent` field from the result and transforms it into a `Event` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data CreateEvent - The data returned from the GraphQL server
+ * @returns Event - The transformed data
+ */
+export const CreateEventOutputFn = <TOutput = Event>({ createEvent }: CreateEvent) => createEvent as unknown as TOutput;
+
+/**
+ * Fetcher function for `CreateEvent`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `CreateEventInput` and `CreateEventOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const CreateEventFetcher = <TOutput = Event, TInput = CreateEventVariables>(
+  variables: CreateEventVariables,
+  options?: RequestInit['headers'],
+  document = CreateEventDocument,
+  outputFn = CreateEventOutputFn,
+  inputFn = CreateEventInputFn,
+) => fetcher<CreateEvent, CreateEventVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `CreateEvent`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createEvent = (variables: CreateEventVariables) => CreateEventFetcher(variables)();
+
+export const DeleteEventDocument = `
+    mutation DeleteEvent($input: DeleteEventInput!, $condition: ModelEventConditionInput) {
+  deleteEvent(input: $input, condition: $condition) {
+    id
+    tenantID
+    pubType
+    pubID
+    createdAt
+    updatedAt
+    refType
+    refID
+    eventType
+    eventBody
+    eventStatus
+    ttl
+  }
+}
+    `;
+
+/**
+ * Key maker function for `DeleteEvent`.
+ */
+export const DeleteEventKeys = () => ['DeleteEvent'];
+
+/**
+ * Input transformer function for `DeleteEvent`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteEventVariables` - The original variables
+ * @returns `DeleteEventVariables` - The transformed variables
+ */
+export const DeleteEventInputFn = <TInput = DeleteEventVariables>(variables: DeleteEventVariables) =>
+  variables as unknown as TInput;
+
+/**
+ * Output transformer function for `DeleteEvent`.
+ * It extracts the `deleteEvent` field from the result and transforms it into a `Event` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data DeleteEvent - The data returned from the GraphQL server
+ * @returns Event - The transformed data
+ */
+export const DeleteEventOutputFn = <TOutput = Event>({ deleteEvent }: DeleteEvent) => deleteEvent as unknown as TOutput;
+
+/**
+ * Fetcher function for `DeleteEvent`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `DeleteEventInput` and `DeleteEventOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const DeleteEventFetcher = <TOutput = Event, TInput = DeleteEventVariables>(
+  variables: DeleteEventVariables,
+  options?: RequestInit['headers'],
+  document = DeleteEventDocument,
+  outputFn = DeleteEventOutputFn,
+  inputFn = DeleteEventInputFn,
+) => fetcher<DeleteEvent, DeleteEventVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+
+/**
+ * GraphQL request function for `DeleteEvent`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteEvent = (variables: DeleteEventVariables) => DeleteEventFetcher(variables)();
+
+export const CreateEventSubscriberDocument = `
+    mutation CreateEventSubscriber($input: CreateEventSubscriberInput!, $condition: ModelEventSubscriberConditionInput) {
+  createEventSubscriber(input: $input, condition: $condition) {
+    id
+    tenantID
+    createdAt
+    updatedAt
+    subType
+    subID
+    refType
+    refID
+  }
+}
+    `;
+
+/**
+ * Key maker function for `CreateEventSubscriber`.
+ */
+export const CreateEventSubscriberKeys = () => ['CreateEventSubscriber'];
+
+/**
+ * Input transformer function for `CreateEventSubscriber`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateEventSubscriberVariables` - The original variables
+ * @returns `CreateEventSubscriberVariables` - The transformed variables
+ */
+export const CreateEventSubscriberInputFn = <TInput = CreateEventSubscriberVariables>(
+  variables: CreateEventSubscriberVariables,
+) => variables as unknown as TInput;
+
+/**
+ * Output transformer function for `CreateEventSubscriber`.
+ * It extracts the `createEventSubscriber` field from the result and transforms it into a `EventSubscriber` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data CreateEventSubscriber - The data returned from the GraphQL server
+ * @returns EventSubscriber - The transformed data
+ */
+export const CreateEventSubscriberOutputFn = <TOutput = EventSubscriber>({
+  createEventSubscriber,
+}: CreateEventSubscriber) => createEventSubscriber as unknown as TOutput;
+
+/**
+ * Fetcher function for `CreateEventSubscriber`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `CreateEventSubscriberInput` and `CreateEventSubscriberOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const CreateEventSubscriberFetcher = <TOutput = EventSubscriber, TInput = CreateEventSubscriberVariables>(
+  variables: CreateEventSubscriberVariables,
+  options?: RequestInit['headers'],
+  document = CreateEventSubscriberDocument,
+  outputFn = CreateEventSubscriberOutputFn,
+  inputFn = CreateEventSubscriberInputFn,
+) =>
+  fetcher<CreateEventSubscriber, CreateEventSubscriberVariables, TOutput, TInput>(
+    document,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `CreateEventSubscriber`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createEventSubscriber = (variables: CreateEventSubscriberVariables) =>
+  CreateEventSubscriberFetcher(variables)();
+
+export const DeleteEventSubscriberDocument = `
+    mutation DeleteEventSubscriber($input: DeleteEventSubscriberInput!, $condition: ModelEventSubscriberConditionInput) {
+  deleteEventSubscriber(input: $input, condition: $condition) {
+    id
+    tenantID
+    createdAt
+    updatedAt
+    subType
+    subID
+    refType
+    refID
+  }
+}
+    `;
+
+/**
+ * Key maker function for `DeleteEventSubscriber`.
+ */
+export const DeleteEventSubscriberKeys = () => ['DeleteEventSubscriber'];
+
+/**
+ * Input transformer function for `DeleteEventSubscriber`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteEventSubscriberVariables` - The original variables
+ * @returns `DeleteEventSubscriberVariables` - The transformed variables
+ */
+export const DeleteEventSubscriberInputFn = <TInput = DeleteEventSubscriberVariables>(
+  variables: DeleteEventSubscriberVariables,
+) => variables as unknown as TInput;
+
+/**
+ * Output transformer function for `DeleteEventSubscriber`.
+ * It extracts the `deleteEventSubscriber` field from the result and transforms it into a `EventSubscriber` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data DeleteEventSubscriber - The data returned from the GraphQL server
+ * @returns EventSubscriber - The transformed data
+ */
+export const DeleteEventSubscriberOutputFn = <TOutput = EventSubscriber>({
+  deleteEventSubscriber,
+}: DeleteEventSubscriber) => deleteEventSubscriber as unknown as TOutput;
+
+/**
+ * Fetcher function for `DeleteEventSubscriber`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `DeleteEventSubscriberInput` and `DeleteEventSubscriberOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const DeleteEventSubscriberFetcher = <TOutput = EventSubscriber, TInput = DeleteEventSubscriberVariables>(
+  variables: DeleteEventSubscriberVariables,
+  options?: RequestInit['headers'],
+  document = DeleteEventSubscriberDocument,
+  outputFn = DeleteEventSubscriberOutputFn,
+  inputFn = DeleteEventSubscriberInputFn,
+) =>
+  fetcher<DeleteEventSubscriber, DeleteEventSubscriberVariables, TOutput, TInput>(
+    document,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `DeleteEventSubscriber`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteEventSubscriber = (variables: DeleteEventSubscriberVariables) =>
+  DeleteEventSubscriberFetcher(variables)();
+
+export const CreateEventNotificationDocument = `
+    mutation CreateEventNotification($input: CreateEventNotificationInput!, $condition: ModelEventNotificationConditionInput) {
+  createEventNotification(input: $input, condition: $condition) {
+    id
+    tenantID
+    createdAt
+    updatedAt
+    subType
+    subID
+    refType
+    refID
+    notificationBody
+    isRead
+  }
+}
+    `;
+
+/**
+ * Key maker function for `CreateEventNotification`.
+ */
+export const CreateEventNotificationKeys = () => ['CreateEventNotification'];
+
+/**
+ * Input transformer function for `CreateEventNotification`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `CreateEventNotificationVariables` - The original variables
+ * @returns `CreateEventNotificationVariables` - The transformed variables
+ */
+export const CreateEventNotificationInputFn = <TInput = CreateEventNotificationVariables>(
+  variables: CreateEventNotificationVariables,
+) => variables as unknown as TInput;
+
+/**
+ * Output transformer function for `CreateEventNotification`.
+ * It extracts the `createEventNotification` field from the result and transforms it into a `EventNotification` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data CreateEventNotification - The data returned from the GraphQL server
+ * @returns EventNotification - The transformed data
+ */
+export const CreateEventNotificationOutputFn = <TOutput = EventNotification>({
+  createEventNotification,
+}: CreateEventNotification) => createEventNotification as unknown as TOutput;
+
+/**
+ * Fetcher function for `CreateEventNotification`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `CreateEventNotificationInput` and `CreateEventNotificationOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const CreateEventNotificationFetcher = <TOutput = EventNotification, TInput = CreateEventNotificationVariables>(
+  variables: CreateEventNotificationVariables,
+  options?: RequestInit['headers'],
+  document = CreateEventNotificationDocument,
+  outputFn = CreateEventNotificationOutputFn,
+  inputFn = CreateEventNotificationInputFn,
+) =>
+  fetcher<CreateEventNotification, CreateEventNotificationVariables, TOutput, TInput>(
+    document,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `CreateEventNotification`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const createEventNotification = (variables: CreateEventNotificationVariables) =>
+  CreateEventNotificationFetcher(variables)();
+
+export const DeleteEventNotificationDocument = `
+    mutation DeleteEventNotification($input: DeleteEventNotificationInput!, $condition: ModelEventNotificationConditionInput) {
+  deleteEventNotification(input: $input, condition: $condition) {
+    id
+    tenantID
+    createdAt
+    updatedAt
+    subType
+    subID
+    refType
+    refID
+    notificationBody
+    isRead
+  }
+}
+    `;
+
+/**
+ * Key maker function for `DeleteEventNotification`.
+ */
+export const DeleteEventNotificationKeys = () => ['DeleteEventNotification'];
+
+/**
+ * Input transformer function for `DeleteEventNotification`.
+ * It transforms the fields of the variables into JSON strings.
+ * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
+ * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
+ *
+ * @param variables `DeleteEventNotificationVariables` - The original variables
+ * @returns `DeleteEventNotificationVariables` - The transformed variables
+ */
+export const DeleteEventNotificationInputFn = <TInput = DeleteEventNotificationVariables>(
+  variables: DeleteEventNotificationVariables,
+) => variables as unknown as TInput;
+
+/**
+ * Output transformer function for `DeleteEventNotification`.
+ * It extracts the `deleteEventNotification` field from the result and transforms it into a `EventNotification` object.
+ * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
+ * If the object does not conatain any JSON fields, it will return the orignal object.
+ * @param data DeleteEventNotification - The data returned from the GraphQL server
+ * @returns EventNotification - The transformed data
+ */
+export const DeleteEventNotificationOutputFn = <TOutput = EventNotification>({
+  deleteEventNotification,
+}: DeleteEventNotification) => deleteEventNotification as unknown as TOutput;
+
+/**
+ * Fetcher function for `DeleteEventNotification`.
+ * It invokes the base fetcher function with the operation-specific input and output transformer functions.
+ * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
+ * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
+ *
+ * The input and output transformer functions are optional arguments and default to the generated `DeleteEventNotificationInput` and `DeleteEventNotificationOutput` functions.
+ * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
+ * @param variables - The variables to pass to the GraphQL operation.
+ * @param options - The options to pass to the GraphQL operation.
+ * @param outputFn - The output transformer function.
+ * @param inputFn - The input transformer function.
+ * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
+ */
+export const DeleteEventNotificationFetcher = <TOutput = EventNotification, TInput = DeleteEventNotificationVariables>(
+  variables: DeleteEventNotificationVariables,
+  options?: RequestInit['headers'],
+  document = DeleteEventNotificationDocument,
+  outputFn = DeleteEventNotificationOutputFn,
+  inputFn = DeleteEventNotificationInputFn,
+) =>
+  fetcher<DeleteEventNotification, DeleteEventNotificationVariables, TOutput, TInput>(
+    document,
+    variables,
+    options,
+    outputFn,
+    inputFn,
+  );
+
+/**
+ * GraphQL request function for `DeleteEventNotification`.
+ * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
+ */
+export const deleteEventNotification = (variables: DeleteEventNotificationVariables) =>
+  DeleteEventNotificationFetcher(variables)();
 
 export const CreatePerspectiveDocument = `
     mutation CreatePerspective($input: CreatePerspectiveInput!, $condition: ModelPerspectiveConditionInput) {
@@ -5372,7 +6047,7 @@ export const ExecutePerspectiveOutputFn = <TOutput = ExecutePerspectiveResult>({
   executePerspective &&
   ({
     ...executePerspective,
-    data: executePerspective.data && (JSON.parse(executePerspective.data as any) as unknown as Scalars['AWSJSON']),
+    data: executePerspective.data?.map((data) => JSON.parse(data as any) as unknown as Scalars['AWSJSON']),
   } as unknown as TOutput);
 
 /**
@@ -7352,16 +8027,15 @@ export const EchoFetcher = <TOutput = Scalars['String'], TInput = EchoVariables>
  */
 export const echo = (variables?: EchoVariables) => EchoFetcher(variables)();
 
-export const GetQueryCacheDocument = `
-    query GetQueryCache($id: ID!, $tenantID: ID!, $refType: RefType!, $refID: ID!) {
-  getQueryCache(id: $id, tenantID: $tenantID, refType: $refType, refID: $refID) {
-    id
+export const GetQueryByHashDocument = `
+    query GetQueryByHash($queryHash: ID!, $tenantID: ID!) {
+  getQueryByHash(queryHash: $queryHash, tenantID: $tenantID) {
+    queryHash
     tenantID
     createdAt
     updatedAt
-    refType
-    refID
-    key
+    reference
+    queryKey
     data
     error
     ttl
@@ -7370,45 +8044,40 @@ export const GetQueryCacheDocument = `
     `;
 
 /**
- * Key maker function for `GetQueryCache`.
+ * Key maker function for `GetQueryByHash`.
  */
-export const GetQueryCacheKeys = (variables: GetQueryCacheVariables) => ['GetQueryCache', variables];
+export const GetQueryByHashKeys = (variables: GetQueryByHashVariables) => ['GetQueryByHash', variables];
 
 /**
- * Input transformer function for `GetQueryCache`.
+ * Input transformer function for `GetQueryByHash`.
  * It transforms the fields of the variables into JSON strings.
  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
  * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
  *
- * @param variables `GetQueryCacheVariables` - The original variables
- * @returns `GetQueryCacheVariables` - The transformed variables
+ * @param variables `GetQueryByHashVariables` - The original variables
+ * @returns `GetQueryByHashVariables` - The transformed variables
  */
-export const GetQueryCacheInputFn = <TInput = GetQueryCacheVariables>(variables: GetQueryCacheVariables) =>
+export const GetQueryByHashInputFn = <TInput = GetQueryByHashVariables>(variables: GetQueryByHashVariables) =>
   variables as unknown as TInput;
 
 /**
- * Output transformer function for `GetQueryCache`.
- * It extracts the `getQueryCache` field from the result and transforms it into a `QueryCache` object.
+ * Output transformer function for `GetQueryByHash`.
+ * It extracts the `getQueryByHash` field from the result and transforms it into a `QueryCache` object.
  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
  * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data GetQueryCache - The data returned from the GraphQL server
+ * @param data GetQueryByHash - The data returned from the GraphQL server
  * @returns QueryCache - The transformed data
  */
-export const GetQueryCacheOutputFn = <TOutput = QueryCache>({ getQueryCache }: GetQueryCache) =>
-  getQueryCache &&
-  ({
-    ...getQueryCache,
-    data: getQueryCache.data && (JSON.parse(getQueryCache.data as any) as unknown as Scalars['AWSJSON']),
-    error: getQueryCache.error && (JSON.parse(getQueryCache.error as any) as unknown as Scalars['AWSJSON']),
-  } as unknown as TOutput);
+export const GetQueryByHashOutputFn = <TOutput = QueryCache>({ getQueryByHash }: GetQueryByHash) =>
+  getQueryByHash as unknown as TOutput;
 
 /**
- * Fetcher function for `GetQueryCache`.
+ * Fetcher function for `GetQueryByHash`.
  * It invokes the base fetcher function with the operation-specific input and output transformer functions.
  * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
  * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  *
- * The input and output transformer functions are optional arguments and default to the generated `GetQueryCacheInput` and `GetQueryCacheOutput` functions.
+ * The input and output transformer functions are optional arguments and default to the generated `GetQueryByHashInput` and `GetQueryByHashOutput` functions.
  * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
  * @param variables - The variables to pass to the GraphQL operation.
  * @param options - The options to pass to the GraphQL operation.
@@ -7416,38 +8085,37 @@ export const GetQueryCacheOutputFn = <TOutput = QueryCache>({ getQueryCache }: G
  * @param inputFn - The input transformer function.
  * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
-export const GetQueryCacheFetcher = <TOutput = QueryCache, TInput = GetQueryCacheVariables>(
-  variables: GetQueryCacheVariables,
+export const GetQueryByHashFetcher = <TOutput = QueryCache, TInput = GetQueryByHashVariables>(
+  variables: GetQueryByHashVariables,
   options?: RequestInit['headers'],
-  document = GetQueryCacheDocument,
-  outputFn = GetQueryCacheOutputFn,
-  inputFn = GetQueryCacheInputFn,
-) => fetcher<GetQueryCache, GetQueryCacheVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
+  document = GetQueryByHashDocument,
+  outputFn = GetQueryByHashOutputFn,
+  inputFn = GetQueryByHashInputFn,
+) => fetcher<GetQueryByHash, GetQueryByHashVariables, TOutput, TInput>(document, variables, options, outputFn, inputFn);
 
 /**
- * GraphQL request function for `GetQueryCache`.
+ * GraphQL request function for `GetQueryByHash`.
  * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
  */
-export const getQueryCache = (variables: GetQueryCacheVariables) => GetQueryCacheFetcher(variables)();
+export const getQueryByHash = (variables: GetQueryByHashVariables) => GetQueryByHashFetcher(variables)();
 
-export const ListQueriesByRefDocument = `
-    query ListQueriesByRef($tenantID: ID!, $refTypeRefID: ModelQueryCacheByRefCompositeKeyConditionInput, $sortDirection: ModelSortDirection, $filter: ModelQueryCacheFilterInput, $limit: Int, $nextToken: String) {
-  listQueriesByRef(
+export const ListQueriesByReferenceDocument = `
+    query ListQueriesByReference($tenantID: ID!, $reference: ModelStringKeyConditionInput, $sortDirection: ModelSortDirection, $filter: ModelQueryCacheFilterInput, $limit: Int, $nextToken: String) {
+  listQueriesByReference(
     tenantID: $tenantID
-    refTypeRefID: $refTypeRefID
+    reference: $reference
     sortDirection: $sortDirection
     filter: $filter
     limit: $limit
     nextToken: $nextToken
   ) {
     items {
-      id
+      queryHash
       tenantID
       createdAt
       updatedAt
-      refType
-      refID
-      key
+      reference
+      queryKey
       data
       error
       ttl
@@ -7458,48 +8126,45 @@ export const ListQueriesByRefDocument = `
     `;
 
 /**
- * Key maker function for `ListQueriesByRef`.
+ * Key maker function for `ListQueriesByReference`.
  */
-export const ListQueriesByRefKeys = (variables: ListQueriesByRefVariables) => ['ListQueriesByRef', variables];
+export const ListQueriesByReferenceKeys = (variables: ListQueriesByReferenceVariables) => [
+  'ListQueriesByReference',
+  variables,
+];
 
 /**
- * Input transformer function for `ListQueriesByRef`.
+ * Input transformer function for `ListQueriesByReference`.
  * It transforms the fields of the variables into JSON strings.
  * If the variables contain JSON fields, it will automatically JSON stringify these fields and return a new `variables` object.
  * If the variables do not conatain any JSON fields, it will return the orignal `variables` object.
  *
- * @param variables `ListQueriesByRefVariables` - The original variables
- * @returns `ListQueriesByRefVariables` - The transformed variables
+ * @param variables `ListQueriesByReferenceVariables` - The original variables
+ * @returns `ListQueriesByReferenceVariables` - The transformed variables
  */
-export const ListQueriesByRefInputFn = <TInput = ListQueriesByRefVariables>(variables: ListQueriesByRefVariables) =>
-  variables as unknown as TInput;
+export const ListQueriesByReferenceInputFn = <TInput = ListQueriesByReferenceVariables>(
+  variables: ListQueriesByReferenceVariables,
+) => variables as unknown as TInput;
 
 /**
- * Output transformer function for `ListQueriesByRef`.
- * It extracts the `listQueriesByRef` field from the result and transforms it into a `ModelQueryCacheConnection` object.
+ * Output transformer function for `ListQueriesByReference`.
+ * It extracts the `listQueriesByReference` field from the result and transforms it into a `ModelQueryCacheConnection` object.
  * If the object contains JSON fields, it will automatically JSON parse these fields and return a new object.
  * If the object does not conatain any JSON fields, it will return the orignal object.
- * @param data ListQueriesByRef - The data returned from the GraphQL server
+ * @param data ListQueriesByReference - The data returned from the GraphQL server
  * @returns ModelQueryCacheConnection - The transformed data
  */
-export const ListQueriesByRefOutputFn = <TOutput = ModelQueryCacheConnection>({ listQueriesByRef }: ListQueriesByRef) =>
-  listQueriesByRef &&
-  ({
-    ...listQueriesByRef,
-    items: listQueriesByRef.items?.map((item) => ({
-      ...item,
-      data: item?.data && (JSON.parse(item?.data as any) as unknown as Scalars['AWSJSON']),
-      error: item?.error && (JSON.parse(item?.error as any) as unknown as Scalars['AWSJSON']),
-    })),
-  } as unknown as TOutput);
+export const ListQueriesByReferenceOutputFn = <TOutput = ModelQueryCacheConnection>({
+  listQueriesByReference,
+}: ListQueriesByReference) => listQueriesByReference as unknown as TOutput;
 
 /**
- * Fetcher function for `ListQueriesByRef`.
+ * Fetcher function for `ListQueriesByReference`.
  * It invokes the base fetcher function with the operation-specific input and output transformer functions.
  * The input transformer function must be called inside the base fetcher to transform the `variables` before executing the GraphQL operation.
  * The output transformer function must be called inside the base fetcher to transform the result `data` after executing the GraphQL operation.
  *
- * The input and output transformer functions are optional arguments and default to the generated `ListQueriesByRefInput` and `ListQueriesByRefOutput` functions.
+ * The input and output transformer functions are optional arguments and default to the generated `ListQueriesByReferenceInput` and `ListQueriesByReferenceOutput` functions.
  * They can be set to undefined if no transaformations are required or can be overriden if the transaformations must be changed or extended.
  * @param variables - The variables to pass to the GraphQL operation.
  * @param options - The options to pass to the GraphQL operation.
@@ -7507,14 +8172,17 @@ export const ListQueriesByRefOutputFn = <TOutput = ModelQueryCacheConnection>({ 
  * @param inputFn - The input transformer function.
  * @returns A function `() => Promise<TOutput>` that must be invoked manually or passed to ReactQuery as fetcher argument.
  */
-export const ListQueriesByRefFetcher = <TOutput = ModelQueryCacheConnection, TInput = ListQueriesByRefVariables>(
-  variables: ListQueriesByRefVariables,
+export const ListQueriesByReferenceFetcher = <
+  TOutput = ModelQueryCacheConnection,
+  TInput = ListQueriesByReferenceVariables,
+>(
+  variables: ListQueriesByReferenceVariables,
   options?: RequestInit['headers'],
-  document = ListQueriesByRefDocument,
-  outputFn = ListQueriesByRefOutputFn,
-  inputFn = ListQueriesByRefInputFn,
+  document = ListQueriesByReferenceDocument,
+  outputFn = ListQueriesByReferenceOutputFn,
+  inputFn = ListQueriesByReferenceInputFn,
 ) =>
-  fetcher<ListQueriesByRef, ListQueriesByRefVariables, TOutput, TInput>(
+  fetcher<ListQueriesByReference, ListQueriesByReferenceVariables, TOutput, TInput>(
     document,
     variables,
     options,
@@ -7523,10 +8191,11 @@ export const ListQueriesByRefFetcher = <TOutput = ModelQueryCacheConnection, TIn
   );
 
 /**
- * GraphQL request function for `ListQueriesByRef`.
+ * GraphQL request function for `ListQueriesByReference`.
  * It invokes the operation-specific fetcher function and is merely a shortcut for convencience.
  */
-export const listQueriesByRef = (variables: ListQueriesByRefVariables) => ListQueriesByRefFetcher(variables)();
+export const listQueriesByReference = (variables: ListQueriesByReferenceVariables) =>
+  ListQueriesByReferenceFetcher(variables)();
 
 export const GetConnectorDocument = `
     query GetConnector($id: ID!) {
@@ -9794,12 +10463,12 @@ export const SearchGraphOutputFn = <TOutput = SearchGraphResult>({ searchGraph }
   searchGraph &&
   ({
     ...searchGraph,
-    records: searchGraph.records?.map((record) => ({
-      ...record,
+    records: searchGraph.records?.map((records) => ({
+      ...records,
       node: {
-        ...record?.node,
+        ...records?.node,
         properties:
-          record?.node?.properties && (JSON.parse(record?.node?.properties as any) as unknown as Scalars['AWSJSON']),
+          records?.node?.properties && (JSON.parse(records?.node?.properties as any) as unknown as Scalars['AWSJSON']),
       },
     })),
   } as unknown as TOutput);

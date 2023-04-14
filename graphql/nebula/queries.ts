@@ -12,57 +12,45 @@ export const echo = /* GraphQL */ `
     echo(msg: $msg)
   }
 `;
-export const getQueryCache = /* GraphQL */ `
-  query GetQueryCache(
-    $id: ID!
-    $tenantID: ID!
-    $refType: RefType!
-    $refID: ID!
-  ) {
-    getQueryCache(
-      id: $id
-      tenantID: $tenantID
-      refType: $refType
-      refID: $refID
-    ) {
-      id
+export const getQueryByHash = /* GraphQL */ `
+  query GetQueryByHash($queryHash: ID!, $tenantID: ID!) {
+    getQueryByHash(queryHash: $queryHash, tenantID: $tenantID) {
+      queryHash
       tenantID
       createdAt
       updatedAt
-      refType
-      refID
-      key
+      reference
+      queryKey
       data
       error
       ttl
     }
   }
 `;
-export const listQueriesByRef = /* GraphQL */ `
-  query ListQueriesByRef(
+export const listQueriesByReference = /* GraphQL */ `
+  query ListQueriesByReference(
     $tenantID: ID!
-    $refTypeRefID: ModelQueryCacheByRefCompositeKeyConditionInput
+    $reference: ModelStringKeyConditionInput
     $sortDirection: ModelSortDirection
     $filter: ModelQueryCacheFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listQueriesByRef(
+    listQueriesByReference(
       tenantID: $tenantID
-      refTypeRefID: $refTypeRefID
+      reference: $reference
       sortDirection: $sortDirection
       filter: $filter
       limit: $limit
       nextToken: $nextToken
     ) {
       items {
-        id
+        queryHash
         tenantID
         createdAt
         updatedAt
-        refType
-        refID
-        key
+        reference
+        queryKey
         data
         error
         ttl
